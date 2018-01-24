@@ -1,0 +1,10 @@
+language: python
+python:
+    - "3.6"
+    - "nightly"
+install:
+    - pip install codecov
+script:
+    - coverage run pytest.py
+after_success:
+    - codecov
