@@ -1,0 +1,33 @@
+.navbar {
+    background-color: rgb(38, 18, 155);
+    display: flex;
+    width: 100%;
+}
+.navbar__title {
+    width: 100%;
+    font-size: 18px;
+    color: white;
+    padding: 10px;
+    min-width: 115px;
+}
+.navbar__search {
+    width: 200px;
+}
+.navbar__search input{
+    padding: 10px;
+    margin: 5px;
+    border:none;
+}
+.navbar__button{
+    width: 100px;
+    border: none;
+    background-color: rgb(38, 18, 155);
+    color:white;
+    cursor: pointer;
+}
+.navbar__button:hover{
+    background-color: rgb(54, 33, 190);    
+}
+html {
+    font-size: 13px;
+}

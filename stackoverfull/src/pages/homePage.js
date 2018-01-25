@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {NavigationBar} from '../components/navigationBar'
 
 export class HomePage extends Component {
 
@@ -6,7 +7,7 @@ export class HomePage extends Component {
 
         return (
             <div>
-                
+                <NavigationBar />
             </div>
         );
 
