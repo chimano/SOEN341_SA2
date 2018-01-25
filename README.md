@@ -1,6 +1,6 @@
 # SOEN341_SA2
 
-React.js guide
+**React.js guide**
 
 List of commands:
 - yarn start: run website on localhost)
