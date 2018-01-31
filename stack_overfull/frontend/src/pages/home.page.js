@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {NavigationBar, SignUpFormWindow, SignInFormWindow} from '../components';
+import {NavigationBar, SignUpFormWindow, SignInFormWindow, QuestionList} from '../components';
 
 export class HomePage extends Component {
 
@@ -62,6 +62,9 @@ export class HomePage extends Component {
                     handle_signin_button = {this.handle_signin_button}/>
 
                 {login_box}
+                <div className="main">
+                    <QuestionList />
+                </div>
             </div>
         );
     }
