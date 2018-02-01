@@ -1,8 +1,10 @@
 .coverage
+*.pyc
 node_modules/
 venv/
 .vscode/
 stack_overfull/stackoverfull.db
-stack_overfull/stack_overfull/__pycache__/
-stack_overfull/stack_overfull/settings.py
-stack_overfull/stack_overfull/settings.pyc
+__pychache__/
+package-lock.json
+settings.py
+settings.pyc
