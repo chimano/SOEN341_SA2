@@ -10,3 +10,13 @@ List of commands:
 - yarn install: installs all the dependencies defined in a package.json file.
 - yarn publish: publishes a package to a package manager.
 - yarn remove: removes an unused package from your current package.
+
+**Features**
+
+- Asking and answering questions
+- Voting on the answers
+- Accepting and rejecting answers
+- Job listing
+- Search questions
+- Achievements system
+- Reward system (possibly with a cryptocurrency)
