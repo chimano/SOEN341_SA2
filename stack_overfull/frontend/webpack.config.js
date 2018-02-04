@@ -36,7 +36,7 @@ module.exports = {
                 loader: 'babel-loader', 
                 query: {
                     //specify that we will be dealing with React code
-                    presets: ['es2015','react'] 
+                    presets: ['es2015','stage-2','react'] 
                 }
             }
         ],
@@ -49,12 +49,12 @@ module.exports = {
         new BundleTracker({filename: './webpack-stats.json'}), 
         //makes jQuery available in every module
 
-    ]
+    ],
     
-    // resolve: {
-    //     //tells webpack where to look for modules
-    //     modulesDirectories: ['node_modules'],
-    //     //extensions that should be used to resolve modules
-    //     extensions: ['.js', '.jsx'] 
-    // }   
+    resolve: {
+        //tells webpack where to look for modules
+        modules: ['node_modules'],
+        //extensions that should be used to resolve modules
+        extensions: ['*','.js','.jsx']
+    }   
 }
