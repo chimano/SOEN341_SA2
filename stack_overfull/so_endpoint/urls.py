@@ -24,6 +24,6 @@ urlpatterns = [
     re_path(r'question/(?:limit=(?P<limit>\d+)/)?(?:order=(?P<order>\D+)/)?$', QuestionView.as_view()),
     re_path(r'question/(?:(?P<id>\d+)/)$', QuestionView.as_view()),
     re_path(r'answer/$', AnswerView.as_view()),
-    re_path(r'answer/(?:q_id=(?P<q_id>\d+)/)(?:order=(?P<order>\D+)/)?(?:limit=(?P<limit>\d+)/)?$', AnswerView.as_view()),
-    re_path(r'answer/(?:q_id=(?P<q_id>\d+)/)(?:limit=(?P<limit>\d+)/)?(?:order=(?P<order>\D+)/)?$', AnswerView.as_view())
+    re_path(r'answer/q_id=(?P<q_id>\d+)/(?:order=(?P<order>\D+)/)?(?:limit=(?P<limit>\d+)/)?$', AnswerView.as_view()),
+    re_path(r'answer/q_id=(?P<q_id>\d+)/(?:limit=(?P<limit>\d+)/)?(?:order=(?P<order>\D+)/)?$', AnswerView.as_view())
 ]

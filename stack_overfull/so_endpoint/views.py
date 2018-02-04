@@ -21,7 +21,7 @@ class QuestionView(TemplateView):
             question = request.POST['question']
             if len(question) <= 1:
                 return HttpResponseServerError()
-            q = Question(question=question)
+            q = Question(question_text=question)
             q.save()
             return JsonResponse({'id': q.id})
 
@@ -68,7 +68,7 @@ class AnswerView(TemplateView):
 
             if len(answer) <= 1:
                 return HttpResponseServerError()
-            a = Answer(question=q, answer=answer)
+            a = Answer(question_id=q, answer_text=answer)
             a.save()
             
             return JsonResponse({'id': a.id})
@@ -90,5 +90,5 @@ class AnswerView(TemplateView):
         except ObjectDoesNotExist:
             return HttpResponseServerError()
 
-        answers = Answer.objects.filter(question=q).order_by(modifier + 'date_created')[:limit].values()
+        answers = Answer.objects.filter(question_id=q).order_by(modifier + 'date_created')[:limit].values()
         return JsonResponse({'answer_list':list(answers)})
