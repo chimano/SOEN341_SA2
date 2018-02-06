@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Question} from '../components/question.component'
+import {QuestionEdit} from '../components/questionEdit.component'
 
 var questionListSample = [
     {
@@ -90,12 +91,30 @@ var questionListSample = [
 
 export class QuestionList extends Component {
 
+    constructor(props) {
+        super(props);
+        
+        this.handleAskQuestionButton = this.handleAskQuestionButton.bind(this)
+    }
+
+    state = {
+        title: "TOP QUESTIONS",
+        showTopQuestions: true
+    }
+
+    handleAskQuestionButton() {
+        this.setState({ 
+            title: "Ask a question to the community",
+            showTopQuestions: false
+        });
+    }
+
     render() {
 
-        return (
-            <div className="question-list-wrapper">
-                <div className="question-list-title">TOP QUESTIONS</div>
-                <div className="question-list">
+        var page
+        if(this.state.showTopQuestions === true) {
+            page = 
+            <div className="question-list">
                 {
                     questionListSample.map( (x) => 
                     <Question 
@@ -104,7 +123,32 @@ export class QuestionList extends Component {
                         numAnswers = {x.num_answers}
                         user = {x.user} />)
                 }
-                </div>
+            </div>
+        } else if(this.state.showTopQuestions === false) {
+            page = 
+            <div className="question-list">
+                {
+                    <QuestionEdit 
+                        user = "USER" />
+                }
+            </div>
+        }
+
+        var pageTitle
+        if(this.state.showTopQuestions === true) {
+            pageTitle = 
+            <div className="question-list-title"> {this.state.title}
+                <button onClick={this.handleAskQuestionButton} style={{color: '#ffffff'}}>Ask a question</button>
+            </div>
+        } else if(this.state.showTopQuestions === false) {
+            pageTitle = 
+            <div className="questionEdit-list-title"> {this.state.title} </div>
+        }
+
+        return (
+            <div className="question-list-wrapper">
+                {pageTitle}
+                {page}
             </div> 
         );
     }
