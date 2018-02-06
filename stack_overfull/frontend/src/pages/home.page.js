@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {NavigationBar, SignUpFormWindow, SignInFormWindow, QuestionList} from '../components';
+import {NavigationBar, SignUpFormWindow, SignInFormWindow, QuestionList, Footer} from '../components';
+import "./home.page.css";
 
 export class HomePage extends Component {
 
@@ -64,6 +65,9 @@ export class HomePage extends Component {
                 {login_box}
                 <div className="main">
                     <QuestionList />
+                </div>
+                <div className="footer-area">
+                    <Footer/>
                 </div>
             </div>
         );

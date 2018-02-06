@@ -1,0 +1,115 @@
+.navbar {
+    margin: auto;
+    max-width: 1140px;
+    display: flex;
+    width: 100%;
+  }
+  .navbar-wrapper {
+    background-color: rgb(38, 18, 155);  
+  }
+  .navbar__title {
+    min-width: 150px;
+    font-size: 18px;
+    color: white;
+    padding: 10px;
+  }
+  .navbar__search {
+    width: 100%;
+    padding: 7px;
+  }
+  .navbar__button{
+    min-width: 80px;
+    border: none;
+    background-color: rgb(38, 18, 155);
+    color:white;
+    cursor: pointer;
+    outline: none;
+  }
+  .navbar__button:hover{
+    background-color: rgb(54, 33, 190);    
+  }
+  html {
+    font-size: 13px;
+  }
+  .login-wrap {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+  .login-form {
+    max-width: 400px;
+    padding: 20px;
+    background-color: white;
+    position: relative;
+    padding-top: 40px;
+  }
+  .login-form-forgot {
+    float: right;
+  }
+  .login-form-button {
+    width: 100%;
+  }
+  .close-button {
+    text-align: right;
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  .question {
+    padding: 10px;
+    background-color: rgb(209, 209, 209);
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgb(209, 209, 209);
+    margin:10px;
+  }
+  .question-wrapper {
+    width: 33%;
+  }
+  .question-list {
+    padding-bottom: 40px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .question-list-title {
+    padding:10px; 
+    padding-top:20px;
+    font-size: 20px;
+  }
+  .question-list-wrapper {
+    max-width: 1140px;
+    margin: auto;
+  }
+  .question-extra-info {
+    display: flex;
+  }
+  .question-user {
+    width: 100%;
+  }
+  .question-count{
+    min-width: 70px;
+    text-align: center;
+  }
+  .question-title {
+    height: 100px;
+  }
+  .main {
+    background-color: rgb(241, 241, 241);
+  }
+  .line {
+    width: 100%;
+    height: 1px;
+    background-color: rgb(241, 241, 241);
+    margin: 10px 0;
+  }
+  .footer ul{
+    display:inline;
+  }
