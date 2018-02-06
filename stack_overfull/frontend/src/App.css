@@ -64,25 +64,34 @@ html {
   padding: 5px 10px;
   cursor: pointer;
 }
-.question {
+.question, .questionEdit {
   padding: 10px;
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 0 5px rgb(209, 209, 209);
   margin:10px;
 }
-.question-wrapper {
+.question-wrapper, .questionEdit-wrapper {
   width: 33%;
+}
+.questionEdit-wrapper {
+  float: none;
+  margin: 0 auto;
+  min-width: 70%;
 }
 .question-list {
   padding-bottom: 40px;
   display: flex;
   flex-wrap: wrap;
 }
-.question-list-title {
-  padding:10px; 
+.question-list-title, .questionEdit-list-title {
+  padding:20px; 
   padding-top:20px;
   font-size: 20px;
+  margin-right: 1%;
+}
+.questionEdit-list-title {
+  text-align: center;
 }
 .question-list-wrapper {
   max-width: 1140px;
@@ -91,7 +100,7 @@ html {
 .question-extra-info {
   display: flex;
 }
-.question-user {
+.question-user{
   width: 100%;
 }
 .question-count{
@@ -109,4 +118,12 @@ html {
   height: 1px;
   background-color: rgb(241, 241, 241);
   margin: 10px 0;
+}
+.questionTitle {
+  width: 100%;
+  min-height: 90%;
+  margin-top: 2%;
+}
+.questionEdit-button {
+  margin-right: 1.5%;
 }
