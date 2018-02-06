@@ -140,6 +140,9 @@ class UserRegisterView(TemplateView):
             username = raw_data.get('username')
             password = raw_data.get('password')
 
+            if User.objects.filter(username=username).exists():
+                return JsonResponse({'error': 'Username already exists'})
+
             User.objects.create_user(username=username, password=password)
             user = authenticate(request, username=username, password=password)
             login(request, user)
