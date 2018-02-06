@@ -110,6 +110,24 @@
     background-color: rgb(241, 241, 241);
     margin: 10px 0;
   }
-  .footer ul{
-    display:inline;
+  .footer{
+    background-color: rgb(38, 18, 155);
+    -webkit-text-fill-color: antiquewhite;
+    padding: 15px;
+    display: flex;
+    flex-wrap: wrap;
   }
+  .listfooter{
+
+    width: 250px;
+
+  }
+  .footer ul{
+
+    list-style: none;
+  }
+  .footer p{
+    text-orientation: sideways-right;
+  }
+
+ 
