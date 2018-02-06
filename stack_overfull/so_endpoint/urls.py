@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.generic import TemplateView
 from so_endpoint.views import QuestionView, AnswerView
+from so_endpoint.views import UserRegisterView, UserLoginView, UserLogoutView, UserMeView, UserView
 
 urlpatterns = [
     re_path(r'question/$', QuestionView.as_view()),
@@ -25,5 +26,11 @@ urlpatterns = [
     re_path(r'question/(?:(?P<id>\d+)/)$', QuestionView.as_view()),
     re_path(r'answer/$', AnswerView.as_view()),
     re_path(r'answer/q_id=(?P<q_id>\d+)/(?:order=(?P<order>\D+)/)?(?:limit=(?P<limit>\d+)/)?$', AnswerView.as_view()),
-    re_path(r'answer/q_id=(?P<q_id>\d+)/(?:limit=(?P<limit>\d+)/)?(?:order=(?P<order>\D+)/)?$', AnswerView.as_view())
+    re_path(r'answer/q_id=(?P<q_id>\d+)/(?:limit=(?P<limit>\d+)/)?(?:order=(?P<order>\D+)/)?$', AnswerView.as_view()),
+
+    re_path(r'user/register/$', UserRegisterView.as_view()),
+    re_path(r'user/login/$', UserLoginView.as_view()),
+    re_path(r'user/logout/$', UserLogoutView.as_view()),
+    re_path(r'user/me/$', UserMeView.as_view()),
+    re_path(r'user/$', UserView.as_view()),
 ]
