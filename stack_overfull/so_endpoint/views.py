@@ -16,7 +16,6 @@ class QuestionView(TemplateView):
         return super(QuestionView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request):
-
         try:
             question = request.POST['question']
             if len(question) <= 1:
