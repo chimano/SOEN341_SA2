@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 {"status":"done","chunks":{"main":[{"name":"main-e36c190f7d16969697df.js","path":"/home/chirac/Coding/SOEN341_SA2/stack_overfull/frontend/src/bundles/main-e36c190f7d16969697df.js"},{"name":"main.css","path":"/home/chirac/Coding/SOEN341_SA2/stack_overfull/frontend/src/bundles/main.css"}]}}
+=======
+{"status":"done","chunks":{"main":[{"name":"main-44fddf924ba9b79bdc18.js","path":"/home/chirac/Coding/SOEN341_SA2/stack_overfull/frontend/src/bundles/main-44fddf924ba9b79bdc18.js"},{"name":"main.css","path":"/home/chirac/Coding/SOEN341_SA2/stack_overfull/frontend/src/bundles/main.css"}]}}
+>>>>>>> c274a888efced85c48d5e0c96df83f5a1eb153ab
