@@ -1,6 +1,22 @@
 import React, {Component} from 'react';
+import { QuestionList, handleAskQuestionButton } from '../components/questionList.component'
 
 export class Question extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.handleReplyButton = this.handleReplyButton.bind(this);
+    }
+
+    state = {
+        title: "TOP QUESTIONS",
+        showTopQuestions: true
+    }
+
+    handleReplyButton(boxId) {
+        console.log("ID IS : " + boxId);
+    }
 
     render() {
 
@@ -8,6 +24,7 @@ export class Question extends Component {
         var numVotes = this.props.numVotes;
         var numAnswers = this.props.numAnswers;
         var user = this.props.user;
+        var boxId = this.props.boxId;
 
         return(
             <div className="question-wrapper">
@@ -26,6 +43,8 @@ export class Question extends Component {
                     </div>
                     <div className="line"></div>
                     <div className="question-title">{questionTitle}</div>
+                    {/* <button className="replyButton" onClick={() => this.handleReplyButton(boxId)} value={this.boxId}>Reply</button> */}
+                    <button className="replyButton" onClick={this.props.onClick}>Reply</button>
                 </div>
             </div>
         );
