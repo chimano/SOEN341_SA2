@@ -1,0 +1,16 @@
+.question-list {
+    padding-bottom: 40px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.question-list-title {
+    padding: 10px;
+    padding-top: 20px;
+    font-size: 20px;
+}
+
+.question-list-wrapper {
+    max-width: 1140px;
+    margin: auto;
+}
