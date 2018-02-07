@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
-import './QuestionEdit.css';
+import React from 'react';
+import './index.css';
 
-export class QuestionEdit extends Component {
+export class QuestionEdit extends React.Component {
 
     constructor(props) {
         super(props);
@@ -34,9 +34,9 @@ export class QuestionEdit extends Component {
                 <button
                     className="questionEdit-button"
                     onClick={this.handleSubmitQuestionButton}
-                    style={{
-                    color: '#ffffff'
-                }}>Submit question</button>
+                    style={{color: '#ffffff'}}>
+                    Submit question
+                </button>
             </div>
         );
     }

@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {Form, Icon, Input, Button, Checkbox} from 'antd';
-import './SignUpForm.css';
+import './index.css';
 
 const FormItem = Form.Item;
 
-class SignUpForm extends Component {
+class SignUpForm extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();

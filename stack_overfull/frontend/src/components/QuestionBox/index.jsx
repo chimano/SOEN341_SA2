@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
-import './QuestionBox.css';
+import React from 'react';
+import './index.css';
 
-export class QuestionBox extends Component {
+export class QuestionBox extends React.Component {
 
     render() {
 

@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {NavigationBar, SignUpFormWindow, SignInFormWindow, QuestionList, Footer} from '../../components';
-import "./HomePage.css";
+import "./index.css";
 import axios from 'axios';
 
-export class HomePage extends Component {
+export class HomePage extends React.Component {
 
     constructor(props) {
         super(props)

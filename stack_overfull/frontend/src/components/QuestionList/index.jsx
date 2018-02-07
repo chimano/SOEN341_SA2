@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {QuestionBox} from '../questionBox/QuestionBox';
-import './QuestionList.css';
+import React from 'react';
+import {QuestionBox} from '../QuestionBox';
+import './index.css';
 
 var questionListSample = [
     {
@@ -79,7 +79,7 @@ var questionListSample = [
     }
 ]
 
-export class QuestionList extends Component {
+export class QuestionList extends React.Component {
 
     render() {
 

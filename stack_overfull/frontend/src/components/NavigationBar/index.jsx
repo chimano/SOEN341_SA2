@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import {SearchBar} from '../searchBar/SearchBar';
-import './NavigationBar.css';
+import React from 'react';
+import {SearchBar} from '../SearchBar';
+import './index.css';
 
-export class NavigationBar extends Component {
+export class NavigationBar extends React.Component {
 
     render() {
 

@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React from 'react';
 import axios from 'axios';
-import './Footer.css';
+import './index.css';
 import qs from 'qs';
 
-export class Footer extends Component {
+export class Footer extends React.Component {
 
     createQuestion() {
         axios
