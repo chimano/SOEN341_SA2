@@ -1,0 +1,35 @@
+.question {
+    padding: 10px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgb(209, 209, 209);
+    margin: 10px;
+}
+
+.question-wrapper {
+    width: 33%;
+}
+
+.question-user {
+    width: 100%;
+}
+
+.question-count {
+    min-width: 70px;
+    text-align: center;
+}
+
+.line {
+    width: 100%;
+    height: 1px;
+    background-color: rgb(241, 241, 241);
+    margin: 10px 0;
+}
+
+.question-title {
+    height: 100px;
+}
+
+.question-extra-info {
+    display: flex;
+}
