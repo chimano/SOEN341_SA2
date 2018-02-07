@@ -10,10 +10,6 @@ ReactDOM.render(
     <BrowserRouter>
         <App />
     </BrowserRouter>
-<<<<<<< HEAD
-    , document.getElementById('foot')
-=======
     , document.getElementById('root')
->>>>>>> c274a888efced85c48d5e0c96df83f5a1eb153ab
 );
 registerServiceWorker();
