@@ -10,6 +10,6 @@ ReactDOM.render(
     <BrowserRouter>
         <App />
     </BrowserRouter>
-    , document.getElementById('container')
+    , document.getElementById('foot')
 );
 registerServiceWorker();

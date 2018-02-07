@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {NavigationBar, SignUpFormWindow, SignInFormWindow, QuestionList, Footer} from '../components';
 import "./home.page.css";
+import axios from'axios';
 
 export class HomePage extends Component {
 
