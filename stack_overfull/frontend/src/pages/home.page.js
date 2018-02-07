@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {NavigationBar, SignUpFormWindow, SignInFormWindow, QuestionList} from '../components';
-import axios from 'axios';
+import {NavigationBar, SignUpFormWindow, SignInFormWindow, QuestionList, Footer} from '../components';
+import "./home.page.css";
+import axios from'axios';
 
 export class HomePage extends Component {
 
@@ -17,6 +18,16 @@ export class HomePage extends Component {
         this.handle_close_button = this.handle_close_button.bind(this)
 
         this.getQuestionList()
+    }
+
+    getQuestionList() {
+        axios.get('/api/question/order=asc/limit=10/')
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
 
     handle_signup_button() {
@@ -38,16 +49,6 @@ export class HomePage extends Component {
             open_signin: false,
             open_signup: false            
         })
-    }
-
-    getQuestionList() {
-        axios.get('/api/question/order=asc/limit=10/')
-        .then(function (response) {
-          console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
     }
 
     render() {           
@@ -77,6 +78,9 @@ export class HomePage extends Component {
                 {login_box}
                 <div className="main">
                     <QuestionList />
+                </div>
+                <div className="footer-area">
+                    <Footer/>
                 </div>
             </div>
         );
