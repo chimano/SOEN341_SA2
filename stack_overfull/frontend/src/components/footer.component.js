@@ -40,6 +40,7 @@ export class Footer extends Component {
             
                 <p>© Stack Overfull 2018</p>
                 </div>
+                
         );
 
     }
