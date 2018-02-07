@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
+import './QuestionBox.css';
 
-export class Question extends Component {
+export class QuestionBox extends Component {
 
     render() {
 
@@ -9,7 +10,7 @@ export class Question extends Component {
         var numAnswers = this.props.numAnswers;
         var user = this.props.user;
 
-        return(
+        return (
             <div className="question-wrapper">
                 <div className="question">
                     <div className="question-extra-info">

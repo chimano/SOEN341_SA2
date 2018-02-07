@@ -36,7 +36,7 @@ module.exports = {
                 loader: 'babel-loader', 
                 query: {
                     //specify that we will be dealing with React code
-                    presets: ['es2016','stage-2','react'] 
+                    presets: ['es2015','stage-2','react'] 
                 }
             }
         ],

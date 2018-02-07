@@ -1,22 +1,26 @@
-import React, { Component } from 'react';
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
-const FormItem = Form.Item;
+import React, {Component} from 'react';
+import {Form, Icon, Input, Button, Checkbox} from 'antd';
+import './SignUpForm.css';
 
+const FormItem = Form.Item;
 
 class SignUpForm extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log('Received values of form: ', values);
-      }
-    });
+    this
+      .props
+      .form
+      .validateFields((err, values) => {
+        if (!err) {
+          console.log('Received values of form: ', values);
+        }
+      });
   }
 
   render() {
 
-    const { getFieldDecorator } = this.props.form;
+    const {getFieldDecorator} = this.props.form;
     const handle_close_button = this.props.handle_close_button;
 
     return (
@@ -26,22 +30,38 @@ class SignUpForm extends Component {
         <span>Register</span>
         <FormItem>
           {getFieldDecorator('userName', {
-            rules: [{ required: true, message: 'Please input your username!' }],
+            rules: [
+              {
+                required: true,
+                message: 'Please input your username!'
+              }
+            ]
           })(
-            <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" required/>
+            <Input
+              prefix={< Icon type = "user" style = {{ color: 'rgba(0,0,0,.25)' }}/>}
+              placeholder="Username"
+              required/>
           )}
         </FormItem>
         <FormItem>
           {getFieldDecorator('password', {
-            rules: [{ required: true, message: 'Please input your Password!' }],
+            rules: [
+              {
+                required: true,
+                message: 'Please input your Password!'
+              }
+            ]
           })(
-            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
+            <Input
+              prefix={< Icon type = "lock" style = {{ color: 'rgba(0,0,0,.25)' }}/>}
+              type="password"
+              placeholder="Password"/>
           )}
         </FormItem>
         <FormItem>
           {getFieldDecorator('remember', {
             valuePropName: 'checked',
-            initialValue: true,
+            initialValue: true
           })(
             <Checkbox>Remember me</Checkbox>
           )}
