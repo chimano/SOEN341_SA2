@@ -13,6 +13,9 @@ export class HomePage extends React.Component {
             open_signup: false
         }
 
+        this.handle_questions_button = this
+            .handle_questions_button
+            .bind(this)
         this.handle_signup_button = this
             .handle_signup_button
             .bind(this)
@@ -35,6 +38,10 @@ export class HomePage extends React.Component {
             .catch(function (error) {
                 console.log(error);
             });
+    }
+
+    handle_questions_button() {
+      this.setState()
     }
 
     handle_signup_button() {
@@ -67,6 +74,7 @@ export class HomePage extends React.Component {
         return (
             <div>
                 <NavigationBar
+                    handle_questions_button={this.handle_questions_button}
                     handle_signup_button={this.handle_signup_button}
                     handle_signin_button={this.handle_signin_button}/> {login_box}
                 <div className="main">
