@@ -27,6 +27,7 @@
   color: white;
   cursor: pointer;
   outline: none;
+  height: 40px;
 }
 
 .navbar__button:hover {
