@@ -3,6 +3,7 @@ import {Form, Icon, Input, Button, Checkbox} from 'antd';
 import './index.css';
 import axios from 'axios';
 
+
 const FormItem = Form.Item;
 
 class SignInForm extends React.Component {
@@ -74,6 +75,8 @@ class SignInForm extends React.Component {
           <Button type="primary" htmlType="submit" className="login-form-button">
             Sign In
           </Button>
+          Or
+          <a>register now!</a>
         </FormItem>
       </Form>
     );
