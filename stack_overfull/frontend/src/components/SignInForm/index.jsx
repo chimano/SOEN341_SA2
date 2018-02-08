@@ -12,35 +12,43 @@ class SignInForm extends React.Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
-        this.doUserRegisterRequest(values.userName, values.password);
+        this.doUserLoginRequest(values.userName, values.password);
       }
     });
   }
 
-  doUserRegisterRequest(username, password) {
-    axios.post('api/user/register/', {
+  doUserLoginRequest(username, password) {
+    axios.post('api/user/login/', {
         'username': username,
         'password': password,
       })
-    .then(response => this.onUserRegisterResponse(response))
-    .catch(error => this.onUserRegisterResponse(error.response));
+    .then(response => this.onUserLoginResponse(response))
+    .catch(error => this.onUserLoginResponse(error.response));
   }
 
-  onUserRegisterResponse(response) {
+  onUserLoginResponse(response) {
+    const {handle_login, handle_close_button} = this.props;
     console.log('Received response from the server', response.request.responseURL, response);
-    console.log('Received user info', response.data);
+    console.log('User info', response.data);
+    if(response.data.error){
+      alert("Wrong username or password")
+    }else{
+      handle_login(response.data.username);
+      handle_close_button()      
+    }
   }
+  
 
   render() {
 
     const {getFieldDecorator} = this.props.form;
-    const handle_close_button = this.props.handle_close_button;
+    const {handle_close_button} = this.props;
 
     return (
 
       <Form onSubmit={this.handleSubmit} className="login-form">
         <div className="close-button" onClick={() => handle_close_button()}>&#10005;</div>
-        <span>Register</span>
+        <h3>Sign In</h3>
         <FormItem>
           {getFieldDecorator('userName', {
             rules: [{ required: true, message: 'Please input your username!' }],
@@ -64,7 +72,7 @@ class SignInForm extends React.Component {
           )}
           <a className="login-form-forgot" href="">Forgot password</a>
           <Button type="primary" htmlType="submit" className="login-form-button">
-            Sign Up
+            Sign In
           </Button>
         </FormItem>
       </Form>

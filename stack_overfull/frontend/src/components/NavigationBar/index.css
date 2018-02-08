@@ -1,35 +1,46 @@
 .navbar {
-    margin: auto;
-    max-width: 1140px;
-    display: flex;
-    width: 100%;
+  margin: auto;
+  max-width: 1140px;
+  display: flex;
+  width: 100%;
 }
 
 .navbar-wrapper {
-    background-color: rgb(38, 18, 155);
+  background-color: rgb(38, 18, 155);
 }
 
 .navbar__title {
-    min-width: 150px;
-    font-size: 18px;
-    color: white;
-    padding: 10px;
+  min-width: 150px;
+  font-size: 18px;
+  color: white;
+  padding: 10px;
 }
 
 .navbar__search {
-    width: 100%;
-    padding: 7px;
+  width: 100%;
+  padding: 7px;
 }
 
 .navbar__button {
-    min-width: 80px;
-    border: none;
-    background-color: rgb(38, 18, 155);
-    color: white;
-    cursor: pointer;
-    outline: none;
+  min-width: 80px;
+  border: none;
+  background-color: rgb(38, 18, 155);
+  color: white;
+  cursor: pointer;
+  outline: none;
 }
 
 .navbar__button:hover {
-    background-color: rgb(54, 33, 190);
+  background-color: rgb(54, 33, 190);
+}
+
+.navbar__auth {
+  display: flex;
+}
+
+.navbar__welcome {
+  color: white;
+  width: 200px;
+  text-align: center;
+  margin: auto;
 }
