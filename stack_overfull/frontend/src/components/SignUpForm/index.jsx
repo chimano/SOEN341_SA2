@@ -50,7 +50,7 @@ class SignUpForm extends React.Component {
   }
 
   onUserRegisterResponse(response) {
-    const { handle_close_button } = this.props;
+    const { handle_close_button, handle_login } = this.props;
     console.log(
       "Received response from the server",
       response.request.responseURL,
@@ -59,6 +59,7 @@ class SignUpForm extends React.Component {
     console.log("Received user info", response.data);
     if (!response.data.error) {
       handle_close_button();
+      handle_login(response.data.username);
     }
   }
 

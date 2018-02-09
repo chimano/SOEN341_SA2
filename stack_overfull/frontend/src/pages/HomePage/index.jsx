@@ -48,6 +48,9 @@ export class HomePage extends React.Component {
   handle_login = username => {
     this.setState({ logged_in: true, username: username });
   };
+  handle_logout = () => {
+    this.setState({ logged_in: false, username: "" });
+  };
 
   render() {
     console.log(this.state);
@@ -65,7 +68,10 @@ export class HomePage extends React.Component {
     } else if (this.state.open_signup === true) {
       login_box = (
         <div className="login-wrap">
-          <SignUpFormWindow handle_close_button={this.handle_close_button} />
+          <SignUpFormWindow 
+            handle_close_button={this.handle_close_button}
+            handle_login={this.handle_login}            
+          />
         </div>
       );
     } else {
@@ -77,6 +83,7 @@ export class HomePage extends React.Component {
         <NavigationBar
           handle_signup_button={this.handle_signup_button}
           handle_signin_button={this.handle_signin_button}
+          handle_logout={this.handle_logout}
           logged_in={this.state.logged_in}
           username={this.state.username}
         />

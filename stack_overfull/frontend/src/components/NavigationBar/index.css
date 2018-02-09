@@ -39,7 +39,13 @@
 
 .navbar__welcome {
   color: white;
-  width: 200px;
   text-align: center;
   margin: auto;
+}
+
+.navbar__logged-in {
+  min-width: 210px;
+  color: white;
+  text-align: center;
+  display: flex;
 }
