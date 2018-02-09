@@ -7,9 +7,9 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 module.exports = {
   //the base directory (absolute path) for resolving the entry option
   context: __dirname,
-  //the entry point we created earlier. Note that './' means
-  //your current directory. You don't have to specify the extension  now,
-  //because you will specify extensions later in the `resolve` section
+  // the entry point we created earlier. Note that './' means your current
+  // directory. You don't have to specify the extension  now, because you will
+  // specify extensions later in the `resolve` section
   entry: "./src/index.js",
 
   output: {
@@ -23,15 +23,11 @@ module.exports = {
     rules: [
       {
         test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: "style-loader",
-          use: "css-loader"
-        })
-      },
-      {
+        use: ExtractTextPlugin.extract({fallback: "style-loader", use: "css-loader"})
+      }, {
         test: /\.jsx?$/,
-        //we definitely don't want babel to transpile all the files in
-        //node_modules. That would take a long time.
+        // we definitely don't want babel to transpile all the files in node_modules.
+        // That would take a long time.
         exclude: /node_modules/,
         //use the babel loader
         loader: "babel-loader",
@@ -43,9 +39,9 @@ module.exports = {
     ]
   },
   plugins: [
-    new ExtractTextPlugin({ filename: "[name].css" }),
+    new ExtractTextPlugin({filename: "[name].css"}),
     //tells webpack where to store data about your bundles.
-    new BundleTracker({ filename: "./webpack-stats.json" })
+    new BundleTracker({filename: "./webpack-stats.json"})
     //makes jQuery available in every module
   ],
 

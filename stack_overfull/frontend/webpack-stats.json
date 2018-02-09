@@ -1,1 +1,1 @@
-{"status":"done","chunks":{"main":[{"name":"main-88a38d108f789c253bfb.js","path":"/Users/lisun/Downloads/SOEN341_SA2/stack_overfull/frontend/src/bundles/main-88a38d108f789c253bfb.js"},{"name":"main.css","path":"/Users/lisun/Downloads/SOEN341_SA2/stack_overfull/frontend/src/bundles/main.css"}]}}
+{"status":"error","error":"ModuleBuildError","message":"Module build failed: SyntaxError: Unexpected token (19:0)\n\n  17 |       open_signin: false,\n  18 |       open_signup: false,\n> 19 | <<<<<<< HEAD\n     | ^\n  20 |       questionList: []\n  21 |     };\n  22 | \n"}
