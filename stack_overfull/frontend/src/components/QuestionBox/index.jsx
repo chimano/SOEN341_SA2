@@ -26,7 +26,13 @@ export class QuestionBox extends React.Component {
   getAnswerList = q_id => {
     var id = q_id;
     axios
-      .get("/api/answer/q_id=" + id + "/order=asc/limit=100/")
+      .get("/api/answer/",{
+        params: {
+            q_id: id,
+            order: 'asc',
+            limit: 100
+            }
+        })
       .then(response => {
         console.log(response);
         this.setState({

@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseServerError, JsonResponse
-from so_endpoint.serializers import QuestionSerializer
+from so_endpoint.serializers import QuestionSerializer, AnswerSerializer
 from so_endpoint.models import *
 import json
 
@@ -21,18 +21,28 @@ class QuestionView(TemplateView):
 
     def post(self, request):
         try:
-            question = request.POST['question']
+            json_data = json.loads(request.body)
+            question = json_data['question']
+
+            try:
+                user = User.objects.get(username=request.user)
+            except ObjectDoesNotExist:
+                user = None
+
             if len(question) <= 1:
                 return HttpResponseServerError()
-            q = Question(question_text=question)
+            q = Question(question_text=question, user_id=user)
             q.save()
             return JsonResponse({'id': q.id})
 
         except KeyError:
             return HttpResponseServerError()
 
-    def get(self, request, id=None, order=None, limit=None):
-        if id is None:
+    def get(self, request):
+        limit = request.GET.get('limit', 10)
+        q_id = request.GET.get('id', None)
+        order = request.GET.get('order', 'desc')
+        if q_id is None:
 
             limit = 10 if limit is None else int(limit)
             order = "desc" if order is None else order
@@ -42,8 +52,9 @@ class QuestionView(TemplateView):
             else:
                 modifier = ''
 
-            questions = Question.objects.all().order_by(modifier + 'date_created')[:limit].values()
-            return JsonResponse({'question_list':list(questions)})
+            questions = Question.objects.all().order_by(modifier + 'date_created')[:limit]
+            serialized = QuestionSerializer(questions, many=True).data
+            return JsonResponse({'question_list':serialized})
         else:
             try:
                 question = Question.objects.get(id=id)
@@ -61,8 +72,14 @@ class AnswerView(TemplateView):
     def post(self, request, id=None):
 
         try:
-            answer = request.POST['answer']
-            q_id = int(request.POST['q_id'])
+            json_data = json.loads(request.body)
+            answer = json_data['answer']
+            q_id = int(json_data['q_id'])
+
+            try:
+                user = User.objects.get(username=request.user)
+            except ObjectDoesNotExist:
+                user = None
 
             try:
                 q = Question.objects.get(id=q_id)
@@ -71,7 +88,7 @@ class AnswerView(TemplateView):
 
             if len(answer) <= 1:
                 return HttpResponseServerError()
-            a = Answer(question_id=q, answer_text=answer)
+            a = Answer(question_id=q, answer_text=answer, user_id=user)
             a.save()
 
             return JsonResponse({'id': a.id})
@@ -79,11 +96,12 @@ class AnswerView(TemplateView):
         except KeyError:
             return HttpResponseServerError()
 
-    def get(self, request, q_id=None, order=None, limit=None):
+    def get(self, request):
 
-        limit = 10 if limit is None else int(limit)
-        order = "desc" if order is None else order
-
+        limit = int(request.GET.get('limit', 10))
+        order = request.GET.get('order', 'desc')
+        q_id = request.GET.get('q_id', None)
+        
         if order == "desc":
             modifier = '-'
         else:
@@ -93,8 +111,9 @@ class AnswerView(TemplateView):
         except ObjectDoesNotExist:
             return HttpResponseServerError()
 
-        answers = Answer.objects.filter(question_id=q).order_by(modifier + 'date_created')[:limit].values()
-        return JsonResponse({'answer_list':list(answers)})
+        answers = Answer.objects.filter(question_id=q_id).order_by(modifier + 'date_created')[:limit]
+        serialized = AnswerSerializer(answers, many=True).data
+        return JsonResponse({'answer_list':serialized})
 
 
 # Return the list of users in the database
