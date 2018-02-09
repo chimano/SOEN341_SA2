@@ -33,3 +33,6 @@
 .question-extra-info {
     display: flex;
 }
+.questionEdit-list-title {
+    text-align: center;
+  }

@@ -1,0 +1,35 @@
+.question, .questionEdit {
+    padding: 10px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgb(209, 209, 209);
+    margin:10px;
+  }
+  .question-wrapper, .questionEdit-wrapper {
+    width: 33%;
+  }
+  .questionEdit-wrapper {
+    float: none;
+    margin: 0 auto;
+    min-width: 70%;
+  }
+  .questionEdit-list-title {
+    text-align: center;
+  }
+  .question-extra-info {
+    display: flex;
+  }
+  .questionTitle {
+    width: 100%;
+    min-height: 90%;
+    margin-top: 2%;
+  }
+  .questionEdit-button {
+    margin-right: 1.5%;
+  }
+  .question-list-title, .questionEdit-list-title {
+    padding:20px; 
+    padding-top:20px;
+    font-size: 20px;
+    margin-right: 1%;
+  }

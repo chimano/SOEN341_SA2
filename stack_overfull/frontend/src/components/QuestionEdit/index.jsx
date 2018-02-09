@@ -1,43 +1,48 @@
-import React from 'react';
-import './index.css';
+import React from "react";
+import "./index.css";
 
 export class QuestionEdit extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            question: ''
+        };
+      }
 
-        this.handleSubmitQuestionButton = this
-            .handleSubmitQuestionButton
-            .bind(this)
-    }
+  handleSubmitQuestionButton = () => {
+    const {createQuestion, handleShowTopQuestions} = this.props;
+    createQuestion(this.state.question);
+    handleShowTopQuestions(true);
+  }
 
-    handleSubmitQuestionButton() {
-        window
-            .location
-            .reload();
-    }
+  handleChange = (event) => {
+    this.setState({question: event.target.value});
+  }
 
-    render() {
+  render() {
+    const { user } = this.props;
 
-        var user = this.props.user;
-
-        return (
-            <div className="questionEdit-wrapper">
-                <div className="questionEdit">
-                    <div className="question-extra-info">
-                        <a className="question-user">{user}</a>
-                    </div>
-                    <div className="line"></div>
-                    <div className="questionEdit-title">Question :
-                        <textarea className="questionTitle"/></div>
-                </div>
-                <button
-                    className="questionEdit-button"
-                    onClick={this.handleSubmitQuestionButton}
-                    style={{color: '#ffffff'}}>
-                    Submit question
-                </button>
-            </div>
-        );
-    }
+    return (
+      <div className="questionEdit-wrapper">
+        <div className="questionEdit">
+          <div className="question-extra-info">
+            <a className="question-user">{user}</a>
+          </div>
+          <div className="line" />
+          <div className="questionEdit-title">
+            Question :
+            <textarea className="questionTitle" onChange={(e) => this.handleChange(e)}/>
+          </div>
+        </div>
+        <button
+          className="questionEdit-button"
+          onClick={() => this.handleSubmitQuestionButton()}
+          style={{ color: "#ffffff" }}
+        >
+          Submit question
+        </button>
+      </div>
+    );
+  }
 }

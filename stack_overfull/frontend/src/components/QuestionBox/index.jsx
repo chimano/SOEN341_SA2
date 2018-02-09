@@ -3,12 +3,12 @@ import './index.css';
 
 export class QuestionBox extends React.Component {
 
-    render() {
+    handleReplyButton(boxId) {
+        console.log("ID IS : " + boxId);
+    }
 
-        var questionTitle = this.props.questionTitle;
-        var numVotes = this.props.numVotes;
-        var numAnswers = this.props.numAnswers;
-        var user = this.props.user;
+    render() {
+        const {date_created,question_text,user,boxId} = this.props;
 
         return (
             <div className="question-wrapper">
@@ -16,17 +16,14 @@ export class QuestionBox extends React.Component {
                     <div className="question-extra-info">
                         <a className="question-user">{user}</a>
                         <div className="question-count">
-                            <div>{numVotes}</div>
+                            <div>{date_created}</div>
                             <div>Votes</div>
                         </div>
-                        <div className="question-count">
-                            <div>{numAnswers}</div>
-                            <div>Answers</div>
-                        </div>
-                        <div></div>
                     </div>
                     <div className="line"></div>
-                    <div className="question-title">{questionTitle}</div>
+                    <div className="question-title">{question_text}</div>
+                    {/* <button className="replyButton" onClick={() => this.handleReplyButton(boxId)} value={this.boxId}>Reply</button> */}
+                    <button className="replyButton" onClick={this.props.onClick}>Reply</button>
                 </div>
             </div>
         );
