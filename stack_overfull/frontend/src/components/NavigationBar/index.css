@@ -4,7 +4,6 @@
   display: flex;
   width: 100%;
 }
-
 .navbar-wrapper {
   background-color: rgb(38, 18, 155);
 }
@@ -29,6 +28,7 @@
   color: white;
   cursor: pointer;
   outline: none;
+  height: 40px;
 }
 
 .navbar__button:hover {
@@ -49,4 +49,3 @@
   text-align: center;
   display: flex;
 }
-
