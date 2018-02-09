@@ -4,13 +4,8 @@ import "./index.css";
 
 export class NavigationBar extends React.Component {
   render() {
-    const {
-      handle_signup_button,
-      handle_signin_button,
-      logged_in,
-      username,
-      handle_logout
-    } = this.props;
+    const { handle_signup_button, handle_signin_button, handle_career_button, handle_questions_button, logged_in, username } = this.props;
+
 
     return (
       <div className="navbar-wrapper">
@@ -45,6 +40,22 @@ export class NavigationBar extends React.Component {
               </button>
             </div>
           )}
+        </div>
+        <div className="navbar">
+          <div className="navbar__auth">
+              <button
+                className="navbar__button"
+                // onClick={() => handle_career_button()}
+              >
+                Careers
+              </button>
+              <button
+                className="navbar__button"
+                // onClick={() => handle_questions_button()}
+              >
+                Questions
+              </button>
+            </div>
         </div>
       </div>
     );
