@@ -7,11 +7,12 @@ export class QuestionBox extends React.Component {
         super(props);
         this.state = {
             answer: ''
+
         };
       }
 
     handleReplyButton = (q_id) => {
-        console.log("ID IS : " + q_id);
+        // console.log("ID IS : " + q_id);
         const {answerQuestion} = this.props;
         answerQuestion(this.state.answer, q_id);
     }
@@ -22,7 +23,6 @@ export class QuestionBox extends React.Component {
 
     render() {
         const {date_created,question_text,user,q_id} = this.props;
-        console.log("KEY IS " + q_id);
 
         return (
             <div className="question-wrapper">
@@ -39,7 +39,7 @@ export class QuestionBox extends React.Component {
                     <textarea className="answer" onChange={(e) => this.handleChange(e)}/>
                     {/* <div className="question-title">{question_text}</div> */}
                     {/* <button className="replyButton" onClick={() => this.handleReplyButton(boxId)} value={this.boxId}>Reply</button> */}
-                    <button className="replyButton" onClick={() => this.handleReplyButton()}>Reply</button>
+                    <button className="replyButton" onClick={() => this.handleReplyButton(q_id)}>Reply</button>
                 </div>
             </div>
         );
