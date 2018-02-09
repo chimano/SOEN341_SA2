@@ -12,7 +12,7 @@ export class QuestionBox extends React.Component {
       }
 
     handleReplyButton = (q_id) => {
-        // console.log("ID IS : " + q_id);
+        console.log("ID IS : " + q_id);
         const {answerQuestion} = this.props;
         answerQuestion(this.state.answer, q_id);
     }

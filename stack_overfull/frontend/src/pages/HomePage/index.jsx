@@ -29,7 +29,7 @@ export class HomePage extends React.Component {
 
   getQuestionList = () => {
     axios
-      .get("/api/question/order=desc/limit=10/")
+      .get("/api/question/order=asc/limit=10/")
       .then(response => {
         console.log(response);
         this.setState({
@@ -53,8 +53,9 @@ export class HomePage extends React.Component {
   }
 
   answerQuestion(answer, q_id) {
+    var parsedQ_id = parseInt(q_id)+1;
     axios
-      .post("/api/answer/", qs.stringify({ answer: answer}), qs.stringify({ q_id: q_id}))
+      .post("/api/answer/", qs.stringify({ answer: answer,q_id: parsedQ_id}))
       .then(function(response) {
         console.log(response);
       })
