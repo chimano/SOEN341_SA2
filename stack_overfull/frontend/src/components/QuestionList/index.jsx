@@ -12,6 +12,7 @@ export class QuestionList extends React.Component {
       username,
       questionList,
       createQuestion,
+      answerQuestion,
       date_created,
       question_text,
       handleShowTopQuestions
@@ -21,11 +22,12 @@ export class QuestionList extends React.Component {
     if (showTopQuestions === true) {
       page = (
         <div className="question-list">
-          {questionList.map((x, key) => (
+          {questionList.map((x, q_id) => (
             <QuestionBox
-              key={key}
+              q_id={q_id}
               date_created={x.date_created}
               question_text={x.question_text}
+              answerQuestion={answerQuestion}
             />
           ))}
         </div>
