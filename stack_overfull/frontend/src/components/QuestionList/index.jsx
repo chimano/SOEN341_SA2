@@ -11,7 +11,10 @@ export class QuestionList extends React.Component {
       questionList,
       createQuestion,
       showCreateQuestionBox,
+      question_text,
       handleShowTopQuestions,
+      date_created,
+      answerQuestion,
       closeCreateQuestionBox
     } = this.props;
 
@@ -45,6 +48,8 @@ export class QuestionList extends React.Component {
               key={key}
               date_created={x.date_created}
               question_text={x.question_text}
+              q_id={x.id}
+              answerQuestion={answerQuestion}
             />
           ))}
         </div>

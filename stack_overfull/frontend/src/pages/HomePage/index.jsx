@@ -56,6 +56,17 @@ export class HomePage extends React.Component {
     )
   }
 
+  answerQuestion(answer, q_id) {
+    axios
+      .post("/api/answer/", qs.stringify({ answer: answer}), { q_id: q_id})
+      .then(function(response) {
+        console.log(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  }
+
   handle_signup_button = () => {
     this.setState({ open_signup: true, open_signin: false });
   };
@@ -139,6 +150,7 @@ export class HomePage extends React.Component {
             username={this.state.username}
             questionList={this.state.questionList}
             createQuestion={this.createQuestion}
+            answerQuestion={this.answerQuestion}
             handleShowTopQuestions={this.handleShowTopQuestions}
             showCreateQuestionBox={this.state.showCreateQuestionBox}
             closeCreateQuestionBox={this.closeCreateQuestionBox}
