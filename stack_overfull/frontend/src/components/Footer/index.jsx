@@ -1,17 +1,18 @@
 import React from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import "./index.css";
 import qs from "qs";
+import {Icon} from 'antd';
 
 export class Footer extends React.Component {
   createQuestion() {
     axios
-      .post("/api/question/", qs.stringify({ question: "what is your name?" }))
-      .then(function(response) {
+      .post("/api/question/", qs.stringify({question: "what is your name?"}))
+      .then(function (response) {
         console.log(response);
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       });
     this.forceUpdate();
@@ -24,10 +25,13 @@ export class Footer extends React.Component {
           <ul>
             <li>
               <Link
-                style={{ color: "white" }}
-                activestyle={{ color: "red" }}
-                to="/About"
-              >
+                style={{
+                color: "white"
+              }}
+                activestyle={{
+                color: "red"
+              }}
+                to="/About">
                 About Us
               </Link>
             </li>
@@ -60,9 +64,27 @@ export class Footer extends React.Component {
             <li>Contact Us</li>
           </ul>
         </div>
-
-        <p>© Stack Overfull 2018</p>
-        <button onClick={() => this.createQuestion()}> Click test</button>
+        <div className="icon">
+          <p>© Stack Overfull 2018</p>
+          <Icon
+            type="android"
+            style={{
+            fontSize: 20,
+            marginRight: 5
+          }}/>
+          <Icon
+            type="apple"
+            style={{
+            fontSize: 20,
+            marginRight: 5
+          }}/>
+          <Icon
+            type="windows"
+            style={{
+            fontSize: 20,
+            marginRight: 5
+          }}/>
+        </div>
       </div>
     );
   }

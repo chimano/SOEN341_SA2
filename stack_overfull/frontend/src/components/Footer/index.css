@@ -17,3 +17,7 @@
 .footer p {
   text-orientation: sideways-right;
 }
+.footer icon Icon{
+  font-size:25px;
+  margin: 5px;
+}
