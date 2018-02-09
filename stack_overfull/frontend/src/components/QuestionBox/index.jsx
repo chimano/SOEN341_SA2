@@ -9,7 +9,7 @@ export class QuestionBox extends React.Component {
     };
   }
   handleReplyButton = q_id => {
-    // console.log("ID IS : " + q_id);
+    console.log("ID IS : " + q_id);
     const { answerQuestion } = this.props;
     answerQuestion(this.state.answer, q_id);
   };
@@ -34,8 +34,11 @@ export class QuestionBox extends React.Component {
           </div>
           <div className="question-date">{date_created}</div>
           <div className="line" />
-          <div style={{display:'flex'}}>
-            <textarea className="questionBox__answer-text" onChange={e => this.handleChange(e)} />
+          <div style={{ display: "flex" }}>
+            <textarea
+              className="questionBox__answer-text"
+              onChange={e => this.handleChange(e)}
+            />
             {/* <div className="question-title">{question_text}</div> */}
             {/* <button className="replyButton" onClick={() => this.handleReplyButton(boxId)} value={this.boxId}>Reply</button> */}
             <button
