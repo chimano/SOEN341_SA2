@@ -6,6 +6,7 @@ export class NavigationBar extends React.Component {
   render() {
     const { handle_signup_button, handle_signin_button, handle_career_button, handle_questions_button, logged_in, username } = this.props;
 
+
     return (
       <div className="navbar-wrapper">
         <div className="navbar">
@@ -14,7 +15,15 @@ export class NavigationBar extends React.Component {
             <SearchBar />
           </div>
           {logged_in ? (
-            <div className="navbar__welcome">Welcome {username} !</div>
+            <div className="navbar__logged-in">
+              <div className="navbar__welcome">Welcome {username} !</div>
+              <button
+                className="navbar__button"
+                onClick={() => handle_logout()}
+              >
+                Log out
+              </button>
+            </div>
           ) : (
             <div className="navbar__auth">
               <button
