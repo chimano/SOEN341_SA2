@@ -4,6 +4,7 @@ import "./index.css";
 
 export class NavigationBar extends React.Component {
   render() {
+
     const { handle_signup_button, handle_signin_button, handle_career_button, handle_questions_button, logged_in, username } = this.props;
 
 
