@@ -29,7 +29,7 @@ export class HomePage extends React.Component {
 
   getQuestionList = () => {
     axios
-      .get("/api/question/order=asc/limit=10/")
+      .get("/api/question/order=desc/limit=10/")
       .then(response => {
         console.log(response);
         this.setState({
