@@ -26,10 +26,23 @@
     margin: 10px 0;
 }
 
-.question-title {
-    height: 100px;
+.question-text {
+    word-wrap: break-word;
+    overflow: auto;
 }
 
 .question-extra-info {
     display: flex;
+}
+
+.questionEdit-list-title {
+    text-align: center;
+}
+
+.questionBox__answer-text {
+    width: 100%;
+    margin-right: 10px;
+}
+.questionBox__reply-button {
+    color: white;
 }

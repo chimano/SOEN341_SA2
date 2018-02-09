@@ -1,1 +1,15 @@
-{"status":"done","chunks":{"main":[{"name":"main-dad64db581441965b57d.js","path":"/Users/lisun/Downloads/SOEN341_SA2/stack_overfull/frontend/src/bundles/main-dad64db581441965b57d.js"},{"name":"main.css","path":"/Users/lisun/Downloads/SOEN341_SA2/stack_overfull/frontend/src/bundles/main.css"}]}}
+{
+    "status": "done",
+    "chunks": {
+        "main": [
+            {
+                "name": "main-a61bfb076a83f9906ed5.js",
+                "path": "/Users/Wkgui/Documents/School/SOEN341/v7/gui2/stack_overfull/frontend/src/bundles/main-a61bfb076a83f9906ed5.js"
+            },
+            {
+                "name": "main.css",
+                "path": "/Users/Wkgui/Documents/School/SOEN341/v7/gui2/stack_overfull/frontend/src/bundles/main.css"
+            }
+        ]
+    }
+}

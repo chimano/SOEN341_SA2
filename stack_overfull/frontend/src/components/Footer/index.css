@@ -6,8 +6,13 @@
   flex-wrap: wrap;
 }
 
+<<<<<<< HEAD
 .listfooter {
   width: 250px;
+=======
+.footer__list {
+    width: 250px;
+>>>>>>> 35f8800046a3695423af9237e109d83f1c2794b7
 }
 
 .footer ul {
