@@ -1,52 +1,63 @@
-class AcceptRejectButton extends React.Component {
-    render() {
-      return (
-        <div className='popup'>
-          <div className='popup_inner'>
-            <h2>{this.props.text}</h2>
-          <button onClick={this.props.closePopup}>Confirm</button>
-          <button onClick={this.props.closePopup}>Cancel</button>
-          </div>
-        </div>
-      );
-    }
-  }
-  class App extends React.Component {
-    constructor() {
-      super();
-      this.state = {
-        showPopup: false
-      };
-    }
-    togglePopup() {
-      this.setState({
-        showPopup: !this.state.showPopup
+import swal from 'sweetalert';
+
+
+class AcceptRejectButton extends React.Component  {
+  handleReject() {
+    swal({
+      title: "Please confirm your decision",
+      text: "Are you sure that you wish to reject this answer?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+     })
+     .then((willDelete) => {
+    if (willDelete) {
+      swal("This answer has been rejected!", {
+        icon: "success",
       });
+    } else {
+      swal("Your changes have been discarded!");
     }
-    render() {
-      return (
-        <div className='app'>
-          <p><h1>This is the answer to your question!</h1></p>
-          <h3>Do you wish to accept or reject the above answer?</h3>
-          <button onClick={this.togglePopup.bind(this)}>Accept</button>
-          <button onClick={this.togglePopup.bind(this)}>Reject</button>
-          
-          {this.state.showPopup ? 
-            <AcceptRejectButton
-              text='Are you sure you wish to perform this action?'
-              closePopup={this.togglePopup.bind(this)}
-            />
-            : null
-          }
-        </div>
-      );
+  });
+  }
+
+  handleAccept() {
+    swal({
+      title: "Please confirm your decision",
+      text: "Are you sure that you wish to accept this answer?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+     })
+     .then((willDelete) => {
+    if (willDelete) {
+      swal("This answer has been accepted!", {
+        icon: "success",
+      });
+    } else {
+      swal("Your changes have been discarded!");
     }
-  };
-  
-  
-  
-  ReactDOM.render(
-    <App />,
-    document.getElementById('content')
+  });
+  }
+ 
+render() {
+  return (
+    <div className='app'>
+      <p><h1>This is the answer to your question!</h1></p>
+      <h3>Do you wish to accept or reject the above answer?</h3>
+        <button
+        onClick={() => this.handleAccept()}
+      >
+        Accept
+      </button>
+      <button
+        onClick={() => this.handleReject()}
+      >
+        Reject
+      </button>      
+      </div>
   );
-  
+}
+}
+
+
