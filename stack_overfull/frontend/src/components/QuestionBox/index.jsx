@@ -58,7 +58,7 @@ export class QuestionBox extends React.Component {
           <div className="answer-list">
             {answerList.map((x,key) => (
               <div key ={key}>
-                {x.date_created}
+                {x.date_created}" "
                 {x.answer_text}
               </div>
             ))}
