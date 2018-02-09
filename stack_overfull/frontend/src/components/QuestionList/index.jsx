@@ -7,19 +7,38 @@ export class QuestionList extends React.Component {
   render() {
     const {
       handleAskQuestionButton,
-      showTopQuestions,
-      title,
       username,
       questionList,
       createQuestion,
-      date_created,
-      question_text,
-      handleShowTopQuestions
+      showCreateQuestionBox,
+      handleShowTopQuestions,
+      closeCreateQuestionBox
     } = this.props;
 
-    var page;
-    if (showTopQuestions === true) {
-      page = (
+    let createQuestionBox;
+    if(showCreateQuestionBox){
+      createQuestionBox = 
+      <QuestionEdit
+        user={username}
+        createQuestion={createQuestion}
+        handleShowTopQuestions={handleShowTopQuestions}
+        closeCreateQuestionBox={closeCreateQuestionBox}
+      />
+    }else{
+      createQuestionBox = ""
+    }
+
+    return (
+      <div className="question-list-wrapper">
+        <div className="question-list-title">
+          <h3>TOP QUESTIONS</h3>
+          <button
+            onClick={() => handleAskQuestionButton()}
+            style={{ color: "#ffffff" }}
+          >
+            Ask a question
+          </button>
+        </div>
         <div className="question-list">
           {questionList.map((x, key) => (
             <QuestionBox
@@ -29,44 +48,9 @@ export class QuestionList extends React.Component {
             />
           ))}
         </div>
-      );
-    } else if (showTopQuestions === false) {
-      page = (
-        <div className="question-list">
-          {
-            <QuestionEdit
-              user={username}
-              createQuestion={createQuestion}
-              handleShowTopQuestions={handleShowTopQuestions}
-            />
-          }
-        </div>
-      );
-    }
-
-    var pageTitle;
-    if (showTopQuestions === true) {
-      pageTitle = (
-        <div className="question-list-title">
-          {" "}
-          {title}
-          <button
-            onClick={() => handleAskQuestionButton()}
-            style={{ color: "#ffffff" }}
-          >
-            Ask a question
-          </button>
-        </div>
-      );
-    } else if (showTopQuestions === false) {
-      pageTitle = <div className="questionEdit-list-title"> {title} </div>;
-    }
-
-    return (
-      <div className="question-list-wrapper">
-        {pageTitle}
-        {page}
+        {createQuestionBox}
       </div>
+
     );
   }
 }

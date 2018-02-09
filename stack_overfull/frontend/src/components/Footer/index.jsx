@@ -8,7 +8,7 @@ export class Footer extends React.Component {
         return (
             <div className="footer">
 
-                <div className="listfooter">
+                <div className="footer__list">
                     <ul>
                         <li>About Us</li>
                         <li>Terms & Conditions</li>

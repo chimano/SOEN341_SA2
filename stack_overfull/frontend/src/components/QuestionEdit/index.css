@@ -1,35 +1,57 @@
-.question, .questionEdit {
+.questionEdit {
     padding: 10px;
+}
+
+.questionEdit-wrapper {
+    padding: 10px;
+    width: 600px;
+    box-shadow: 0 0 5px #545454;
     background-color: white;
     border-radius: 10px;
-    box-shadow: 0 0 5px rgb(209, 209, 209);
-    margin:10px;
-  }
-  .question-wrapper, .questionEdit-wrapper {
-    width: 33%;
-  }
-  .questionEdit-wrapper {
-    float: none;
-    margin: 0 auto;
-    min-width: 70%;
-  }
-  .questionEdit-list-title {
-    text-align: center;
-  }
-  .question-extra-info {
+    position: relative;
+}
+
+.questionEdit-user {
     display: flex;
-  }
-  .questionTitle {
+}
+
+.questionEdit-text {
     width: 100%;
     min-height: 90%;
     margin-top: 2%;
-  }
-  .questionEdit-button {
+    height: 100px;
+}
+
+.questionEdit-button {
     margin-right: 1.5%;
-  }
-  .question-list-title, .questionEdit-list-title {
-    padding:20px; 
-    padding-top:20px;
+}
+
+.questionEdit-title {
+    padding-top: 20px;
     font-size: 20px;
     margin-right: 1%;
+    text-align: left;   
+}
+
+.questionEdit-floating-box {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    position: fixed;
+    width: 100vw;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    top: 0;
+    left: 0;
+}
+.questionEdit__close-button {
+    text-align: right;
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
   }

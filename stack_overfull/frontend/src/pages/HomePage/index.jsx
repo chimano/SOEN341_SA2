@@ -18,9 +18,9 @@ export class HomePage extends React.Component {
       open_signin: false,
       open_signup: false,
       logged_in: false,
+      showCreateQuestionBox: false,
       username: "",
       title: "TOP QUESTIONS",
-      showTopQuestions: true,
       questionList: []
     };
 
@@ -41,7 +41,7 @@ export class HomePage extends React.Component {
       });
   };
 
-  createQuestion(question) {
+  createQuestion = (question) => {
     axios
       .post("/api/question/", qs.stringify({ question: question }))
       .then(function(response) {
@@ -50,6 +50,10 @@ export class HomePage extends React.Component {
       .catch(function(error) {
         console.log(error);
       });
+    setTimeout(
+      () => this.getQuestionList(),
+      100
+    )
   }
 
   handle_signup_button = () => {
@@ -73,17 +77,23 @@ export class HomePage extends React.Component {
     if (this.state.username === "") {
       this.handle_signin_button();
     } else {
+      this.openCreateQuestionBox();
       this.setState({
         title: "Ask a question to the community",
         showTopQuestions: false
       });
     }
   };
-  handleShowTopQuestions = show => {
+  openCreateQuestionBox = () => {
     this.setState({
-      showTopQuestions: show
-    });
-  };
+      showCreateQuestionBox: true
+    })
+  }
+  closeCreateQuestionBox = () => {
+    this.setState({
+      showCreateQuestionBox: false
+    })
+  }
 
   render() {
     console.log(this.state);
@@ -130,6 +140,8 @@ export class HomePage extends React.Component {
             questionList={this.state.questionList}
             createQuestion={this.createQuestion}
             handleShowTopQuestions={this.handleShowTopQuestions}
+            showCreateQuestionBox={this.state.showCreateQuestionBox}
+            closeCreateQuestionBox={this.closeCreateQuestionBox}
           />
         </div>
         <div className="footer-area">
