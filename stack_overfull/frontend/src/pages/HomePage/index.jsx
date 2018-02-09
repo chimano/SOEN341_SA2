@@ -21,10 +21,12 @@ export class HomePage extends React.Component {
       username: "",
       title: "TOP QUESTIONS",
       showTopQuestions: true,
-      questionList: []
+      questionList: [],
+      answerList: []
     };
 
     this.getQuestionList();
+    // this.getAnswerList();
   }
 
   getQuestionList = () => {
@@ -40,6 +42,21 @@ export class HomePage extends React.Component {
         console.log(error);
       });
   };
+
+  // getAnswerList = (q_id) => {
+  //   var parsedQ_id = parseInt(q_id)+1;
+  //   axios
+  //   .get("/api/answer/q_id=q_id/order=asc/limit=10/")
+  //     .then(response => {
+  //       console.log(response);
+  //       this.setState({
+  //         answerList: response.data.answer_list
+  //       });
+  //     })
+  //     .catch(function(error) {
+  //       console.log(error);
+  //     });
+  // };
 
   createQuestion(question) {
     axios
