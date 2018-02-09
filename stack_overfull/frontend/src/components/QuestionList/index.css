@@ -2,15 +2,26 @@
     padding-bottom: 40px;
     display: flex;
     flex-wrap: wrap;
+    margin-right: -10px;
 }
 
 .question-list-title {
     padding: 10px;
     padding-top: 20px;
     font-size: 20px;
+    display: flex;
+}
+
+.question-list-title button{
+    width: 200px;
+}
+
+.question-list-title h3 {
+    width: 100%;
 }
 
 .question-list-wrapper {
     max-width: 1140px;
     margin: auto;
 }
+
