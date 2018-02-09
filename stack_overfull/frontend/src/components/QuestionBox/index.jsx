@@ -16,6 +16,7 @@ export class QuestionBox extends React.Component {
     const { answerQuestion } = this.props;
     answerQuestion(this.state.answer, q_id);
     setTimeout(() => this.getAnswerList(q_id), 100);
+    this.refs.answer_text.value='';
   };
 
   handleChange = event => {
@@ -23,10 +24,9 @@ export class QuestionBox extends React.Component {
   };
 
   getAnswerList = q_id => {
-    var parsedQ_id = parseInt(q_id) + 1;
-    var id = q_id + 1;
+    var id = q_id;
     axios
-      .get("/api/answer/q_id=" + id + "/order=asc/limit=10/")
+      .get("/api/answer/q_id=" + id + "/order=asc/limit=100/")
       .then(response => {
         console.log(response);
         this.setState({
@@ -40,6 +40,8 @@ export class QuestionBox extends React.Component {
 
   render() {
     const { date_created, question_text, user, q_id } = this.props;
+    const { answerList } = this.state;
+
     return (
       <div className="question-wrapper">
         <div className="question">
@@ -54,8 +56,8 @@ export class QuestionBox extends React.Component {
           <div className="question-date">{date_created}</div>
           <div className="line" />
           <div className="answer-list">
-            {this.state.answerList.map(x => (
-              <div>
+            {answerList.map((x,key) => (
+              <div key ={key}>
                 {x.date_created}
                 {x.answer_text}
               </div>
@@ -63,6 +65,7 @@ export class QuestionBox extends React.Component {
           </div>
           <div style={{ display: "flex" }}>
             <textarea
+                ref="answer_text"
               className="questionBox__answer-text"
               onChange={e => this.handleChange(e)}
             />

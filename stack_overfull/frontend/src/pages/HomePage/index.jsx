@@ -20,13 +20,11 @@ export class HomePage extends React.Component {
       logged_in: false,
       showCreateQuestionBox: false,
       username: "",
-      title: "TOP QUESTIONS",
       questionList: [],
       answerList: []
     };
 
     this.getQuestionList();
-    // this.getAnswerList();
   }
 
   getQuestionList = () => {
@@ -43,22 +41,7 @@ export class HomePage extends React.Component {
       });
   };
 
-  // getAnswerList = (q_id) => {
-  //   var parsedQ_id = parseInt(q_id)+1;
-  //   axios
-  //   .get("/api/answer/q_id=q_id/order=asc/limit=10/")
-  //     .then(response => {
-  //       console.log(response);
-  //       this.setState({
-  //         answerList: response.data.answer_list
-  //       });
-  //     })
-  //     .catch(function(error) {
-  //       console.log(error);
-  //     });
-  // };
-
-  createQuestion(question) {
+  createQuestion = question => {
     axios
       .post("/api/question/", qs.stringify({ question: question }))
       .then(function(response) {
@@ -67,16 +50,15 @@ export class HomePage extends React.Component {
       .catch(function(error) {
         console.log(error);
       });
-    setTimeout(
-      () => this.getQuestionList(),
-      100
-    )
-  }
+    setTimeout(() => this.getQuestionList(), 100);
+  };
 
   answerQuestion(answer, q_id) {
-    var parsedQ_id = parseInt(q_id)+1;
+    var parsedQ_id = parseInt(q_id);
+    console.log("parsed_q_id", parsedQ_id);
+    console.log("answer:", answer);
     axios
-      .post("/api/answer/", qs.stringify({ answer: answer,q_id: parsedQ_id}))
+      .post("/api/answer/", qs.stringify({ answer: answer, q_id: parsedQ_id }))
       .then(function(response) {
         console.log(response);
       })
@@ -107,22 +89,18 @@ export class HomePage extends React.Component {
       this.handle_signin_button();
     } else {
       this.openCreateQuestionBox();
-      this.setState({
-        title: "Ask a question to the community",
-        showTopQuestions: false
-      });
     }
   };
   openCreateQuestionBox = () => {
     this.setState({
       showCreateQuestionBox: true
-    })
-  }
+    });
+  };
   closeCreateQuestionBox = () => {
     this.setState({
       showCreateQuestionBox: false
-    })
-  }
+    });
+  };
 
   render() {
     console.log(this.state);
@@ -181,4 +159,3 @@ export class HomePage extends React.Component {
     );
   }
 }
- 

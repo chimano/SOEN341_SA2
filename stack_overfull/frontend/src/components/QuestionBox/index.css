@@ -27,7 +27,8 @@
 }
 
 .question-text {
-    height: 100px;
+    word-wrap: break-word;
+    overflow: auto;
 }
 
 .question-extra-info {
