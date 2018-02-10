@@ -6,5 +6,4 @@ venv/
 stack_overfull/stackoverfull.db
 __pychache__/
 package-lock.json
-settings.py
-settings.pyc
+hidden.py
