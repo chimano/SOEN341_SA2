@@ -1,19 +1,23 @@
 .footer {
-    background-color: rgb(38, 18, 155);
-    -webkit-text-fill-color: antiquewhite;
-    padding: 15px;
-    display: flex;
-    flex-wrap: wrap;
+  background-color: rgb(38, 18, 155);
+  -webkit-text-fill-color: antiquewhite;
+  padding: 15px;
+  display: flex;
+  flex-wrap: wrap;
 }
 
-.footer__list {
-    width: 250px;
+.listfooter {
+  width: 250px;
 }
 
 .footer ul {
-    list-style: none;
+  list-style: none;
 }
 
 .footer p {
-    text-orientation: sideways-right;
+  text-orientation: sideways-right;
+}
+.footer icon Icon{
+  font-size:25px;
+  margin: 5px;
 }

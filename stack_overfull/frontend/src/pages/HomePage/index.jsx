@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  NavigationBar,
-  SignUpFormWindow,
-  SignInFormWindow,
-  QuestionList,
-  Footer
-} from "../../components";
+import {NavigationBar, SignUpFormWindow, SignInFormWindow, QuestionList, Footer} from "../../components";
 import "./index.css";
 import axios from "axios";
 import qs from "qs";
@@ -24,6 +18,16 @@ export class HomePage extends React.Component {
       answerList: []
     };
 
+    this.handle_signup_button = this
+      .handle_signup_button
+      .bind(this);
+    this.handle_signin_button = this
+      .handle_signin_button
+      .bind(this);
+    this.handle_close_button = this
+      .handle_close_button
+      .bind(this);
+
     this.getQuestionList();
   }
 
@@ -32,22 +36,20 @@ export class HomePage extends React.Component {
       .get("/api/question/order=desc/limit=10/")
       .then(response => {
         console.log(response);
-        this.setState({
-          questionList: response.data.question_list
-        });
+        this.setState({questionList: response.data.question_list});
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       });
   };
 
   createQuestion = question => {
     axios
-      .post("/api/question/", qs.stringify({ question: question }))
-      .then(function(response) {
+      .post("/api/question/", qs.stringify({question: question}))
+      .then(function (response) {
         console.log(response);
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       });
     setTimeout(() => this.getQuestionList(), 100);
@@ -58,31 +60,31 @@ export class HomePage extends React.Component {
     console.log("parsed_q_id", parsedQ_id);
     console.log("answer:", answer);
     axios
-      .post("/api/answer/", qs.stringify({ answer: answer, q_id: parsedQ_id }))
-      .then(function(response) {
+      .post("/api/answer/", qs.stringify({answer: answer, q_id: parsedQ_id}))
+      .then(function (response) {
         console.log(response);
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       });
   }
 
-  handle_signup_button = () => {
-    this.setState({ open_signup: true, open_signin: false });
-  };
+  handle_signup_button() {
+    this.setState({open_signup: true, open_signin: false});
+  }
 
-  handle_signin_button = () => {
-    this.setState({ open_signin: true, open_signup: false });
-  };
+  handle_signin_button() {
+    this.setState({open_signin: true, open_signup: false});
+  }
 
   handle_close_button = () => {
-    this.setState({ open_signin: false, open_signup: false });
+    this.setState({open_signin: false, open_signup: false});
   };
   handle_login = username => {
-    this.setState({ logged_in: true, username: username });
+    this.setState({logged_in: true, username: username});
   };
   handle_logout = () => {
-    this.setState({ logged_in: false, username: "" });
+    this.setState({logged_in: false, username: ""});
   };
   handleAskQuestionButton = () => {
     if (this.state.username === "") {
@@ -92,27 +94,19 @@ export class HomePage extends React.Component {
     }
   };
   openCreateQuestionBox = () => {
-    this.setState({
-      showCreateQuestionBox: true
-    });
+    this.setState({showCreateQuestionBox: true});
   };
   closeCreateQuestionBox = () => {
-    this.setState({
-      showCreateQuestionBox: false
-    });
+    this.setState({showCreateQuestionBox: false});
   };
 
   render() {
     console.log(this.state);
-
     var login_box;
     if (this.state.open_signin === true) {
       login_box = (
         <div className="login-wrap">
-          <SignInFormWindow
-            handle_close_button={this.handle_close_button}
-            handle_login={this.handle_login}
-          />
+          <SignInFormWindow handle_close_button={this.handle_close_button}/>
         </div>
       );
     } else if (this.state.open_signup === true) {
@@ -120,8 +114,7 @@ export class HomePage extends React.Component {
         <div className="login-wrap">
           <SignUpFormWindow
             handle_close_button={this.handle_close_button}
-            handle_login={this.handle_login}
-          />
+            handle_login={this.handle_login}/>
         </div>
       );
     } else {
@@ -132,12 +125,7 @@ export class HomePage extends React.Component {
       <div>
         <NavigationBar
           handle_signup_button={this.handle_signup_button}
-          handle_signin_button={this.handle_signin_button}
-          handle_logout={this.handle_logout}
-          logged_in={this.state.logged_in}
-          username={this.state.username}
-        />
-        {login_box}
+          handle_signin_button={this.handle_signin_button}/>{" "} {login_box}
         <div className="main">
           <QuestionList
             handleAskQuestionButton={this.handleAskQuestionButton}
@@ -149,11 +137,10 @@ export class HomePage extends React.Component {
             answerQuestion={this.answerQuestion}
             handleShowTopQuestions={this.handleShowTopQuestions}
             showCreateQuestionBox={this.state.showCreateQuestionBox}
-            closeCreateQuestionBox={this.closeCreateQuestionBox}
-          />
+            closeCreateQuestionBox={this.closeCreateQuestionBox}/>
         </div>
         <div className="footer-area">
-          <Footer handle />
+          <Footer handle/>
         </div>
       </div>
     );
