@@ -5,13 +5,11 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseServerError, JsonResponse
-from so_endpoint.serializers import QuestionSerializer, AnswerSerializer
+from so_endpoint.serializers import QuestionSerializer, AnswerSerializer, user_to_dict
 from so_endpoint.models import *
 import json
 
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
-from django.forms.models import model_to_dict
 
 # Create your views here.
 class QuestionView(TemplateView):
@@ -124,10 +122,13 @@ class UserView(TemplateView):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request):
-        users_vals =  User.objects.all().values(
-            'id', 'username', 'date_joined', 'is_active'
+        users =  User.objects.select_related('profile')
+        users_array = user_to_dict(
+            users,
+            many=True,
+            fields=['id', 'username', 'date_joined', 'is_active']
         )
-        return JsonResponse(list(users_vals), safe=False)
+        return JsonResponse(users_array, safe=False)
 
 # Return the currently logged in user
 class UserMeView(TemplateView):
@@ -139,7 +140,7 @@ class UserMeView(TemplateView):
     def get(self, request):
         if request.user.is_authenticated:
             user = request.user
-            return JsonResponse(model_to_dict(user))
+            return JsonResponse(user_to_dict(user))
         else:
             return JsonResponse({'error': 'User is not logged in'})
 
@@ -155,17 +156,18 @@ class UserRegisterView(TemplateView):
         # expected Json Body: {'username':'myname', password:'mypassword'}
         try:
             raw_data = json.loads(request.body)
-            username = raw_data.get('username')
-            password = raw_data.get('password')
+            username = raw_data['username']
+            password = raw_data['password']
+            email = raw_data.get('email', None)
 
             if User.objects.filter(username=username).exists():
                 return JsonResponse({'error': 'Username already exists'})
 
-            User.objects.create_user(username=username, password=password)
+            User.objects.create_user(username=username, password=password, email=email)
             user = authenticate(request, username=username, password=password)
             login(request, user)
 
-            return JsonResponse(model_to_dict(user))
+            return JsonResponse(user_to_dict(user))
 
         except BaseException as e: #either a json, key or user validation error
             print(repr(e))
@@ -183,14 +185,14 @@ class UserLoginView(TemplateView):
         # expected Json Body: {'username':'myname', password:'mypassword'}
         try:
             raw_data = json.loads(request.body)
-            username = raw_data.get('username')
-            password = raw_data.get('password')
+            username = raw_data['username']
+            password = raw_data['password']
 
             user = authenticate(request, username=username, password=password)
 
             if user is not None:
                 login(request, user)
-                return JsonResponse(model_to_dict(user))
+                return JsonResponse(user_to_dict(user))
             else:
                 return JsonResponse({'error': 'Wrong username/password'})
 
