@@ -1,4 +1,5 @@
 import React from "react";
+import "./index.css";
 import {
   NavigationBar,
   SignUpFormWindow,
@@ -6,9 +7,13 @@ import {
   QuestionList,
   Footer
 } from "../../components";
-import "./index.css";
-import axios from "axios";
-import qs from "qs";
+import {
+  getApiQuestion,
+  postApiQuestion,
+  postApiAnswer,
+  postApiUserLogout,
+  getApiUserMe
+} from "../../utils/api";
 
 export class HomePage extends React.Component {
   constructor(props) {
@@ -25,6 +30,7 @@ export class HomePage extends React.Component {
     };
 
     this.getQuestionList();
+    this.handle_login();
   }
 
   getQuestionList = () => {
@@ -84,9 +90,14 @@ export class HomePage extends React.Component {
     this.setState({ open_signin: false, open_signup: false });
   };
   handle_login = username => {
-    this.setState({ logged_in: true, username: username });
+    getApiUserMe().then((response)=>{
+      if(!response.error){
+        this.setState({ logged_in: true, username: response.data.username });        
+      }
+    })
   };
   handle_logout = () => {
+    postApiUserLogout()
     this.setState({ logged_in: false, username: "" });
   };
   handleAskQuestionButton = () => {
@@ -97,14 +108,10 @@ export class HomePage extends React.Component {
     }
   };
   openCreateQuestionBox = () => {
-    this.setState({
-      showCreateQuestionBox: true
-    });
+    this.setState({ showCreateQuestionBox: true });
   };
   closeCreateQuestionBox = () => {
-    this.setState({
-      showCreateQuestionBox: false
-    });
+    this.setState({ showCreateQuestionBox: false });
   };
 
   render() {
