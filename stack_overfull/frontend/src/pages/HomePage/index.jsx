@@ -29,7 +29,12 @@ export class HomePage extends React.Component {
 
   getQuestionList = () => {
     axios
-      .get("/api/question/order=desc/limit=10/")
+      .get("/api/question/", {
+          params: {
+              order: 'desc',
+              limit: 10
+          }
+      })
       .then(response => {
         console.log(response);
         this.setState({
@@ -43,7 +48,7 @@ export class HomePage extends React.Component {
 
   createQuestion = question => {
     axios
-      .post("/api/question/", qs.stringify({ question: question }))
+      .post("/api/question/", { question: question })
       .then(function(response) {
         console.log(response);
       })
@@ -58,7 +63,7 @@ export class HomePage extends React.Component {
     console.log("parsed_q_id", parsedQ_id);
     console.log("answer:", answer);
     axios
-      .post("/api/answer/", qs.stringify({ answer: answer, q_id: parsedQ_id }))
+      .post("/api/answer/", { answer: answer, q_id: parsedQ_id })
       .then(function(response) {
         console.log(response);
       })
