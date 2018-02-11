@@ -11,9 +11,7 @@ export class QuestionList extends React.Component {
       questionList,
       createQuestion,
       showCreateQuestionBox,
-      question_text,
       handleShowTopQuestions,
-      date_created,
       answerQuestion,
       closeCreateQuestionBox
     } = this.props;

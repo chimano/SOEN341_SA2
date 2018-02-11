@@ -1,4 +1,5 @@
 import React from "react";
+import "./index.css";
 import {
   NavigationBar,
   SignUpFormWindow,
@@ -6,9 +7,13 @@ import {
   QuestionList,
   Footer
 } from "../../components";
-import "./index.css";
-import axios from "axios";
-import qs from "qs";
+import {
+  getApiQuestion,
+  postApiQuestion,
+  postApiAnswer,
+  postApiUserLogout,
+  getApiUserMe
+} from "../../utils/api";
 
 export class HomePage extends React.Component {
   constructor(props) {
@@ -25,47 +30,27 @@ export class HomePage extends React.Component {
     };
 
     this.getQuestionList();
+    this.handle_login();
   }
 
   getQuestionList = () => {
-    axios
-      .get("/api/question/order=desc/limit=10/")
-      .then(response => {
-        console.log(response);
-        this.setState({
-          questionList: response.data.question_list
-        });
-      })
-      .catch(function(error) {
-        console.log(error);
+    getApiQuestion().then(list => {
+      this.setState({
+        questionList: list
       });
+    });
   };
 
   createQuestion = question => {
-    axios
-      .post("/api/question/", qs.stringify({ question: question }))
-      .then(function(response) {
-        console.log(response);
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
+    postApiQuestion(question);
     setTimeout(() => this.getQuestionList(), 100);
   };
 
-  answerQuestion(answer, q_id) {
-    var parsedQ_id = parseInt(q_id);
-    console.log("parsed_q_id", parsedQ_id);
-    console.log("answer:", answer);
-    axios
-      .post("/api/answer/", qs.stringify({ answer: answer, q_id: parsedQ_id }))
-      .then(function(response) {
-        console.log(response);
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-  }
+  //to remove
+answerQuestion = (answer, q_id) => {
+    postApiAnswer(answer, q_id);
+  };
+  
 
   handle_signup_button = () => {
     this.setState({ open_signup: true, open_signin: false });
@@ -79,9 +64,14 @@ export class HomePage extends React.Component {
     this.setState({ open_signin: false, open_signup: false });
   };
   handle_login = username => {
-    this.setState({ logged_in: true, username: username });
+    getApiUserMe().then((response)=>{
+      if(!response.error){
+        this.setState({ logged_in: true, username: response.data.username });        
+      }
+    })
   };
   handle_logout = () => {
+    postApiUserLogout()
     this.setState({ logged_in: false, username: "" });
   };
   handleAskQuestionButton = () => {
@@ -92,14 +82,10 @@ export class HomePage extends React.Component {
     }
   };
   openCreateQuestionBox = () => {
-    this.setState({
-      showCreateQuestionBox: true
-    });
+    this.setState({ showCreateQuestionBox: true });
   };
   closeCreateQuestionBox = () => {
-    this.setState({
-      showCreateQuestionBox: false
-    });
+    this.setState({ showCreateQuestionBox: false });
   };
 
   render() {
