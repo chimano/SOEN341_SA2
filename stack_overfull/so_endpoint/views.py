@@ -55,7 +55,7 @@ class QuestionView(TemplateView):
             return JsonResponse({'question_list':serialized})
         else:
             try:
-                question = Question.objects.get(id=id)
+                question = Question.objects.get(id=q_id)
             except:
                 return HttpResponseServerError()
             serialized = QuestionSerializer(question).data
