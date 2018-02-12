@@ -1,5 +1,6 @@
 import React from "react";
 import "./index.css";
+import axios from "axios";
 import {Link} from "react-router-dom";
 
 export class QuestionBox extends React.Component {

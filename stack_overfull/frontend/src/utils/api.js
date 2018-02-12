@@ -5,7 +5,11 @@ import qs from "qs";
 export function getApiQuestionById(id) {
   return new Promise((resolve, reject) => {
     axios
-      .get("/api/question/" + id)
+      .get("/api/question/",{
+        params: {
+            id: id
+        }
+      })
       .then(response => {
         console.log("get question: ", response);
         resolve(response);
@@ -36,7 +40,13 @@ export function getApiAnswerById(q_id) {
   var id = q_id;
   return new Promise((resolve, reject) => {
     axios
-      .get("/api/answer/q_id=" + id + "/order=asc/limit=100/")
+      .get("/api/answer/", {
+        params: {
+          q_id: id,
+          order: "asc",
+          limit: 100
+        }
+      }) //q_id=" + id + "/order=asc/limit=100/")
       .then(response => {
         console.log("get answer response: ", response);
         resolve(response.data.answer_list);
@@ -76,9 +86,8 @@ export function postApiQuestion(question) {
 
 //post answer
 export function postApiAnswer(answer, q_id) {
-  var parsedQ_id = parseInt(q_id, 10);
   axios
-    .post("/api/answer/", qs.stringify({ answer: answer, q_id: parsedQ_id }))
+    .post("/api/answer/", {answer: answer, q_id: q_id})
     .then(function(response) {
       console.log("post answer response: ", response);
     })

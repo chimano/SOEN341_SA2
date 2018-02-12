@@ -3,7 +3,6 @@ import "./index.css";
 import {
   Footer
 } from "../../components";
-import { NavigationBar } from "../../components";
 import { getApiQuestionById, getApiAnswerById, postApiAnswer } from "../../utils/api";
 
 export class AnswerPage extends React.Component {
