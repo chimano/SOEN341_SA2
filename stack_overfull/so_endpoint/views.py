@@ -50,7 +50,7 @@ class QuestionView(TemplateView):
             else:
                 modifier = ''
 
-            questions = Question.objects.all().order_by(modifier + 'date_created')[:limit]
+            questions = Question.objects.all().order_by(modifier + 'points')[:limit]
             serialized = QuestionSerializer(questions, many=True).data
             return JsonResponse({'question_list':serialized})
         else:
@@ -109,7 +109,7 @@ class AnswerView(TemplateView):
         except ObjectDoesNotExist:
             return HttpResponseServerError()
 
-        answers = Answer.objects.filter(question_id=q_id).order_by(modifier + 'date_created')[:limit]
+        answers = Answer.objects.filter(question_id=q_id).order_by(modifier + 'points')[:limit]
         serialized = AnswerSerializer(answers, many=True).data
         return JsonResponse({'answer_list':serialized})
 
@@ -310,11 +310,17 @@ class AnswerVoteView(TemplateView):
             if answer in user.profile.downvoted_answers.all():
                 user.profile.downvoted_answers.remove(answer)
                 answer.points += 1
-                answer.user_id.profile.update_profile_reputation(1)
+                try:
+                    answer.user_id.profile.update_profile_reputation(1)
+                except:
+                    print("Answer has no user")
 
             user.profile.upvoted_answers.add(answer)
             answer.points += 1
-            answer.user_id.profile.update_profile_reputation(1)
+            try:
+                answer.user_id.profile.update_profile_reputation(1)
+            except:
+                print("Answer has no user")
             answer.save()
             return JsonResponse({'sucess': 'Upvoted the answer'}, status=200)
 
@@ -326,11 +332,17 @@ class AnswerVoteView(TemplateView):
             if answer in user.profile.upvoted_answers.all():
                 user.profile.upvoted_answers.remove(answer)
                 answer.points -= 1
-                answer.user_id.profile.update_profile_reputation(-1)
+                try:
+                    answer.user_id.profile.update_profile_reputation(-1)
+                except:
+                    print("Answer has no user")
 
             user.profile.downvoted_answers.add(answer)
             answer.points -= 1
-            answer.user_id.profile.update_profile_reputation(-1)
+            try:
+                answer.user_id.profile.update_profile_reputation(-1)
+            except:
+                print("Answer has no user")
             answer.save()
             return JsonResponse({'sucess': 'Downvoted the answer'}, status=200)
 
@@ -363,15 +375,21 @@ class QuestionVoteView(TemplateView):
         if vote_type == "UP":
             if question in user.profile.upvoted_questions.all():
                 return JsonResponse({'error': 'User has already voted for this question'}, status=400)
-
+            print("test1")
             if question in user.profile.downvoted_questions.all():
                 user.profile.downvoted_questions.remove(question)
                 question.points += 1
-                question.user_id.profile.update_profile_reputation(1)
-
+                try:
+                    question.user_id.profile.update_profile_reputation(1)
+                except:
+                    print("Question has no user")
+            print("test2")
             user.profile.upvoted_questions.add(question)
             question.points += 1
-            question.user_id.profile.update_profile_reputation(1)
+            try:
+                question.user_id.profile.update_profile_reputation(1)
+            except:
+                print("Question has no user")
             question.save()
             return JsonResponse({'sucess': 'Upvoted the question'},status=200)
 
@@ -383,10 +401,16 @@ class QuestionVoteView(TemplateView):
             if question in user.profile.upvoted_questions.all():
                 user.profile.upvoted_questions.remove(question)
                 question.points -= 1
-                question.user_id.profile.update_profile_reputation(-1)
+                try:
+                    question.user_id.profile.update_profile_reputation(-1)
+                except:
+                    print("Question has no user")
 
             user.profile.downvoted_questions.add(question)
             question.points -= 1
-            question.user_id.profile.update_profile_reputation(-1)
+            try:
+                question.user_id.profile.update_profile_reputation(-1)
+            except:
+                print("Question has no user")
             question.save()
             return JsonResponse({'sucess': 'Downvoted the question'},status=200)
