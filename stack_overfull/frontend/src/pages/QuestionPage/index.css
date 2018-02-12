@@ -31,6 +31,7 @@
 
 .dateText {
     text-align: right;
+    margin-top: 2%;
 }
 
 .yourAnswerArea {
@@ -49,7 +50,6 @@
 .questionBox_answer-text {
     width: 100%;
     min-height: 100px;
-    border-radius: 5%;
 }
 
 .questionBox_reply-button {

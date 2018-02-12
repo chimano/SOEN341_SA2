@@ -18,10 +18,11 @@ export class QuestionBox extends React.Component {
                 {/* <div>{date_created}</div>
                               <div>Votes</div> */}
               </div>
-        </Link>
+            </Link>
           </div>
-          <div className="question-date">{date_created}</div>
           <div className="line" />
+          <div className="question-date">{date_created}</div>
+          {/* <div className="line" /> */}
         </div>
       </div>
     );
