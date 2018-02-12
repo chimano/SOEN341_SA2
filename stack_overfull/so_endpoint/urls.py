@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.generic import TemplateView
-from so_endpoint.views import QuestionView, AnswerView
+from so_endpoint.views import QuestionView, AnswerView, AnswerAcceptView, AnswerRejectView
 from so_endpoint.views import UserRegisterView, UserLoginView, UserLogoutView, UserMeView, UserView
 
 urlpatterns = [
@@ -24,6 +24,11 @@ urlpatterns = [
     re_path(r'answer/$', AnswerView.as_view()),
     re_path(r'answer/q_id=(?P<q_id>\d+)/(?:order=(?P<order>\D+)/)?(?:limit=(?P<limit>\d+)/)?$', AnswerView.as_view()),
     re_path(r'answer/q_id=(?P<q_id>\d+)/(?:limit=(?P<limit>\d+)/)?(?:order=(?P<order>\D+)/)?$', AnswerView.as_view()),
+
+    re_path(r'answer/(?P<answer_id>\d+)/accept/$', AnswerAcceptView.as_view() ),
+    re_path(r'answer/(?P<answer_id>\d+)/accept/undo/$', AnswerAcceptView.as_view(), {'undo':True} ),
+    re_path(r'answer/(?P<answer_id>\d+)/reject/$', AnswerRejectView.as_view() ),
+    re_path(r'answer/(?P<answer_id>\d+)/reject/undo/$', AnswerRejectView.as_view(), {'undo':True} ),
 
     re_path(r'user/register/$', UserRegisterView.as_view()),
     re_path(r'user/login/$', UserLoginView.as_view()),
