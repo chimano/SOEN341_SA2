@@ -1,13 +1,9 @@
 import React from "react";
-<<<<<<< HEAD
-import {SearchBar} from "../SearchBar";
-=======
 import {
   SearchBar,
   SignInFormWindow,
   SignUpFormWindow
 } from "../../components";
->>>>>>> 11140b1ce13fbdc18ae5033e426f3c0106735f75
 import "./index.css";
 import { Link } from "react-router-dom";
 
@@ -43,17 +39,6 @@ export class NavigationBar extends React.Component {
       handle_login
     } = this.props;
 
-<<<<<<< HEAD
-    const {
-      handle_signup_button,
-      handle_signin_button,
-      handle_career_button,
-      handle_questions_button,
-      logged_in,
-      handle_logout,
-      username
-    } = this.props;
-=======
     const { open_signin, open_signup } = this.state;
 
     var login_box;
@@ -78,7 +63,6 @@ export class NavigationBar extends React.Component {
     } else {
       login_box = "";
     }
->>>>>>> 11140b1ce13fbdc18ae5033e426f3c0106735f75
 
     return (
       <div className="navbar-wrapper">
@@ -91,35 +75,6 @@ export class NavigationBar extends React.Component {
           <div className="navbar__search">
             <SearchBar/>
           </div>
-<<<<<<< HEAD
-          {logged_in
-            ? (
-              <div className="navbar__logged-in">
-                <div className="navbar__welcome">Welcome {username}
-                  !</div>
-                <button className="navbar__button" onClick={() => handle_logout()}>
-                  Log out
-                </button>
-              </div>
-            )
-            : (
-              <div className="navbar__auth">
-                <button className="navbar__button" onClick={() => handle_signin_button()}>
-                  Sign In
-                </button>
-                <button className="navbar__button" onClick={() => handle_signup_button()}>
-                  Sign Up
-                </button>
-              </div>
-            )}
-        </div>
-        <div className="navbar">
-          <div className="navbar__auth">
-            <button className="navbar__button" onClick={() => handle_career_button()}>
-              Careers
-            </button>
-            <button className="navbar__button" onClick={() => handle_questions_button()}>
-=======
           {logged_in ? (
             <div className="navbar__logged-in">
               <div className="navbar__welcome">Welcome {username} !</div>
@@ -159,7 +114,6 @@ export class NavigationBar extends React.Component {
               className="navbar__button"
               // onClick={() => handle_questions_button()}
             >
->>>>>>> 11140b1ce13fbdc18ae5033e426f3c0106735f75
               Questions
             </button>
           </div>
