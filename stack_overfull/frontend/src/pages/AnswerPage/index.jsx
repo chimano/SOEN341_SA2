@@ -1,12 +1,9 @@
 import React from "react";
-<<<<<<< HEAD
 import "./index.css";
 import {
   Footer
 } from "../../components";
-=======
 import { NavigationBar } from "../../components";
->>>>>>> Issue #19
 import { getApiQuestionById, getApiAnswerById, postApiAnswer } from "../../utils/api";
 
 export class AnswerPage extends React.Component {
@@ -59,7 +56,6 @@ export class AnswerPage extends React.Component {
     const q_id = this.props.match.params.id;
     
     console.log(this.state);
-<<<<<<< HEAD
     console.log("# OF ANSWERS: " + answerList.length);
 
     let numberOfAnswersTitle;
@@ -88,24 +84,10 @@ export class AnswerPage extends React.Component {
                 <div className="answerBox" key={key}>
                   <div className="answerText">{x.answer_text}</div>
                   <div className="dateText">{((x.date_created).replace("T", " at ")).substring(0,19)}</div>
-=======
-
-    return (
-      <div>
-        <NavigationBar />
-        {question}
-        {answerList !== []
-          ? answerList.map((x, key) => {
-              return (
-                <div key={key}>
-                  {x.answer_text}
-                  {x.date_created}
->>>>>>> Issue #19
                 </div>
               );
             })
           : ""}
-<<<<<<< HEAD
         <div className="seperator" />
         <div className="yourAnswerArea">
           <h2 className="yourAnswerTitle">Your Answer</h2>
@@ -125,21 +107,6 @@ export class AnswerPage extends React.Component {
         <div className="footer-area">
           <Footer handle />
         </div>
-=======
-        <textarea
-          ref="answer_text"
-          className="questionBox__answer-text"
-          onChange={e => this.handleChange(e)}
-        />
-        {/* <div className="question-title">{question_text}</div> */}
-        {/* <button className="replyButton" onClick={() => this.handleReplyButton(boxId)} value={this.boxId}>Reply</button> */}
-        <button
-          className="questionBox__reply-button"
-          onClick={() => this.handleReplyButton(q_id)}
-        >
-          Reply
-        </button>
->>>>>>> Issue #19
       </div>
     );
   }

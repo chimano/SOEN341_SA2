@@ -5,15 +5,9 @@ import qs from "qs";
 export function getApiQuestionById(id) {
   return new Promise((resolve, reject) => {
     axios
-<<<<<<< HEAD
       .get("/api/question/" + id)
       .then(response => {
         console.log("get question: ", response);
-=======
-      .get("/api/question/"+id)
-      .then(response => {
-        console.log("get question: ",response);
->>>>>>> Issue #19
         resolve(response);
       })
       .catch(function(error) {
@@ -28,11 +22,7 @@ export function getApiQuestion() {
     axios
       .get("/api/question/order=desc/limit=10/")
       .then(response => {
-<<<<<<< HEAD
         console.log("get question list: ", response);
-=======
-        console.log("get question list: ",response);
->>>>>>> Issue #19
         resolve(response.data.question_list);
       })
       .catch(function(error) {
@@ -48,11 +38,7 @@ export function getApiAnswerById(q_id) {
     axios
       .get("/api/answer/q_id=" + id + "/order=asc/limit=100/")
       .then(response => {
-<<<<<<< HEAD
         console.log("get answer response: ", response);
-=======
-        console.log("get answer response: ",response);
->>>>>>> Issue #19
         resolve(response.data.answer_list);
       })
       .catch(function(error) {
@@ -67,11 +53,7 @@ export function getApiUserMe() {
     axios
       .get("/api/user/me")
       .then(response => {
-<<<<<<< HEAD
         console.log("Get my info: ", response);
-=======
-        console.log("Get my info: ",response);
->>>>>>> Issue #19
         resolve(response);
       })
       .catch(function(error) {
@@ -85,11 +67,7 @@ export function postApiQuestion(question) {
   axios
     .post("/api/question/", qs.stringify({ question: question }))
     .then(function(response) {
-<<<<<<< HEAD
       console.log("post question response: ", response);
-=======
-      console.log("post question response: ",response);
->>>>>>> Issue #19
     })
     .catch(function(error) {
       console.log(error);
@@ -102,11 +80,7 @@ export function postApiAnswer(answer, q_id) {
   axios
     .post("/api/answer/", qs.stringify({ answer: answer, q_id: parsedQ_id }))
     .then(function(response) {
-<<<<<<< HEAD
       console.log("post answer response: ", response);
-=======
-      console.log("post answer response: ",response);
->>>>>>> Issue #19
     })
     .catch(function(error) {
       console.log(error);
@@ -122,11 +96,7 @@ export function postApiUserLogin(username, password) {
         password: password
       })
       .then(response => {
-<<<<<<< HEAD
         console.log("login response: ", response);
-=======
-        console.log("login response: ",response);
->>>>>>> Issue #19
         resolve(response);
       })
       .catch(error => {
@@ -141,17 +111,12 @@ export function postApiUserLogout() {
   axios
     .post("/api/user/logout/")
     .then(function(response) {
-<<<<<<< HEAD
       console.log("logout response: ", response);
-=======
-      console.log("logout response: ",response);
->>>>>>> Issue #19
     })
     .catch(function(error) {
       console.log(error);
     });
 }
-<<<<<<< HEAD
 
 //register user
 export function postApiUserRegister(username, password) {
@@ -171,5 +136,3 @@ export function postApiUserRegister(username, password) {
       });
   });
 }
-=======
->>>>>>> Issue #19

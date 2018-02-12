@@ -31,16 +31,10 @@ export class NavigationBar extends React.Component {
 
   render() {
     const {
-<<<<<<< HEAD
-=======
-      handle_signup_button,
-      handle_signin_button,
->>>>>>> Issue #19
       handle_career_button,
       handle_questions_button,
       handle_logout,
       logged_in,
-<<<<<<< HEAD
       username,
       handle_login
     } = this.props;
@@ -69,10 +63,6 @@ export class NavigationBar extends React.Component {
     } else {
       login_box = "";
     }
-=======
-      username
-    } = this.props;
->>>>>>> Issue #19
 
     return (
       <div className="navbar-wrapper">
