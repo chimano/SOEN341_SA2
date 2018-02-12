@@ -1,4 +1,5 @@
 import React from "react";
+import "./index.css";
 import { getApiQuestionById, getApiAnswerById, postApiAnswer } from "../../utils/api";
 
 export class QuestionPage extends React.Component {
@@ -54,30 +55,34 @@ export class QuestionPage extends React.Component {
 
     return (
       <div>
-        {question}
+        <h1 className="questionTitle">{question}</h1>
+        <div className="seperator" />
         {answerList !== []
           ? answerList.map((x, key) => {
               return (
-                <div key={key}>
-                  {x.answer_text}
-                  {x.date_created}
+                <div className="answerBox" key={key}>
+                  <div className="answerText">{x.answer_text}</div>
+                  <div className="dateText">{x.date_created}</div>
                 </div>
               );
             })
           : ""}
-        <textarea
-          ref="answer_text"
-          className="questionBox__answer-text"
-          onChange={e => this.handleChange(e)}
-        />
-        {/* <div className="question-title">{question_text}</div> */}
-        {/* <button className="replyButton" onClick={() => this.handleReplyButton(boxId)} value={this.boxId}>Reply</button> */}
-        <button
-          className="questionBox__reply-button"
-          onClick={() => this.handleReplyButton(q_id)}
-        >
-          Reply
-        </button>
+        <div className="seperator" />
+        <div className="yourAnswerArea">
+          <h2 className="yourAnswerTitle">Your Answer</h2>
+          <textarea
+            ref="answer_text"
+            className="questionBox_answer-text"
+            onChange={e => this.handleChange(e)}
+          />
+          {/* <div className="question-title">{question_text}</div> */}
+          {/* <button className="replyButton" onClick={() => this.handleReplyButton(boxId)} value={this.boxId}>Reply</button> */}
+          <button
+            className="questionBox_reply-button"
+            onClick={() => this.handleReplyButton(q_id)}>
+            Reply
+          </button>
+        </div>
       </div>
     );
   }
