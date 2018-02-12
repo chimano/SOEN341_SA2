@@ -8,8 +8,8 @@ class Question(models.Model):
     question_text = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True)
     #https://stackoverflow.com/questions/2606194/django-error-message-add-a-related-name-argument-to-the-definition
-    accepted_answer_id = models.OneToOneField('Answer', on_delete=models.SET_NULL, null=True, related_name='accepted_answer_set')
-    rejected_answers_ids = models.ManyToManyField('Answer', related_name='rejected_answers_set')
+    accepted_answer_id = models.OneToOneField('Answer', on_delete=models.SET_NULL, null=True, blank=True, related_name='accepted_answer_set')
+    rejected_answers_ids = models.ManyToManyField('Answer', blank=True, related_name='rejected_answers_set')
     points = models.IntegerField(default=0)
 
 class Answer(models.Model):
@@ -30,6 +30,7 @@ class Profile(models.Model):
     downvoted_questions = models.ManyToManyField(Question, related_name='down_questions')
     upvoted_answers = models.ManyToManyField(Answer, related_name='up_answers')
     downvoted_answers = models.ManyToManyField(Answer, related_name='down_answers')
+
     def update_profile_reputation(self, delta):
         self.reputation += delta
         self.save()
@@ -39,4 +40,7 @@ class Profile(models.Model):
     def create_user_profile(sender, **kwargs):
         user = kwargs["instance"]
         if kwargs["created"] is True:
-            Profile.objects.create(user_id=user)
+            profile = Profile.objects.create(user_id=user)
+
+        #save profile after user post_save signal
+        user.profile.save()

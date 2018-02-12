@@ -1,12 +1,18 @@
 from rest_framework import serializers
-from so_endpoint.models import Question, Answer
+from so_endpoint.models import Question, Answer, Profile
 from django.contrib.auth.models import User
 from django.forms.models import model_to_dict
 
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ('reputation', 'about_me')
+
 class AccountSerializer(serializers.ModelSerializer):
+    profile = ProfileSerializer(read_only=True)
     class Meta:
         model = User
-        fields = ('username',)
+        fields = ('id', 'username', 'profile')
 
 class QuestionSerializer(serializers.ModelSerializer):
     user_id = AccountSerializer(read_only=True)

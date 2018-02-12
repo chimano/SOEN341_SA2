@@ -5,17 +5,15 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseServerError, JsonResponse
-from so_endpoint.serializers import QuestionSerializer, AnswerSerializer, user_to_dict
+from so_endpoint.serializers import QuestionSerializer, AnswerSerializer, AccountSerializer, user_to_dict
 from so_endpoint.models import *
 import json
 
 from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
+@method_decorator(csrf_exempt, name='dispatch')
 class QuestionView(TemplateView):
-    @method_decorator(csrf_exempt)
-    def dispatch(self, request, *args, **kwargs):
-        return super(QuestionView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request):
         try:
@@ -62,10 +60,8 @@ class QuestionView(TemplateView):
             return JsonResponse(serialized)
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class AnswerView(TemplateView):
-    @method_decorator(csrf_exempt)
-    def dispatch(self, request, *args, **kwargs):
-        return super(AnswerView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, id=None):
 
@@ -114,10 +110,8 @@ class AnswerView(TemplateView):
         return JsonResponse({'answer_list':serialized})
 
 #Accept or undo accept an answer
+@method_decorator(csrf_exempt, name='dispatch')
 class AnswerAcceptView(TemplateView):
-    @method_decorator(csrf_exempt)
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, answer_id, undo=False):
 
@@ -145,10 +139,8 @@ class AnswerAcceptView(TemplateView):
         to_question.save()
         return JsonResponse(QuestionSerializer(to_question).data)
 
+@method_decorator(csrf_exempt, name='dispatch')
 class AnswerRejectView(TemplateView):
-    @method_decorator(csrf_exempt)
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, answer_id, undo=False):
 
@@ -176,22 +168,16 @@ class AnswerRejectView(TemplateView):
 
 
 # Return the list of users in the database
+@method_decorator(csrf_exempt, name='dispatch')
 class UserView(TemplateView):
-
-    @method_decorator(csrf_exempt)
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
 
     def get(self, request):
         users =  User.objects.select_related('profile')
-        users_array = user_to_dict(
-            users,
-            many=True,
-            fields=['id', 'username', 'date_joined', 'is_active']
-        )
-        return JsonResponse(users_array, safe=False)
+        users_list = AccountSerializer(users, many=True).data
+        return JsonResponse({'users_list': users_list})
 
 # Return the currently logged in user
+@method_decorator(csrf_exempt, name='dispatch')
 class UserMeView(TemplateView):
 
     @method_decorator(csrf_exempt)
@@ -206,11 +192,8 @@ class UserMeView(TemplateView):
             return JsonResponse({'error': 'User is not logged in'})
 
 # Register a new user and log him in
+@method_decorator(csrf_exempt, name='dispatch')
 class UserRegisterView(TemplateView):
-
-    @method_decorator(csrf_exempt)
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request):
         # expected Content-Type: application/json
@@ -235,11 +218,8 @@ class UserRegisterView(TemplateView):
             return JsonResponse({'error': repr(e)}, status=400)
 
 #Log the user in
+@method_decorator(csrf_exempt, name='dispatch')
 class UserLoginView(TemplateView):
-
-    @method_decorator(csrf_exempt)
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request):
         # expected Content-Type: application/json
@@ -264,11 +244,8 @@ class UserLoginView(TemplateView):
 
 
 # Log the user out
+@method_decorator(csrf_exempt, name='dispatch')
 class UserLogoutView(TemplateView):
-
-    @method_decorator(csrf_exempt)
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request):
         if request.user.is_authenticated:
@@ -278,11 +255,8 @@ class UserLogoutView(TemplateView):
             return JsonResponse({'error': 'User is not logged in'})
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class AnswerVoteView(TemplateView):
-
-    @method_decorator(csrf_exempt)  
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request):
         try:
@@ -294,7 +268,7 @@ class AnswerVoteView(TemplateView):
                 return JsonResponse({'error': 'Answer id is not valid'}, status=400)
 
             vote_type = json_data['vote_type']
-            
+
             if request.user.is_authenticated:
                 user = request.user
             else:
@@ -347,11 +321,8 @@ class AnswerVoteView(TemplateView):
             return JsonResponse({'sucess': 'Downvoted the answer'}, status=200)
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class QuestionVoteView(TemplateView):
-
-    @method_decorator(csrf_exempt)  
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request):
         try:
@@ -363,7 +334,7 @@ class QuestionVoteView(TemplateView):
                 return JsonResponse({'error': 'Question id is not valid'}, status=400)
 
             vote_type = json_data['vote_type']
-            
+
             if request.user.is_authenticated:
                 user = request.user
             else:
