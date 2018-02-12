@@ -49,20 +49,20 @@ export class QuestionBox extends React.Component {
 
     return (
       <div className="question-wrapper">
-      <Link to={"/question/"+q_id}>
         <div className="question">
           <div className="question-extra-info">
-            <div className="question-text">{question_text}</div>
-            {/* <a className="question-user">{user}</a> */}
-            <div className="question-count">
-              {/* <div>{date_created}</div>
-                            <div>Votes</div> */}
-            </div>
+            <Link to={"/question/"+q_id}>
+              <div className="question-text">{question_text}</div>
+              {/* <a className="question-user">{user}</a> */}
+              <div className="question-count">
+                {/* <div>{date_created}</div>
+                              <div>Votes</div> */}
+              </div>
+        </Link>
           </div>
           <div className="question-date">{date_created}</div>
           <div className="line" />
         </div>
-        </Link>
       </div>
     );
   }
