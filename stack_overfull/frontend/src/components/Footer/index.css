@@ -1,4 +1,5 @@
 .footer {
+  width: auto;
   background-color: rgb(38, 18, 155);
   -webkit-text-fill-color: antiquewhite;
   padding: 15px;
@@ -6,17 +7,10 @@
   flex-wrap: wrap;
 }
 
-.listfooter {
-  width: 250px;
-}
-
 .footer ul {
   list-style: none;
 }
 
-.footer p {
-  text-orientation: sideways-right;
-}
 .footer icon Icon{
   font-size:25px;
   margin: 5px;
