@@ -11,8 +11,9 @@ import {
   getApiQuestion,
   postApiQuestion,
   postApiAnswer,
-  getApiUserMe
+  getApiUserMe,
 } from "../../utils/api";
+import { postApiUserLogout } from "../../utils/api";
 
 export class HomePage extends React.Component {
   constructor(props) {
