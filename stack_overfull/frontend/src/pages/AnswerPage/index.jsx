@@ -62,7 +62,7 @@ export class AnswerPage extends React.Component {
               return (
                 <div className="answerBox" key={key}>
                   <div className="answerText">{x.answer_text}</div>
-                  <div className="dateText">{x.date_created}</div>
+                  <div className="dateText">{((x.date_created).replace("T", " at ")).substring(0,19)}</div>
                 </div>
               );
             })

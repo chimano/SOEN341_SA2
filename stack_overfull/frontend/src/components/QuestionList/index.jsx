@@ -14,7 +14,7 @@ export class QuestionList extends React.Component {
           {questionList.map((x, key) => (
             <QuestionBox
               key={key}
-              date_created={x.date_created}
+              date_created={((x.date_created).replace("T", " at ")).substring(0,19)}
               question_text={x.question_text}
               q_id={x.id}
             />
