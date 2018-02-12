@@ -34,5 +34,5 @@ urlpatterns = [
     re_path(r'user/login/$', UserLoginView.as_view()),
     re_path(r'user/logout/$', UserLogoutView.as_view()),
     re_path(r'user/me/$', UserMeView.as_view()),
-    re_path(r'user/$', UserView.as_view()),
+    re_path(r'user/$', UserView.as_view())
 ]

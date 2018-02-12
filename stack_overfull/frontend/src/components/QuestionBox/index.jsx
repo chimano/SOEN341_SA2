@@ -1,6 +1,7 @@
 import React from "react";
 import "./index.css";
 import axios from "axios";
+import {Link} from "react-router-dom";
 
 export class QuestionBox extends React.Component {
   constructor(props) {
@@ -46,44 +47,23 @@ export class QuestionBox extends React.Component {
 
   render() {
     const { date_created, question_text, user, q_id } = this.props;
-    const { answerList } = this.state;
 
     return (
       <div className="question-wrapper">
         <div className="question">
           <div className="question-extra-info">
-            <div className="question-text">{question_text}</div>
-            {/* <a className="question-user">{user}</a> */}
-            <div className="question-count">
-              {/* <div>{date_created}</div>
-                            <div>Votes</div> */}
-            </div>
-          </div>
-          <div className="question-date">{date_created}</div>
-          <div className="line" />
-          <div className="answer-list">
-            {answerList.map((x,key) => (
-              <div key ={key}>
-                {x.date_created}" "
-                {x.answer_text}
+            <Link to={"/question/"+q_id}>
+              <div className="question-text">{question_text}</div>
+              {/* <a className="question-user">{user}</a> */}
+              <div className="question-count">
+                {/* <div>{date_created}</div>
+                              <div>Votes</div> */}
               </div>
-            ))}
+            </Link>
           </div>
-          <div style={{ display: "flex" }}>
-            <textarea
-                ref="answer_text"
-              className="questionBox__answer-text"
-              onChange={e => this.handleChange(e)}
-            />
-            {/* <div className="question-title">{question_text}</div> */}
-            {/* <button className="replyButton" onClick={() => this.handleReplyButton(boxId)} value={this.boxId}>Reply</button> */}
-            <button
-              className="questionBox__reply-button"
-              onClick={() => this.handleReplyButton(q_id)}
-            >
-              Reply
-            </button>
-          </div>
+          <div className="line" />
+          <div className="question-date">{date_created}</div>
+          {/* <div className="line" /> */}
         </div>
       </div>
     );
