@@ -1,5 +1,8 @@
 import React from "react";
 import "./index.css";
+import {
+  Footer
+} from "../../components";
 import { getApiQuestionById, getApiAnswerById, postApiAnswer } from "../../utils/api";
 
 export class AnswerPage extends React.Component {
@@ -52,11 +55,28 @@ export class AnswerPage extends React.Component {
     const q_id = this.props.match.params.id;
     
     console.log(this.state);
+    console.log("# OF ANSWERS: " + answerList.length);
+
+    let numberOfAnswersTitle;
+    if(answerList.length == 0) {
+      numberOfAnswersTitle = (
+        <h2 className="noAnswerText">No answer yet...  Be the first one to reply!</h2>
+      )
+    } else if(answerList.length == 1) {
+      numberOfAnswersTitle = (
+        <h2 className="numberOfAnswersText">1 answer</h2>
+      )
+    } else {
+      numberOfAnswersTitle = (
+        <h2 className="numberOfAnswersText">{answerList.length} answers</h2>
+      )
+    }
 
     return (
       <div>
         <h1 className="questionTitle">{question}</h1>
         <div className="seperator" />
+        {numberOfAnswersTitle}
         {answerList !== []
           ? answerList.map((x, key) => {
               return (
@@ -82,6 +102,9 @@ export class AnswerPage extends React.Component {
             onClick={() => this.handleReplyButton(q_id)}>
             Reply
           </button>
+        </div>
+        <div className="footer-area">
+          <Footer handle />
         </div>
       </div>
     );
