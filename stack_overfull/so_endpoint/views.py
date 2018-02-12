@@ -55,7 +55,7 @@ class QuestionView(TemplateView):
             return JsonResponse({'question_list':serialized})
         else:
             try:
-                question = Question.objects.get(id=id)
+                question = Question.objects.get(id=q_id)
             except:
                 return HttpResponseServerError()
             serialized = QuestionSerializer(question).data
@@ -276,3 +276,117 @@ class UserLogoutView(TemplateView):
             return JsonResponse({'status':'done'})
         else:
             return JsonResponse({'error': 'User is not logged in'})
+
+
+class AnswerVoteView(TemplateView):
+
+    @method_decorator(csrf_exempt)  
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request):
+        try:
+            json_data = json.loads(request.body)
+            a_id = json_data['a_id']
+            try:
+                answer = Answer.objects.get(id=a_id)
+            except Answer.DoesNotExist:
+                return JsonResponse({'error': 'Answer id is not valid'}, status=400)
+
+            vote_type = json_data['vote_type']
+            
+            if request.user.is_authenticated:
+                user = request.user
+            else:
+                return JsonResponse({'error': 'User is not logged in'}, status=400)
+
+        except:
+            return JsonResponse({'error': 'There was an error extracting the parameters'}, status=400)
+
+        if vote_type == "UP":
+            if answer in user.profile.upvoted_answers.all():
+                return JsonResponse({'error': 'User has already voted for this answer'}, status=400)
+
+            if answer in user.profile.downvoted_answers.all():
+                user.profile.downvoted_answers.remove(answer)
+                answer.points += 1
+                answer.user_id.profile.update_profile_reputation(1)
+
+            user.profile.upvoted_answers.add(answer)
+            answer.points += 1
+            answer.user_id.profile.update_profile_reputation(1)
+            answer.save()
+            return JsonResponse({'sucess': 'Upvoted the answer'}, status=200)
+
+        elif vote_type == "DOWN":
+
+            if answer in user.profile.downvoted_answers.all():
+                return JsonResponse({'error': 'User has already voted for this answer'}, status=400)
+
+            if answer in user.profile.upvoted_answers.all():
+                user.profile.upvoted_answers.remove(answer)
+                answer.points -= 1
+                answer.user_id.profile.update_profile_reputation(-1)
+
+            user.profile.downvoted_answers.add(answer)
+            answer.points -= 1
+            answer.user_id.profile.update_profile_reputation(-1)
+            answer.save()
+            return JsonResponse({'sucess': 'Downvoted the answer'}, status=200)
+
+
+class QuestionVoteView(TemplateView):
+
+    @method_decorator(csrf_exempt)  
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request):
+        try:
+            json_data = json.loads(request.body)
+            q_id = json_data['q_id']
+            try:
+                question = Question.objects.get(id=q_id)
+            except Question.DoesNotExist:
+                return JsonResponse({'error': 'Question id is not valid'}, status=400)
+
+            vote_type = json_data['vote_type']
+            
+            if request.user.is_authenticated:
+                user = request.user
+            else:
+                return JsonResponse({'error': 'User is not logged in'}, status=400)
+
+        except:
+            return JsonResponse({'error': 'There was an error extracting the parameters'}, status=400)
+
+        if vote_type == "UP":
+            if question in user.profile.upvoted_questions.all():
+                return JsonResponse({'error': 'User has already voted for this question'}, status=400)
+
+            if question in user.profile.downvoted_questions.all():
+                user.profile.downvoted_questions.remove(question)
+                question.points += 1
+                question.user_id.profile.update_profile_reputation(1)
+
+            user.profile.upvoted_questions.add(question)
+            question.points += 1
+            question.user_id.profile.update_profile_reputation(1)
+            question.save()
+            return JsonResponse({'sucess': 'Upvoted the question'},status=200)
+
+        elif vote_type == "DOWN":
+
+            if question in user.profile.downvoted_questions.all():
+                return JsonResponse({'error': 'User has already voted for this question'},status=400)
+
+            if question in user.profile.upvoted_questions.all():
+                user.profile.upvoted_questions.remove(question)
+                question.points -= 1
+                question.user_id.profile.update_profile_reputation(-1)
+
+            user.profile.downvoted_questions.add(question)
+            question.points -= 1
+            question.user_id.profile.update_profile_reputation(-1)
+            question.save()
+            return JsonResponse({'sucess': 'Downvoted the question'},status=200)
