@@ -86,14 +86,8 @@ export function postApiQuestion(question) {
 
 //post answer
 export function postApiAnswer(answer, q_id) {
-  var parsedQ_id = parseInt(q_id);
   axios
-    .post("/api/answer/", {
-      params: {
-          answer: answer,
-          q_id: q_id
-      }
-    })//, qs.stringify({ answer: answer, q_id: parsedQ_id }))
+    .post("/api/answer/", {answer: answer, q_id: q_id})
     .then(function(response) {
       console.log("post answer response: ", response);
     })
