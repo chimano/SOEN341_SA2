@@ -5,7 +5,7 @@ import {
 } from "../../components";
 import { getApiQuestionById, getApiAnswerById, postApiAnswer } from "../../utils/api";
 
-export class QuestionPage extends React.Component {
+export class AnswerPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
