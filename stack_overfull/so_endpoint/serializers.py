@@ -13,14 +13,14 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Question
-        fields = ('id', 'user_id', 'question_text', 'accepted_answer_id', 'rejected_answers_ids', 'date_created')
+        fields = ('id', 'user_id', 'question_text', 'accepted_answer_id', 'rejected_answers_ids', 'date_created', 'points')
 
 class AnswerSerializer(serializers.ModelSerializer):
     user_id = AccountSerializer(read_only=True)
 
     class Meta:
         model = Answer
-        fields = ('id', 'user_id', 'answer_text', 'date_created')
+        fields = ('id', 'user_id', 'answer_text', 'date_created', 'points')
 
 
 def user_to_dict(user, many=False, fields=None, exclude=None):

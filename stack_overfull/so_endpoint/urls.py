@@ -16,14 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.generic import TemplateView
-from so_endpoint.views import QuestionView, AnswerView, AnswerAcceptView, AnswerRejectView
+from so_endpoint.views import QuestionView, AnswerView, AnswerAcceptView, AnswerRejectView, QuestionVoteView, AnswerVoteView
 from so_endpoint.views import UserRegisterView, UserLoginView, UserLogoutView, UserMeView, UserView
 
 urlpatterns = [
     re_path(r'question/$', QuestionView.as_view()),
+    re_path(r'question/vote/$', QuestionVoteView.as_view()),
     re_path(r'answer/$', AnswerView.as_view()),
-    re_path(r'answer/q_id=(?P<q_id>\d+)/(?:order=(?P<order>\D+)/)?(?:limit=(?P<limit>\d+)/)?$', AnswerView.as_view()),
-    re_path(r'answer/q_id=(?P<q_id>\d+)/(?:limit=(?P<limit>\d+)/)?(?:order=(?P<order>\D+)/)?$', AnswerView.as_view()),
+    re_path(r'answer/vote/$', AnswerVoteView.as_view()),
 
     re_path(r'answer/(?P<answer_id>\d+)/accept/$', AnswerAcceptView.as_view() ),
     re_path(r'answer/(?P<answer_id>\d+)/accept/undo/$', AnswerAcceptView.as_view(), {'undo':True} ),

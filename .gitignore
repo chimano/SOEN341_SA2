@@ -7,3 +7,4 @@ stack_overfull/stackoverfull.db
 __pychache__/
 package-lock.json
 hidden.py
+stack_overfull/so_endpoint/migrations/*
