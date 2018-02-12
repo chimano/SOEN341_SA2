@@ -1,2 +1,2 @@
-export * from './QuestionPage';
+export * from './AnswerPage';
 export * from './HomePage';
