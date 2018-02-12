@@ -1,17 +1,15 @@
 import React from "react";
 import "./index.css";
 import {
-  NavigationBar,
-  SignUpFormWindow,
-  SignInFormWindow,
   QuestionList,
-  Footer
+  Footer,
+  QuestionEdit,
+  AskQuestionButton
 } from "../../components";
 import {
   getApiQuestion,
   postApiQuestion,
   postApiAnswer,
-  postApiUserLogout,
   getApiUserMe
 } from "../../utils/api";
 
@@ -20,18 +18,16 @@ export class HomePage extends React.Component {
     super(props);
 
     this.state = {
-      open_signin: false,
-      open_signup: false,
-      logged_in: false,
       showCreateQuestionBox: false,
-      username: "",
       questionList: [],
-      answerList: []
+      username: ""
     };
-
-    this.getQuestionList();
-    this.handle_login();
   }
+
+  componentDidMount = () => {
+    console.log("hello");
+    this.getQuestionList();
+  };
 
   getQuestionList = () => {
     getApiQuestion().then(list => {
@@ -46,44 +42,23 @@ export class HomePage extends React.Component {
     setTimeout(() => this.getQuestionList(), 100);
   };
 
-  //to remove
-answerQuestion = (answer, q_id) => {
-    postApiAnswer(answer, q_id);
-  };
-  
-
-  handle_signup_button = () => {
-    this.setState({ open_signup: true, open_signin: false });
-  };
-
-  handle_signin_button = () => {
-    this.setState({ open_signin: true, open_signup: false });
-  };
-
-  handle_close_button = () => {
-    this.setState({ open_signin: false, open_signup: false });
-  };
-  handle_login = username => {
-    getApiUserMe().then((response)=>{
-      if(!response.error){
-        this.setState({ logged_in: true, username: response.data.username });        
-      }
-    })
-  };
-  handle_logout = () => {
-    postApiUserLogout()
-    this.setState({ logged_in: false, username: "" });
-  };
   handleAskQuestionButton = () => {
-    if (this.state.username === "") {
-      this.handle_signin_button();
-    } else {
-      this.openCreateQuestionBox();
-    }
+    getApiUserMe().then(response => {
+      if (!response.data.error) {
+        this.setState({
+          username: response.data.username
+        })
+        this.openCreateQuestionBox();
+      } else {
+        alert("You need to Sign In to ask a question");        
+      }
+    });
   };
+
   openCreateQuestionBox = () => {
     this.setState({ showCreateQuestionBox: true });
   };
+
   closeCreateQuestionBox = () => {
     this.setState({ showCreateQuestionBox: false });
   };
@@ -91,53 +66,33 @@ answerQuestion = (answer, q_id) => {
   render() {
     console.log(this.state);
 
-    var login_box;
-    if (this.state.open_signin === true) {
-      login_box = (
-        <div className="login-wrap">
-          <SignInFormWindow
-            handle_close_button={this.handle_close_button}
-            handle_login={this.handle_login}
-          />
-        </div>
-      );
-    } else if (this.state.open_signup === true) {
-      login_box = (
-        <div className="login-wrap">
-          <SignUpFormWindow
-            handle_close_button={this.handle_close_button}
-            handle_login={this.handle_login}
-          />
-        </div>
+    const { showCreateQuestionBox, questionList, username } = this.state;
+
+    let createQuestionBox;
+    if (showCreateQuestionBox) {
+      createQuestionBox = (
+        <QuestionEdit
+          user={username}
+          createQuestion={this.createQuestion}
+          closeCreateQuestionBox={this.closeCreateQuestionBox}
+        />
       );
     } else {
-      login_box = "";
+      createQuestionBox = "";
     }
 
     return (
-      <div>
-        <NavigationBar
-          handle_signup_button={this.handle_signup_button}
-          handle_signin_button={this.handle_signin_button}
-          handle_logout={this.handle_logout}
-          logged_in={this.state.logged_in}
-          username={this.state.username}
-        />
-        {login_box}
-        <div className="main">
-          <QuestionList
-            handleAskQuestionButton={this.handleAskQuestionButton}
-            showTopQuestions={this.state.showTopQuestions}
-            title={this.state.title}
-            username={this.state.username}
-            questionList={this.state.questionList}
-            createQuestion={this.createQuestion}
-            answerQuestion={this.answerQuestion}
-            handleShowTopQuestions={this.handleShowTopQuestions}
-            showCreateQuestionBox={this.state.showCreateQuestionBox}
-            closeCreateQuestionBox={this.closeCreateQuestionBox}
-          />
+      <div className="homepage-wrapper">
+        <div className="homepage-box">
+          <div className="question-list-title">
+            <h3>TOP QUESTIONS</h3>
+            <AskQuestionButton
+              handleAskQuestionButton={this.handleAskQuestionButton}
+            />
+          </div>
+          <QuestionList questionList={questionList} />
         </div>
+        {createQuestionBox}
         <div className="footer-area">
           <Footer handle />
         </div>

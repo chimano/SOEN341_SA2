@@ -1,5 +1,4 @@
 import React from "react";
-import { NavigationBar } from "../../components";
 import { getApiQuestionById, getApiAnswerById, postApiAnswer } from "../../utils/api";
 
 export class QuestionPage extends React.Component {
@@ -55,7 +54,6 @@ export class QuestionPage extends React.Component {
 
     return (
       <div>
-        <NavigationBar />
         {question}
         {answerList !== []
           ? answerList.map((x, key) => {

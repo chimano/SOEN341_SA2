@@ -6,3 +6,4 @@ export * from './QuestionList';
 export * from './SearchBar';
 export * from './SignInForm';
 export * from './SignUpForm';
+export * from './AskQuestionButton';
