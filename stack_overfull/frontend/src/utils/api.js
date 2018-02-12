@@ -5,9 +5,9 @@ import qs from "qs";
 export function getApiQuestionById(id) {
   return new Promise((resolve, reject) => {
     axios
-      .get("/api/question/"+id)
+      .get("/api/question/" + id)
       .then(response => {
-        console.log("get question: ",response);
+        console.log("get question: ", response);
         resolve(response);
       })
       .catch(function(error) {
@@ -22,7 +22,7 @@ export function getApiQuestion() {
     axios
       .get("/api/question/order=desc/limit=10/")
       .then(response => {
-        console.log("get question list: ",response);
+        console.log("get question list: ", response);
         resolve(response.data.question_list);
       })
       .catch(function(error) {
@@ -38,7 +38,7 @@ export function getApiAnswerById(q_id) {
     axios
       .get("/api/answer/q_id=" + id + "/order=asc/limit=100/")
       .then(response => {
-        console.log("get answer response: ",response);
+        console.log("get answer response: ", response);
         resolve(response.data.answer_list);
       })
       .catch(function(error) {
@@ -53,7 +53,7 @@ export function getApiUserMe() {
     axios
       .get("/api/user/me")
       .then(response => {
-        console.log("Get my info: ",response);
+        console.log("Get my info: ", response);
         resolve(response);
       })
       .catch(function(error) {
@@ -67,7 +67,7 @@ export function postApiQuestion(question) {
   axios
     .post("/api/question/", qs.stringify({ question: question }))
     .then(function(response) {
-      console.log("post question response: ",response);
+      console.log("post question response: ", response);
     })
     .catch(function(error) {
       console.log(error);
@@ -80,7 +80,7 @@ export function postApiAnswer(answer, q_id) {
   axios
     .post("/api/answer/", qs.stringify({ answer: answer, q_id: parsedQ_id }))
     .then(function(response) {
-      console.log("post answer response: ",response);
+      console.log("post answer response: ", response);
     })
     .catch(function(error) {
       console.log(error);
@@ -96,7 +96,7 @@ export function postApiUserLogin(username, password) {
         password: password
       })
       .then(response => {
-        console.log("login response: ",response);
+        console.log("login response: ", response);
         resolve(response);
       })
       .catch(error => {
@@ -111,9 +111,28 @@ export function postApiUserLogout() {
   axios
     .post("/api/user/logout/")
     .then(function(response) {
-      console.log("logout response: ",response);
+      console.log("logout response: ", response);
     })
     .catch(function(error) {
       console.log(error);
     });
+}
+
+//register user
+export function postApiUserRegister(username, password) {
+  return new Promise((resolve, reject) => {
+    axios
+      .post("/api/user/register/", {
+        username: username,
+        password: password
+      })
+      .then(function(response) {
+        console.log("register response: ", response);
+        resolve(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+        reject(error);
+      });
+  });
 }

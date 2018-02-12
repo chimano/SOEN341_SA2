@@ -17,6 +17,26 @@ html {
     background-color: rgba(0, 0, 0, 0.7);
 }
 
-.main {
+.homepage-wrapper {
     background-color: rgb(241, 241, 241);
+}
+
+.homepage-box {
+    max-width: 1140px;
+    margin: auto;
+}
+
+.question-list-title {
+    padding: 10px;
+    padding-top: 20px;
+    font-size: 20px;
+    display: flex;
+}
+
+.question-list-title button{
+    width: 200px;
+}
+
+.question-list-title h3 {
+    width: 100%;
 }

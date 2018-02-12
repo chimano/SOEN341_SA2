@@ -1,7 +1,7 @@
 import React from "react";
 import "./index.css";
 import { Form, Input, Tooltip, Icon, Checkbox, Button } from "antd";
-import axios from "axios";
+import { postApiUserRegister } from "../../utils/api";
 
 const FormItem = Form.Item;
 
@@ -40,13 +40,9 @@ class SignUpForm extends React.Component {
   };
 
   doUserRegisterRequest(username, password) {
-    axios
-      .post("api/user/register/", {
-        username: username,
-        password: password
-      })
-      .then(response => this.onUserRegisterResponse(response))
-      .catch(error => this.onUserRegisterResponse(error.response));
+    postApiUserRegister(username, password).then(response => {
+      this.onUserRegisterResponse(response);
+    });
   }
 
   onUserRegisterResponse(response) {
@@ -60,6 +56,8 @@ class SignUpForm extends React.Component {
     if (!response.data.error) {
       handle_close_button();
       handle_login(response.data.username);
+    } else {
+      alert(response.data.error);
     }
   }
 
