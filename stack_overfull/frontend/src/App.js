@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { HomePage, QuestionPage } from "./pages";
+import { HomePage, AnswerPage } from "./pages";
 import { Route, Switch } from "react-router-dom";
 import { NavigationBar } from "./components";
 import { getApiUserMe, postApiUserLogout } from "./utils/api";
@@ -44,7 +44,7 @@ export default class App extends React.Component {
         />
         <Switch>
           <Route exact path="/" component={HomePage} />
-          <Route path="/question/:id" component={QuestionPage} />
+          <Route path="/question/:id" component={AnswerPage} />
         </Switch>
       </main>
     );

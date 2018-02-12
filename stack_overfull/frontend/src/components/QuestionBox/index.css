@@ -31,6 +31,10 @@
     overflow: auto;
 }
 
+.question-date {
+    margin-top: 1%;
+}
+
 .question-extra-info {
     display: flex;
 }

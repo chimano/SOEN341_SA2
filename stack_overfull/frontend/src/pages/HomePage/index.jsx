@@ -1,5 +1,6 @@
 import React from "react";
 import "./index.css";
+import axios from "axios";
 import {
   QuestionList,
   Footer,
@@ -10,8 +11,9 @@ import {
   getApiQuestion,
   postApiQuestion,
   postApiAnswer,
-  getApiUserMe
+  getApiUserMe,
 } from "../../utils/api";
+import { postApiUserLogout } from "../../utils/api";
 
 export class HomePage extends React.Component {
   constructor(props) {
@@ -30,18 +32,72 @@ export class HomePage extends React.Component {
   };
 
   getQuestionList = () => {
-    getApiQuestion().then(list => {
-      this.setState({
-        questionList: list
+    axios
+      .get("/api/question/", {
+          params: {
+              order: 'desc',
+              limit: 10
+          }
+      })
+      .then(response => {
+        console.log(response);
+        this.setState({
+          questionList: response.data.question_list
+        });
+      })
+      .catch(function(error) {
+        console.log(error);
       });
-    });
   };
 
   createQuestion = question => {
-    postApiQuestion(question);
+    axios
+      .post("/api/question/", { question: question })
+      .then(function(response) {
+        console.log(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
     setTimeout(() => this.getQuestionList(), 100);
   };
 
+  answerQuestion(answer, q_id) {
+    var parsedQ_id = parseInt(q_id);
+    console.log("parsed_q_id", parsedQ_id);
+    console.log("answer:", answer);
+    axios
+      .post("/api/answer/", { answer: answer, q_id: parsedQ_id })
+      .then(function(response) {
+        console.log(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  }
+
+  handle_signup_button = () => {
+    this.setState({ open_signup: true, open_signin: false });
+  };
+
+  handle_signin_button = () => {
+    this.setState({ open_signin: true, open_signup: false });
+  };
+
+  handle_close_button = () => {
+    this.setState({ open_signin: false, open_signup: false });
+  };
+  handle_login = username => {
+    getApiUserMe().then((response)=>{
+      if(!response.error){
+        this.setState({ logged_in: true, username: response.data.username });        
+      }
+    })
+  };
+  handle_logout = () => {
+    postApiUserLogout()
+    this.setState({ logged_in: false, username: "" });
+  };
   handleAskQuestionButton = () => {
     getApiUserMe().then(response => {
       if (!response.data.error) {
