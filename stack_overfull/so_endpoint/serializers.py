@@ -13,7 +13,7 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Question
-        fields = ('id', 'user_id', 'question_text', 'date_created')
+        fields = ('id', 'user_id', 'question_text', 'accepted_answer_id', 'rejected_answers_ids', 'date_created')
 
 class AnswerSerializer(serializers.ModelSerializer):
     user_id = AccountSerializer(read_only=True)

@@ -99,7 +99,7 @@ class AnswerView(TemplateView):
         limit = int(request.GET.get('limit', 10))
         order = request.GET.get('order', 'desc')
         q_id = request.GET.get('q_id', None)
-        
+
         if order == "desc":
             modifier = '-'
         else:
@@ -112,6 +112,67 @@ class AnswerView(TemplateView):
         answers = Answer.objects.filter(question_id=q_id).order_by(modifier + 'date_created')[:limit]
         serialized = AnswerSerializer(answers, many=True).data
         return JsonResponse({'answer_list':serialized})
+
+#Accept or undo accept an answer
+class AnswerAcceptView(TemplateView):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, answer_id, undo=False):
+
+        try:
+            answer = Answer.objects.get(pk=answer_id)
+            to_question = answer.question_id
+
+        except ObjectDoesNotExist as e: # nonexistant answer_id
+            print(repr(e))
+            return JsonResponse({'error': repr(e)}, status=400)
+
+        if not request.user.is_authenticated:
+            return JsonResponse({'error': 'User is not authenticated'})
+
+        if to_question.user_id != request.user:
+            return JsonResponse({'error': 'User is not the author of the question'})
+
+        #if question.accepted_answer_id is not None and undo is False:
+        #    return JSONResponse({'error': 'An answer to the question is alreay accepted'})
+
+        if undo is True and to_question.accepted_answer_id != answer:
+            return JsonResponse({'error': "Can't undo since the answer is not accepted"})
+
+        to_question.accepted_answer_id = None if undo else answer
+        to_question.save()
+        return JsonResponse(QuestionSerializer(to_question).data)
+
+class AnswerRejectView(TemplateView):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, answer_id, undo=False):
+
+        try:
+            answer = Answer.objects.get(pk=answer_id)
+            to_question = answer.question_id
+
+        except ObjectDoesNotExist as e: # nonexistant answer_id
+            print(repr(e))
+            return JsonResponse({'error': repr(e)}, status=400)
+
+        if not request.user.is_authenticated:
+            return JsonResponse({'error': 'User is not authenticated'})
+
+        if to_question.user_id != request.user:
+            return JsonResponse({'error': 'User is not the author of the question'})
+
+        if not undo:
+            to_question.rejected_answers_ids.add(answer)
+        else:
+            to_question.rejected_answers_ids.remove(answer)
+
+        to_question.save()
+        return JsonResponse(QuestionSerializer(to_question).data)
 
 
 # Return the list of users in the database
