@@ -9,7 +9,7 @@ class Question(models.Model):
     question_text = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True)
     #https://stackoverflow.com/questions/2606194/django-error-message-add-a-related-name-argument-to-the-definition
-    accepted_answer_id = models.ForeignKey('Answer', on_delete=models.SET_NULL, null=True, related_name='accepted_answer_set')
+    accepted_answer_id = models.OneToOneField('Answer', on_delete=models.SET_NULL, null=True, related_name='accepted_answer_set')
     rejected_answers_ids = models.ManyToManyField('Answer', related_name='rejected_answers_set')
 
 class Answer(models.Model):
@@ -17,7 +17,6 @@ class Answer(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     answer_text = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True)
-
 
 #User Profile
 #https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html

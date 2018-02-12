@@ -119,13 +119,13 @@ class AnswerAcceptView(TemplateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request, answer_id, undo=False):
+    def post(self, request, answer_id, undo=False):
 
         try:
             answer = Answer.objects.get(pk=answer_id)
             to_question = answer.question_id
 
-        except ObjectDoesNotExist as e: # nonexistant answer_id
+        except ObjectDoesNotExist as e: # nonexistent answer_id
             print(repr(e))
             return JsonResponse({'error': repr(e)}, status=400)
 
@@ -150,13 +150,13 @@ class AnswerRejectView(TemplateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request, answer_id, undo=False):
+    def post(self, request, answer_id, undo=False):
 
         try:
             answer = Answer.objects.get(pk=answer_id)
             to_question = answer.question_id
 
-        except ObjectDoesNotExist as e: # nonexistant answer_id
+        except ObjectDoesNotExist as e: # nonexistent answer_id
             print(repr(e))
             return JsonResponse({'error': repr(e)}, status=400)
 
