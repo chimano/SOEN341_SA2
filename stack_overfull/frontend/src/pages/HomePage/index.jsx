@@ -26,7 +26,6 @@ export class HomePage extends React.Component {
   }
 
   componentDidMount = () => {
-    console.log("hello");
     this.getQuestionList();
   };
 
@@ -45,8 +44,8 @@ export class HomePage extends React.Component {
 
   answerQuestion(answer, q_id) {
     var parsedQ_id = parseInt(q_id);
-    console.log("parsed_q_id", parsedQ_id);
-    console.log("answer:", answer);
+    // console.log("parsed_q_id", parsedQ_id);
+    // console.log("answer:", answer);
     postApiAnswer(answer, q_id);
   }
 
@@ -94,7 +93,7 @@ export class HomePage extends React.Component {
   };
 
   render() {
-    console.log(this.state);
+    console.log("HomePage state: ",this.state);
 
     const { showCreateQuestionBox, questionList, username } = this.state;
 

@@ -19,7 +19,6 @@ export default class App extends React.Component {
 
   handle_login = () => {
     getApiUserMe().then(response => {
-      console.log(response);
       if (!response.data.error) {
         this.setState({ logged_in: true, username: response.data.username });
       }
@@ -32,7 +31,7 @@ export default class App extends React.Component {
   };
 
   render() {
-    console.log(this.state);
+    console.log("App.js state: ",this.state);
 
     return (
       <main>

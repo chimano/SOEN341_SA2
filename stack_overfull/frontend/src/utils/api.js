@@ -52,7 +52,7 @@ export function getApiAnswerById(id, order, limit) {
         }
       })
       .then(response => {
-        console.log("get answer response: ", response);
+        console.log("get answer by id: ", response);
         resolve(response.data.answer_list);
       })
       .catch(function(error) {
@@ -67,7 +67,7 @@ export function getApiUserMe() {
     axios
       .get("/api/user/me")
       .then(response => {
-        console.log("Get my info: ", response);
+        console.log("get my info: ", response);
         resolve(response);
       })
       .catch(function(error) {
