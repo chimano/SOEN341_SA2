@@ -4,7 +4,8 @@ import { Footer } from "../../components";
 import {
   getApiQuestionById,
   getApiAnswerById,
-  postApiAnswer
+  postApiAnswer,
+  getApiUserMe
 } from "../../utils/api";
 
 export class AnswerPage extends React.Component {
@@ -39,10 +40,17 @@ export class AnswerPage extends React.Component {
   };
 
   handleReplyButton = q_id => {
-    console.log("ID IS : " + q_id);
-    this.answerQuestion(this.state.answer, q_id);
-    setTimeout(() => this.getAnswerList(), 100);
-    this.refs.answer_text.value = "";
+    getApiUserMe().then(response => {
+      //make sure user is logged in before replying
+      if (!response.data.error) {
+        console.log("ID IS : " + q_id);
+        this.answerQuestion(this.state.answer, q_id);
+        setTimeout(() => this.getAnswerList(), 500);
+        this.refs.answer_text.value = "";
+      } else {
+        alert("You need to be logged in to reply!");
+      }
+    });
   };
 
   answerQuestion = (answer, q_id) => {
