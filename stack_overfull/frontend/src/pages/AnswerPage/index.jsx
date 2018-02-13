@@ -1,9 +1,11 @@
 import React from "react";
 import "./index.css";
+import { Footer } from "../../components";
 import {
-  Footer
-} from "../../components";
-import { getApiQuestionById, getApiAnswerById, postApiAnswer } from "../../utils/api";
+  getApiQuestionById,
+  getApiAnswerById,
+  postApiAnswer
+} from "../../utils/api";
 
 export class AnswerPage extends React.Component {
   constructor(props) {
@@ -13,6 +15,7 @@ export class AnswerPage extends React.Component {
       answerList: [],
       answer: ""
     };
+
     this.getQuestion();
     this.getAnswerList();
   }
@@ -28,14 +31,14 @@ export class AnswerPage extends React.Component {
 
   getAnswerList = () => {
     const q_id = this.props.match.params.id;
-    getApiAnswerById(q_id).then(list => {
+    getApiAnswerById(q_id, "desc", 100).then(list => {
       this.setState({
         answerList: list
       });
     });
   };
 
-  handleReplyButton = (q_id) => {
+  handleReplyButton = q_id => {
     console.log("ID IS : " + q_id);
     this.answerQuestion(this.state.answer, q_id);
     setTimeout(() => this.getAnswerList(), 100);
@@ -53,23 +56,23 @@ export class AnswerPage extends React.Component {
   render() {
     const { question, answerList } = this.state;
     const q_id = this.props.match.params.id;
-    
+
     console.log(this.state);
     console.log("# OF ANSWERS: " + answerList.length);
 
     let numberOfAnswersTitle;
-    if(answerList.length == 0) {
+    if (answerList.length == 0) {
       numberOfAnswersTitle = (
-        <h2 className="noAnswerText">No answer yet...  Be the first one to reply!</h2>
-      )
-    } else if(answerList.length == 1) {
-      numberOfAnswersTitle = (
-        <h2 className="numberOfAnswersText">1 answer</h2>
-      )
+        <h2 className="noAnswerText">
+          No answer yet... Be the first one to reply!
+        </h2>
+      );
+    } else if (answerList.length == 1) {
+      numberOfAnswersTitle = <h2 className="numberOfAnswersText">1 answer</h2>;
     } else {
       numberOfAnswersTitle = (
         <h2 className="numberOfAnswersText">{answerList.length} answers</h2>
-      )
+      );
     }
 
     return (
@@ -82,7 +85,9 @@ export class AnswerPage extends React.Component {
               return (
                 <div className="answerBox" key={key}>
                   <div className="answerText">{x.answer_text}</div>
-                  <div className="dateText">{((x.date_created).replace("T", " at ")).substring(0,19)}</div>
+                  <div className="dateText">
+                    {x.date_created.replace("T", " at ").substring(0, 19)}
+                  </div>
                 </div>
               );
             })
@@ -99,7 +104,8 @@ export class AnswerPage extends React.Component {
           {/* <button className="replyButton" onClick={() => this.handleReplyButton(boxId)} value={this.boxId}>Reply</button> */}
           <button
             className="questionBox_reply-button"
-            onClick={() => this.handleReplyButton(q_id)}>
+            onClick={() => this.handleReplyButton(q_id)}
+          >
             Reply
           </button>
         </div>
