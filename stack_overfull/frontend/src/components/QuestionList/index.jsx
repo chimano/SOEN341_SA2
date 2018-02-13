@@ -17,6 +17,8 @@ export class QuestionList extends React.Component {
               date_created={((x.date_created).replace("T", " at ")).substring(0,19)}
               question_text={x.question_text}
               q_id={x.id}
+              username={x.user_id.username}
+              points={x.points}
             />
           ))}
         </div>
