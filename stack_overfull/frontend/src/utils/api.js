@@ -1,5 +1,4 @@
 import axios from "axios";
-import qs from "qs";
 
 //get single question by id
 export function getApiQuestionById(id) {

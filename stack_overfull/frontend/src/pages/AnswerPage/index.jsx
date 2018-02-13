@@ -61,13 +61,13 @@ export class AnswerPage extends React.Component {
     console.log("# OF ANSWERS: " + answerList.length);
 
     let numberOfAnswersTitle;
-    if (answerList.length == 0) {
+    if (answerList.length === 0) {
       numberOfAnswersTitle = (
         <h2 className="noAnswerText">
           No answer yet... Be the first one to reply!
         </h2>
       );
-    } else if (answerList.length == 1) {
+    } else if (answerList.length === 1) {
       numberOfAnswersTitle = <h2 className="numberOfAnswersText">1 answer</h2>;
     } else {
       numberOfAnswersTitle = (
