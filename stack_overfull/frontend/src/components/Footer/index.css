@@ -1,19 +1,26 @@
 .footer {
-    background-color: rgb(38, 18, 155);
-    -webkit-text-fill-color: antiquewhite;
-    padding: 15px;
-    display: flex;
-    flex-wrap: wrap;
+  max-width: inherit;
+  width: 100%;
+  background-color: rgb(38, 18, 155);
+  -webkit-text-fill-color: antiquewhite;
+  padding: 10px;
+  display: flex;
+}
+.footer-one{
+  margin-left: 200px;
+  list-style: none;
+  display: block;
+  width: 100%;
 }
 
-.footer__list {
-    width: 250px;
+.footer-two {
+  margin: 0,auto;
+  list-style: none;
+  display: block;
+  width: 100%;
 }
 
-.footer ul {
-    list-style: none;
-}
-
-.footer p {
-    text-orientation: sideways-right;
+.footer icon Icon{
+  font-size:25px;
+  margin: 5px;
 }

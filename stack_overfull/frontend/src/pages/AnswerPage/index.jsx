@@ -4,6 +4,7 @@ import {
   Footer, AcceptRejectButton
 } from "../../components";
 import { getApiQuestionById, getApiAnswerById, postApiAnswer, getApiUserMe } from "../../utils/api";
+  
 
 export class AnswerPage extends React.Component {
   constructor(props) {
@@ -17,6 +18,7 @@ export class AnswerPage extends React.Component {
       rejected_answers_ids: [],
       verified: false
     };
+
     this.getQuestion();
     this.getAnswerList();
     this.verifyUserAccess();
@@ -53,14 +55,14 @@ export class AnswerPage extends React.Component {
 
   getAnswerList = () => {
     const q_id = this.props.match.params.id;
-    getApiAnswerById(q_id).then(list => {
+    getApiAnswerById(q_id, "desc", 100).then(list => {
       this.setState({
         answerList: list
       });
     });
   };
 
-  handleReplyButton = (q_id) => {
+  handleReplyButton = q_id => {
     console.log("ID IS : " + q_id);
     this.answerQuestion(this.state.answer, q_id);
     setTimeout(() => this.getAnswerList(), 100);
@@ -97,12 +99,16 @@ export class AnswerPage extends React.Component {
       )
     } else if (answerList.length == 1) {
       numberOfAnswersTitle = (
-        <h2 className="numberOfAnswersText">1 answer</h2>
-      )
+        <h2 className="noAnswerText">
+          No answer yet... Be the first one to reply!
+        </h2>
+      );
+    } else if (answerList.length == 1) {
+      numberOfAnswersTitle = <h2 className="numberOfAnswersText">1 answer</h2>;
     } else {
       numberOfAnswersTitle = (
         <h2 className="numberOfAnswersText">{answerList.length} answers</h2>
-      )
+      );
     }
 
     var answerListBox = []
@@ -169,7 +175,8 @@ export class AnswerPage extends React.Component {
           {/* <button className="replyButton" onClick={() => this.handleReplyButton(boxId)} value={this.boxId}>Reply</button> */}
           <button
             className="questionBox_reply-button"
-            onClick={() => this.handleReplyButton(q_id)}>
+            onClick={() => this.handleReplyButton(q_id)}
+          >
             Reply
           </button>
         </div>
