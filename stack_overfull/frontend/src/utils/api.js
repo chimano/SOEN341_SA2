@@ -132,12 +132,13 @@ export function postApiUserLogout() {
 }
 
 //register user
-export function postApiUserRegister(username, password) {
+export function postApiUserRegister(username, password, email) {
   return new Promise((resolve, reject) => {
     axios
       .post("/api/user/register/", {
         username: username,
-        password: password
+        password: password,
+        email: email
       })
       .then(function(response) {
         console.log("register response: ", response);
