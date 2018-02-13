@@ -5,13 +5,13 @@ import qs from "qs";
 export function getApiQuestionById(id) {
   return new Promise((resolve, reject) => {
     axios
-      .get("/api/question/",{
+      .get("/api/question/", {
         params: {
-            id: id
+          id: id
         }
       })
       .then(response => {
-        console.log("get question: ", response);
+        console.log("get single question: ", response);
         resolve(response);
       })
       .catch(function(error) {
@@ -21,13 +21,18 @@ export function getApiQuestionById(id) {
 }
 
 //get the list of questions
-export function getApiQuestion() {
+export function getApiQuestion(order, limit) {
   return new Promise((resolve, reject) => {
     axios
-      .get("/api/question/order=desc/limit=10/")
+      .get("/api/question/", {
+        params: {
+          order: order,
+          limit: limit
+        }
+      })
       .then(response => {
         console.log("get question list: ", response);
-        resolve(response.data.question_list);
+        resolve(response);
       })
       .catch(function(error) {
         console.log(error);
@@ -36,17 +41,16 @@ export function getApiQuestion() {
 }
 
 //get answer by id of the question
-export function getApiAnswerById(q_id) {
-  var id = q_id;
+export function getApiAnswerById(id, order, limit) {
   return new Promise((resolve, reject) => {
     axios
       .get("/api/answer/", {
         params: {
           q_id: id,
-          order: "asc",
-          limit: 100
+          order: order,
+          limit: limit
         }
-      }) //q_id=" + id + "/order=asc/limit=100/")
+      })
       .then(response => {
         console.log("get answer response: ", response);
         resolve(response.data.answer_list);
@@ -75,7 +79,7 @@ export function getApiUserMe() {
 //post question
 export function postApiQuestion(question) {
   axios
-    .post("/api/question/", qs.stringify({ question: question }))
+    .post("/api/question/", { question: question })
     .then(function(response) {
       console.log("post question response: ", response);
     })
@@ -87,7 +91,7 @@ export function postApiQuestion(question) {
 //post answer
 export function postApiAnswer(answer, q_id) {
   axios
-    .post("/api/answer/", {answer: answer, q_id: q_id})
+    .post("/api/answer/", { answer: answer, q_id: q_id })
     .then(function(response) {
       console.log("post answer response: ", response);
     })
