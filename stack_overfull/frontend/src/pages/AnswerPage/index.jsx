@@ -1,9 +1,9 @@
 import React from "react";
 import "./index.css";
 import {
-  Footer
+  Footer, AcceptRejectButton
 } from "../../components";
-import { getApiQuestionById, getApiAnswerById, postApiAnswer } from "../../utils/api";
+import { getApiQuestionById, getApiAnswerById, postApiAnswer, getApiUserMe } from "../../utils/api";
 
 export class AnswerPage extends React.Component {
   constructor(props) {
@@ -11,17 +11,42 @@ export class AnswerPage extends React.Component {
     this.state = {
       question: "",
       answerList: [],
-      answer: ""
+      answer: "",
+      userName: "",
+      accepted_answer_id: "",
+      rejected_answers_ids: [],
+      verified: false
     };
     this.getQuestion();
     this.getAnswerList();
+    this.verifyUserAccess();
   }
+
+  verifyUserAccess = () => {
+    const q_id = this.props.match.params.id;
+    getApiUserMe().then(response => {
+      this.setState({
+        userName: response.data.username
+      })
+      getApiQuestionById(q_id).then(response => {
+        var user = response.data.user_id.username;
+        if (user === this.state.userName) {
+          this.setState({
+            verfied: true
+          })
+        }
+      })
+    });
+  }
+
 
   getQuestion = () => {
     const q_id = this.props.match.params.id;
     getApiQuestionById(q_id).then(response => {
       this.setState({
-        question: response.data.question_text
+        question: response.data.question_text,
+        accepted_answer_id: response.data.accepted_answer_id,
+        rejected_answers_ids: response.data.rejected_answers_ids
       });
     });
   };
@@ -50,19 +75,27 @@ export class AnswerPage extends React.Component {
     this.setState({ answer: event.target.value });
   };
 
+  handleAccept = event => {
+    console.log("this is a test")
+  }
+
+  handleReject = event => {
+    console.log("this is a test")
+  }
+
   render() {
     const { question, answerList } = this.state;
     const q_id = this.props.match.params.id;
-    
+
     console.log(this.state);
     console.log("# OF ANSWERS: " + answerList.length);
 
     let numberOfAnswersTitle;
-    if(answerList.length == 0) {
+    if (answerList.length == 0) {
       numberOfAnswersTitle = (
         <h2 className="noAnswerText">No answer yet...  Be the first one to reply!</h2>
       )
-    } else if(answerList.length == 1) {
+    } else if (answerList.length == 1) {
       numberOfAnswersTitle = (
         <h2 className="numberOfAnswersText">1 answer</h2>
       )
@@ -72,21 +105,58 @@ export class AnswerPage extends React.Component {
       )
     }
 
+    var answerListBox = []
+    var acceptFound = false;
+    answerList.map((x, key) => {
+      if (this.state.verfied === true){
+        if (x.is_accepted === true) {
+          answerListBox.push(<div className="answerBox answerBox--green" key={key}>
+            <div className="answerText">{x.answer_text}</div>
+            <div className="dateText">{((x.date_created).replace("T", " at ")).substring(0, 19)}</div>
+            <AcceptRejectButton handleAccept={this.handleAccept} handleReject={this.handleReject} Accepted={true} Rejected={false} />
+          </div>)
+        }
+        else if (x.is_rejected === true) {
+          answerListBox.push(<div className="answerBox answerBox--red" key={key}>
+            <div className="answerText">{x.answer_text}</div>
+            <div className="dateText">{((x.date_created).replace("T", " at ")).substring(0, 19)}</div>
+            <AcceptRejectButton handleAccept={this.handleAccept} handleReject={this.handleReject} Accepted={false} Rejected={true} />
+          </div>)
+        }
+        else {
+          answerListBox.push(<div className="answerBox answerBox--blue" key={key}>
+            <div className="answerText">{x.answer_text}</div>
+            <div className="dateText">{((x.date_created).replace("T", " at ")).substring(0, 19)}</div>
+            <AcceptRejectButton handleAccept={this.handleAccept} handleReject={this.handleReject} Accepted={false} Rejected={false} />
+          </div>)
+        }
+      }
+      else {
+        answerListBox.push(<div className="answerBox answerBox--blue" key={key}>
+        <div className="answerText">{x.answer_text}</div>
+        <div className="dateText">{((x.date_created).replace("T", " at ")).substring(0, 19)}</div>
+      </div>)
+      }
+    })
+
+    // answerList.map((x,key) => {
+    //   if(!(acceptFound && x.id === this.state.accepted_answer_id)){
+    //     if(this.state.rejected_answers_ids.includes(x.id)) {
+    //       answerListBox.push(<div key={key}>red</div>)
+    //     }
+    //     else{
+    //       answerListBox.push(<div key={key}>blue</div>)
+    //     }
+    //   }
+
+    // }) 
+
     return (
       <div>
         <h1 className="questionTitle">{question}</h1>
         <div className="seperator" />
         {numberOfAnswersTitle}
-        {answerList !== []
-          ? answerList.map((x, key) => {
-              return (
-                <div className="answerBox" key={key}>
-                  <div className="answerText">{x.answer_text}</div>
-                  <div className="dateText">{((x.date_created).replace("T", " at ")).substring(0,19)}</div>
-                </div>
-              );
-            })
-          : ""}
+        {answerListBox}
         <div className="seperator" />
         <div className="yourAnswerArea">
           <h2 className="yourAnswerTitle">Your Answer</h2>
