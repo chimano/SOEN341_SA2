@@ -1,5 +1,5 @@
 import React from "react";
-import { QuestionBox } from "../QuestionBox";
+import {QuestionBox} from "../QuestionBox";
 import "./index.css";
 
 export class QuestionList extends React.Component {
@@ -23,7 +23,6 @@ export class QuestionList extends React.Component {
           ))}
         </div>
       </div>
-
     );
   }
 }
