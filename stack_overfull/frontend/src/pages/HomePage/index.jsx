@@ -31,7 +31,7 @@ export class HomePage extends React.Component {
   };
 
   getQuestionList = () => {
-    getApiQuestion("asc", 12).then(response => {
+    getApiQuestion("desc", 36, "date_created").then(response => {
       this.setState({
         questionList: response.data.question_list
       });

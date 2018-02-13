@@ -20,13 +20,14 @@ export function getApiQuestionById(id) {
 }
 
 //get the list of questions
-export function getApiQuestion(order, limit) {
+export function getApiQuestion(order, limit, sort) {
   return new Promise((resolve, reject) => {
     axios
       .get("/api/question/", {
         params: {
           order: order,
-          limit: limit
+          limit: limit,
+          sort: sort
         }
       })
       .then(response => {
