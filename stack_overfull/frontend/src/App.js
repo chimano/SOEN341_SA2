@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 import { HomePage, AnswerPage } from "./pages";
 import { Route, Switch } from "react-router-dom";
-import { NavigationBar } from "./components";
+import { NavigationBar, Footer } from "./components";
 import { getApiUserMe, postApiUserLogout } from "./utils/api";
 
 export default class App extends React.Component {
@@ -45,6 +45,7 @@ export default class App extends React.Component {
           <Route exact path="/" component={HomePage} />
           <Route path="/question/:id" component={AnswerPage} />
         </Switch>
+        <Footer />
       </main>
     );
   }

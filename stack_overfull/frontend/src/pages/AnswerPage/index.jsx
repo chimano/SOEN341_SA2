@@ -117,9 +117,6 @@ export class AnswerPage extends React.Component {
             Reply
           </button>
         </div>
-        <div className="footer-area">
-          <Footer handle />
-        </div>
       </div>
     );
   }
