@@ -7,3 +7,4 @@ export * from './SearchBar';
 export * from './SignInForm';
 export * from './SignUpForm';
 export * from './AskQuestionButton';
+export * from './AcceptRejectButton';

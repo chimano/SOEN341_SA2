@@ -150,3 +150,67 @@ export function postApiUserRegister(username, password, email) {
       });
   });
 }
+
+//Accept answer
+export function postApiAnswerIdAccept(id) {
+  return new Promise((resolve, reject) => {
+    axios
+      .post("/api/answer/"+id+"/accept/")
+      .then(function(response) {
+        console.log("Accept answer: ", response);
+        resolve(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+        reject(error);
+      });
+  });
+}
+
+//Reject answer
+export function postApiAnswerIdReject(id) {
+  return new Promise((resolve, reject) => {
+    axios
+      .post("/api/answer/"+id+"/reject/")
+      .then(function(response) {
+        console.log("reject answer: ", response);
+        resolve(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+        reject(error);
+      });
+  });
+}
+
+//Undo accept answer
+export function postApiAnswerIdAcceptUndo(id) {
+  return new Promise((resolve, reject) => {
+    axios
+      .post("/api/answer/"+id+"/accept/undo/")
+      .then(function(response) {
+        console.log("undo accept answer: ", response);
+        resolve(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+        reject(error);
+      });
+  });
+}
+
+//Undo reject answer
+export function postApiAnswerIdRejectUndo(id) {
+  return new Promise((resolve, reject) => {
+    axios
+      .post("/api/answer/"+id+"/reject/undo/")
+      .then(function(response) {
+        console.log("undo reject answer: ", response);
+        resolve(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+        reject(error);
+      });
+  });
+}
