@@ -2,6 +2,7 @@ import React from "react";
 import "./index.css";
 import {
   QuestionList,
+  Footer,
   QuestionEdit,
   AskQuestionButton
 } from "../../components";
@@ -121,6 +122,9 @@ export class HomePage extends React.Component {
           <QuestionList questionList={questionList} />
         </div>
         {createQuestionBox}
+        <div className="footer-area">
+          <Footer/>
+        </div>
       </div>
     );
   }
