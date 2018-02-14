@@ -1,6 +1,5 @@
 import React from "react";
 import "./index.css";
-import axios from "axios";
 import {
   QuestionList,
   Footer,
@@ -27,12 +26,11 @@ export class HomePage extends React.Component {
   }
 
   componentDidMount = () => {
-    console.log("hello");
     this.getQuestionList();
   };
 
   getQuestionList = () => {
-    getApiQuestion("asc", 12).then(response => {
+    getApiQuestion("desc", 36, "date_created").then(response => {
       this.setState({
         questionList: response.data.question_list
       });
@@ -46,8 +44,8 @@ export class HomePage extends React.Component {
 
   answerQuestion(answer, q_id) {
     var parsedQ_id = parseInt(q_id);
-    console.log("parsed_q_id", parsedQ_id);
-    console.log("answer:", answer);
+    // console.log("parsed_q_id", parsedQ_id);
+    // console.log("answer:", answer);
     postApiAnswer(answer, q_id);
   }
 
@@ -95,7 +93,7 @@ export class HomePage extends React.Component {
   };
 
   render() {
-    console.log(this.state);
+    console.log("HomePage state: ",this.state);
 
     const { showCreateQuestionBox, questionList, username } = this.state;
 

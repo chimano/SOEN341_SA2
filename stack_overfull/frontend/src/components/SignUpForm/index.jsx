@@ -15,7 +15,7 @@ class SignUpForm extends React.Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         console.log("Received values of form: ", values);
-        this.doUserRegisterRequest(values.username, values.password);
+        this.doUserRegisterRequest(values.username, values.password, values.email);
       }
     });
   };
@@ -39,8 +39,8 @@ class SignUpForm extends React.Component {
     callback();
   };
 
-  doUserRegisterRequest(username, password) {
-    postApiUserRegister(username, password).then(response => {
+  doUserRegisterRequest(username, password, email) {
+    postApiUserRegister(username, password, email).then(response => {
       this.onUserRegisterResponse(response);
     });
   }

@@ -36,12 +36,19 @@ class AnswerSerializer(serializers.ModelSerializer):
 def user_to_dict(user, many=False, fields=None, exclude=None):
     if many is not True:
         user_dict = model_to_dict(user, fields=fields, exclude=exclude)
-
         # if user.profile exists attach it to the user_dict
         if hasattr(user, 'profile'):
             profile_dict = model_to_dict(user.profile)
-            user_dict['profile'] = profile_dict
+            for i, q in enumerate(profile_dict['upvoted_questions']):
+                profile_dict['upvoted_questions'][i] = profile_dict['upvoted_questions'][i].id
+            for i, q in enumerate(profile_dict['downvoted_questions']):
+                profile_dict['downvoted_questions'][i] = profile_dict['downvoted_questions'][i].id
+            for i, q in enumerate(profile_dict['upvoted_answers']):
+                profile_dict['upvoted_answers'][i] = profile_dict['upvoted_answers'][i].id
+            for i, q in enumerate(profile_dict['downvoted_answers']):
+                profile_dict['dwonvoted_answers'][i] = profile_dict['downvoted_answers'][i].id
 
+            user_dict['profile'] = profile_dict
         return user_dict
 
     else: # many=True; user is an array of Users
