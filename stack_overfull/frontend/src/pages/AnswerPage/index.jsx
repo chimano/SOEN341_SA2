@@ -28,6 +28,11 @@ export class AnswerPage extends React.Component {
     this.verifyUserAccess();
   }
 
+  componentWillReceiveProps = () => {
+    this.verifyUserAccess();
+    this.getAnswerList();
+  };
+
   verifyUserAccess = () => {
     const q_id = this.props.match.params.id;
     getApiUserMe().then(response => {
@@ -39,6 +44,10 @@ export class AnswerPage extends React.Component {
         if (user === this.state.userName) {
           this.setState({
             verified: true
+          });
+        } else {
+          this.setState({
+            verified: false
           });
         }
       });
@@ -89,12 +98,12 @@ export class AnswerPage extends React.Component {
 
   handleAccept = id => {
     postApiAnswerIdAccept(id);
-    setTimeout(() => this.getAnswerList(), 500)
+    setTimeout(() => this.getAnswerList(), 500);
   };
 
   handleReject = id => {
     postApiAnswerIdReject(id);
-    setTimeout(() => this.getAnswerList(), 500)
+    setTimeout(() => this.getAnswerList(), 500);
   };
 
   render() {
