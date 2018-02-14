@@ -7,7 +7,8 @@ import {
   postApiAnswer,
   getApiUserMe,
   postApiAnswerIdAccept,
-  postApiAnswerIdReject
+  postApiAnswerIdReject,
+  voteAnswer
 } from "../../utils/api";
 
 export class AnswerPage extends React.Component {
@@ -88,6 +89,26 @@ export class AnswerPage extends React.Component {
     });
   };
 
+  handleUpvoteButton = (id) => {
+    console.log("ID IS: " + id);
+    this.upvoteAnswer(id);
+    setTimeout(() => this.getAnswerList(), 500);
+  }
+
+  handleDownvoteButton = (id) => {
+    console.log("ID IS: " + id);
+    this.downvoteAnswer(id);
+    setTimeout(() => this.getAnswerList(), 500);
+  }
+
+  upvoteAnswer = (id) => {
+    voteAnswer("UP", id);
+  }
+
+  downvoteAnswer = (id) => {
+    voteAnswer("DOWN", id);
+  }
+  
   answerQuestion = (answer, q_id) => {
     postApiAnswer(answer, q_id);
   };
@@ -134,6 +155,34 @@ export class AnswerPage extends React.Component {
       );
     }
 
+    let votingTable = x => {
+      return(
+        <table className="votingArea">
+          <tbody>
+            <tr>
+              <td>
+                <button className="votes"
+                onClick={() => this.handleDownvoteButton(x.id)}
+                >
+                -
+                </button>
+              </td>
+              <td>
+                <div>{x.points} vote(s)</div>
+              </td>
+              <td>
+                <button className="votes"
+                onClick={() => this.handleUpvoteButton(x.id)}
+                >
+                +
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      );
+    };
+
     var answerListBox = [];
     var acceptFound = false;
     answerList.map((x, key) => {
@@ -145,6 +194,7 @@ export class AnswerPage extends React.Component {
               <div className="dateText">
                 {x.date_created.replace("T", " at ").substring(0, 19)}
               </div>
+              {votingTable(x)}
               <AcceptRejectButton
                 handleAccept={this.handleAccept}
                 handleReject={this.handleReject}
@@ -161,6 +211,7 @@ export class AnswerPage extends React.Component {
               <div className="dateText">
                 {x.date_created.replace("T", " at ").substring(0, 19)}
               </div>
+              {votingTable(x)}
               <AcceptRejectButton
                 handleAccept={this.handleAccept}
                 handleReject={this.handleReject}
@@ -177,6 +228,7 @@ export class AnswerPage extends React.Component {
               <div className="dateText">
                 {x.date_created.replace("T", " at ").substring(0, 19)}
               </div>
+              {votingTable(x)}
               <AcceptRejectButton
                 handleAccept={this.handleAccept}
                 handleReject={this.handleReject}
@@ -195,6 +247,7 @@ export class AnswerPage extends React.Component {
               <div className="dateText">
                 {x.date_created.replace("T", " at ").substring(0, 19)}
               </div>
+              {votingTable(x)}
             </div>
           );
         } else if (x.is_rejected === true) {
@@ -204,6 +257,7 @@ export class AnswerPage extends React.Component {
               <div className="dateText">
                 {x.date_created.replace("T", " at ").substring(0, 19)}
               </div>
+              {votingTable(x)}
             </div>
           );
         } else {
@@ -213,6 +267,7 @@ export class AnswerPage extends React.Component {
               <div className="dateText">
                 {x.date_created.replace("T", " at ").substring(0, 19)}
               </div>
+              {votingTable(x)}
             </div>
           );
         }

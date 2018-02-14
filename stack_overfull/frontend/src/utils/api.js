@@ -100,6 +100,25 @@ export function postApiAnswer(answer, q_id) {
     });
 }
 
+//vote on answer, return updated value of points
+export function voteAnswer(vote_type, a_id) {
+  return new Promise((resolve, reject) => {
+    axios
+    .post("/api/answer/vote/", {
+      vote_type: vote_type, 
+      a_id: a_id
+    })
+    .then(response => {
+      console.log("voting response: ", response);
+      resolve(response);
+    })
+    .catch(error => {
+      console.log(error);
+      reject(error);
+    });
+  });
+}
+
 //login the user
 export function postApiUserLogin(username, password) {
   return new Promise((resolve, reject) => {

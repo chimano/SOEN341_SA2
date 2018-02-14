@@ -18,7 +18,8 @@
     max-width: 700px;
     margin: auto;
     margin-top: 1%;
-    border-radius: 10px;
+    border-radius: 8px;
+    border: 2px solid rgb(31, 145, 221);
     padding-top: 1%;
     padding-left: 1%;
     padding-right: 1%;
@@ -78,4 +79,20 @@
 .questionBox_reply-button {
     margin-top: 1%;
     color: white;
+}
+
+.votes {
+    min-width: 20px;
+    color: white;
+    background: lightgray;
+    text-align: center;
+    border: 1px solid grey;
+}
+
+button:hover{
+    background:rgb(31, 145, 221);
+}
+
+.votingArea{
+    margin: auto;
 }
