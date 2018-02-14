@@ -26,6 +26,10 @@ export class AnswerPage extends React.Component {
     this.verifyUserAccess();
   }
 
+  componentWillReceiveProps = () => {
+    this.getAnswerList();
+  }
+
   verifyUserAccess = () => {
     const q_id = this.props.match.params.id;
     getApiUserMe().then(response => {

@@ -31,7 +31,7 @@ export default class App extends React.Component {
   };
 
   render() {
-    console.log("App.js state: ",this.state);
+    console.log("App.js state: ", this.state);
 
     return (
       <main>
@@ -43,10 +43,20 @@ export default class App extends React.Component {
         />
         <Switch>
           <Route exact path="/" component={HomePage} />
-          <Route path="/question/:id" component={AnswerPage} />
+          {/* <Route
+            path="/question/:id"
+            component={AnswerPage}
+          /> */}
+          <Route
+            path="/question/:id"
+            render={(props) => (<AnswerPage username = {this.state.username} {...props} />)}
+          />
         </Switch>
         <Footer />
       </main>
     );
   }
 }
+
+
+// logged_in={this.state.logged_in}
