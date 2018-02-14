@@ -4,6 +4,7 @@ import "./index.css";
 
 export class AcceptRejectButton extends React.Component {
   Reject() {
+    const {handleReject, a_id} = this.props;
     swal({
       title: "Please confirm your decision",
       text: "Are you sure that you wish to reject this answer?",
@@ -16,6 +17,7 @@ export class AcceptRejectButton extends React.Component {
           swal("This answer has been rejected!", {
             icon: "success",
           });
+          handleReject(a_id);
         } else {
           swal("Your changes have been discarded!");
         }
@@ -23,6 +25,7 @@ export class AcceptRejectButton extends React.Component {
   }
 
   Accept() {
+    const {handleAccept, a_id} = this.props;
     swal({
       title: "Please confirm your decision",
       text: "Are you sure that you wish to accept this answer?",
@@ -35,7 +38,7 @@ export class AcceptRejectButton extends React.Component {
           swal("This answer has been accepted!", {
             icon: "success",
           });
-          handleAccept
+          handleAccept(a_id);
         } else {
           swal("Your changes have been discarded!");
         }
@@ -46,12 +49,12 @@ export class AcceptRejectButton extends React.Component {
     return (
       <div className='app'>
         <button
-          onClick={() => this.handleReject()}
+          onClick={() => this.Reject()}
         >
           Reject
       </button>
         <button
-          onClick={() => this.handleAccept()}
+          onClick={() => this.Accept()}
         >
           Accept
       </button>
