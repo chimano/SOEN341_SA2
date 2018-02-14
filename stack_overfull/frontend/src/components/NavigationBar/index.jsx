@@ -73,7 +73,7 @@ export class NavigationBar extends React.Component {
             </Link>
           </div>
           <div className="navbar__search">
-            <SearchBar />
+            <SearchBar/>
           </div>
           {logged_in ? (
             <div className="navbar__logged-in">

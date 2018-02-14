@@ -40,6 +40,7 @@ class QuestionView(TemplateView):
         limit = request.GET.get('limit', 10)
         q_id = request.GET.get('id', None)
         order = request.GET.get('order', 'desc')
+        sorted_by = request.GET.get('sort', 'points')
         if q_id is None:
 
             limit = 10 if limit is None else int(limit)
@@ -50,7 +51,7 @@ class QuestionView(TemplateView):
             else:
                 modifier = ''
 
-            questions = Question.objects.all().order_by(modifier + 'points')[:limit]
+            questions = Question.objects.all().order_by(modifier + sorted_by)[:limit]
             serialized = QuestionSerializer(questions, many=True).data
             return JsonResponse({'question_list':serialized})
         else:
@@ -99,6 +100,7 @@ class AnswerView(TemplateView):
         limit = int(request.GET.get('limit', 10))
         order = request.GET.get('order', 'desc')
         q_id = request.GET.get('q_id', None)
+        sorted_by = request.GET.get('sort', 'points')
 
         if order == "desc":
             modifier = '-'
@@ -109,7 +111,7 @@ class AnswerView(TemplateView):
         except ObjectDoesNotExist:
             return HttpResponseServerError()
 
-        answers = Answer.objects.filter(question_id=q_id).order_by(modifier + 'points')[:limit]
+        answers = Answer.objects.filter(question_id=q_id).order_by(modifier + sorted_by)[:limit]
         serialized = AnswerSerializer(answers, many=True).data
         return JsonResponse({'answer_list':serialized})
 
