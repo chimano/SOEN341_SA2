@@ -3,7 +3,7 @@ import "./index.css";
 import {
   Footer
 } from "../../components";
-import { getApiQuestionById, getApiAnswerById, postApiAnswer } from "../../utils/api";
+import { getApiQuestionById, getApiAnswerById, postApiAnswer, voteAnswer } from "../../utils/api";
 
 export class AnswerPage extends React.Component {
   constructor(props) {
@@ -42,6 +42,24 @@ export class AnswerPage extends React.Component {
     this.refs.answer_text.value = "";
   };
 
+  handleUpvoteButton = (id) => {
+    console.log("ID IS: " + id);
+    this.upvoteAnswer(id);
+  }
+
+  handleDownvoteButton = (id) => {
+    console.log("ID IS: " + id);
+    this.downvoteAnswer(id);
+  }
+
+  upvoteAnswer = (id) => {
+    voteAnswer("UP", id);
+  }
+
+  downvoteAnswer = (id) => {
+    voteAnswer("DOWN", id);
+  }
+  
   answerQuestion = (answer, q_id) => {
     postApiAnswer(answer, q_id);
   };
@@ -80,9 +98,32 @@ export class AnswerPage extends React.Component {
         {answerList !== []
           ? answerList.map((x, key) => {
               return (
+                <div>
                 <div className="answerBox" key={key}>
                   <div className="answerText">{x.answer_text}</div>
+                  <br />
                   <div className="dateText">{((x.date_created).replace("T", " at ")).substring(0,19)}</div>
+                </div>
+                <table className="votingArea">
+                <tr>
+                  <td>
+                    <button className="votes"
+                    onClick={() => this.handleDownvoteButton(x.id)}
+                    >-
+                    </button>
+                  </td>
+                  <td>
+                    <div>{x.points} vote(s)</div>
+                  </td>
+                  <td>
+                    <button className="votes"
+                    onClick={() => this.handleUpvoteButton(x.id)}
+                    >+
+                    </button>
+                  </td>
+                </tr>
+                </table>
+                <br />
                 </div>
               );
             })
