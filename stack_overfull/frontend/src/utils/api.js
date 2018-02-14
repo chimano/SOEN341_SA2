@@ -96,16 +96,23 @@ export function postApiAnswer(answer, q_id) {
     });
 }
 
-//vote on answer
+//vote on answer, return updated value of points
 export function voteAnswer(vote_type, a_id) {
-  axios
-    .post("/api/answer/vote/", {vote_type: vote_type, a_id: a_id})
-    .then(function(response){
-      console.log("post vote response: ", response);
+  return new Promise((resolve, reject) => {
+    axios
+    .post("/api/answer/vote/", {
+      vote_type: vote_type, 
+      a_id: a_id
     })
-    .catch(function(error){
+    .then(response => {
+      console.log("voting response: ", response);
+      resolve(response);
+    })
+    .catch(error => {
       console.log(error);
+      reject(error);
     });
+  });
 }
 
 //login the user
