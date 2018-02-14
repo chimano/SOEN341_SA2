@@ -156,30 +156,28 @@ export class AnswerPage extends React.Component {
     }
 
     let votingTable = x => {
-      return (
+      return(
         <table className="votingArea">
-        <tbody>
-          <tr>
-            <td>
-              <button
-                className="votes"
+          <tbody>
+            <tr>
+              <td>
+                <button className="votes"
                 onClick={() => this.handleDownvoteButton(x.id)}
-              >
+                >
                 -
-              </button>
-            </td>
-            <td>
-              <div>{x.points} vote(s)</div>
-            </td>
-            <td>
-              <button
-                className="votes"
+                </button>
+              </td>
+              <td>
+                <div>{x.points} vote(s)</div>
+              </td>
+              <td>
+                <button className="votes"
                 onClick={() => this.handleUpvoteButton(x.id)}
-              >
+                >
                 +
-              </button>
-            </td>
-          </tr>
+                </button>
+              </td>
+            </tr>
           </tbody>
         </table>
       );

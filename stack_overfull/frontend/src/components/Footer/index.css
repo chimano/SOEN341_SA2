@@ -2,9 +2,12 @@
   max-width: inherit;
   width: 100%;
   background-color: rgb(38, 18, 155);
-  -webkit-text-fill-color: antiquewhite;
+  -webkit-text-fill-color: white;
   padding: 10px;
   display: flex;
+  position:absolute;
+  bottom:0;
+
 }
 .footer-one{
   margin-left: 200px;

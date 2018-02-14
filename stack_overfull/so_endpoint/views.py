@@ -144,6 +144,9 @@ class AnswerAcceptView(TemplateView):
             return JsonResponse({'error': "Can't undo since the answer is not accepted"})
 
         to_question.accepted_answer_id = None if undo else answer
+
+        if answer in to_question.rejected_answers_ids.all():
+            to_question.rejected_answers_ids.remove(answer)
         to_question.save()
         return JsonResponse(QuestionSerializer(to_question).data)
 
@@ -173,6 +176,8 @@ class AnswerRejectView(TemplateView):
         else:
             to_question.rejected_answers_ids.remove(answer)
 
+        if answer == to_question.accepted_answer_id:
+            to_question.accepted_answer_id = None
         to_question.save()
         return JsonResponse(QuestionSerializer(to_question).data)
 
