@@ -1,63 +1,66 @@
+import React from 'react';
 import swal from 'sweetalert';
+import "./index.css";
 
-
-class AcceptRejectButton extends React.Component  {
-  handleReject() {
+export class AcceptRejectButton extends React.Component {
+  Reject() {
+    const {handleReject, a_id} = this.props;
     swal({
       title: "Please confirm your decision",
       text: "Are you sure that you wish to reject this answer?",
       icon: "warning",
       buttons: true,
       dangerMode: true,
-     })
-     .then((willDelete) => {
-    if (willDelete) {
-      swal("This answer has been rejected!", {
-        icon: "success",
+    })
+      .then((willDelete) => {
+        if (willDelete) {
+          swal("This answer has been rejected!", {
+            icon: "success",
+          });
+          handleReject(a_id);
+        } else {
+          swal("Your changes have been discarded!");
+        }
       });
-    } else {
-      swal("Your changes have been discarded!");
-    }
-  });
   }
 
-  handleAccept() {
+  Accept() {
+    const {handleAccept, a_id} = this.props;
     swal({
       title: "Please confirm your decision",
       text: "Are you sure that you wish to accept this answer?",
       icon: "warning",
       buttons: true,
       dangerMode: true,
-     })
-     .then((willDelete) => {
-    if (willDelete) {
-      swal("This answer has been accepted!", {
-        icon: "success",
+    })
+      .then((willDelete) => {
+        if (willDelete) {
+          swal("This answer has been accepted!", {
+            icon: "success",
+          });
+          handleAccept(a_id);
+        } else {
+          swal("Your changes have been discarded!");
+        }
       });
-    } else {
-      swal("Your changes have been discarded!");
-    }
-  });
   }
- 
-render() {
-  return (
-    <div className='app'>
-      <p><h1>This is the answer to your question!</h1></p>
-      <h3>Do you wish to accept or reject the above answer?</h3>
+
+  render() {
+    return (
+      <div className='app'>
         <button
-        onClick={() => this.handleAccept()}
-      >
-        Accept
+          onClick={() => this.Reject()}
+        >
+          Reject
       </button>
-      <button
-        onClick={() => this.handleReject()}
-      >
-        Reject
-      </button>      
+        <button
+          onClick={() => this.Accept()}
+        >
+          Accept
+      </button>
       </div>
-  );
-}
+    );
+  }
 }
 
 

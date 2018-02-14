@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 import { HomePage, AnswerPage } from "./pages";
 import { Route, Switch } from "react-router-dom";
-import { NavigationBar } from "./components";
+import { NavigationBar, Footer } from "./components";
 import { getApiUserMe, postApiUserLogout } from "./utils/api";
 
 export default class App extends React.Component {
@@ -19,7 +19,6 @@ export default class App extends React.Component {
 
   handle_login = () => {
     getApiUserMe().then(response => {
-      console.log(response);
       if (!response.data.error) {
         this.setState({ logged_in: true, username: response.data.username });
       }
@@ -32,7 +31,7 @@ export default class App extends React.Component {
   };
 
   render() {
-    console.log(this.state);
+    console.log("App.js state: ",this.state);
 
     return (
       <main>
@@ -46,6 +45,7 @@ export default class App extends React.Component {
           <Route exact path="/" component={HomePage} />
           <Route path="/question/:id" component={AnswerPage} />
         </Switch>
+        <Footer />
       </main>
     );
   }

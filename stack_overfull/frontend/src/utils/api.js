@@ -1,5 +1,4 @@
 import axios from "axios";
-import qs from "qs";
 
 //get single question by id
 export function getApiQuestionById(id) {
@@ -21,13 +20,14 @@ export function getApiQuestionById(id) {
 }
 
 //get the list of questions
-export function getApiQuestion(order, limit) {
+export function getApiQuestion(order, limit, sort) {
   return new Promise((resolve, reject) => {
     axios
       .get("/api/question/", {
         params: {
           order: order,
-          limit: limit
+          limit: limit,
+          sort: sort
         }
       })
       .then(response => {
@@ -52,7 +52,7 @@ export function getApiAnswerById(id, order, limit) {
         }
       })
       .then(response => {
-        console.log("get answer response: ", response);
+        console.log("get answer by id: ", response);
         resolve(response.data.answer_list);
       })
       .catch(function(error) {
@@ -67,7 +67,7 @@ export function getApiUserMe() {
     axios
       .get("/api/user/me")
       .then(response => {
-        console.log("Get my info: ", response);
+        console.log("get my info: ", response);
         resolve(response);
       })
       .catch(function(error) {
@@ -132,15 +132,80 @@ export function postApiUserLogout() {
 }
 
 //register user
-export function postApiUserRegister(username, password) {
+export function postApiUserRegister(username, password, email) {
   return new Promise((resolve, reject) => {
     axios
       .post("/api/user/register/", {
         username: username,
-        password: password
+        password: password,
+        email: email
       })
       .then(function(response) {
         console.log("register response: ", response);
+        resolve(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+        reject(error);
+      });
+  });
+}
+
+//Accept answer
+export function postApiAnswerIdAccept(id) {
+  return new Promise((resolve, reject) => {
+    axios
+      .post("/api/answer/"+id+"/accept/")
+      .then(function(response) {
+        console.log("Accept answer: ", response);
+        resolve(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+        reject(error);
+      });
+  });
+}
+
+//Reject answer
+export function postApiAnswerIdReject(id) {
+  return new Promise((resolve, reject) => {
+    axios
+      .post("/api/answer/"+id+"/reject/")
+      .then(function(response) {
+        console.log("reject answer: ", response);
+        resolve(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+        reject(error);
+      });
+  });
+}
+
+//Undo accept answer
+export function postApiAnswerIdAcceptUndo(id) {
+  return new Promise((resolve, reject) => {
+    axios
+      .post("/api/answer/"+id+"/accept/undo/")
+      .then(function(response) {
+        console.log("undo accept answer: ", response);
+        resolve(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+        reject(error);
+      });
+  });
+}
+
+//Undo reject answer
+export function postApiAnswerIdRejectUndo(id) {
+  return new Promise((resolve, reject) => {
+    axios
+      .post("/api/answer/"+id+"/reject/undo/")
+      .then(function(response) {
+        console.log("undo reject answer: ", response);
         resolve(response);
       })
       .catch(function(error) {
