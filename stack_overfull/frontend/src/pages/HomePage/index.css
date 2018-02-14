@@ -15,6 +15,7 @@ html {
     top: 0;
     left: 0;
     background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1;
 }
 
 .homepage-wrapper {
@@ -24,6 +25,7 @@ html {
 .homepage-box {
     max-width: 1140px;
     margin: auto;
+    min-height: calc(100vh - 87px - 139px);
 }
 
 .question-list-title {
