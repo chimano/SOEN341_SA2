@@ -21,7 +21,8 @@ export class AnswerPage extends React.Component {
       userName: "",
       accepted_answer_id: "",
       rejected_answers_ids: [],
-      verified: false
+      verified: false,
+      votes: ""
     };
 
     this.getQuestion();
@@ -92,19 +93,29 @@ export class AnswerPage extends React.Component {
   handleUpvoteButton = (id) => {
     console.log("ID IS: " + id);
     this.upvoteAnswer(id);
+    setTimeout(() => this.getAnswerList(), 500);
   }
 
   handleDownvoteButton = (id) => {
     console.log("ID IS: " + id);
     this.downvoteAnswer(id);
+    setTimeout(() => this.getAnswerList(), 500);
   }
 
   upvoteAnswer = (id) => {
-    voteAnswer("UP", id);
+    voteAnswer("UP", id).then(response => {
+      this.setState({
+        votes: response.data.points
+      })
+    });
   }
 
   downvoteAnswer = (id) => {
-    voteAnswer("DOWN", id);
+    voteAnswer("DOWN", id).then(response => {
+      this.setState({
+        votes:response.data.points
+      })
+    });
   }
   
   answerQuestion = (answer, q_id) => {
@@ -153,6 +164,28 @@ export class AnswerPage extends React.Component {
       );
     }
 
+    let votingTable = (
+              <table className="votingArea">
+                <tr>
+                  <td>
+                    <button className="votes"
+                    onClick={() => this.handleDownvoteButton(x.id)}
+                    >-
+                    </button>
+                  </td>
+                  <td>
+                    <div>{votes} vote(s)</div>
+                  </td>
+                  <td>
+                    <button className="votes"
+                    onClick={() => this.handleUpvoteButton(x.id)}
+                    >+
+                    </button>
+                  </td>
+                </tr>
+                </table>
+    );
+
     var answerListBox = [];
     var acceptFound = false;
     answerList.map((x, key) => {
@@ -164,25 +197,7 @@ export class AnswerPage extends React.Component {
               <div className="dateText">
                 {x.date_created.replace("T", " at ").substring(0, 19)}
               </div>
-              <table className="votingArea">
-                <tr>
-                  <td>
-                    <button className="votes"
-                    onClick={() => this.handleDownvoteButton(x.id)}
-                    >-
-                    </button>
-                  </td>
-                  <td>
-                    <div>{x.points} vote(s)</div>
-                  </td>
-                  <td>
-                    <button className="votes"
-                    onClick={() => this.handleUpvoteButton(x.id)}
-                    >+
-                    </button>
-                  </td>
-                </tr>
-                </table>
+              {votingTable}
               <AcceptRejectButton
                 handleAccept={this.handleAccept}
                 handleReject={this.handleReject}
@@ -199,25 +214,7 @@ export class AnswerPage extends React.Component {
               <div className="dateText">
                 {x.date_created.replace("T", " at ").substring(0, 19)}
               </div>
-              <table className="votingArea">
-                <tr>
-                  <td>
-                    <button className="votes"
-                    onClick={() => this.handleDownvoteButton(x.id)}
-                    >-
-                    </button>
-                  </td>
-                  <td>
-                    <div>{x.points} vote(s)</div>
-                  </td>
-                  <td>
-                    <button className="votes"
-                    onClick={() => this.handleUpvoteButton(x.id)}
-                    >+
-                    </button>
-                  </td>
-                </tr>
-                </table>
+              {votingTable}
               <AcceptRejectButton
                 handleAccept={this.handleAccept}
                 handleReject={this.handleReject}
@@ -234,25 +231,7 @@ export class AnswerPage extends React.Component {
               <div className="dateText">
                 {x.date_created.replace("T", " at ").substring(0, 19)}
               </div>
-              <table className="votingArea">
-                <tr>
-                  <td>
-                    <button className="votes"
-                    onClick={() => this.handleDownvoteButton(x.id)}
-                    >-
-                    </button>
-                  </td>
-                  <td>
-                    <div>{x.points} vote(s)</div>
-                  </td>
-                  <td>
-                    <button className="votes"
-                    onClick={() => this.handleUpvoteButton(x.id)}
-                    >+
-                    </button>
-                  </td>
-                </tr>
-                </table>
+              {votingTable}
               <AcceptRejectButton
                 handleAccept={this.handleAccept}
                 handleReject={this.handleReject}
@@ -271,25 +250,7 @@ export class AnswerPage extends React.Component {
               <div className="dateText">
                 {x.date_created.replace("T", " at ").substring(0, 19)}
               </div>
-              <table className="votingArea">
-                <tr>
-                  <td>
-                    <button className="votes"
-                    onClick={() => this.handleDownvoteButton(x.id)}
-                    >-
-                    </button>
-                  </td>
-                  <td>
-                    <div>{x.points} vote(s)</div>
-                  </td>
-                  <td>
-                    <button className="votes"
-                    onClick={() => this.handleUpvoteButton(x.id)}
-                    >+
-                    </button>
-                  </td>
-                </tr>
-                </table>
+              {votingTable}
             </div>
           );
         } else if (x.is_rejected === true) {
@@ -299,25 +260,7 @@ export class AnswerPage extends React.Component {
               <div className="dateText">
                 {x.date_created.replace("T", " at ").substring(0, 19)}
               </div>
-              <table className="votingArea">
-                <tr>
-                  <td>
-                    <button className="votes"
-                    onClick={() => this.handleDownvoteButton(x.id)}
-                    >-
-                    </button>
-                  </td>
-                  <td>
-                    <div>{x.points} vote(s)</div>
-                  </td>
-                  <td>
-                    <button className="votes"
-                    onClick={() => this.handleUpvoteButton(x.id)}
-                    >+
-                    </button>
-                  </td>
-                </tr>
-                </table>
+              {votingTable}
             </div>
           );
         } else {
@@ -327,25 +270,7 @@ export class AnswerPage extends React.Component {
               <div className="dateText">
                 {x.date_created.replace("T", " at ").substring(0, 19)}
               </div>
-              <table className="votingArea">
-                <tr>
-                  <td>
-                    <button className="votes"
-                    onClick={() => this.handleDownvoteButton(x.id)}
-                    >-
-                    </button>
-                  </td>
-                  <td>
-                    <div>{x.points} vote(s)</div>
-                  </td>
-                  <td>
-                    <button className="votes"
-                    onClick={() => this.handleUpvoteButton(x.id)}
-                    >+
-                    </button>
-                  </td>
-                </tr>
-                </table>
+              {votingTable}
             </div>
           );
         }
