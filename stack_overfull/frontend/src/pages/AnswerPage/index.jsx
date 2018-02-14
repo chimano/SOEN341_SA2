@@ -21,8 +21,7 @@ export class AnswerPage extends React.Component {
       userName: "",
       accepted_answer_id: "",
       rejected_answers_ids: [],
-      verified: false,
-      votes: ""
+      verified: false
     };
 
     this.getQuestion();
@@ -103,19 +102,11 @@ export class AnswerPage extends React.Component {
   }
 
   upvoteAnswer = (id) => {
-    voteAnswer("UP", id).then(response => {
-      this.setState({
-        votes: response.data.points
-      })
-    });
+    voteAnswer("UP", id);
   }
 
   downvoteAnswer = (id) => {
-    voteAnswer("DOWN", id).then(response => {
-      this.setState({
-        votes:response.data.points
-      })
-    });
+    voteAnswer("DOWN", id);
   }
   
   answerQuestion = (answer, q_id) => {
@@ -174,7 +165,7 @@ export class AnswerPage extends React.Component {
                     </button>
                   </td>
                   <td>
-                    <div>{votes} vote(s)</div>
+                    <div>{x.points} vote(s)</div>
                   </td>
                   <td>
                     <button className="votes"
