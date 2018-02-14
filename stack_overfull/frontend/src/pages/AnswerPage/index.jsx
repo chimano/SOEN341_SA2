@@ -5,7 +5,9 @@ import {
   getApiQuestionById,
   getApiAnswerById,
   postApiAnswer,
-  getApiUserMe
+  getApiUserMe,
+  postApiAnswerIdAccept,
+  postApiAnswerIdReject
 } from "../../utils/api";
 
 export class AnswerPage extends React.Component {
@@ -27,8 +29,9 @@ export class AnswerPage extends React.Component {
   }
 
   componentWillReceiveProps = () => {
+    this.verifyUserAccess();
     this.getAnswerList();
-  }
+  };
 
   verifyUserAccess = () => {
     const q_id = this.props.match.params.id;
@@ -40,7 +43,11 @@ export class AnswerPage extends React.Component {
         var user = response.data.user_id.username;
         if (user === this.state.userName) {
           this.setState({
-            verfied: true
+            verified: true
+          });
+        } else {
+          this.setState({
+            verified: false
           });
         }
       });
@@ -89,12 +96,14 @@ export class AnswerPage extends React.Component {
     this.setState({ answer: event.target.value });
   };
 
-  handleAccept = event => {
-    console.log("this is a test");
+  handleAccept = id => {
+    postApiAnswerIdAccept(id);
+    setTimeout(() => this.getAnswerList(), 500);
   };
 
-  handleReject = event => {
-    console.log("this is a test");
+  handleReject = id => {
+    postApiAnswerIdReject(id);
+    setTimeout(() => this.getAnswerList(), 500);
   };
 
   render() {
@@ -128,7 +137,7 @@ export class AnswerPage extends React.Component {
     var answerListBox = [];
     var acceptFound = false;
     answerList.map((x, key) => {
-      if (this.state.verfied === true) {
+      if (this.state.verified === true) {
         if (x.is_accepted === true) {
           answerListBox.push(
             <div className="answerBox answerBox--green" key={key}>
@@ -141,6 +150,7 @@ export class AnswerPage extends React.Component {
                 handleReject={this.handleReject}
                 Accepted={true}
                 Rejected={false}
+                a_id={x.id}
               />
             </div>
           );
@@ -156,6 +166,7 @@ export class AnswerPage extends React.Component {
                 handleReject={this.handleReject}
                 Accepted={false}
                 Rejected={true}
+                a_id={x.id}
               />
             </div>
           );
@@ -171,19 +182,40 @@ export class AnswerPage extends React.Component {
                 handleReject={this.handleReject}
                 Accepted={false}
                 Rejected={false}
+                a_id={x.id}
               />
             </div>
           );
         }
       } else {
-        answerListBox.push(
-          <div className="answerBox answerBox--blue" key={key}>
-            <div className="answerText">{x.answer_text}</div>
-            <div className="dateText">
-              {x.date_created.replace("T", " at ").substring(0, 19)}
+        if (x.is_accepted === true) {
+          answerListBox.push(
+            <div className="answerBox answerBox--green" key={key}>
+              <div className="answerText">{x.answer_text}</div>
+              <div className="dateText">
+                {x.date_created.replace("T", " at ").substring(0, 19)}
+              </div>
             </div>
-          </div>
-        );
+          );
+        } else if (x.is_rejected === true) {
+          answerListBox.push(
+            <div className="answerBox answerBox--red" key={key}>
+              <div className="answerText">{x.answer_text}</div>
+              <div className="dateText">
+                {x.date_created.replace("T", " at ").substring(0, 19)}
+              </div>
+            </div>
+          );
+        } else {
+          answerListBox.push(
+            <div className="answerBox answerBox--blue" key={key}>
+              <div className="answerText">{x.answer_text}</div>
+              <div className="dateText">
+                {x.date_created.replace("T", " at ").substring(0, 19)}
+              </div>
+            </div>
+          );
+        }
       }
     });
 
