@@ -122,9 +122,6 @@ export class HomePage extends React.Component {
           <QuestionList questionList={questionList} />
         </div>
         {createQuestionBox}
-        <div className="footer-area">
-          <Footer/>
-        </div>
       </div>
     );
   }

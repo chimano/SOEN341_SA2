@@ -23,9 +23,6 @@ const CategoryPage = () => (
         <li><Link to='/categories/technology' style={{ color: "black" }}>Technology</Link></li>
       </ul>
       </div>
-      <div className="footer-area">
-          <Footer/>
-      </div>
     </nav>
   </header>
 )
