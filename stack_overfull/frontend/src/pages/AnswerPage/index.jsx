@@ -89,26 +89,26 @@ export class AnswerPage extends React.Component {
     });
   };
 
-  handleUpvoteButton = (id) => {
+  handleUpvoteButton = id => {
     console.log("ID IS: " + id);
     this.upvoteAnswer(id);
     setTimeout(() => this.getAnswerList(), 500);
-  }
+  };
 
-  handleDownvoteButton = (id) => {
+  handleDownvoteButton = id => {
     console.log("ID IS: " + id);
     this.downvoteAnswer(id);
     setTimeout(() => this.getAnswerList(), 500);
-  }
+  };
 
-  upvoteAnswer = (id) => {
+  upvoteAnswer = id => {
     voteAnswer("UP", id);
-  }
+  };
 
-  downvoteAnswer = (id) => {
+  downvoteAnswer = id => {
     voteAnswer("DOWN", id);
-  }
-  
+  };
+
   answerQuestion = (answer, q_id) => {
     postApiAnswer(answer, q_id);
   };
@@ -190,6 +190,7 @@ export class AnswerPage extends React.Component {
         if (x.is_accepted === true) {
           answerListBox.push(
             <div className="answerBox answerBox--green" key={key}>
+              <div className="answer-page__username">{x.user_id.username}</div>
               <div className="answerText">{x.answer_text}</div>
               <div className="dateText">
                 {x.date_created.replace("T", " at ").substring(0, 19)}

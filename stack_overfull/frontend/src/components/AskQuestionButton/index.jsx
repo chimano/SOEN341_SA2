@@ -6,9 +6,8 @@ export class AskQuestionButton extends React.Component {
     const {handleAskQuestionButton} = this.props;
 
     return (
-      <button
+      <button type="button"
         onClick={() => handleAskQuestionButton()}
-        style={{ color: "#ffffff" }}
       >
         Ask a question
       </button>
