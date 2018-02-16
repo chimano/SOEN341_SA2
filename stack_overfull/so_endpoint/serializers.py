@@ -46,7 +46,7 @@ def user_to_dict(user, many=False, fields=None, exclude=None):
             for i, q in enumerate(profile_dict['upvoted_answers']):
                 profile_dict['upvoted_answers'][i] = profile_dict['upvoted_answers'][i].id
             for i, q in enumerate(profile_dict['downvoted_answers']):
-                profile_dict['dwonvoted_answers'][i] = profile_dict['downvoted_answers'][i].id
+                profile_dict['downvoted_answers'][i] = profile_dict['downvoted_answers'][i].id
 
             user_dict['profile'] = profile_dict
         return user_dict
