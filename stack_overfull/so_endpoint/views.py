@@ -144,6 +144,9 @@ class AnswerAcceptView(TemplateView):
             return JsonResponse({'error': "Can't undo since the answer is not accepted"})
 
         to_question.accepted_answer_id = None if undo else answer
+
+        if answer in to_question.rejected_answers_ids.all():
+            to_question.rejected_answers_ids.remove(answer)
         to_question.save()
         return JsonResponse(QuestionSerializer(to_question).data)
 
@@ -173,6 +176,8 @@ class AnswerRejectView(TemplateView):
         else:
             to_question.rejected_answers_ids.remove(answer)
 
+        if answer == to_question.accepted_answer_id:
+            to_question.accepted_answer_id = None
         to_question.save()
         return JsonResponse(QuestionSerializer(to_question).data)
 
@@ -324,7 +329,8 @@ class AnswerVoteView(TemplateView):
             except:
                 print("Answer has no user")
             answer.save()
-            return JsonResponse({'sucess': 'Upvoted the answer'}, status=200)
+            return JsonResponse({'sucess': 'Upvoted the answer',
+                                 'points': answer.points}, status=200)
 
         elif vote_type == "DOWN":
 
@@ -346,7 +352,8 @@ class AnswerVoteView(TemplateView):
             except:
                 print("Answer has no user")
             answer.save()
-            return JsonResponse({'sucess': 'Downvoted the answer'}, status=200)
+            return JsonResponse({'sucess': 'Downvoted the answer',
+                                 'points': answer.points}, status=200)
 
 
 class QuestionVoteView(TemplateView):
@@ -377,7 +384,7 @@ class QuestionVoteView(TemplateView):
         if vote_type == "UP":
             if question in user.profile.upvoted_questions.all():
                 return JsonResponse({'error': 'User has already voted for this question'}, status=400)
-            print("test1")
+
             if question in user.profile.downvoted_questions.all():
                 user.profile.downvoted_questions.remove(question)
                 question.points += 1
@@ -385,7 +392,7 @@ class QuestionVoteView(TemplateView):
                     question.user_id.profile.update_profile_reputation(1)
                 except:
                     print("Question has no user")
-            print("test2")
+
             user.profile.upvoted_questions.add(question)
             question.points += 1
             try:
@@ -393,7 +400,8 @@ class QuestionVoteView(TemplateView):
             except:
                 print("Question has no user")
             question.save()
-            return JsonResponse({'sucess': 'Upvoted the question'},status=200)
+            return JsonResponse({'sucess': 'Upvoted the question',
+                                 'points': question.points},status=200)
 
         elif vote_type == "DOWN":
 
@@ -415,4 +423,5 @@ class QuestionVoteView(TemplateView):
             except:
                 print("Question has no user")
             question.save()
-            return JsonResponse({'sucess': 'Downvoted the question'},status=200)
+            return JsonResponse({'sucess': 'Downvoted the question',
+                                 'points': question.points},status=200)

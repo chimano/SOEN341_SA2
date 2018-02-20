@@ -98,23 +98,25 @@ export class NavigationBar extends React.Component {
                 onClick={() => this.handle_signup_button()}
               >
                 Sign Up
-              </button>
+                </button>
             </div>
           )}
         </div>
         <div className="navbar">
           <div className="navbar__auth">
-            <button
+          <button
               className="navbar__button"
-              // onClick={() => handle_career_button()}
             >
+            <Link to="/careers" style={{ color: "white" }}>
               Careers
+            </Link>
             </button>
             <button
               className="navbar__button"
-              // onClick={() => handle_questions_button()}
             >
+            <Link to="/categories" style={{ color: "white" }}>
               Questions
+            </Link>
             </button>
           </div>
         </div>

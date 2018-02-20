@@ -1,26 +1,31 @@
 .footer {
-  max-width: inherit;
-  width: 100%;
-  background-color: rgb(38, 18, 155);
-  -webkit-text-fill-color: antiquewhite;
-  padding: 10px;
-  display: flex;
-}
-.footer-one{
-  margin-left: 200px;
-  list-style: none;
-  display: block;
-  width: 100%;
+    max-width: inherit;
+    width: 100%;
+    -webkit-text-fill-color: white;
+    padding: 20px 10px;
+    display: flex;
+    margin: auto;
+    max-width: 1140px;
+    /* position:absolute;
+  bottom:0; */
 }
 
-.footer-two {
-  margin: 0,auto;
-  list-style: none;
-  display: block;
-  width: 100%;
+.footer ul {
+    list-style: none;
+    display: block;
+    width: 100%;
+    padding: 0;
 }
 
-.footer icon Icon{
-  font-size:25px;
-  margin: 5px;
+.footer__credits {
+  width: 510px !important;
+}
+
+.footer-wrapper {
+    background-color: rgb(38, 18, 155);
+}
+
+.footer icon Icon {
+    font-size: 25px;
+    margin: 5px;
 }
