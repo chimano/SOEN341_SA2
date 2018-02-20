@@ -16,8 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.generic import TemplateView
-from so_endpoint.views import QuestionView, AnswerView, AnswerAcceptView, AnswerRejectView, QuestionVoteView, AnswerVoteView
-from so_endpoint.views import UserRegisterView, UserLoginView, UserLogoutView, UserMeView, UserView
+from so_endpoint.views import *
 
 urlpatterns = [
     re_path(r'question/$', QuestionView.as_view()),
@@ -34,5 +33,7 @@ urlpatterns = [
     re_path(r'user/login/$', UserLoginView.as_view()),
     re_path(r'user/logout/$', UserLogoutView.as_view()),
     re_path(r'user/me/$', UserMeView.as_view()),
-    re_path(r'user/$', UserView.as_view())
+    re_path(r'user/$', UserView.as_view()),
+
+    re_path(r'search/$', SearchView.as_view())
 ]

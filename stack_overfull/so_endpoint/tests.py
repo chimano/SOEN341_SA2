@@ -21,7 +21,7 @@ class UserViewTests(TestCase):
 
     def test_user_view(self):
         response = self.client.get('/api/user/')
-        user_list = response.json() # change array to user_list dict
+        user_list = response.json()['user_list']
 
         self.assertIs(response.status_code, 200)
         self.assertEqual(len(user_list), User.objects.count())
