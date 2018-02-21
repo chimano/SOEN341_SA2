@@ -22,7 +22,7 @@ export class Footer extends React.Component {
             <li>Terms & Conditions</li>
           </ul>
           <ul>
-            <h3> Questions </h3>
+            <h3>Questions</h3>
             <li>Business</li>
             <li>Cooking</li>
             <li>Fashion</li>
