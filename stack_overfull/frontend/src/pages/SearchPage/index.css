@@ -39,6 +39,25 @@ html {
     width: 200px;
 }
 
-.question-list-title h3 {
+.question-list-title{
     width: 100%;
+}
+
+.query{
+    font-weight: bold;
+    width: 100%;
+    display: flex;
+}
+
+.results{
+    width: 100%;
+    padding-left: 10px;
+    display: flex;
+}
+
+.num-results{
+    font-weight: bold;
+    width: 100%;
+    padding-left: 10px;
+    display: flex;
 }

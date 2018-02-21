@@ -13,7 +13,7 @@ import {
   getApiUserMe
 } from "../../utils/api";
 import { postApiUserLogout } from "../../utils/api";
-
+import "./index.css";
 import qs from "qs"
 
 export class SearchPage extends React.Component {
@@ -79,18 +79,6 @@ export class SearchPage extends React.Component {
     postApiUserLogout();
     this.setState({ logged_in: false, username: "" });
   };
-  handleAskQuestionButton = () => {
-    getApiUserMe().then(response => {
-      if (!response.data.error) {
-        this.setState({
-          username: response.data.username
-        });
-        this.openCreateQuestionBox();
-      } else {
-        alert("You need to Sign In to ask a question");
-      }
-    });
-  };
 
   openCreateQuestionBox = () => {
     this.setState({ showCreateQuestionBox: true });
@@ -121,11 +109,10 @@ export class SearchPage extends React.Component {
     return (
       <div className="homepage-wrapper">
         <div className="homepage-box">
-          <div className="question-list-title">
-            <h3>TOP QUESTIONS</h3>
-            <AskQuestionButton
-              handleAskQuestionButton={this.handleAskQuestionButton}
-            />
+          <div>
+            <h3 className="question-list-title">Search</h3>
+            <h4 className="results">Results found containing XXX</h4>
+            <h4 className="num-results"> XXX results</h4>
           </div>
           <QuestionList questionList={questionList} />
         </div>

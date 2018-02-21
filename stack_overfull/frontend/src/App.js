@@ -52,10 +52,6 @@ export default class App extends React.Component {
         />
         <Switch>
           <Route exact path="/" component={HomePage} />
-          {/* <Route
-            path="/question/:id"
-            component={AnswerPage}
-          /> */}
           <Route
             path="/question/:id"
             render={(props) => (<AnswerPage username = {this.state.username} {...props} />)}
