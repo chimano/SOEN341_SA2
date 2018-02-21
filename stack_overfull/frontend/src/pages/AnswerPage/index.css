@@ -1,28 +1,19 @@
 .questionTitle {
-    margin-top: 2%;
-    text-align: center;
-    font-weight: bold;
+    margin-top: 15px;
+    padding-top: 20px;
 }
 
 .seperator {
-    width: 95%;
     height: 2px;
     background-color: rgb(241, 241, 241);
-    margin: auto;
-    margin-top: 3%;
-    margin-bottom: 3%;
+    margin: 2% 0;
 }
 
 .answerBox {
-    width: 90%;
-    max-width: 700px;
-    margin: auto;
-    margin-top: 1%;
+    margin-bottom: 1%;
     border-radius: 8px;
     border: 2px solid rgb(31, 145, 221);
-    padding-top: 1%;
-    padding-left: 1%;
-    padding-right: 1%;
+    padding: 1% 1% 0 1%;
 }
 
 .answerBox--blue {
@@ -51,19 +42,10 @@
 }
 
 .numberOfAnswersText {
-    width: 92%;
-    max-width: 900px;
-    margin: auto;
     margin-bottom: 3%;
 }
 
 .yourAnswerArea {
-    width: 95%;
-    max-width: 900px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 1%;
     margin-bottom: 5%;
 }
 

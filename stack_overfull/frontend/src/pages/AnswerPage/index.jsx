@@ -270,7 +270,7 @@ export class AnswerPage extends React.Component {
     });
 
     return (
-      <div>
+      <div className="page-width">
         <h1 className="questionTitle">{question}</h1>
         <div className="seperator" />
         {numberOfAnswersTitle}

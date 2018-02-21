@@ -7,7 +7,7 @@ export class Footer extends React.Component {
   render() {
     return (
       <div className="footer-wrapper">
-        <div className="footer">
+        <div className="footer page-width">
           <ul>
             <h3> Stack Overfull </h3>
             <li>
