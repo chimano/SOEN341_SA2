@@ -13,7 +13,7 @@ const CategoryPage = () => (
       </div>
 
       <div className="categoryBox">
-      <ul class name="bubbles">
+      <ul className="bubbles">
         <li><Link to='/categories/business' style={{ color: "black" }}>Business</Link></li>
         <li><Link to='/categories/cooking' style={{ color: "black" }}>Cooking</Link></li>
         <li><Link to='/categories/entertainment' style={{ color: "black" }}>Entertainment</Link></li>
