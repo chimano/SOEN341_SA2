@@ -112,7 +112,7 @@ export class HomePage extends React.Component {
 
     return (
       <div className="homepage-wrapper">
-        <div className="homepage-box">
+        <div className="homepage-box page-width">
           <div className="question-list-title">
             <h3>TOP QUESTIONS</h3>
             <AskQuestionButton
