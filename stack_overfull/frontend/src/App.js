@@ -77,6 +77,3 @@ export default class App extends React.Component {
     );
   }
 }
-
-
-// logged_in={this.state.logged_in}

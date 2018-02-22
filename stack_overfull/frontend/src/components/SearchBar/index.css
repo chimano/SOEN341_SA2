@@ -1,0 +1,15 @@
+input[type=text] {
+    width: 90%;
+    padding: 7px;
+    z-index: 0;
+    color: black;
+    border-radius: 10px;
+    background-color: solid white;
+  }
+
+  input[type=submit] {
+    color: black;
+    border-radius: 10px;
+    padding: 7px;
+    background-color: solid rgb(80, 176, 224);
+  }

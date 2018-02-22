@@ -2,7 +2,7 @@ import React from "react";
 import {
   SearchBar,
   SignInFormWindow,
-  SignUpFormWindow
+  SignUpFormWindow,
 } from "../../components";
 import "./index.css";
 import { Link } from "react-router-dom";
@@ -118,6 +118,13 @@ export class NavigationBar extends React.Component {
               Questions
             </Link>
             </button>
+
+
+            <button className="navbar__button">
+            <Link to='/search/?q=hello' style={{ color: "white" }}>Test Search</Link>
+            </button>
+
+
           </div>
         </div>
         {login_box}

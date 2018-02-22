@@ -32,7 +32,7 @@ export class SearchPage extends React.Component {
   };
 
   getSearchQuestionList = () => {
-    // get the 'q' url parameter from the current url ie /search/?q=<serch text>
+    // get the 'q' url parameter from the current url ie /search/?q=<search text>
     // https://github.com/ljharb/qs/issues/177
     var q = qs.parse(this.props.location.search, { ignoreQueryPrefix: true }).q
 
