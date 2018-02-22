@@ -17,9 +17,9 @@ export class SearchBar extends React.Component {
     render() {
         return (
             <form onSubmit={this.handleSubmit}>
-                <input type="text" placeholder="Search questions here"  id="query" name="search/?q="/>
+                <input type="text" placeholder="Search questions here"  name="q"/>
                 <input type="submit" value="Search" 
-                onclick="onLoadConfigPress(document.getElementById('search/?q=').value)" />
+                onclick="onLoadConfigPress(document.getElementById(name).value)" />
             </form>
           );
         }
