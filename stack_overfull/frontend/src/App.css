@@ -6,3 +6,9 @@ button {
     cursor: pointer;
     color: white;
 }
+
+.page-width{
+    max-width: 1060px;
+    margin: auto;
+    padding: 0 10px;
+}

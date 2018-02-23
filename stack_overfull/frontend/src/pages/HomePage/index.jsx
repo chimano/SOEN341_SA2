@@ -2,7 +2,6 @@ import React from "react";
 import "./index.css";
 import {
   QuestionList,
-  Footer,
   QuestionEdit,
   AskQuestionButton
 } from "../../components";
@@ -43,9 +42,6 @@ export class HomePage extends React.Component {
   };
 
   answerQuestion(answer, q_id) {
-    var parsedQ_id = parseInt(q_id);
-    // console.log("parsed_q_id", parsedQ_id);
-    // console.log("answer:", answer);
     postApiAnswer(answer, q_id);
   }
 
@@ -112,7 +108,7 @@ export class HomePage extends React.Component {
 
     return (
       <div className="homepage-wrapper">
-        <div className="homepage-box">
+        <div className="homepage-box page-width">
           <div className="question-list-title">
             <h3>TOP QUESTIONS</h3>
             <AskQuestionButton

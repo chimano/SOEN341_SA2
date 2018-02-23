@@ -3,21 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "antd": "^3.1.6",
+    "antd": "^3.2.1",
     "axios": "^0.17.1",
     "babel-cli": "^6.26.0",
     "css-loader": "^0.28.9",
     "jquery": "^3.3.1",
+    "jshint": "^2.9.5",
     "qs": "^6.5.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-masonry-component": "^6.0.2",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
-    "react-scripts": "1.1.0",
-    "style-loader": "^0.20.1",
+    "react-scripts": "^1.1.1",
+    "react-test-renderer": "^16.2.0",
+    "style-loader": "^0.20.2",
     "sweetalert": "^2.1.0",
-    "webpack": "^3.10.0",
+    "webpack": "^3.11.0",
     "webpack-bundle-tracker": "^0.2.1",
     "whatwg-fetch": "^2.0.3"
   },
@@ -33,6 +35,8 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-stage-0": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "extract-text-webpack-plugin": "^3.0.2"
   }
 }

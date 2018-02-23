@@ -1,6 +1,6 @@
 import React from "react";
 import "./index.css";
-import { AcceptRejectButton } from "../../components";
+import {AnswerBox } from "../../components";
 import {
   getApiQuestionById,
   getApiAnswerById,
@@ -135,7 +135,7 @@ export class AnswerPage extends React.Component {
     console.log("# OF ANSWERS: " + answerList.length);
 
     let numberOfAnswersTitle;
-    if (answerList.length == 0) {
+    if (answerList.length === 0) {
       numberOfAnswersTitle = (
         <h2 className="noAnswerText">
           No answer yet... Be the first one to reply!
@@ -149,128 +149,46 @@ export class AnswerPage extends React.Component {
       );
     }
 
-    let votingTable = x => {
-      return(
-        <table className="votingArea">
-          <tbody>
-            <tr>
-              <td>
-                <button className="votes"
-                onClick={() => this.handleDownvoteButton(x.id)}
-                >
-                -
-                </button>
-              </td>
-              <td>
-                <div>{x.points} vote(s)</div>
-              </td>
-              <td>
-                <button className="votes"
-                onClick={() => this.handleUpvoteButton(x.id)}
-                >
-                +
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      );
-    };
-
     var answerListBox = [];
-    var acceptFound = false;
-    answerList.map((x, key) => {
-      if (this.state.verified === true) {
-        if (x.is_accepted === true) {
-          answerListBox.push(
-            <div className="answerBox answerBox--green" key={key}>
-              <div className="answer-page__username">{x.user_id.username}</div>
-              <div className="answerText">{x.answer_text}</div>
-              <div className="dateText">
-                {x.date_created.replace("T", " at ").substring(0, 19)}
-              </div>
-              {votingTable(x)}
-              <AcceptRejectButton
-                handleAccept={this.handleAccept}
-                handleReject={this.handleReject}
-                Accepted={true}
-                Rejected={false}
-                a_id={x.id}
-              />
-            </div>
-          );
-        } else if (x.is_rejected === true) {
-          answerListBox.push(
-            <div className="answerBox answerBox--red" key={key}>
-              <div className="answerText">{x.answer_text}</div>
-              <div className="dateText">
-                {x.date_created.replace("T", " at ").substring(0, 19)}
-              </div>
-              {votingTable(x)}
-              <AcceptRejectButton
-                handleAccept={this.handleAccept}
-                handleReject={this.handleReject}
-                Accepted={false}
-                Rejected={true}
-                a_id={x.id}
-              />
-            </div>
-          );
-        } else {
-          answerListBox.push(
-            <div className="answerBox answerBox--blue" key={key}>
-              <div className="answerText">{x.answer_text}</div>
-              <div className="dateText">
-                {x.date_created.replace("T", " at ").substring(0, 19)}
-              </div>
-              {votingTable(x)}
-              <AcceptRejectButton
-                handleAccept={this.handleAccept}
-                handleReject={this.handleReject}
-                Accepted={false}
-                Rejected={false}
-                a_id={x.id}
-              />
-            </div>
-          );
-        }
-      } else {
-        if (x.is_accepted === true) {
-          answerListBox.push(
-            <div className="answerBox answerBox--green" key={key}>
-              <div className="answerText">{x.answer_text}</div>
-              <div className="dateText">
-                {x.date_created.replace("T", " at ").substring(0, 19)}
-              </div>
-              {votingTable(x)}
-            </div>
-          );
-        } else if (x.is_rejected === true) {
-          answerListBox.push(
-            <div className="answerBox answerBox--red" key={key}>
-              <div className="answerText">{x.answer_text}</div>
-              <div className="dateText">
-                {x.date_created.replace("T", " at ").substring(0, 19)}
-              </div>
-              {votingTable(x)}
-            </div>
-          );
-        } else {
-          answerListBox.push(
-            <div className="answerBox answerBox--blue" key={key}>
-              <div className="answerText">{x.answer_text}</div>
-              <div className="dateText">
-                {x.date_created.replace("T", " at ").substring(0, 19)}
-              </div>
-              {votingTable(x)}
-            </div>
-          );
-        }
+    var acceptedAnswerKey;
+
+    //add the accepted answer box first
+    answerList.forEach((x, key) => {
+      if (x.is_accepted) {
+        acceptedAnswerKey = key;
+        answerListBox.push(
+          <AnswerBox
+            key={key}
+            handleAccept={this.handleAccept}
+            handleReject={this.handleReject}
+            handleDownvoteButton={this.handleDownvoteButton}
+            handleUpvoteButton={this.handleUpvoteButton}
+            verified={this.state.verified}
+            x={x}
+          />
+        );
+      }
+    });
+
+    //add the rest of the answerbox 
+    answerList.forEach((x, key) => {
+      if (key !== acceptedAnswerKey) {
+        answerListBox.push(
+          <AnswerBox
+            key={key}
+            handleAccept={this.handleAccept}
+            handleReject={this.handleReject}
+            handleDownvoteButton={this.handleDownvoteButton}
+            handleUpvoteButton={this.handleUpvoteButton}
+            verified={this.state.verified}
+            x={x}
+          />
+        );
       }
     });
 
     return (
-      <div>
+      <div className="page-width">
         <h1 className="questionTitle">{question}</h1>
         <div className="seperator" />
         {numberOfAnswersTitle}
@@ -283,8 +201,6 @@ export class AnswerPage extends React.Component {
             className="questionBox_answer-text"
             onChange={e => this.handleChange(e)}
           />
-          {/* <div className="question-title">{question_text}</div> */}
-          {/* <button className="replyButton" onClick={() => this.handleReplyButton(boxId)} value={this.boxId}>Reply</button> */}
           <button
             className="questionBox_reply-button"
             onClick={() => this.handleReplyButton(q_id)}
