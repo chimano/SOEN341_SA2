@@ -1,6 +1,7 @@
 import React from "react";
 import "./index.css";
 import { AcceptRejectButton } from "../../components";
+import { VotingButtons } from "../../components";
 import {
   getApiQuestionById,
   getApiAnswerById,
@@ -154,7 +155,7 @@ export class AnswerPage extends React.Component {
         <h2 className="numberOfAnswersText">{answerList.length} answers</h2>
       );
     }
-
+/** 
     let votingTable = x => {
       return(
         <table className="votingArea">
@@ -182,7 +183,7 @@ export class AnswerPage extends React.Component {
         </table>
       );
     };
-
+*/
     var answerListBox = [];
     var acceptFound = false;
     answerList.map((x, key) => {
@@ -195,7 +196,12 @@ export class AnswerPage extends React.Component {
               <div className="dateText">
                 {x.date_created.replace("T", " at ").substring(0, 19)}
               </div>
-              {votingTable(x)}
+              <VotingButtons
+              handleDownvoteButton={this.handleDownvoteButton}
+              handleUpvoteButton={this.handleUpvoteButton}
+              a_id={x.id}
+              a_points={x.points}
+              />
               <AcceptRejectButton
                 handleAccept={this.handleAccept}
                 handleReject={this.handleReject}
@@ -212,7 +218,12 @@ export class AnswerPage extends React.Component {
               <div className="dateText">
                 {x.date_created.replace("T", " at ").substring(0, 19)}
               </div>
-              {votingTable(x)}
+              <VotingButtons
+              handleDownvoteButton={this.handleDownvoteButton}
+              handleUpvoteButton={this.handleUpvoteButton}
+              a_id={x.id}
+              a_points={x.points}
+              />
               <AcceptRejectButton
                 handleAccept={this.handleAccept}
                 handleReject={this.handleReject}
@@ -229,7 +240,12 @@ export class AnswerPage extends React.Component {
               <div className="dateText">
                 {x.date_created.replace("T", " at ").substring(0, 19)}
               </div>
-              {votingTable(x)}
+              <VotingButtons
+              handleDownvoteButton={this.handleDownvoteButton}
+              handleUpvoteButton={this.handleUpvoteButton}
+              a_id={x.id}
+              a_points={x.points}
+              />
               <AcceptRejectButton
                 handleAccept={this.handleAccept}
                 handleReject={this.handleReject}
@@ -248,7 +264,12 @@ export class AnswerPage extends React.Component {
               <div className="dateText">
                 {x.date_created.replace("T", " at ").substring(0, 19)}
               </div>
-              {votingTable(x)}
+              <VotingButtons
+              handleDownvoteButton={this.handleDownvoteButton}
+              handleUpvoteButton={this.handleUpvoteButton}
+              a_id={x.id}
+              a_points={x.points}
+              />
             </div>
           );
         } else if (x.is_rejected === true) {
@@ -258,7 +279,12 @@ export class AnswerPage extends React.Component {
               <div className="dateText">
                 {x.date_created.replace("T", " at ").substring(0, 19)}
               </div>
-              {votingTable(x)}
+              <VotingButtons
+              handleDownvoteButton={this.handleDownvoteButton}
+              handleUpvoteButton={this.handleUpvoteButton}
+              a_id={x.id}
+              a_points={x.points}
+              />
             </div>
           );
         } else {
@@ -268,7 +294,12 @@ export class AnswerPage extends React.Component {
               <div className="dateText">
                 {x.date_created.replace("T", " at ").substring(0, 19)}
               </div>
-              {votingTable(x)}
+              <VotingButtons
+              handleDownvoteButton={this.handleDownvoteButton}
+              handleUpvoteButton={this.handleUpvoteButton}
+              a_id={x.id}
+              a_points={x.points}
+              />
             </div>
           );
         }

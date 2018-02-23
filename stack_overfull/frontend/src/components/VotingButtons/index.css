@@ -1,0 +1,15 @@
+.votes {
+    min-width: 20px;
+    color: white;
+    background: lightgray;
+    text-align: center;
+    border: 1px solid grey;
+}
+
+button:hover{
+    background:rgb(31, 145, 221);
+}
+
+.votingArea{
+    position: fixed;
+}
