@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 import { HomePage, AnswerPage, SearchPage } from "./pages";
 import { Route, Switch } from "react-router-dom";
-import { NavigationBar, Footer } from "./components";
+import { NavigationBar, Footer} from "./components";
 import { getApiUserMe, postApiUserLogout } from "./utils/api";
 
 import CategoryPage from "./pages/CategoryPage/CategoryPage";
@@ -61,7 +61,7 @@ export default class App extends React.Component {
             path="/search/"
             render={(props) => (<SearchPage username = {this.state.username} {...props} />)}
           />
-
+          
           <Route path="/categories" component={CategoryPage} />
           <Route path='/categories/business' component={Business}/>
           <Route path='/categories/cooking' component={Cooking}/>

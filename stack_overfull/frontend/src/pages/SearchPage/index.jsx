@@ -15,6 +15,8 @@ import {
 import { postApiUserLogout } from "../../utils/api";
 import "./index.css";
 import qs from "qs"
+import { Redirect } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 export class SearchPage extends React.Component {
   constructor(props) {
@@ -110,9 +112,8 @@ export class SearchPage extends React.Component {
       <div className="homepage-wrapper">
         <div className="homepage-box">
           <div>
-            <h3 className="question-list-title">Search</h3>
-            <h4 className="results">Results found containing XXX</h4>
-            <h4 className="num-results"> XXX results</h4>
+            <h2 className="question-list-title">Search</h2>
+            <h3 className="results">Here are the results found</h3>
           </div>
           <QuestionList questionList={questionList} />
         </div>

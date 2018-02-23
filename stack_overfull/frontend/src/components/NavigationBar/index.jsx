@@ -119,12 +119,6 @@ export class NavigationBar extends React.Component {
             </Link>
             </button>
 
-
-            <button className="navbar__button">
-            <Link to='/search/?q=hello' style={{ color: "white" }}>Test Search</Link>
-            </button>
-
-
           </div>
         </div>
         {login_box}
