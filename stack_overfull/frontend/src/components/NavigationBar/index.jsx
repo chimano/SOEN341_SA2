@@ -66,7 +66,7 @@ export class NavigationBar extends React.Component {
 
     return (
       <div className="navbar-wrapper">
-        <div className="navbar">
+        <div className="navbar page-width">
           <div className="navbar__title">
             <Link to="/" style={{ color: "white" }}>
               Stack Overfull
@@ -102,7 +102,7 @@ export class NavigationBar extends React.Component {
             </div>
           )}
         </div>
-        <div className="navbar">
+        <div className="navbar page-width">
           <div className="navbar__auth">
           <button
               className="navbar__button"

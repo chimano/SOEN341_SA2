@@ -1,13 +1,8 @@
 .footer {
-    max-width: inherit;
     width: 100%;
     -webkit-text-fill-color: white;
     padding: 20px 10px;
     display: flex;
-    margin: auto;
-    max-width: 1140px;
-    /* position:absolute;
-  bottom:0; */
 }
 
 .footer ul {

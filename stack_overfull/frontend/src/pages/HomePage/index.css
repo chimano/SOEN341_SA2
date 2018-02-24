@@ -23,8 +23,6 @@ html {
 }
 
 .homepage-box {
-    max-width: 1140px;
-    margin: auto;
     min-height: calc(100vh - 87px - 233.19px);
 }
 
