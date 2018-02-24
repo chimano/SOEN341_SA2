@@ -18,25 +18,46 @@ html {
     z-index: 1;
 }
 
-.HomePage-wrapper {
+.homepage-wrapper {
     background-color: rgb(241, 241, 241);
 }
 
-.HomePage {
+.homepage-box {
+    max-width: 1140px;
+    margin: auto;
     min-height: calc(100vh - 87px - 233.19px);
 }
 
-.HomePage__question-list-title {
+.question-list-title {
     padding: 10px;
     padding-top: 20px;
     font-size: 20px;
     display: flex;
 }
 
-.HomePage__question-list-title button{
+.question-list-title button{
     width: 200px;
 }
 
-.HomePage__question-list-title h3 {
+.question-list-title{
     width: 100%;
+}
+
+.query{
+    font-weight: bold;
+    width: 100%;
+    display: flex;
+}
+
+.results{
+    width: 100%;
+    padding-left: 10px;
+    display: flex;
+}
+
+.num-results{
+    font-weight: bold;
+    width: 100%;
+    padding-left: 10px;
+    display: flex;
 }
