@@ -39,6 +39,19 @@ export default class App extends React.Component {
     this.setState({ logged_in: false, username: "" });
   };
 
+  verifyLogin = () => {
+    return new Promise((resolve, reject) => {
+      getApiUserMe().then(response => {
+        if (!response.data.error) {
+          this.setState({ logged_in: true, username: response.data.username });
+        } else {
+          this.setState({ logged_in: false, username: "" });
+        }
+        resolve(this.state.logged_in);
+      });
+    });
+  };
+
   render() {
     console.log("App.js state: ", this.state);
 
@@ -46,36 +59,45 @@ export default class App extends React.Component {
       <main>
         <NavigationBar
           handle_logout={this.handle_logout}
+          handle_login={this.handle_login}
           logged_in={this.state.logged_in}
           username={this.state.username}
-          handle_login={this.handle_login}
         />
         <Switch>
-          <Route exact path="/" component={HomePage} />
-          {/* <Route
-            path="/question/:id"
-            component={AnswerPage}
-          /> */}
+          <Route
+            exact
+            path="/"
+            render={props => (
+              <HomePage
+                username={this.state.username}
+                verifyLogin={this.verifyLogin}
+                {...props}
+              />
+            )}
+          />
           <Route
             path="/question/:id"
-            render={(props) => (<AnswerPage username = {this.state.username} {...props} />)}
+            render={props => (
+              <AnswerPage
+                username={this.state.username}
+                verifyLogin={this.verifyLogin}
+                logged_in={this.state.logged_in}
+                {...props}
+              />
+            )}
           />
 
           <Route path="/categories" component={CategoryPage} />
-          <Route path='/categories/business' component={Business}/>
-          <Route path='/categories/cooking' component={Cooking}/>
-          <Route path='/categories/entertainment' component={Entertainment}/>
-          <Route path='/categories/fashion' component={Fashion}/>
-          <Route path='/categories/programming' component={Programming}/>
-          <Route path='/categories/social' component={Social}/>
-          <Route path='/categories/technology' component={Technology}/>
-
+          <Route path="/categories/business" component={Business} />
+          <Route path="/categories/cooking" component={Cooking} />
+          <Route path="/categories/entertainment" component={Entertainment} />
+          <Route path="/categories/fashion" component={Fashion} />
+          <Route path="/categories/programming" component={Programming} />
+          <Route path="/categories/social" component={Social} />
+          <Route path="/categories/technology" component={Technology} />
         </Switch>
         <Footer />
       </main>
     );
   }
 }
-
-
-// logged_in={this.state.logged_in}

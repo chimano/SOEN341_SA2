@@ -1,10 +1,24 @@
-button {
+.float-button {
     float: right;
     background-color: #49a4fa;
     border-radius: 8px;
     text-align: center;
     cursor: pointer;
     color: white;
+    outline: none;
+}
+
+.button {
+    background-color: #49a4fa;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    color: white;
+    outline: none;
+}
+
+.button:hover{
+    background:rgb(31, 145, 221);
 }
 
 .page-width{

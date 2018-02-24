@@ -1,80 +1,38 @@
-.questionTitle {
+.AnswerPage__question-title {
     margin-top: 15px;
     padding-top: 20px;
 }
 
-.seperator {
+.AnswerPage__seperator {
     height: 2px;
     background-color: rgb(241, 241, 241);
     margin: 2% 0;
 }
 
-.answerBox {
-    margin-bottom: 1%;
-    border-radius: 8px;
-    border: 2px solid rgb(31, 145, 221);
-    padding: 1% 1% 0 1%;
-}
-
-.answerBox--blue {
-    border: 2px solid rgb(31, 145, 221);
-}
-
-.answerBox--red {
-    border: 2px solid rgb(221, 69, 31);
-}
-
-.answerBox--green {
-    border: 2px solid rgb(75, 221, 31);
-}
-
-.answerText {
-    text-align: left;
-}
-
-.dateText {
-    text-align: right;
-    margin-top: 2%;
-}
-
-.noAnswerText {
+.AnswerPage__no-answer-text {
     text-align: center;
 }
 
-.numberOfAnswersText {
+.AnswerPage__number-of-answers-text {
     margin-bottom: 3%;
 }
 
-.yourAnswerArea {
+.AnswerPage__your-answer-area {
     margin-bottom: 5%;
 }
 
-.yourAnswerTitle {
+.AnswerPage__your-answer-title {
     text-align: left;
 }
 
-.questionBox_answer-text {
+.AnswerPage__answer-text-area {
     width: 100%;
     min-height: 100px;
 }
 
-.questionBox_reply-button {
+.AnswerPage__reply-button {
     margin-top: 1%;
     color: white;
-}
-
-.votes {
-    min-width: 20px;
-    color: white;
-    background: lightgray;
-    text-align: center;
-    border: 1px solid grey;
-}
-
-button:hover{
-    background:rgb(31, 145, 221);
-}
-
-.votingArea{
-    margin: auto;
+    margin-left: auto;
+    display: flex;
 }

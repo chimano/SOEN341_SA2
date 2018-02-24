@@ -1,4 +1,4 @@
-.login-form {
+.SignUpForm {
     min-width: 500px;
     padding: 20px;
     background-color: white;
@@ -6,15 +6,11 @@
     padding-top: 40px;
 }
 
-.login-form-forgot {
-    float: right;
-}
-
-.login-form-button {
+.SignUpForm__submit-button {
     width: 100%;
 }
 
-.close-button {
+.SignUpForm__close-button {
     text-align: right;
     position: absolute;
     right: 4px;

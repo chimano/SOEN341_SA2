@@ -1,4 +1,4 @@
-.login-form {
+.SignInForm {
     min-width: 400px;
     padding: 20px;
     background-color: white;
@@ -6,15 +6,15 @@
     padding-top: 40px;
 }
 
-.login-form-forgot {
+.SignInForm__forgot-link {
     float: right;
 }
 
-.login-form-button {
+.SignInForm__submit-button {
     width: 100%;
 }
 
-.close-button {
+.SignInForm__close-button {
     text-align: right;
     position: absolute;
     right: 4px;

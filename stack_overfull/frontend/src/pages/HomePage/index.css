@@ -18,25 +18,25 @@ html {
     z-index: 1;
 }
 
-.homepage-wrapper {
+.HomePage-wrapper {
     background-color: rgb(241, 241, 241);
 }
 
-.homepage-box {
+.HomePage {
     min-height: calc(100vh - 87px - 233.19px);
 }
 
-.question-list-title {
+.HomePage__question-list-title {
     padding: 10px;
     padding-top: 20px;
     font-size: 20px;
     display: flex;
 }
 
-.question-list-title button{
+.HomePage__question-list-title button{
     width: 200px;
 }
 
-.question-list-title h3 {
+.HomePage__question-list-title h3 {
     width: 100%;
 }
