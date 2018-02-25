@@ -1,29 +1,24 @@
 import React from "react";
+
 import {
   QuestionList,
   Footer,
-  QuestionEdit,
-  AskQuestionButton
 } from "../../components";
+
 import {
   getApiSearch,
-  getApiQuestion,
-  postApiQuestion,
-  postApiAnswer,
-  getApiUserMe
+  getApiUserMe,
+  postApiUserLogout,
 } from "../../utils/api";
-import { postApiUserLogout } from "../../utils/api";
+
 import "./index.css";
 import qs from "qs"
-import { Redirect } from 'react-router-dom';
-import { Link } from "react-router-dom";
 
 export class SearchPage extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      showCreateQuestionBox: false,
       questionList: [],
       username: ""
     };
@@ -33,31 +28,37 @@ export class SearchPage extends React.Component {
     this.getSearchQuestionList();
   };
 
+  componentDidUpdate = (prevProps, prevState) => {
+
+    // check if the current url has changed
+    if ( prevProps.location.search != this.props.location.search ) {
+      console.log('Fetching new SeachPage question list')
+
+      // get a new question list
+      this.getSearchQuestionList();
+    }
+
+  }
+
   getSearchQuestionList = () => {
+
+    // get the query string from url (react includes '?' in the query string)
+    const query_string = this.props.location.search
+
     // get the 'q' url parameter from the current url ie /search/?q=<search text>
-    // https://github.com/ljharb/qs/issues/177
-    var q = qs.parse(this.props.location.search, { ignoreQueryPrefix: true }).q
+    const query_parsed = qs.parse( query_string, { ignoreQueryPrefix: true })
+    const q = query_parsed.q
 
     console.log("Search query('q=') captured as url parameter:", q)
 
+    // do api call
     getApiSearch(q, "desc", 36, "date_created").then(response => {
       this.setState({
         questionList: response.data.question_list
       });
     });
-  };
 
-  createQuestion = question => {
-    postApiQuestion(question);
-    setTimeout(() => this.getQuestionList(), 100);
   };
-
-  answerQuestion(answer, q_id) {
-    var parsedQ_id = parseInt(q_id);
-    // console.log("parsed_q_id", parsedQ_id);
-    // console.log("answer:", answer);
-    postApiAnswer(answer, q_id);
-  }
 
   handle_signup_button = () => {
     this.setState({ open_signup: true, open_signin: false });
@@ -82,42 +83,22 @@ export class SearchPage extends React.Component {
     this.setState({ logged_in: false, username: "" });
   };
 
-  openCreateQuestionBox = () => {
-    this.setState({ showCreateQuestionBox: true });
-  };
-
-  closeCreateQuestionBox = () => {
-    this.setState({ showCreateQuestionBox: false });
-  };
-
   render() {
     console.log("SearchPage state: ", this.state);
 
-    const { showCreateQuestionBox, questionList, username } = this.state;
-
-    let createQuestionBox;
-    if (showCreateQuestionBox) {
-      createQuestionBox = (
-        <QuestionEdit
-          user={username}
-          createQuestion={this.createQuestion}
-          closeCreateQuestionBox={this.closeCreateQuestionBox}
-        />
-      );
-    } else {
-      createQuestionBox = "";
-    }
+    const { questionList, username } = this.state;
 
     return (
-      <div className="homepage-wrapper">
-        <div className="homepage-box">
+      <div className="seachpage-wrapper">
+        <div className="seachpage-box">
           <div>
             <h2 className="question-list-title">Search</h2>
-            <h3 className="results">Here are the results found</h3>
+            { questionList.length
+              ? (<h3 className="results">Here are the results found</h3>)
+              : (<h3 className="results">No results found</h3>)}
           </div>
           <QuestionList questionList={questionList} />
         </div>
-        {createQuestionBox}
       </div>
     );
   }
