@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseServerError, JsonResponse
-from so_endpoint.serializers import QuestionSerializer, AnswerSerializer, user_to_dict
+from so_endpoint.serializers import *
 from so_endpoint.models import *
 import json
 
@@ -191,12 +191,8 @@ class UserView(TemplateView):
 
     def get(self, request):
         users =  User.objects.select_related('profile')
-        users_array = user_to_dict(
-            users,
-            many=True,
-            fields=['id', 'username', 'date_joined', 'is_active']
-        )
-        return JsonResponse(users_array, safe=False)
+        users_list = AccountSerializer(users, many=True).data
+        return JsonResponse({'user_list': users_list})
 
 # Return the currently logged in user
 class UserMeView(TemplateView):
@@ -208,7 +204,7 @@ class UserMeView(TemplateView):
     def get(self, request):
         if request.user.is_authenticated:
             user = request.user
-            return JsonResponse(user_to_dict(user))
+            return JsonResponse(AccountSerializerPrivate(user).data)
         else:
             return JsonResponse({'error': 'User is not logged in'})
 
@@ -235,7 +231,7 @@ class UserRegisterView(TemplateView):
             user = authenticate(request, username=username, password=password)
             login(request, user)
 
-            return JsonResponse(user_to_dict(user))
+            return JsonResponse(AccountSerializerPrivate(user).data)
 
         except BaseException as e: #either a json, key or user validation error
             print(repr(e))
@@ -260,7 +256,7 @@ class UserLoginView(TemplateView):
 
             if user is not None:
                 login(request, user)
-                return JsonResponse(user_to_dict(user))
+                return JsonResponse(AccountSerializerPrivate(user).data)
             else:
                 return JsonResponse({'error': 'Wrong username/password'})
 
@@ -287,7 +283,7 @@ class UserLogoutView(TemplateView):
 
 class AnswerVoteView(TemplateView):
 
-    @method_decorator(csrf_exempt)  
+    @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -301,7 +297,7 @@ class AnswerVoteView(TemplateView):
                 return JsonResponse({'error': 'Answer id is not valid'}, status=400)
 
             vote_type = json_data['vote_type']
-            
+
             if request.user.is_authenticated:
                 user = request.user
             else:
@@ -358,7 +354,7 @@ class AnswerVoteView(TemplateView):
 
 class QuestionVoteView(TemplateView):
 
-    @method_decorator(csrf_exempt)  
+    @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -372,7 +368,7 @@ class QuestionVoteView(TemplateView):
                 return JsonResponse({'error': 'Question id is not valid'}, status=400)
 
             vote_type = json_data['vote_type']
-            
+
             if request.user.is_authenticated:
                 user = request.user
             else:
@@ -425,3 +421,35 @@ class QuestionVoteView(TemplateView):
             question.save()
             return JsonResponse({'sucess': 'Downvoted the question',
                                  'points': question.points},status=200)
+
+class SearchView(TemplateView):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request):
+        try :
+            query = request.GET.get('q', '')
+            limit = request.GET.get('limit', 10)
+            order = request.GET.get('order', 'desc')
+            sorted_by = request.GET.get('sort', 'date_created')
+
+            limit = int(limit)
+            modifier = '-' if order == "desc" else ''
+
+            #filter questions by case-insensitive matching with question_text
+            by_question_text = Question.objects.filter(question_text__icontains=query)
+
+            #filter questions by case-insensitive matching with username
+            by_username = Question.objects.filter(user_id__username__icontains=query)
+
+            matching_questions = by_question_text | by_username
+
+            matching_questions = matching_questions.order_by(modifier+sorted_by)[:limit]
+
+            serialized = QuestionSerializer(matching_questions, many=True).data
+            return JsonResponse({'question_list': serialized})
+
+        except BaseException as e: # either TypeError or ValueError from query params
+            print(repr(e))
+            return JsonResponse({'error': repr(e)}, status=400)

@@ -1,6 +1,4 @@
 .navbar {
-  margin: auto;
-  max-width: 1140px;
   display: flex;
   width: 100%;
 }
@@ -13,6 +11,7 @@
   font-size: 18px;
   color: white;
   padding: 10px;
+  margin-left: 5px;
 }
 
 .navbar__search {

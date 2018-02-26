@@ -7,7 +7,7 @@ export class Footer extends React.Component {
   render() {
     return (
       <div className="footer-wrapper">
-        <div className="footer">
+        <div className="footer page-width">
           <ul>
             <h3> Stack Overfull </h3>
             <li>
@@ -22,7 +22,7 @@ export class Footer extends React.Component {
             <li>Terms & Conditions</li>
           </ul>
           <ul>
-            <h3> Questions </h3>
+            <h3>Questions</h3>
             <li>Business</li>
             <li>Cooking</li>
             <li>Fashion</li>

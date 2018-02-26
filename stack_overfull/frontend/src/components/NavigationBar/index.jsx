@@ -2,7 +2,7 @@ import React from "react";
 import {
   SearchBar,
   SignInFormWindow,
-  SignUpFormWindow
+  SignUpFormWindow,
 } from "../../components";
 import "./index.css";
 import { Link } from "react-router-dom";
@@ -66,7 +66,7 @@ export class NavigationBar extends React.Component {
 
     return (
       <div className="navbar-wrapper">
-        <div className="navbar">
+        <div className="navbar page-width">
           <div className="navbar__title">
             <Link to="/" style={{ color: "white" }}>
               Stack Overfull
@@ -102,7 +102,7 @@ export class NavigationBar extends React.Component {
             </div>
           )}
         </div>
-        <div className="navbar">
+        <div className="navbar page-width">
           <div className="navbar__auth">
           <button
               className="navbar__button"
@@ -118,6 +118,7 @@ export class NavigationBar extends React.Component {
               Questions
             </Link>
             </button>
+
           </div>
         </div>
         {login_box}
