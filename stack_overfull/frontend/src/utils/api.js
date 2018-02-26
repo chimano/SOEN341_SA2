@@ -105,7 +105,7 @@ export function voteAnswer(vote_type, a_id) {
   return new Promise((resolve, reject) => {
     axios
     .post("/api/answer/vote/", {
-      vote_type: vote_type, 
+      vote_type: vote_type,
       a_id: a_id
     })
     .then(response => {
@@ -230,6 +230,29 @@ export function postApiAnswerIdRejectUndo(id) {
       .catch(function(error) {
         console.log(error);
         reject(error);
+      });
+  });
+}
+
+//get the list of questions matching the query ('q')
+//returns a question_list in response.data
+export function getApiSearch(q=null, order='desc', limit=10, sort='date_created') {
+  return new Promise((resolve, reject) => {
+    axios
+      .get("/api/search/", {
+        params: {
+          q: q, // the query string
+          order: order,
+          limit: limit,
+          sort: sort
+        }
+      })
+      .then(response => {
+        console.log("get search question list: ", response);
+        resolve(response);
+      })
+      .catch(function(error) {
+        console.log(error);
       });
   });
 }

@@ -18,11 +18,13 @@ html {
     z-index: 1;
 }
 
-.homepage-wrapper {
+.searchpage-wrapper {
     background-color: rgb(241, 241, 241);
 }
 
-.homepage-box {
+.searchpage-box {
+    max-width: 1140px;
+    margin: auto;
     min-height: calc(100vh - 87px - 233.19px);
 }
 
@@ -37,6 +39,25 @@ html {
     width: 200px;
 }
 
-.question-list-title h3 {
+.question-list-title{
     width: 100%;
+}
+
+.query{
+    font-weight: bold;
+    width: 100%;
+    display: flex;
+}
+
+.results{
+    width: 100%;
+    padding-left: 10px;
+    display: flex;
+}
+
+.num-results{
+    font-weight: bold;
+    width: 100%;
+    padding-left: 10px;
+    display: flex;
 }
