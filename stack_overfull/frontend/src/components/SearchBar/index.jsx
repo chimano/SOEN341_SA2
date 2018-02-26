@@ -1,73 +1,60 @@
 import React from "react";
 import "./index.css";
-import { withRouter } from "react-router-dom";
 import { Redirect } from "react-router-dom";
-import { Link } from "react-router-dom";
+import qs from "qs";
+import { Input } from "antd";
+const Search = Input.Search;
 
 export class SearchBar extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      search: "",
-      url: "",
+      search_text: "",
+      search_url: "",
       redirect: false
     };
-    // binding the context to the SearchBar
-    // because this functions will be executed in a
-    // different context
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSearch = this.handleSearch.bind(this);
-  }
-
-  componentDidMount = () => {
-    this.setState({
-      redirect: false
-    })
   }
 
   // Modify the search key of the component state
-  handleChange(e) {
+  handleChange = value => {
     this.setState({
-      search: e.target.value
+      search_text: value
     });
-  }
+  };
+
   // gets the user input
   // and build the url based on it
-  handleSearch(e) {
+  handleSearch = e => {
     e.preventDefault(); // prevent page reload
-    const { search } = this.state;
-    const url = "/search/?q=" + search;
+    const { search_text } = this.state;
+    const search_url = "/search/?" + qs.stringify({ q: search_text });
 
-    console.log(url);
+    console.log(search_url);
     this.setState({
-      url,
+      search_url: search_url,
       redirect: true
     });
-  }
+  };
 
   render() {
-    const { search, url, redirect } = this.state;
-
-    console.log("search bar state: ",this.state)
+    const { search_text, search_url, redirect } = this.state;
 
     if (redirect) {
-      return <Redirect replace to={"/search/?q=" + search} />;
+      console.log("Redirecting to", search_url);
+      // reset redirect without triggering a state change
+      this.state.redirect = false;
+
+      return <Redirect push to={search_url} />;
     }
 
     return (
       <form onSubmit={this.handleSearch}>
-        <input
-          type="text"
-          value={search}
+        <Search
           placeholder="Search questions here"
-          onChange={this.handleChange}
+          onSearch={value => this.handleChange(value)}
+          enterButton
         />
-
-        <button type="submit">
-          {/* <Link to={"/search/?q=" + search} style={{ color: "white" }}> */}
-            Search
-          {/* </Link> */}
-        </button>
       </form>
     );
   }

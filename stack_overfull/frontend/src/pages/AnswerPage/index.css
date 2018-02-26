@@ -1,6 +1,5 @@
 .AnswerPage__question-title {
     margin-top: 15px;
-    padding-top: 20px;
 }
 
 .AnswerPage__seperator {
@@ -17,9 +16,9 @@
     margin-bottom: 3%;
 }
 
-.AnswerPage__your-answer-area {
+/* .AnswerPage__your-answer-area {
     margin-bottom: 5%;
-}
+} */
 
 .AnswerPage__your-answer-title {
     text-align: left;

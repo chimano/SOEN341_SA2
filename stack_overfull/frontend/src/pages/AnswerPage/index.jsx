@@ -30,7 +30,7 @@ export class AnswerPage extends React.Component {
     this.getQuestion();
     this.verifyUserAccess();
     this.getAnswerList();
-  }
+  };
   componentWillReceiveProps = () => {
     console.log("received props");
     this.getAnswerList();
@@ -39,9 +39,9 @@ export class AnswerPage extends React.Component {
 
   verifyUserAccess = () => {
     const { logged_in, username } = this.props;
-    console.log(this.props)
+    console.log(this.props);
     const q_id = this.props.match.params.id;
-    console.log("logged_in: ",logged_in,"username: ",username)
+    console.log("logged_in: ", logged_in, "username: ", username);
     if (logged_in) {
       getApiQuestionById(q_id).then(response => {
         var user = response.data.user_id.username;
@@ -60,29 +60,12 @@ export class AnswerPage extends React.Component {
         verified: false
       });
     }
-    // getApiUserMe().then(response => {
-    //   this.setState({
-    //     userName: response.data.username
-    //   });
-    //   getApiQuestionById(q_id).then(response => {
-    //     var user = response.data.user_id.username;
-    //     if (user === this.state.userName) {
-    //       this.setState({
-    //         verified: true
-    //       });
-    //     } else {
-    //       this.setState({
-    //         verified: false
-    //       });
-    //     }
-    //   });
-    // });
   };
 
   getQuestion = () => {
     const q_id = this.props.match.params.id;
     getApiQuestionById(q_id).then(response => {
-      var q_user = response.data.user_id.username;      
+      var q_user = response.data.user_id.username;
       this.setState({
         question: response.data.question_text,
         accepted_answer_id: response.data.accepted_answer_id,
@@ -157,14 +140,14 @@ export class AnswerPage extends React.Component {
     const { question, answerList, q_user } = this.state;
     const { logged_in, username } = this.props;
     const q_id = this.props.match.params.id;
-    
+
     console.log(this.state);
     console.log("# OF ANSWERS: " + answerList.length);
 
-    var verified;    
-    if(logged_in && q_user === username){
+    var verified;
+    if (logged_in && q_user === username) {
       verified = true;
-    }else{
+    } else {
       verified = false;
     }
 
@@ -226,25 +209,27 @@ export class AnswerPage extends React.Component {
     });
 
     return (
-      <div className="page-width">
-        <h1 className="AnswerPage__question-title">{question}</h1>
-        <div className="AnswerPage__seperator" />
-        {numberOfAnswersTitle}
-        {answerListBox}
-        <div className="AnswerPage__seperator" />
-        <div className="AnswerPage__your-answer-area">
-          <h2 className="AnswerPage__your-answer-title">Your Answer</h2>
-          <textarea
-            ref="answer_text"
-            className="AnswerPage__answer-text-area"
-            onChange={e => this.handleChange(e)}
-          />
-          <button
-            className="AnswerPage__reply-button button"
-            onClick={() => this.handleReplyButton(q_id)}
-          >
-            Reply
-          </button>
+      <div className="body-wrapper">
+        <div className="page-width">
+          <h1 className="AnswerPage__question-title">{question}</h1>
+          <div className="AnswerPage__seperator" />
+          {numberOfAnswersTitle}
+          {answerListBox}
+          <div className="AnswerPage__seperator" />
+          <div className="AnswerPage__your-answer-area">
+            <h2 className="AnswerPage__your-answer-title">Your Answer</h2>
+            <textarea
+              ref="answer_text"
+              className="AnswerPage__answer-text-area"
+              onChange={e => this.handleChange(e)}
+            />
+            <button
+              className="AnswerPage__reply-button button"
+              onClick={() => this.handleReplyButton(q_id)}
+            >
+              Reply
+            </button>
+          </div>
         </div>
       </div>
     );
