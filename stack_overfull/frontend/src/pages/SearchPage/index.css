@@ -18,17 +18,15 @@ html {
     z-index: 1;
 }
 
-.homepage-wrapper {
+.SearchPage-wrapper {
     background-color: rgb(241, 241, 241);
 }
 
-.homepage-box {
-    max-width: 1140px;
-    margin: auto;
+.SearchPage {
     min-height: calc(100vh - 87px - 233.19px);
 }
 
-.question-list-title {
+.SearchPage__question-list-title {
     padding: 10px;
     padding-top: 20px;
     font-size: 20px;
@@ -49,7 +47,7 @@ html {
     display: flex;
 }
 
-.results{
+.SearchPage__results{
     width: 100%;
     padding-left: 10px;
     display: flex;
