@@ -59,7 +59,7 @@ export class AnswerPage extends React.Component {
     const q_id = this.props.match.params.id;
     getApiQuestionById(q_id).then(response => {
       this.setState({
-        question: response.data.question_text,
+        question: response.data,
         accepted_answer_id: response.data.accepted_answer_id,
         rejected_answers_ids: response.data.rejected_answers_ids
       });
@@ -135,23 +135,15 @@ export class AnswerPage extends React.Component {
     console.log("# OF ANSWERS: " + answerList.length);
 
     let numberOfAnswersTitle;
-    if (answerList.length === 0) {
+    if (answerList.length < 1) {
       numberOfAnswersTitle = (
         <h2 className="noAnswerText">
           No answer yet... Be the first one to reply!
         </h2>
       );
-    } else if (answerList.length == 1) {
-      numberOfAnswersTitle = (
-        <h2 className="noAnswerText">
-          No answer yet... Be the first one to reply!
-        </h2>
-      );
-    } else if (answerList.length === 1) {
-      numberOfAnswersTitle = <h2 className="numberOfAnswersText">1 answer</h2>;
     } else {
       numberOfAnswersTitle = (
-        <h2 className="numberOfAnswersText">{answerList.length} answers</h2>
+        <h2 className="numberOfAnswersText">{answerList.length} answer(s)</h2>
       );
     }
 
@@ -277,7 +269,8 @@ export class AnswerPage extends React.Component {
 
     return (
       <div>
-        <h1 className="questionTitle">{question}</h1>
+        <h1 className="questionTitle">{question.question_head}</h1>
+        <p className="questionBody">{question.question_text}</p>
         <div className="seperator" />
         {numberOfAnswersTitle}
         {answerListBox}

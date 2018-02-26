@@ -79,8 +79,10 @@ export function getApiUserMe() {
 //post question
 export function postApiQuestion(question) {
   axios
-    .post("/api/question/", { question: question })
-    .then(function(response) {
+    .post("/api/question/", 
+    { question_head: question.question_head,
+      question_text: question.question_text}
+    ).then(function(response) {
       console.log("post question response: ", response);
     })
     .catch(function(error) {
