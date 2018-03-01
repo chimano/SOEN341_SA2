@@ -1,6 +1,9 @@
 .AnswerPage__question-title {
     margin-top: 15px;
 }
+.AnswerPage__question-body {
+    margin-top: 5%;
+}
 
 .AnswerPage__seperator {
     height: 2px;

@@ -20,16 +20,16 @@ class QuestionView(TemplateView):
     def post(self, request):
         try:
             json_data = json.loads(request.body)
-            question = json_data['question']
-
+            question_head = json_data['question_head']
+            question_text = json_data['question_text']
             try:
                 user = User.objects.get(username=request.user)
             except ObjectDoesNotExist:
                 user = None
 
-            if len(question) <= 1:
+            if len(question_head) <= 1:
                 return HttpResponseServerError()
-            q = Question(question_text=question, user_id=user)
+            q = Question(question_head=question_head, question_text=question_text, user_id=user)
             q.save()
             return JsonResponse({'id': q.id})
 
