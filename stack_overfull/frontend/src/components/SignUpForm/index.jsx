@@ -89,8 +89,8 @@ class SignUpForm extends React.Component {
     };
 
     return (
-      <Form onSubmit={this.handleSubmit} className="login-form">
-        <div className="close-button" onClick={() => handle_close_button()}>
+      <Form onSubmit={this.handleSubmit} className="SignUpForm">
+        <div className="SignUpForm__close-button" onClick={() => handle_close_button()}>
           &#10005;
         </div>
 
@@ -176,7 +176,7 @@ class SignUpForm extends React.Component {
         </FormItem>
 
         <FormItem {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" className="SignUpForm__submit-button">
             Register
           </Button>
         </FormItem>

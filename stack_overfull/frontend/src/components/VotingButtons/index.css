@@ -1,0 +1,22 @@
+.VotingButtons {
+    width: 100%;
+    display: flex;
+}
+
+.VotingButtons__button {
+    min-width: 20px;
+    color: white;
+    background: lightgray;
+    text-align: center;
+    border: 1px solid grey;
+}
+
+.VotingButtons__votes {
+    width: 100px;
+    display: flex;
+}
+
+.VotingButtons__votes__text {
+    margin: auto;
+}
+

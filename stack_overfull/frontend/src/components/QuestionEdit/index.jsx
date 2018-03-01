@@ -43,7 +43,7 @@ export class QuestionEdit extends React.Component {
             />
           </div>
           <button
-            className="questionEdit-button"
+            className="questionEdit-button button"
             onClick={() => this.handleSubmitQuestionButton()}
             style={{ color: "#ffffff" }}
           >

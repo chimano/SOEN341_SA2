@@ -1,14 +1,11 @@
 import React from "react";
 
 import {
-  QuestionList,
-  Footer,
+  QuestionList
 } from "../../components";
 
 import {
-  getApiSearch,
-  getApiUserMe,
-  postApiUserLogout,
+  getApiSearch
 } from "../../utils/api";
 
 import "./index.css";
@@ -60,42 +57,19 @@ export class SearchPage extends React.Component {
 
   };
 
-  handle_signup_button = () => {
-    this.setState({ open_signup: true, open_signin: false });
-  };
-
-  handle_signin_button = () => {
-    this.setState({ open_signin: true, open_signup: false });
-  };
-
-  handle_close_button = () => {
-    this.setState({ open_signin: false, open_signup: false });
-  };
-  handle_login = username => {
-    getApiUserMe().then(response => {
-      if (!response.error) {
-        this.setState({ logged_in: true, username: response.data.username });
-      }
-    });
-  };
-  handle_logout = () => {
-    postApiUserLogout();
-    this.setState({ logged_in: false, username: "" });
-  };
-
   render() {
     console.log("SearchPage state: ", this.state);
 
     const { questionList, username } = this.state;
 
     return (
-      <div className="seachpage-wrapper">
-        <div className="seachpage-box">
+      <div className="SearchPage-wrapper">
+        <div className="SearchPage page-width">
           <div>
-            <h2 className="question-list-title">Search</h2>
+            <h2 className="SearchPage__question-list-title">Search</h2>
             { questionList.length
-              ? (<h3 className="results">Here are the results found</h3>)
-              : (<h3 className="results">No results found</h3>)}
+              ? (<h3 className="SearchPage__results">Here are the results found</h3>)
+              : (<h3 className="SearchPage__results">No results found</h3>)}
           </div>
           <QuestionList questionList={questionList} />
         </div>
