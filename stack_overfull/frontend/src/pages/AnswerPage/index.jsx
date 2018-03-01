@@ -205,7 +205,8 @@ export class AnswerPage extends React.Component {
     return (
       <div className="body-wrapper">
         <div className="page-width">
-          <h1 className="AnswerPage__question-title">{question}</h1>
+          <h1 className="AnswerPage__question-title">{question.question_head}</h1>
+          <p className="AnswerPage__question-body">{question.question_text}</p>
           <div className="AnswerPage__seperator" />
           {numberOfAnswersTitle}
           {answerListBox}
