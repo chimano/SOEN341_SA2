@@ -38,8 +38,8 @@ class SignInForm extends React.Component {
     const { handle_close_button } = this.props;
 
     return (
-      <Form onSubmit={this.handleSubmit} className="login-form">
-        <div className="close-button" onClick={() => handle_close_button()}>
+      <Form onSubmit={this.handleSubmit} className="SignInForm">
+        <div className="SignInForm__close-button" onClick={() => handle_close_button()}>
           &#10005;
         </div>
         <h3>Sign In</h3>
@@ -70,13 +70,13 @@ class SignInForm extends React.Component {
             valuePropName: "checked",
             initialValue: true
           })(<Checkbox>Remember me</Checkbox>)}
-          <a className="login-form-forgot" href="">
+          <a className="SignInForm__forgot-link" href="">
             Forgot password
           </a>
           <Button
             type="primary"
             htmlType="submit"
-            className="login-form-button"
+            className="SignInForm__submit-button"
           >
             Sign In
           </Button>

@@ -1,51 +1,51 @@
 .navbar {
-  display: flex;
-  width: 100%;
+    display: flex;
+    width: 100%;
 }
+
 .navbar-wrapper {
-  background-color: rgb(38, 18, 155);
+    background-color: rgb(38, 18, 155);
 }
 
 .navbar__title {
-  min-width: 150px;
-  font-size: 18px;
-  color: white;
-  padding: 10px;
-  margin-left: 5px;
+    min-width: 150px;
+    font-size: 18px;
+    color: white;
+    margin: auto;
 }
 
 .navbar__search {
-  width: 100%;
-  padding: 7px;
-  z-index: 0;
+    width: 100%;
+    padding: 7px;
+    z-index: 0;
 }
 
 .navbar__button {
-  min-width: 80px;
-  border: none;
-  background-color: rgb(38, 18, 155);
-  color: white;
-  cursor: pointer;
-  outline: none;
-  height: 40px;
-  margin: auto;
+    min-width: 80px;
+    border: none;
+    background-color: rgb(38, 18, 155);
+    color: white;
+    cursor: pointer;
+    outline: none;
+    height: 40px;
+    margin: auto;
 }
 
 .navbar__button:hover {
-  background-color: rgb(54, 33, 190);
+    background-color: rgb(54, 33, 190);
 }
 
 .navbar__auth {
-  display: flex;
+    display: flex;
 }
 
 .navbar__welcome {
-  margin: auto;
+    margin: auto;
 }
 
 .navbar__logged-in {
-  min-width: 210px;
-  color: white;
-  text-align: center;
-  display: flex;
+    min-width: 210px;
+    color: white;
+    text-align: center;
+    display: flex;
 }
