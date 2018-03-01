@@ -1,9 +1,10 @@
 import React from "react";
 import "./index.css";
-import { AcceptRejectButton } from "../AcceptRejectButton";
+import { AcceptRejectButton, VotingButtons } from "../../components";
 
 export class AnswerBox extends React.Component {
   render() {
+    
     const {
       handleAccept,
       handleReject,
@@ -13,59 +14,44 @@ export class AnswerBox extends React.Component {
       x
     } = this.props;
 
+    console.log("verified: ",verified);
+
     var answerBox_class;
     if (x.is_accepted) {
-      answerBox_class = "answerBox--green";
+      answerBox_class = "AnswerBox--green";
     } else if (x.is_rejected) {
-      answerBox_class = "answerBox--red";
+      answerBox_class = "AnswerBox--red";
     } else {
-      answerBox_class = "answerBox--blue";
+      answerBox_class = "AnswerBox--blue";
     }
 
     return (
       <div>
-        <div className={"answerBox " + answerBox_class}>
-          <div className="answer-page__username">{x.user_id.username}</div>
-          <div className="answerText">{x.answer_text}</div>
-          <div className="dateText">
+        <div className={"AnswerBox " + answerBox_class}>
+          <div>{x.user_id.username}</div>
+          <div className="AnswerBox__answer">{x.answer_text}</div>
+          <div className="AnswerBox__date">
             {x.date_created.replace("T", " at ").substring(0, 19)}
           </div>
-          <table className="votingArea">
-            <tbody>
-              <tr>
-                <td>
-                  <button
-                    className="votes"
-                    onClick={() => handleDownvoteButton(x.id)}
-                  >
-                    -
-                  </button>
-                </td>
-                <td>
-                  <div>{x.points} vote(s)</div>
-                </td>
-                <td>
-                  <button
-                    className="votes"
-                    onClick={() => handleUpvoteButton(x.id)}
-                  >
-                    +
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          {verified ? (
-            <AcceptRejectButton
-              handleAccept={() => handleAccept(x.id)}
-              handleReject={() => handleReject(x.id)}
-              accepted={x.is_accepted}
-              rejected={x.is_rejected}
-              a_id={x.id}
+          <div className="AnswerBox__button-area">
+            <VotingButtons
+              handleDownvoteButton={handleDownvoteButton}
+              handleUpvoteButton={handleUpvoteButton}
+              id={x.id}
+              points={x.points}
             />
-          ) : (
-            ""
-          )}
+            {verified ? (
+              <AcceptRejectButton
+                handleAccept={() => handleAccept(x.id)}
+                handleReject={() => handleReject(x.id)}
+                accepted={x.is_accepted}
+                rejected={x.is_rejected}
+                a_id={x.id}
+              />
+            ) : (
+              ""
+            )}
+          </div>
         </div>
       </div>
     );

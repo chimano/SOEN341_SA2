@@ -8,10 +8,8 @@ import {
 import {
   getApiQuestion,
   postApiQuestion,
-  postApiAnswer,
-  getApiUserMe
+  postApiAnswer
 } from "../../utils/api";
-import { postApiUserLogout } from "../../utils/api";
 
 export class HomePage extends React.Component {
   constructor(props) {
@@ -19,8 +17,7 @@ export class HomePage extends React.Component {
 
     this.state = {
       showCreateQuestionBox: false,
-      questionList: [],
-      username: ""
+      questionList: []
     };
   }
 
@@ -45,34 +42,10 @@ export class HomePage extends React.Component {
     postApiAnswer(answer, q_id);
   }
 
-  handle_signup_button = () => {
-    this.setState({ open_signup: true, open_signin: false });
-  };
-
-  handle_signin_button = () => {
-    this.setState({ open_signin: true, open_signup: false });
-  };
-
-  handle_close_button = () => {
-    this.setState({ open_signin: false, open_signup: false });
-  };
-  handle_login = username => {
-    getApiUserMe().then(response => {
-      if (!response.error) {
-        this.setState({ logged_in: true, username: response.data.username });
-      }
-    });
-  };
-  handle_logout = () => {
-    postApiUserLogout();
-    this.setState({ logged_in: false, username: "" });
-  };
   handleAskQuestionButton = () => {
-    getApiUserMe().then(response => {
-      if (!response.data.error) {
-        this.setState({
-          username: response.data.username
-        });
+    const { verifyLogin } = this.props;
+    verifyLogin().then(logged_in => {
+      if (logged_in) {
         this.openCreateQuestionBox();
       } else {
         alert("You need to Sign In to ask a question");
@@ -89,9 +62,10 @@ export class HomePage extends React.Component {
   };
 
   render() {
-    console.log("HomePage state: ",this.state);
+    console.log("HomePage state: ", this.state);
 
-    const { showCreateQuestionBox, questionList, username } = this.state;
+    const { showCreateQuestionBox, questionList } = this.state;
+    const { username } = this.props;
 
     let createQuestionBox;
     if (showCreateQuestionBox) {
@@ -107,9 +81,9 @@ export class HomePage extends React.Component {
     }
 
     return (
-      <div className="homepage-wrapper">
-        <div className="homepage-box page-width">
-          <div className="question-list-title">
+      <div className="HomePage-wrapper">
+        <div className="HomePage page-width">
+          <div className="HomePage__question-list-title">
             <h3>TOP QUESTIONS</h3>
             <AskQuestionButton
               handleAskQuestionButton={this.handleAskQuestionButton}

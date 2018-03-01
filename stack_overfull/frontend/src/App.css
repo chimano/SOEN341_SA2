@@ -1,14 +1,33 @@
-button {
+.float-button {
     float: right;
     background-color: #49a4fa;
     border-radius: 8px;
     text-align: center;
     cursor: pointer;
     color: white;
+    outline: none;
 }
 
-.page-width{
+.button {
+    background-color: #49a4fa;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    color: white;
+    outline: none;
+}
+
+.button:hover {
+    background: rgb(31, 145, 221);
+}
+
+.page-width {
     max-width: 1060px;
     margin: auto;
     padding: 0 10px;
+}
+
+.body-wrapper {
+    /* background-color: rgb(241, 241, 241);  */
+    min-height: calc(100vh - 87px - 233.19px);   
 }

@@ -1,6 +1,7 @@
 import React from "react";
 import "./index.css";
-import {AnswerBox } from "../../components";
+import { AnswerBox } from "../../components";
+
 import {
   getApiQuestionById,
   getApiAnswerById,
@@ -18,31 +19,33 @@ export class AnswerPage extends React.Component {
       question: "",
       answerList: [],
       answer: "",
-      userName: "",
       accepted_answer_id: "",
       rejected_answers_ids: [],
-      verified: false
+      verified: false,
+      q_user: ""
     };
-
-    this.getQuestion();
-    this.getAnswerList();
-    this.verifyUserAccess();
   }
 
-  componentWillReceiveProps = () => {
+  componentWillMount = () => {
+    this.getQuestion();
     this.verifyUserAccess();
     this.getAnswerList();
   };
+  componentWillReceiveProps = () => {
+    console.log("received props");
+    this.getAnswerList();
+    this.verifyUserAccess();
+  };
 
   verifyUserAccess = () => {
+    const { logged_in, username } = this.props;
+    console.log(this.props);
     const q_id = this.props.match.params.id;
-    getApiUserMe().then(response => {
-      this.setState({
-        userName: response.data.username
-      });
+    console.log("logged_in: ", logged_in, "username: ", username);
+    if (logged_in) {
       getApiQuestionById(q_id).then(response => {
         var user = response.data.user_id.username;
-        if (user === this.state.userName) {
+        if (user === username) {
           this.setState({
             verified: true
           });
@@ -52,16 +55,22 @@ export class AnswerPage extends React.Component {
           });
         }
       });
-    });
+    } else {
+      this.setState({
+        verified: false
+      });
+    }
   };
 
   getQuestion = () => {
     const q_id = this.props.match.params.id;
     getApiQuestionById(q_id).then(response => {
+      var q_user = response.data.user_id.username;
       this.setState({
-        question: response.data.question_text,
+        question: response.data,
         accepted_answer_id: response.data.accepted_answer_id,
-        rejected_answers_ids: response.data.rejected_answers_ids
+        rejected_answers_ids: response.data.rejected_answers_ids,
+        q_user: q_user
       });
     });
   };
@@ -128,24 +137,30 @@ export class AnswerPage extends React.Component {
   };
 
   render() {
-    const { question, answerList } = this.state;
+    const { question, answerList, q_user } = this.state;
+    const { logged_in, username } = this.props;
     const q_id = this.props.match.params.id;
 
     console.log(this.state);
     console.log("# OF ANSWERS: " + answerList.length);
 
+    var verified;
+    if (logged_in && q_user === username) {
+      verified = true;
+    } else {
+      verified = false;
+    }
+
     let numberOfAnswersTitle;
-    if (answerList.length === 0) {
+    if (answerList.length < 1) {
       numberOfAnswersTitle = (
-        <h2 className="noAnswerText">
+        <h2 className="AnswerPage__no-answer-text">
           No answer yet... Be the first one to reply!
         </h2>
       );
-    } else if (answerList.length === 1) {
-      numberOfAnswersTitle = <h2 className="numberOfAnswersText">1 answer</h2>;
     } else {
       numberOfAnswersTitle = (
-        <h2 className="numberOfAnswersText">{answerList.length} answers</h2>
+        <h2 className="numberOfAnswersText">{answerList.length} answer(s)</h2>
       );
     }
 
@@ -163,14 +178,14 @@ export class AnswerPage extends React.Component {
             handleReject={this.handleReject}
             handleDownvoteButton={this.handleDownvoteButton}
             handleUpvoteButton={this.handleUpvoteButton}
-            verified={this.state.verified}
+            verified={verified}
             x={x}
           />
         );
       }
     });
 
-    //add the rest of the answerbox 
+    //add the rest of the answerbox
     answerList.forEach((x, key) => {
       if (key !== acceptedAnswerKey) {
         answerListBox.push(
@@ -180,7 +195,7 @@ export class AnswerPage extends React.Component {
             handleReject={this.handleReject}
             handleDownvoteButton={this.handleDownvoteButton}
             handleUpvoteButton={this.handleUpvoteButton}
-            verified={this.state.verified}
+            verified={verified}
             x={x}
           />
         );
@@ -188,25 +203,28 @@ export class AnswerPage extends React.Component {
     });
 
     return (
-      <div className="page-width">
-        <h1 className="questionTitle">{question}</h1>
-        <div className="seperator" />
-        {numberOfAnswersTitle}
-        {answerListBox}
-        <div className="seperator" />
-        <div className="yourAnswerArea">
-          <h2 className="yourAnswerTitle">Your Answer</h2>
-          <textarea
-            ref="answer_text"
-            className="questionBox_answer-text"
-            onChange={e => this.handleChange(e)}
-          />
-          <button
-            className="questionBox_reply-button"
-            onClick={() => this.handleReplyButton(q_id)}
-          >
-            Reply
-          </button>
+      <div className="body-wrapper">
+        <div className="page-width">
+          <h1 className="AnswerPage__question-title">{question.question_head}</h1>
+          <p className="AnswerPage__question-body">{question.question_text}</p>
+          <div className="AnswerPage__seperator" />
+          {numberOfAnswersTitle}
+          {answerListBox}
+          <div className="AnswerPage__seperator" />
+          <div className="AnswerPage__your-answer-area">
+            <h2 className="AnswerPage__your-answer-title">Your Answer</h2>
+            <textarea
+              ref="answer_text"
+              className="AnswerPage__answer-text-area"
+              onChange={e => this.handleChange(e)}
+            />
+            <button
+              className="AnswerPage__reply-button button"
+              onClick={() => this.handleReplyButton(q_id)}
+            >
+              Reply
+            </button>
+          </div>
         </div>
       </div>
     );

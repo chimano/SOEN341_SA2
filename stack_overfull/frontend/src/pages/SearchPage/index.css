@@ -1,46 +1,15 @@
-html {
-    font-size: 13px;
-}
-
-.login-wrap {
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-align: center;
-    align-items: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.7);
-    z-index: 1;
-}
-
-.searchpage-wrapper {
+.SearchPage-wrapper {
     background-color: rgb(241, 241, 241);
 }
 
-.searchpage-box {
-    max-width: 1140px;
-    margin: auto;
+.SearchPage {
     min-height: calc(100vh - 87px - 233.19px);
 }
 
-.question-list-title {
-    padding: 10px;
+.SearchPage__question-list-title {
     padding-top: 20px;
     font-size: 20px;
     display: flex;
-}
-
-.question-list-title button{
-    width: 200px;
-}
-
-.question-list-title{
-    width: 100%;
 }
 
 .query{
@@ -49,9 +18,8 @@ html {
     display: flex;
 }
 
-.results{
+.SearchPage__results{
     width: 100%;
-    padding-left: 10px;
     display: flex;
 }
 

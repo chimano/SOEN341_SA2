@@ -8,7 +8,7 @@ export class QuestionBox extends React.Component {
   };
 
   render() {
-    const { date_created, question_text, username, q_id, points } = this.props;
+    const { date_created, question_head, username, q_id, points } = this.props;
 
     return (
       <div className="question-box">
@@ -17,7 +17,7 @@ export class QuestionBox extends React.Component {
           <div>{points}</div>
         </div>
         <Link to={"/question/" + q_id} className="question-box__text">
-          {question_text}
+          {question_head}
         </Link>
         <div className="question-box__line" />
         <div className="question-box__date">{date_created}</div>

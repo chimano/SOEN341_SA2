@@ -5,18 +5,20 @@ export class QuestionEdit extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      question: ""
+      question_head: "",
+      question_text: ""
     };
   }
 
   handleSubmitQuestionButton = () => {
     const { createQuestion, closeCreateQuestionBox } = this.props;
-    createQuestion(this.state.question);
+    createQuestion(this.state);
     closeCreateQuestionBox();
   };
 
-  handleChange = event => {
-    this.setState({ question: event.target.value });
+
+  handleChange = (event, name) => {
+    this.setState({ [name]: event.target.value });
   };
 
   render() {
@@ -36,14 +38,19 @@ export class QuestionEdit extends React.Component {
             <a className="questionEdit-user">{user}</a>
             <div className="line" />
             <h3>Ask a question to the community</h3>
-            <div className="questionEdit-title">Question :</div>
+            <div className="questionEdit-title">Question Header:</div>
             <textarea
               className="questionEdit-text"
-              onChange={e => this.handleChange(e)}
+              onChange={e => this.handleChange(e, 'question_head')}
+            />
+            <div className="questionEdit-title">Question Body (Optional):</div>
+            <textarea
+              className="questionEdit-text"
+              onChange={e => this.handleChange(e, 'question_text')}
             />
           </div>
           <button
-            className="questionEdit-button"
+            className="questionEdit-button button"
             onClick={() => this.handleSubmitQuestionButton()}
             style={{ color: "#ffffff" }}
           >
