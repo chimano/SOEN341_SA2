@@ -25,16 +25,16 @@ class QuestionView(TemplateView):
             try:
                 user = User.objects.get(username=request.user)
             except ObjectDoesNotExist:
-                user = None
+                return JsonResponse({'error': 'User is not logged in'}, status=400)
 
             if len(question_head) <= 1:
-                return HttpResponseServerError()
+                return JsonResponse({'error': 'Question length is invalid'}, status=400)
             q = Question(question_head=question_head, question_text=question_text, user_id=user)
             q.save()
             return JsonResponse({'id': q.id})
 
         except KeyError:
-            return HttpResponseServerError()
+            return JsonResponse({'error': 'There was an error parsing the request'}, status=400)
 
     def get(self, request):
         limit = request.GET.get('limit', 10)
@@ -42,7 +42,7 @@ class QuestionView(TemplateView):
         order = request.GET.get('order', 'desc')
         sorted_by = request.GET.get('sort', 'points')
         if q_id is None:
-
+            print('test')
             limit = 10 if limit is None else int(limit)
             order = "desc" if order is None else order
 
@@ -58,7 +58,7 @@ class QuestionView(TemplateView):
             try:
                 question = Question.objects.get(id=q_id)
             except:
-                return HttpResponseServerError()
+                return JsonResponse({'error': 'Question does not exist'}, status=400)
             serialized = QuestionSerializer(question).data
             return JsonResponse(serialized)
 
@@ -78,22 +78,22 @@ class AnswerView(TemplateView):
             try:
                 user = User.objects.get(username=request.user)
             except ObjectDoesNotExist:
-                user = None
+                return JsonResponse({'error': 'User is not logged in'}, status=400)
 
             try:
                 q = Question.objects.get(id=q_id)
             except ObjectDoesNotExist:
-                return HttpResponseServerError()
+                return JsonResponse({'error': 'Question does not exist'}, status=400)
 
             if len(answer) <= 1:
-                return HttpResponseServerError()
+                return JsonResponse({'error': 'Answer length is invalid'}, status=400)
             a = Answer(question_id=q, answer_text=answer, user_id=user)
             a.save()
 
             return JsonResponse({'id': a.id})
 
         except KeyError:
-            return HttpResponseServerError()
+            return JsonResponse({'error': 'There was an error parsing the request'}, status=400)
 
     def get(self, request):
 
@@ -109,7 +109,7 @@ class AnswerView(TemplateView):
         try:
             q = Question.objects.get(id=q_id)
         except ObjectDoesNotExist:
-            return HttpResponseServerError()
+            return JsonResponse({'error': 'Question does not exist'}, status=400)
 
         answers = Answer.objects.filter(question_id=q_id).order_by(modifier + sorted_by)[:limit]
         serialized = AnswerSerializer(answers, many=True).data
@@ -132,16 +132,16 @@ class AnswerAcceptView(TemplateView):
             return JsonResponse({'error': repr(e)}, status=400)
 
         if not request.user.is_authenticated:
-            return JsonResponse({'error': 'User is not authenticated'})
+            return JsonResponse({'error': 'User is not authenticated'}, status=400)
 
         if to_question.user_id != request.user:
-            return JsonResponse({'error': 'User is not the author of the question'})
+            return JsonResponse({'error': 'User is not the author of the question'}, status=400)
 
         #if question.accepted_answer_id is not None and undo is False:
         #    return JSONResponse({'error': 'An answer to the question is alreay accepted'})
 
         if undo is True and to_question.accepted_answer_id != answer:
-            return JsonResponse({'error': "Can't undo since the answer is not accepted"})
+            return JsonResponse({'error': "Can't undo since the answer is not accepted"}, status=400)
 
         to_question.accepted_answer_id = None if undo else answer
 
@@ -166,10 +166,10 @@ class AnswerRejectView(TemplateView):
             return JsonResponse({'error': repr(e)}, status=400)
 
         if not request.user.is_authenticated:
-            return JsonResponse({'error': 'User is not authenticated'})
+            return JsonResponse({'error': 'User is not authenticated'}, status=400)
 
         if to_question.user_id != request.user:
-            return JsonResponse({'error': 'User is not the author of the question'})
+            return JsonResponse({'error': 'User is not the author of the question'}, status=400)
 
         if not undo:
             to_question.rejected_answers_ids.add(answer)
@@ -206,7 +206,7 @@ class UserMeView(TemplateView):
             user = request.user
             return JsonResponse(AccountSerializerPrivate(user).data)
         else:
-            return JsonResponse({'error': 'User is not logged in'})
+            return JsonResponse({'error': 'User is not logged in'}, status=400)
 
 # Register a new user and log him in
 class UserRegisterView(TemplateView):
@@ -225,7 +225,7 @@ class UserRegisterView(TemplateView):
             email = raw_data.get('email', None)
 
             if User.objects.filter(username=username).exists():
-                return JsonResponse({'error': 'Username already exists'})
+                return JsonResponse({'error': 'Username already exists'}, status=400)
 
             User.objects.create_user(username=username, password=password, email=email)
             user = authenticate(request, username=username, password=password)
@@ -258,7 +258,7 @@ class UserLoginView(TemplateView):
                 login(request, user)
                 return JsonResponse(AccountSerializerPrivate(user).data)
             else:
-                return JsonResponse({'error': 'Wrong username/password'})
+                return JsonResponse({'error': 'Wrong username/password'}, status=400)
 
 
         except BaseException as e: #either a json or key error
@@ -278,7 +278,7 @@ class UserLogoutView(TemplateView):
             logout(request)
             return JsonResponse({'status':'done'})
         else:
-            return JsonResponse({'error': 'User is not logged in'})
+            return JsonResponse({'error': 'User is not logged in'}, status=400)
 
 
 class AnswerVoteView(TemplateView):
