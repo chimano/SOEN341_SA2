@@ -17,6 +17,7 @@ def login_or_create(client, username, password):
     is_logged_in = client.login(username=username, password=password)
     return is_logged_in
 
+
 class UserViewTests(TestCase):
 
     def test_user_view(self):
@@ -31,7 +32,7 @@ class UserMeViewTests(TestCase):
     def test_user_not_logged(self):
         response = self.client.get('/api/user/me/')
 
-        self.assertIs(response.status_code, 200) # why 200
+        self.assertEqual(response.status_code, 400) # why 200
         self.assertTrue('error' in response.json())
 
     def test_user_logged(self):
@@ -100,7 +101,7 @@ class UserRegisterViewTests(TestCase):
 
         response_body = response.json()
 
-        self.assertEqual(response.status_code, 200) # why 200
+        self.assertEqual(response.status_code, 400) # why 200
         self.assertTrue('error' in response_body)
 
 class UserLoginViewTests(TestCase):
@@ -156,5 +157,106 @@ class UserLoginViewTests(TestCase):
             content_type='application/json'
         )
 
-        self.assertEqual(response.status_code, 200) # why 200
+        self.assertEqual(response.status_code, 400) # why 200
         self.assertTrue('error' in response.json())
+
+
+
+class QuestionViewTest(TestCase):
+    login_info = {
+        'username': 'testuser',
+        'password': 'testpassword'
+    }
+
+    @classmethod
+    def setUpTestData(cls):
+        Question.objects.create(question_head="Test Question?", question_text="Test Body?")
+        User.objects.create_user(username=cls.login_info['username'], password=cls.login_info['password'])
+
+
+
+    def test_valid_question_post(self):
+        self.client.post(
+            '/api/user/login/',
+            data=json.dumps(self.login_info),
+            content_type='application/json'
+        )
+        json_payload = json.dumps({
+            "question_head": "Testing question header?",
+            "question_text": "Testing question body."
+        })
+        response = self.client.post(
+            '/api/question/',
+            data=json_payload,
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('id' in response.json())
+    
+    def test_invalid_question_post(self):
+
+        json_payload = json.dumps({
+            "question_head": "Testing question header?",
+            "question_text": "Testing question body."
+        })
+
+        response = self.client.post(
+            '/api/question/',
+            data=json_payload,
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertTrue('error' in response.json())
+    
+    def test_invalid_short_question_post(self):
+
+        json_payload = json.dumps({
+            "question_head": "a",
+            "question_text": "Testing question body."
+        })
+
+        response = self.client.post(
+            '/api/question/',
+            data=json_payload,
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertTrue('error' in response.json())
+    
+    def test_valid_question_get(self):
+
+        data = {
+            "id": "1"
+        }
+
+        response = self.client.get('/api/question/', data)
+        self.assertEqual(response.status_code, 200)
+
+    def test_invalid_question_get(self):
+
+        data = {
+            "id": "012302011"
+        }
+
+        response = self.client.get('/api/question/', data)
+        self.assertEqual(response.status_code, 400)
+        self.assertTrue('error' in response.json())
+
+    def test_question_list_get(self):
+
+        data = {
+            "order": "asc",
+            "limit": 20,
+            "sort": "date_created"
+        }
+
+        response = self.client.get('/api/question/', data)
+        self.assertEqual(response.status_code, 200)
+    
+    @classmethod
+    def tearDownClass(cls):
+        Question.objects.all().delete()
+        User.objects.all().delete()
