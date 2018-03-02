@@ -19,9 +19,9 @@
     margin-bottom: 3%;
 }
 
-/* .AnswerPage__your-answer-area {
-    margin-bottom: 5%;
-} */
+.AnswerPage__your-answer-area {
+    padding-bottom: 5%;
+}
 
 .AnswerPage__your-answer-title {
     text-align: left;
@@ -37,4 +37,8 @@
     color: white;
     margin-left: auto;
     display: flex;
+}
+
+.AnswerPage__question-creator {
+    padding-top: 30px;
 }

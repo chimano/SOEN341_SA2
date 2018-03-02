@@ -141,7 +141,7 @@ export class AnswerPage extends React.Component {
     const { logged_in, username } = this.props;
     const q_id = this.props.match.params.id;
 
-    console.log(this.state);
+    console.log("State of AnswerPage: ",this.state);
     console.log("# OF ANSWERS: " + answerList.length);
 
     var verified;
@@ -205,6 +205,7 @@ export class AnswerPage extends React.Component {
     return (
       <div className="body-wrapper">
         <div className="page-width">
+          <a className="AnswerPage__question-creator">{q_user}</a>
           <h1 className="AnswerPage__question-title">{question.question_head}</h1>
           <p className="AnswerPage__question-body">{question.question_text}</p>
           <div className="AnswerPage__seperator" />

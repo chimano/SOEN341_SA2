@@ -2,7 +2,7 @@ import React from "react";
 import {
   SearchBar,
   SignInFormWindow,
-  SignUpFormWindow,
+  SignUpFormWindow
 } from "../../components";
 import "./index.css";
 import { Link } from "react-router-dom";
@@ -73,7 +73,7 @@ export class NavigationBar extends React.Component {
             </Link>
           </div>
           <div className="navbar__search">
-            <SearchBar/>
+            <SearchBar />
           </div>
           {logged_in ? (
             <div className="navbar__logged-in">
@@ -98,27 +98,22 @@ export class NavigationBar extends React.Component {
                 onClick={() => this.handle_signup_button()}
               >
                 Sign Up
-                </button>
+              </button>
             </div>
           )}
         </div>
         <div className="navbar page-width">
           <div className="navbar__auth">
-          <button
-              className="navbar__button"
-            >
-            <Link to="/careers" style={{ color: "white" }}>
-              Careers
-            </Link>
+            <button className="navbar__button" style={{marginLeft:"-10%"}}>
+              <Link to="/careers" style={{ color: "white" }}>
+                Careers
+              </Link>
             </button>
-            <button
-              className="navbar__button"
-            >
-            <Link to="/categories" style={{ color: "white" }}>
-              Questions
-            </Link>
+            <button className="navbar__button">
+              <Link to="/categories" style={{ color: "white" }}>
+                Questions
+              </Link>
             </button>
-
           </div>
         </div>
         {login_box}
