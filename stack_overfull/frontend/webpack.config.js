@@ -39,6 +39,7 @@ module.exports = {
     ]
   },
   plugins: [
+    new webpack.optimize.ModuleConcatenationPlugin(),
     new ExtractTextPlugin({filename: "[name].css"}),
     //tells webpack where to store data about your bundles.
     new BundleTracker({filename: "./webpack-stats.json"})
