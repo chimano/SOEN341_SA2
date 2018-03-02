@@ -8,7 +8,10 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
-from stack_overfull.hidden import secret_key
+try:
+    from stack_overfull.hidden import secret_key
+except:
+    secret_key = 'TESTINGSECRETKEY'
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -36,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'webpack_loader',
-    'so_endpoint'
+    'so_endpoint',
+    'django_nose'
 ]
 
 MIDDLEWARE = [
@@ -127,3 +131,8 @@ WEBPACK_LOADER = {
         'STATS_FILE': os.path.join(BASE_DIR, 'frontend', 'webpack-stats.json'),
     }
 }
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+NOSE_ARGS = [
+    '--with-coverage',
+    '--cover-package=so_endpoint',
+]
