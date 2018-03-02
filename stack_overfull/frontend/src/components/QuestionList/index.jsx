@@ -15,7 +15,7 @@ export class QuestionList extends React.Component {
             <QuestionBox
               key={key}
               date_created={((x.date_created).replace("T", " at ")).substring(0,19)}
-              question_text={x.question_text}
+              question_head={x.question_head}
               q_id={x.id}
               username={x.user_id.username}
               points={x.points}

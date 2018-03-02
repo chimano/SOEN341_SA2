@@ -5,6 +5,7 @@ from django.dispatch import receiver
 # Create your models here.
 class Question(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    question_head = models.CharField(max_length=128, null=True, default=None)
     question_text = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True)
     #https://stackoverflow.com/questions/2606194/django-error-message-add-a-related-name-argument-to-the-definition
