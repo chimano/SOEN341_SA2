@@ -35,5 +35,9 @@ urlpatterns = [
     re_path(r'user/me/$', UserMeView.as_view()),
     re_path(r'user/$', UserView.as_view()),
 
+    # Get a specific user by username ex. api/user/name/TestUser/
+    # Usernames may contain alphanumeric, _, @, +, . and - characters.
+    re_path(r'user/name/(?P<username>[\w_@\+\.\-]+)/$', UserNameView.as_view()),
+
     re_path(r'search/$', SearchView.as_view())
 ]
