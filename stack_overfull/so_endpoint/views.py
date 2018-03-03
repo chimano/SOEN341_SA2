@@ -42,14 +42,9 @@ class QuestionView(TemplateView):
         order = request.GET.get('order', 'desc')
         sorted_by = request.GET.get('sort', 'points')
         if q_id is None:
-            print('test')
             limit = 10 if limit is None else int(limit)
             order = "desc" if order is None else order
-
-            if order == "desc":
-                modifier = '-'
-            else:
-                modifier = ''
+            modifier = '-' if order == 'desc' else ''
 
             questions = Question.objects.all().order_by(modifier + sorted_by)[:limit]
             serialized = QuestionSerializer(questions, many=True).data
@@ -97,23 +92,22 @@ class AnswerView(TemplateView):
 
     def get(self, request):
 
-        limit = int(request.GET.get('limit', 10))
-        order = request.GET.get('order', 'desc')
-        q_id = request.GET.get('q_id', None)
-        sorted_by = request.GET.get('sort', 'points')
-
-        if order == "desc":
-            modifier = '-'
-        else:
-            modifier = ''
         try:
-            q = Question.objects.get(id=q_id)
-        except ObjectDoesNotExist:
-            return JsonResponse({'error': 'Question does not exist'}, status=400)
+            limit = int(request.GET.get('limit', 10))
+            order = request.GET.get('order', 'desc')
+            q_id = request.GET.get('q_id', None)
+            sorted_by = request.GET.get('sort', 'points')
+            modifier = '-' if order == 'desc' else ''
+            try:
+                q = Question.objects.get(id=q_id)
+            except ObjectDoesNotExist:
+                return JsonResponse({'error': 'Question does not exist'}, status=400)
 
-        answers = Answer.objects.filter(question_id=q_id).order_by(modifier + sorted_by)[:limit]
-        serialized = AnswerSerializer(answers, many=True).data
-        return JsonResponse({'answer_list':serialized})
+            answers = Answer.objects.filter(question_id=q_id).order_by(modifier + sorted_by)[:limit]
+            serialized = AnswerSerializer(answers, many=True).data
+            return JsonResponse({'answer_list':serialized})
+        except KeyError:
+            return JsonResponse({'error': 'There was an error parsing the request'}, status=400)
 
 #Accept or undo accept an answer
 class AnswerAcceptView(TemplateView):
