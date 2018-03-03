@@ -27,28 +27,39 @@ export default class App extends React.Component {
   }
 
   handle_login = () => {
-    getApiUserMe().then(response => {
-      if (!response.data.error) {
-        this.setState({ logged_in: true, username: response.data.username });
-      }
-    });
+    getApiUserMe()
+      .then(response => {
+        console.log("response of getApiUserMe: ", response);
+        if (!response.data.error) {
+          this.setState({ logged_in: true, username: response.data.username });
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   handle_logout = () => {
-    postApiUserLogout();
+    postApiUserLogout().catch(error => console.log(error));
     this.setState({ logged_in: false, username: "" });
   };
 
   verifyLogin = () => {
     return new Promise((resolve, reject) => {
-      getApiUserMe().then(response => {
-        if (!response.data.error) {
-          this.setState({ logged_in: true, username: response.data.username });
-        } else {
-          this.setState({ logged_in: false, username: "" });
-        }
-        resolve(this.state.logged_in);
-      });
+      getApiUserMe()
+        .then(response => {
+          console.log("response of getApiUserMe: ", response);
+          if (!response.data.error) {
+            this.setState({
+              logged_in: true,
+              username: response.data.username
+            });
+          } else {
+            this.setState({ logged_in: false, username: "" });
+          }
+          resolve(this.state.logged_in);
+        })
+        .catch(error => console.log(error));
     });
   };
 

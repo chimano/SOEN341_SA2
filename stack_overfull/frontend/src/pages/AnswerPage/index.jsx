@@ -43,6 +43,7 @@ export class AnswerPage extends React.Component {
     if (logged_in) {
       getApiQuestionById(q_id)
         .then(response => {
+          console.log("response of getApiQuestionById(q_id): ", response);
           var user = response.data.user_id.username;
           if (user === username) {
             this.setState({
@@ -68,7 +69,7 @@ export class AnswerPage extends React.Component {
     const q_id = this.props.match.params.id;
     getApiQuestionById(q_id)
       .then(response => {
-        console.log("get single question: ", response);
+        console.log("response of getApiQuestionById(q_id): ", response);
         var q_user = response.data.user_id.username;
         this.setState({
           question: response.data,
@@ -86,7 +87,10 @@ export class AnswerPage extends React.Component {
     const q_id = this.props.match.params.id;
     getApiAnswerById(q_id, "desc", 100)
       .then(response => {
-        console.log("response of getApiAnswerById: ", response);
+        console.log(
+          'response of getApiAnswerById(q_id, "desc", 100): ',
+          response
+        );
         this.setState({
           answerList: response.data.answer_list
         });
@@ -99,6 +103,7 @@ export class AnswerPage extends React.Component {
   handleReplyButton = q_id => {
     getApiUserMe()
       .then(response => {
+        console.log("response of getApiUserMe(): ", response);
         //make sure user is logged in before replying
         if (!response.data.error) {
           console.log("ID IS : " + q_id);

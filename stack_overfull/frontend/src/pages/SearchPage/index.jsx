@@ -43,6 +43,10 @@ export class SearchPage extends React.Component {
     // do api call
     getApiSearch(q, "desc", 36, "date_created")
       .then(response => {
+        console.log(
+          'response of getApiSearch(q, "desc", 36, "date_created"): ',
+          response
+        );
         this.setState({
           questionList: response.data.question_list
         });

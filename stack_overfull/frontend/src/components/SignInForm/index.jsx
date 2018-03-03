@@ -6,6 +6,7 @@ import { postApiUserLogin } from "../../utils/api";
 const FormItem = Form.Item;
 
 class SignInForm extends React.Component {
+  
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
@@ -19,6 +20,10 @@ class SignInForm extends React.Component {
   doUserLoginRequest = (username, password) => {
     postApiUserLogin(username, password)
       .then(response => {
+        console.log(
+          "response of postApiUserLogin(username, password): ",
+          response
+        );
         const { handle_login, handle_close_button } = this.props;
         // console.log(
         //   "Received response from the server",

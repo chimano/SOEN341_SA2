@@ -46,6 +46,10 @@ class SignUpForm extends React.Component {
   doUserRegisterRequest(username, password, email) {
     postApiUserRegister(username, password, email)
       .then(response => {
+        console.log(
+          "response for postApiUserRegister(username, password, email): ",
+          response
+        );
         this.onUserRegisterResponse(response);
       })
       .catch(error => {

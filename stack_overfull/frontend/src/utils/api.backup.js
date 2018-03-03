@@ -55,7 +55,7 @@ export function getApiAnswerById(id, order, limit) {
         console.log("get answer by id: ", response);
         resolve(response.data.answer_list);
       })
-      .catch(function(error) {
+      .catch(error => {
         console.log(error);
       });
   });
