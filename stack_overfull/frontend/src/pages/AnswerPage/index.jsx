@@ -226,7 +226,9 @@ export class AnswerPage extends React.Component {
     return (
       <div className="body-wrapper">
         <div className="page-width">
-          <a className="AnswerPage__question-creator">{q_user}</a>
+          <div className="AnswerPage__question-creator">
+            <a>{q_user}</a>
+          </div>
           <h1 className="AnswerPage__question-title">
             {question.question_head}
           </h1>
