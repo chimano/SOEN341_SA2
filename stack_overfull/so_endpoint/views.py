@@ -182,6 +182,7 @@ class UserNameView(TemplateView):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, username):
+        print('Got', username)
         try:
             user = User.objects.get(username=username)
             user_serialized = AccountSerializerPublic(user).data
@@ -227,7 +228,6 @@ class UserMeView(TemplateView):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request):
-
         if not request.user.is_authenticated:
             return JsonResponse({'error': 'User is not logged in'}, status=400)
 
@@ -236,7 +236,6 @@ class UserMeView(TemplateView):
 
     # allow api requests to edit some of the user/me/ profile properties
     def post(self, request):
-
         if not request.user.is_authenticated:
             return JsonResponse({'error': 'User is not logged in'}, status=400)
 
@@ -252,7 +251,7 @@ class UserMeView(TemplateView):
                 user.first_name = json_body['first_name']
 
             if 'last_name' in json_body and json_body['last_name'] is not None:
-                user.first_name = json_body['last_name']
+                user.last_name = json_body['last_name']
 
             if 'about_me' in json_body and json_body['about_me'] is not None:
                 user.profile.about_me = json_body['about_me']
