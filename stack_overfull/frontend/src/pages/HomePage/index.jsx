@@ -28,11 +28,12 @@ export class HomePage extends React.Component {
     getApiQuestion("desc", 36, "date_created")
       .then(response => {
         this.setState({
+          console.log("get question list: ", response);
           questionList: response.data.question_list
         });
       })
       .catch(error => {
-        console.log("get question list: ", response);
+        console.log(error);
       });
   };
 
