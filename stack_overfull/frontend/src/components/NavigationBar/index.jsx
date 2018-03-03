@@ -41,7 +41,7 @@ export class NavigationBar extends React.Component {
 
     const { open_signin, open_signup } = this.state;
 
-    var login_box;
+    let login_box;
     if (open_signin === true) {
       login_box = (
         <div className="login-wrap">

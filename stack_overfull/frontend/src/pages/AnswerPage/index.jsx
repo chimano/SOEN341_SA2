@@ -44,7 +44,7 @@ export class AnswerPage extends React.Component {
       getApiQuestionById(q_id)
         .then(response => {
           console.log("response of getApiQuestionById(q_id): ", response);
-          var user = response.data.user_id.username;
+          let user = response.data.user_id.username;
           if (user === username) {
             this.setState({
               verified: true
@@ -70,7 +70,7 @@ export class AnswerPage extends React.Component {
     getApiQuestionById(q_id)
       .then(response => {
         console.log("response of getApiQuestionById(q_id): ", response);
-        var q_user = response.data.user_id.username;
+        let q_user = response.data.user_id.username;
         this.setState({
           question: response.data,
           accepted_answer_id: response.data.accepted_answer_id,
@@ -165,7 +165,7 @@ export class AnswerPage extends React.Component {
     console.log("State of AnswerPage: ", this.state);
     console.log("# OF ANSWERS: " + answerList.length);
 
-    var verified;
+    let verified;
     if (logged_in && q_user === username) {
       verified = true;
     } else {
@@ -185,8 +185,8 @@ export class AnswerPage extends React.Component {
       );
     }
 
-    var answerListBox = [];
-    var acceptedAnswerKey;
+    let answerListBox = [];
+    let acceptedAnswerKey;
 
     //add the accepted answer box first
     answerList.forEach((x, key) => {
