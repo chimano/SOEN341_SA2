@@ -104,16 +104,29 @@ export class NavigationBar extends React.Component {
         </div>
         <div className="navbar page-width">
           <div className="navbar__auth">
-            <button className="navbar__button" style={{marginLeft:"-10%"}}>
-              <Link to="/careers" style={{ color: "white" }}>
+            {/* <button className="navbar__button" style={{marginLeft:"-10%"}}>
+              <Link to="/careers" style={{ color: "white" }} className="navbar__button">
                 Careers
               </Link>
             </button>
             <button className="navbar__button">
-              <Link to="/categories" style={{ color: "white" }}>
+              <Link to="/categories" style={{ color: "white" }} className="navbar__button">
                 Questions
               </Link>
-            </button>
+            </button> */}
+            <Link
+              to="/careers"
+              style={{ marginLeft: "-10%" }}
+              className="navbar__button navbar__button--link"
+            >
+              Careers
+            </Link>
+            <Link
+              to="/categories"
+              className="navbar__button navbar__button--link"
+            >
+              Questions
+            </Link>
           </div>
         </div>
         {login_box}

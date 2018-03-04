@@ -31,6 +31,11 @@
     margin: auto;
 }
 
+.navbar__button--link {
+    text-align: center;
+    padding: 8px 0;
+}
+
 .navbar__button:hover {
     background-color: rgb(54, 33, 190);
 }
