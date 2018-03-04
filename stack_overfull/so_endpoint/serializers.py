@@ -14,6 +14,17 @@ class AccountSerializerPrivate(serializers.ModelSerializer):
         model = User
         fields = '__all__'
 
+class ProfileSerializerPublic(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ('reputation', 'about_me')
+
+class AccountSerializerPublic(serializers.ModelSerializer):
+    profile = ProfileSerializerPublic(read_only=True)
+    class Meta:
+        model = User
+        fields = ('id','username', 'first_name', 'last_name', 'email', 'last_login', 'date_joined', 'profile')
+
 class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

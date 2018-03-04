@@ -19,21 +19,25 @@ from django.views.generic import TemplateView
 from so_endpoint.views import *
 
 urlpatterns = [
-    re_path(r'question/$', QuestionView.as_view()),
-    re_path(r'question/vote/$', QuestionVoteView.as_view()),
-    re_path(r'answer/$', AnswerView.as_view()),
-    re_path(r'answer/vote/$', AnswerVoteView.as_view()),
+    re_path(r'^question/$', QuestionView.as_view()),
+    re_path(r'^question/vote/$', QuestionVoteView.as_view()),
+    re_path(r'^answer/$', AnswerView.as_view()),
+    re_path(r'^answer/vote/$', AnswerVoteView.as_view()),
 
-    re_path(r'answer/(?P<answer_id>\d+)/accept/$', AnswerAcceptView.as_view() ),
-    re_path(r'answer/(?P<answer_id>\d+)/accept/undo/$', AnswerAcceptView.as_view(), {'undo':True} ),
-    re_path(r'answer/(?P<answer_id>\d+)/reject/$', AnswerRejectView.as_view() ),
-    re_path(r'answer/(?P<answer_id>\d+)/reject/undo/$', AnswerRejectView.as_view(), {'undo':True} ),
+    re_path(r'^answer/(?P<answer_id>\d+)/accept/$', AnswerAcceptView.as_view() ),
+    re_path(r'^answer/(?P<answer_id>\d+)/accept/undo/$', AnswerAcceptView.as_view(), {'undo':True} ),
+    re_path(r'^answer/(?P<answer_id>\d+)/reject/$', AnswerRejectView.as_view() ),
+    re_path(r'^answer/(?P<answer_id>\d+)/reject/undo/$', AnswerRejectView.as_view(), {'undo':True} ),
 
-    re_path(r'user/register/$', UserRegisterView.as_view()),
-    re_path(r'user/login/$', UserLoginView.as_view()),
-    re_path(r'user/logout/$', UserLogoutView.as_view()),
-    re_path(r'user/me/$', UserMeView.as_view()),
-    re_path(r'user/$', UserView.as_view()),
+    re_path(r'^user/register/$', UserRegisterView.as_view()),
+    re_path(r'^user/login/$', UserLoginView.as_view()),
+    re_path(r'^user/logout/$', UserLogoutView.as_view()),
+    re_path(r'^user/me/$', UserMeView.as_view()),
+    re_path(r'^user/$', UserView.as_view()),
 
-    re_path(r'search/$', SearchView.as_view())
+    # Get a specific user by username ex. api/user/name/TestUser/
+    # Usernames may contain alphanumeric, _, @, +, . and - characters.
+    re_path(r'^user/name/(?P<username>[\w_@\+\.\-]+)/$', UserNameView.as_view()),
+
+    re_path(r'^search/$', SearchView.as_view())
 ]
