@@ -175,6 +175,20 @@ class AnswerRejectView(TemplateView):
         to_question.save()
         return JsonResponse(QuestionSerializer(to_question).data)
 
+class UserNameView(TemplateView):
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, username):
+        print('Got', username)
+        try:
+            user = User.objects.get(username=username)
+            user_serialized = AccountSerializerPublic(user).data
+            return JsonResponse(user_serialized)
+        except ObjectDoesNotExist:
+            return JsonResponse({'error': 'User does not exist'}, status=400)
 
 # Return the list of users in the database
 class UserView(TemplateView):
@@ -184,9 +198,27 @@ class UserView(TemplateView):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request):
-        users =  User.objects.select_related('profile')
-        users_list = AccountSerializer(users, many=True).data
-        return JsonResponse({'user_list': users_list})
+
+        inname = request.GET.get('inname', '')
+        limit = request.GET.get('limit', 10)
+        order = request.GET.get('order', 'desc')
+        sorted_by = request.GET.get('sort', 'date_joined')
+
+        try:
+            limit = int(limit)
+            modifier = '-' if order == "desc" else ''
+
+            users =  User.objects.select_related('profile')
+            users = users.filter(username__contains=inname)
+            users = users.order_by(modifier+sorted_by)[:limit]
+            users_list = AccountSerializerPublic(users, many=True).data
+
+            return JsonResponse({'user_list': users_list})
+
+        except BaseException as e: # either TypeError or ValueError from query params
+            print(repr(e))
+            return JsonResponse({'error': repr(e)}, status=400)
+
 
 # Return the currently logged in user
 class UserMeView(TemplateView):
@@ -196,11 +228,43 @@ class UserMeView(TemplateView):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request):
-        if request.user.is_authenticated:
-            user = request.user
-            return JsonResponse(AccountSerializerPrivate(user).data)
-        else:
+        if not request.user.is_authenticated:
             return JsonResponse({'error': 'User is not logged in'}, status=400)
+
+        user = request.user
+        return JsonResponse(AccountSerializerPrivate(user).data)
+
+    # allow api requests to edit some of the user/me/ profile properties
+    def post(self, request):
+        if not request.user.is_authenticated:
+            return JsonResponse({'error': 'User is not logged in'}, status=400)
+
+        user = request.user
+
+        try:
+            json_body = json.loads(request.body)
+
+            if 'email' in json_body and json_body['email'] is not None:
+                user.email = json_body['email']
+
+            if 'first_name' in json_body and json_body['first_name'] is not None:
+                user.first_name = json_body['first_name']
+
+            if 'last_name' in json_body and json_body['last_name'] is not None:
+                user.last_name = json_body['last_name']
+
+            if 'about_me' in json_body and json_body['about_me'] is not None:
+                user.profile.about_me = json_body['about_me']
+
+            user.save()
+            user.profile.save()
+
+            return JsonResponse(AccountSerializerPrivate(user).data)
+
+        except BaseException as e: # json or user, user.profile or request body params don't match db
+            print(repr(e))
+            return JsonResponse({'error': repr(e)}, status=400)
+
 
 # Register a new user and log him in
 class UserRegisterView(TemplateView):
