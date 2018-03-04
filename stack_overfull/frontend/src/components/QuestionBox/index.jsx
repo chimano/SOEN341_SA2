@@ -16,7 +16,7 @@ export class QuestionBox extends React.Component {
           <div className="question-box__user">{username}</div>
           <div>{points}</div>
         </div>
-        <Link to={"/question/" + q_id} className="question-box__text">
+        <Link to={`/question/${q_id}`} className="question-box__text">
           {question_head}
         </Link>
         <div className="question-box__line" />

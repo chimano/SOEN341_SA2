@@ -2,6 +2,7 @@
 var path = require("path");
 var webpack = require("webpack");
 var BundleTracker = require("webpack-bundle-tracker");
+var HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
@@ -23,9 +24,14 @@ module.exports = {
     rules: [
       {
         test: /\.css$/,
-        use: ExtractTextPlugin.extract({fallback: "style-loader", use: "css-loader"})
-      }, {
+        use: ExtractTextPlugin.extract({
+          fallback: "style-loader",
+          use: "css-loader"
+        })
+      },
+      {
         test: /\.jsx?$/,
+        include: path.resolve(__dirname, "src"),
         // we definitely don't want babel to transpile all the files in node_modules.
         // That would take a long time.
         exclude: /node_modules/,
@@ -39,9 +45,10 @@ module.exports = {
     ]
   },
   plugins: [
-    new ExtractTextPlugin({filename: "[name].css"}),
+    new HardSourceWebpackPlugin(),
+    new ExtractTextPlugin({ filename: "[name].css" }),
     //tells webpack where to store data about your bundles.
-    new BundleTracker({filename: "./webpack-stats.json"})
+    new BundleTracker({ filename: "./webpack-stats.json" })
     //makes jQuery available in every module
   ],
 

@@ -14,7 +14,6 @@ import {
 export class HomePage extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       showCreateQuestionBox: false,
       questionList: []
@@ -26,20 +25,28 @@ export class HomePage extends React.Component {
   };
 
   getQuestionList = () => {
-    getApiQuestion("desc", 36, "date_created").then(response => {
-      this.setState({
-        questionList: response.data.question_list
+    getApiQuestion("desc", 36, "date_created")
+      .then(response => {
+        console.log(
+          'response of getApiQuestion("desc", 36, "date_created")',
+          response
+        );
+        this.setState({
+          questionList: response.data.question_list
+        });
+      })
+      .catch(error => {
+        console.log(error);
       });
-    });
   };
 
   createQuestion = question => {
-    postApiQuestion(question);
+    postApiQuestion(question).catch(error => console.log(error));
     setTimeout(() => this.getQuestionList(), 100);
   };
 
   answerQuestion(answer, q_id) {
-    postApiAnswer(answer, q_id);
+    postApiAnswer(answer, q_id).catch(error => console.log(error));
   }
 
   handleAskQuestionButton = () => {

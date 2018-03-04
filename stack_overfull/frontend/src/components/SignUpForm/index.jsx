@@ -15,7 +15,11 @@ class SignUpForm extends React.Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         console.log("Received values of form: ", values);
-        this.doUserRegisterRequest(values.username, values.password, values.email);
+        this.doUserRegisterRequest(
+          values.username,
+          values.password,
+          values.email
+        );
       }
     });
   };
@@ -40,9 +44,17 @@ class SignUpForm extends React.Component {
   };
 
   doUserRegisterRequest(username, password, email) {
-    postApiUserRegister(username, password, email).then(response => {
-      this.onUserRegisterResponse(response);
-    });
+    postApiUserRegister(username, password, email)
+      .then(response => {
+        console.log(
+          "response for postApiUserRegister(username, password, email): ",
+          response
+        );
+        this.onUserRegisterResponse(response);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   onUserRegisterResponse(response) {
@@ -90,7 +102,10 @@ class SignUpForm extends React.Component {
 
     return (
       <Form onSubmit={this.handleSubmit} className="SignUpForm">
-        <div className="SignUpForm__close-button" onClick={() => handle_close_button()}>
+        <div
+          className="SignUpForm__close-button"
+          onClick={() => handle_close_button()}
+        >
           &#10005;
         </div>
 
@@ -176,7 +191,11 @@ class SignUpForm extends React.Component {
         </FormItem>
 
         <FormItem {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit" className="SignUpForm__submit-button">
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="SignUpForm__submit-button"
+          >
             Register
           </Button>
         </FormItem>

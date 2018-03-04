@@ -39,22 +39,25 @@ export class AnswerPage extends React.Component {
 
   verifyUserAccess = () => {
     const { logged_in, username } = this.props;
-    console.log(this.props);
     const q_id = this.props.match.params.id;
-    console.log("logged_in: ", logged_in, "username: ", username);
     if (logged_in) {
-      getApiQuestionById(q_id).then(response => {
-        var user = response.data.user_id.username;
-        if (user === username) {
-          this.setState({
-            verified: true
-          });
-        } else {
-          this.setState({
-            verified: false
-          });
-        }
-      });
+      getApiQuestionById(q_id)
+        .then(response => {
+          console.log("response of getApiQuestionById(q_id): ", response);
+          let user = response.data.user_id.username;
+          if (user === username) {
+            this.setState({
+              verified: true
+            });
+          } else {
+            this.setState({
+              verified: false
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
     } else {
       this.setState({
         verified: false
@@ -64,38 +67,56 @@ export class AnswerPage extends React.Component {
 
   getQuestion = () => {
     const q_id = this.props.match.params.id;
-    getApiQuestionById(q_id).then(response => {
-      var q_user = response.data.user_id.username;
-      this.setState({
-        question: response.data,
-        accepted_answer_id: response.data.accepted_answer_id,
-        rejected_answers_ids: response.data.rejected_answers_ids,
-        q_user: q_user
+    getApiQuestionById(q_id)
+      .then(response => {
+        console.log("response of getApiQuestionById(q_id): ", response);
+        let q_user = response.data.user_id.username;
+        this.setState({
+          question: response.data,
+          accepted_answer_id: response.data.accepted_answer_id,
+          rejected_answers_ids: response.data.rejected_answers_ids,
+          q_user: q_user
+        });
+      })
+      .catch(error => {
+        console.log(error);
       });
-    });
   };
 
   getAnswerList = () => {
     const q_id = this.props.match.params.id;
-    getApiAnswerById(q_id, "desc", 100).then(list => {
-      this.setState({
-        answerList: list
+    getApiAnswerById(q_id, "desc", 100)
+      .then(response => {
+        console.log(
+          'response of getApiAnswerById(q_id, "desc", 100): ',
+          response
+        );
+        this.setState({
+          answerList: response.data.answer_list
+        });
+      })
+      .catch(errro => {
+        console.log(error);
       });
-    });
   };
 
   handleReplyButton = q_id => {
-    getApiUserMe().then(response => {
-      //make sure user is logged in before replying
-      if (!response.data.error) {
-        console.log("ID IS : " + q_id);
-        this.answerQuestion(this.state.answer, q_id);
-        setTimeout(() => this.getAnswerList(), 500);
-        this.refs.answer_text.value = "";
-      } else {
-        alert("You need to be logged in to reply!");
-      }
-    });
+    getApiUserMe()
+      .then(response => {
+        console.log("response of getApiUserMe(): ", response);
+        //make sure user is logged in before replying
+        if (!response.data.error) {
+          console.log("ID IS : " + q_id);
+          this.answerQuestion(this.state.answer, q_id);
+          setTimeout(() => this.getAnswerList(), 500);
+          this.refs.answer_text.value = "";
+        } else {
+          alert("You need to be logged in to reply!");
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   handleUpvoteButton = id => {
@@ -141,10 +162,10 @@ export class AnswerPage extends React.Component {
     const { logged_in, username } = this.props;
     const q_id = this.props.match.params.id;
 
-    console.log(this.state);
+    console.log("State of AnswerPage: ", this.state);
     console.log("# OF ANSWERS: " + answerList.length);
 
-    var verified;
+    let verified;
     if (logged_in && q_user === username) {
       verified = true;
     } else {
@@ -164,8 +185,8 @@ export class AnswerPage extends React.Component {
       );
     }
 
-    var answerListBox = [];
-    var acceptedAnswerKey;
+    let answerListBox = [];
+    let acceptedAnswerKey;
 
     //add the accepted answer box first
     answerList.forEach((x, key) => {
@@ -205,7 +226,12 @@ export class AnswerPage extends React.Component {
     return (
       <div className="body-wrapper">
         <div className="page-width">
-          <h1 className="AnswerPage__question-title">{question.question_head}</h1>
+          <div className="AnswerPage__question-creator">
+            <a>{q_user}</a>
+          </div>
+          <h1 className="AnswerPage__question-title">
+            {question.question_head}
+          </h1>
           <p className="AnswerPage__question-body">{question.question_text}</p>
           <div className="AnswerPage__seperator" />
           {numberOfAnswersTitle}

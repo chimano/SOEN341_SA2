@@ -16,7 +16,7 @@ export class AnswerBox extends React.Component {
 
     console.log("verified: ",verified);
 
-    var answerBox_class;
+    let answerBox_class;
     if (x.is_accepted) {
       answerBox_class = "AnswerBox--green";
     } else if (x.is_rejected) {

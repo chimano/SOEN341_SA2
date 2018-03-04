@@ -6,6 +6,7 @@ import { postApiUserLogin } from "../../utils/api";
 const FormItem = Form.Item;
 
 class SignInForm extends React.Component {
+  
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
@@ -17,21 +18,29 @@ class SignInForm extends React.Component {
   };
 
   doUserLoginRequest = (username, password) => {
-    postApiUserLogin(username, password).then(response => {
-      const { handle_login, handle_close_button } = this.props;
-      // console.log(
-      //   "Received response from the server",
-      //   response.request.responseURL,
-      //   response
-      // );
-      if (response.data.error) {
-        alert("Wrong username or password");
-      } else {
-        handle_login(response.data.username);
-        handle_close_button();
-      }
-    });
-  }
+    postApiUserLogin(username, password)
+      .then(response => {
+        console.log(
+          "response of postApiUserLogin(username, password): ",
+          response
+        );
+        const { handle_login, handle_close_button } = this.props;
+        // console.log(
+        //   "Received response from the server",
+        //   response.request.responseURL,
+        //   response
+        // );
+        if (response.data.error) {
+          alert("Wrong username or password");
+        } else {
+          handle_login(response.data.username);
+          handle_close_button();
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -39,7 +48,10 @@ class SignInForm extends React.Component {
 
     return (
       <Form onSubmit={this.handleSubmit} className="SignInForm">
-        <div className="SignInForm__close-button" onClick={() => handle_close_button()}>
+        <div
+          className="SignInForm__close-button"
+          onClick={() => handle_close_button()}
+        >
           &#10005;
         </div>
         <h3>Sign In</h3>
