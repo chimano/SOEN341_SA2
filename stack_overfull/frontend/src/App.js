@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { HomePage, AnswerPage, SearchPage } from "./pages";
+import { HomePage, AnswerPage, SearchPage, ProfilePage } from "./pages";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { NavigationBar, Footer } from "./components";
 import { getApiUserMe, postApiUserLogout } from "./utils/api";
@@ -97,6 +97,7 @@ export default class App extends React.Component {
               />
             )}
           />
+          <Route path="/profile" component={ProfilePage}/>
           <Route
             path="/search/"
             render={props => (
