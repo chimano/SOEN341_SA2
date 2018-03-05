@@ -31,10 +31,11 @@ class Profile(models.Model):
     downvoted_questions = models.ManyToManyField(Question, related_name='down_questions')
     upvoted_answers = models.ManyToManyField(Answer, related_name='up_answers')
     downvoted_answers = models.ManyToManyField(Answer, related_name='down_answers')
+
     def update_profile_reputation(self, delta):
         self.reputation += delta
         self.save()
-
+        
     #Automaticly create a user profile when a user is created
     @receiver(post_save, sender=User)
     def create_user_profile(sender, **kwargs):
