@@ -95,7 +95,7 @@ export class AnswerPage extends React.Component {
           answerList: response.data.answer_list
         });
       })
-      .catch(errro => {
+      .catch(error => {
         console.log(error);
       });
   };
