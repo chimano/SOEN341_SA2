@@ -179,9 +179,13 @@ export class AnswerPage extends React.Component {
           No answer yet... Be the first one to reply!
         </h2>
       );
+    } else if (answerList.length == 1) {
+      numberOfAnswersTitle = (
+        <h2 className="numberOfAnswersText">{answerList.length} answer</h2>
+      );
     } else {
       numberOfAnswersTitle = (
-        <h2 className="numberOfAnswersText">{answerList.length} answer(s)</h2>
+        <h2 className="numberOfAnswersText">{answerList.length} answers</h2>
       );
     }
 
@@ -223,16 +227,28 @@ export class AnswerPage extends React.Component {
       }
     });
 
+    let questionBodyBox;
+    if (question.question_text) {
+      questionBodyBox = (
+        <div className="AnswerPage__question-body">
+          <h4>Additional information:</h4>
+          <p className="AnswerPage__question-body">{question.question_text}</p>
+        </div>
+      );
+    } else {
+      questionBodyBox = "";
+    }
+
     return (
       <div className="body-wrapper">
         <div className="page-width">
           <div className="AnswerPage__question-creator">
-            <a>{q_user}</a>
+            Asked by <a>{q_user}</a>
           </div>
           <h1 className="AnswerPage__question-title">
             {question.question_head}
           </h1>
-          <p className="AnswerPage__question-body">{question.question_text}</p>
+          {questionBodyBox}
           <div className="AnswerPage__seperator" />
           {numberOfAnswersTitle}
           {answerListBox}

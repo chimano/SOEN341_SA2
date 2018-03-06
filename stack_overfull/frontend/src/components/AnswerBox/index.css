@@ -21,9 +21,29 @@
 
 .AnswerBox__answer {
     text-align: left;
+    margin-bottom: 4%;
+    margin-left: 2%;
+    margin-right: 2%;
 }
 
 .AnswerBox__date {
-    text-align: right;
-    margin-top: 2%;
+    /* text-align: right;
+    margin-top: 2%; */
+    position: absolute;
+    top: -0.1em;
+    right: 2%;
+    background: white;
+}
+
+.AnswerBox__username {
+    width: auto;
+    margin-left: 2%;
+}
+
+fieldset {
+    position: relative;
+}
+
+legend {
+    font-size: 1.2em;
 }
