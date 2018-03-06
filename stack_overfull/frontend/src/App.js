@@ -9,7 +9,7 @@ import {
   CategoryListPage,
   CategoryPage
 } from "./pages";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { NavigationBar, Footer } from "./components";
 import { getApiUserMe, postApiUserLogout } from "./utils/api";
 

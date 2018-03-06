@@ -2,7 +2,6 @@ import React from "react";
 import "./index.css";
 import { Menu, Icon } from "antd";
 const SubMenu = Menu.SubMenu;
-const MenuItemGroup = Menu.ItemGroup;
 
 export class SideBar extends React.Component {
   handleClick = e => {

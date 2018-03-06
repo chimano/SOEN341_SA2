@@ -32,11 +32,8 @@ export class NavigationBar extends React.Component {
 
   render() {
     const {
-      handle_career_button,
-      handle_questions_button,
       handle_logout,
       logged_in,
-      username,
       handle_login
     } = this.props;
 

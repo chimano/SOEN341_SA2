@@ -1,7 +1,93 @@
-import React from 'react';
-import './index.css';
-import axios from 'axios';
+import React from "react";
+import "./index.css";
+import { SideBar } from "../../components";
+import { Card } from "antd";
 
+const list1 = [
+  {
+    title: "Front-end Developper",
+    category: "Sofware Engineering and Computer Science",
+    city: "Montreal",
+    province: "QC",
+    type: "Part-time",
+    date_posted: "25 days ago"
+  },
+  {
+    title: "Back-end Developper",
+    category: "Software Engineering and Computer Science",
+    city: "Toronto",
+    province: "ON",
+    type: "Full-time",
+    date_posted: "2 days ago"
+  },
+  {
+    title: "Financial Assistant",
+    category: "Finance",
+    city: "Ottawa",
+    province: "ON",
+    type: "Internship",
+    date_posted: "13 days ago"
+  },
+  {
+    title: "English Tutor",
+    category: "English Literature",
+    city: "Montreal",
+    province: "QC",
+    type: "Internship",
+    date_posted: "17 days ago"
+  },
+  {
+    title: "Mechanical Designer",
+    category: "Mechanical Engineering",
+    city: "Laval",
+    province: "QC",
+    type: "Full-time",
+    date_posted: "10 days ago"
+  }
+];
+
+const list2 = [
+  {
+    title: "Front-end Developper",
+    category: "Sofware Engineering and Computer Science",
+    city: "Montreal",
+    province: "QC",
+    type: "Part-time",
+    date_posted: "25 days ago"
+  },
+  {
+    title: "Back-end Developper",
+    category: "Software Engineering and Computer Science",
+    city: "Toronto",
+    province: "ON",
+    type: "Full-time",
+    date_posted: "2 days ago"
+  },
+  {
+    title: "Financial Assistant",
+    category: "Finance",
+    city: "Ottawa",
+    province: "ON",
+    type: "Internship",
+    date_posted: "13 days ago"
+  },
+  {
+    title: "English Tutor",
+    category: "English Literature",
+    city: "Montreal",
+    province: "QC",
+    type: "Internship",
+    date_posted: "17 days ago"
+  },
+  {
+    title: "Mechanical Designer",
+    category: "Mechanical Engineering",
+    city: "Laval",
+    province: "QC",
+    type: "Full-time",
+    date_posted: "10 days ago"
+  }
+];
 export class CareerPage extends React.Component {
   constructor(props) {
     super(props);
@@ -55,6 +141,7 @@ export class CareerPage extends React.Component {
             ))}
           </div>
         </div>
-        )
-    }
+      </div>
+    );
+  }
 }
