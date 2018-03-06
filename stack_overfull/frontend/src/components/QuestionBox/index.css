@@ -8,7 +8,12 @@
 }
 
 .question-box__user {
-    width: 100%;
+    width: 80%;
+}
+
+.question-box__points {
+    width: 20%;
+    text-align: right;
 }
 
 .question-box__line {
@@ -21,6 +26,7 @@
 .question-box__text {
     word-wrap: break-word;
     overflow: auto;
+    font-size: 1.5em;
 }
 
 .question-box__date {
