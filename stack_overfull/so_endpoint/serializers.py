@@ -1,8 +1,11 @@
 from rest_framework import serializers
 from so_endpoint.models import Question, Answer, Profile
 from django.contrib.auth.models import User
-from django.forms.models import model_to_dict
 
+"""
+This classes are used to serialize data to send them in a 
+JSON format
+"""
 class ProfileSerializerPrivate(serializers.ModelSerializer):
     class Meta:
         model = Profile
