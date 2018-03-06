@@ -2,8 +2,9 @@ language: python
 python:
     - "3.6.4"
 install:
-    - pip install -r requirement.txt
+    - ./build.sh
 script:
     - cd stack_overfull && python manage.py test
+    - cd frontend && yarn test a
 after_success:
     - codecov
