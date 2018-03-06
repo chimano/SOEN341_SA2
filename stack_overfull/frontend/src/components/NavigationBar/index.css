@@ -40,6 +40,10 @@
     background-color: rgb(54, 33, 190);
 }
 
+.navbar__profile-button:hover {
+    background-color: rgb(54, 33, 190);
+}
+
 .navbar__auth {
     display: flex;
 }
@@ -49,7 +53,6 @@
 }
 
 .navbar__logged-in {
-    min-width: 210px;
     color: white;
     text-align: center;
     display: flex;
