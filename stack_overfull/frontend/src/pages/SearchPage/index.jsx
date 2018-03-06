@@ -22,7 +22,7 @@ export class SearchPage extends React.Component {
 
   componentDidUpdate = (prevProps, prevState) => {
     // check if the current url has changed
-    if (prevProps.location.search != this.props.location.search) {
+    if (prevProps.location.search !== this.props.location.search) {
       console.log("Fetching new SeachPage question list");
 
       // get a new question list
@@ -59,7 +59,7 @@ export class SearchPage extends React.Component {
   render() {
     console.log("SearchPage state: ", this.state);
 
-    const { questionList, username } = this.state;
+    const { questionList } = this.state;
 
     return (
       <div className="SearchPage-wrapper">

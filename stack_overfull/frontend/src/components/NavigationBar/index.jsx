@@ -6,6 +6,7 @@ import {
 } from "../../components";
 import "./index.css";
 import { Link } from "react-router-dom";
+import { Icon } from "antd";
 
 export class NavigationBar extends React.Component {
   constructor(props) {
@@ -31,11 +32,8 @@ export class NavigationBar extends React.Component {
 
   render() {
     const {
-      handle_career_button,
-      handle_questions_button,
       handle_logout,
       logged_in,
-      username,
       handle_login
     } = this.props;
 
@@ -77,7 +75,16 @@ export class NavigationBar extends React.Component {
           </div>
           {logged_in ? (
             <div className="navbar__logged-in">
-              <div className="navbar__welcome">Welcome {username} !</div>
+              <Link
+                to="/profile"
+                style={{ width: "50px", padding: "12px" }}
+                className="navbar__profile-button"
+              >
+                <Icon
+                  type="user"
+                  style={{ fontSize: 20, color: "white", paddingBottom: "2px" }}
+                />
+              </Link>
               <button
                 className="navbar__button"
                 onClick={() => handle_logout()}
@@ -104,16 +111,19 @@ export class NavigationBar extends React.Component {
         </div>
         <div className="navbar page-width">
           <div className="navbar__auth">
-            <button className="navbar__button" style={{marginLeft:"-10%"}}>
-              <Link to="/careers" style={{ color: "white" }}>
-                Careers
-              </Link>
-            </button>
-            <button className="navbar__button">
-              <Link to="/categories" style={{ color: "white" }}>
-                Questions
-              </Link>
-            </button>
+            <Link
+              to="/careers"
+              style={{ marginLeft: "-10%" }}
+              className="navbar__button navbar__button--link"
+            >
+              Careers
+            </Link>
+            <Link
+              to="/categories"
+              className="navbar__button navbar__button--link"
+            >
+              Questions
+            </Link>
           </div>
         </div>
         {login_box}

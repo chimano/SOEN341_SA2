@@ -1,0 +1,12 @@
+.CareerPage {
+    display: flex;
+}
+
+.CareerPage__list {
+    width: 100%;
+}
+
+.CareerPage__list__card {
+    background: "#ECECEC";
+    padding: "30px";
+}
