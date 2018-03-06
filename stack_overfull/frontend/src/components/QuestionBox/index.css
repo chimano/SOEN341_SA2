@@ -8,7 +8,12 @@
 }
 
 .question-box__user {
-    width: 95%;
+    width: 80%;
+}
+
+.question-box__points {
+    width: 20%;
+    text-align: right;
 }
 
 .question-box__line {
