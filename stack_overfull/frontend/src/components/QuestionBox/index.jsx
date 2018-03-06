@@ -54,15 +54,26 @@ export class QuestionBox extends React.Component {
   render() {
     const { date_created, question_head, username, q_id, points } = this.props;
 
+    /** Extracts year, month, day and time from the date_created */
     const year = date_created.substring(0, 4);
     const monthRaw = date_created.substring(5, 7);
     const dayRaw = date_created.substring(8, 10);
     const time = date_created.substring(11, 19);
-    var month = this.monthToText(monthRaw);
-    var daySuffix = this.dayFormat(dayRaw);
-    console.log("|Year|"+year+"|month|"+month+"|day|"+dayRaw+"|time|"+time);
 
-    var date = date_created;
+    /** The following variables will call their respective method
+     *  For month, it will convert the month number to a text
+     *  For day, it will get the appropriate suffix
+     */
+    let month = this.monthToText(monthRaw); 
+    let daySuffix = this.dayFormat(dayRaw);
+
+    /** Initially, date will have the raw date */
+    let date = date_created;
+    /** If month does not return "error", then date will have the 
+     *  date format in a specific order with suffix and converted month.
+     * 
+     *  If month returns "error", then show the raw date
+     */
     if(month != "error") {
       date = month + " " + dayRaw + daySuffix + " " + year + " " + time;
     }
