@@ -1,14 +1,12 @@
-.main {
-    background-color: rgb(241, 241, 241);
+.CareerPage {
+    display: flex;
 }
 
-.slider {
-    height: 500px;
-    background: #21639e;
-  }
-.slider .slide {
-    height: 200px;  
-    background: url("http://placehold.it/800x800/FF00FF") no-repeat #21639e;
-    border-radius: 100%/0 0 30px 30px;
-    box-shadow: 0px 6px 0px white;
-  }
+.CareerPage__list {
+    width: 100%;
+}
+
+.CareerPage__list__card {
+    background: "#ECECEC";
+    padding: "30px";
+}
