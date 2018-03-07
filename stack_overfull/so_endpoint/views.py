@@ -79,7 +79,7 @@ class QuestionView(TemplateView):
 
             questions = Question.objects.all()
             questions = filter_questions_by_tags(questions, tags)
-            questions.order_by(modifier + sorted_by)[:limit]
+            questions = questions.order_by(modifier + sorted_by)[:limit]
 
             serialized = QuestionSerializer(questions, many=True).data
             return JsonResponse({'question_list': serialized})
