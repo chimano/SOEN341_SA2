@@ -1,8 +1,32 @@
 import React from "react";
 import {QuestionBox} from "../QuestionBox";
 import "./index.css";
+import {
+  voteQuestion
+} from "../../components";
 
 export class QuestionList extends React.Component {
+  
+  handleUpvoteButton = id => {
+    console.log("ID IS: " + id);
+    this.upvoteQuestion(id);
+    //setTimeout(() => this.getQuestionList(), 500);
+  };
+
+  handleDownvoteButton = id => {
+    console.log("ID IS: " + id);
+    this.downvoteQuestion(id);
+    //setTimeout(() => this.getQuestionList(), 500);
+  };
+
+  upvoteQuestion = id => {
+    voteQuestion("UP", id);
+  };
+
+  downvoteQuestion = id => {
+    voteQuestion("DOWN", id);
+  };
+
   render() {
     const {
       questionList
@@ -19,6 +43,8 @@ export class QuestionList extends React.Component {
               q_id={x.id}
               username={x.user_id.username}
               points={x.points}
+              handleDownvoteButton={this.handleDownvoteButton}
+              handleUpvoteButton={this.handleUpvoteButton}
             />
           ))}
         </div>
