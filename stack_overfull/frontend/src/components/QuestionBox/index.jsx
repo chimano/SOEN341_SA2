@@ -2,81 +2,19 @@ import React from "react";
 import "./index.css";
 import { Link } from "react-router-dom";
 
+import {
+  formatDate
+} from "../../utils/api";
+
 export class QuestionBox extends React.Component {
   handleChange = event => {
     this.setState({ answer: event.target.value });
   };
 
-  monthToText(monthRaw) {
-    switch(monthRaw){
-      case '01':
-        return "January";
-      case '02':
-        return "February";
-      case '03':
-        return "March";
-      case '04':
-        return "April";
-      case '05':
-        return "May";
-      case '06':
-        return "June";
-      case '07':
-        return "July";
-      case '08':
-        return "August";
-      case '09':
-        return "September";
-      case '10':
-        return "October";
-      case '11':
-        return "November";
-      case '12':
-        return "December";
-      default:
-        return "error";
-    }
-  };
-
-  dayFormat(dayRaw) {
-    switch(dayRaw) {
-      case '01':
-        return "st";
-      case '02':
-        return "nd";
-      case '03':
-        return "rd";
-      default:
-        return "th";
-    }
-  }
-
   render() {
     const { date_created, question_head, username, q_id, points } = this.props;
 
-    /** Extracts year, month, day and time from the date_created */
-    const year = date_created.substring(0, 4);
-    const monthRaw = date_created.substring(5, 7);
-    const dayRaw = date_created.substring(8, 10);
-    const time = date_created.substring(11, 19);
-
-    /** The following variables will call their respective method
-     *  For month, it will convert the month number to a text
-     *  For day, it will get the appropriate suffix
-     */
-    let month = this.monthToText(monthRaw); 
-    let daySuffix = this.dayFormat(dayRaw);
-
-    /** Initially, date will have the raw date */
-    let date = date_created;
-    /** If month does not return "error", then date will have the 
-     *  date format in a specific order with suffix and converted month.
-     * 
-     *  If month returns "error", then show the raw date
-     */
-    if(month !== "error") {
-      date = month + " " + dayRaw + daySuffix + " " + year + " " + time;
-    }
+    let date = formatDate(date_created);
 
     return (
       <div className="question-box">

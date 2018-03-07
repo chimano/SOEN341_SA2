@@ -24,6 +24,7 @@
     margin-bottom: 4%;
     margin-left: 2%;
     margin-right: 2%;
+    font-size: 1.2em;
 }
 
 .AnswerBox__date {
@@ -33,11 +34,15 @@
     top: -0.1em;
     right: 2%;
     background: white;
+    padding-left: 0.8%;
+    padding-right: 0.8%;
 }
 
 .AnswerBox__username {
     width: auto;
     margin-left: 2%;
+    padding-left: 0.8%;
+    padding-right: 0.8%;
 }
 
 fieldset {

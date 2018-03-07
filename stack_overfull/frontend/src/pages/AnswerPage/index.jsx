@@ -230,10 +230,7 @@ export class AnswerPage extends React.Component {
     let questionBodyBox;
     if (question.question_text) {
       questionBodyBox = (
-        <div className="AnswerPage__question-body">
-          <h4>Additional information:</h4>
-          <p className="AnswerPage__question-body">{question.question_text}</p>
-        </div>
+        <p className="AnswerPage__question-body">{question.question_text}</p>
       );
     } else {
       questionBodyBox = "";
