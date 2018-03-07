@@ -39,7 +39,7 @@ export class QuestionEdit extends React.Component {
     // Calling this.setState here breaks <Select /> component (?)
     // saving tags in 'this' instead
     // this.setState({tags: [...tags]})
-    this.tags = [...tags]
+    this.tags = [...tags];
   };
 
   render() {
@@ -81,13 +81,13 @@ export class QuestionEdit extends React.Component {
               onChange={tags => this.handleTagsChange(tags)} >
               {children}
 
-              <option value="A">business</option>
-              <option value="B">cooking</option>
-              <option value="C">entertainment</option>
-              <option value="D">fashion</option>
-              <option value="E">programming</option>
-              <option value="F">social</option>
-              <option value="G">technology</option>
+              <Option value="business">business</Option>
+              <Option value="cooking">cooking</Option>
+              <Option value="entertainment">entertainment</Option>
+              <Option value="fashion">fashion</Option>
+              <Option value="programming">programming</Option>
+              <Option value="social">social</Option>
+              <Option value="technology">technology</Option>
 
               </Select>
             </div>
