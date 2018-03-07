@@ -14,21 +14,30 @@ export class CategoryListPage extends React.Component {
         "programming",
         "social",
         "technology"
-      ]
+      ],
+
+      hottestTags: [
+        "python",
+        "react",
+        "django",
+        "school",
+        "concordia",
+        "internship",
+      ],
+
     };
   }
   render() {
-    const { categoryList } = this.state;
+    const { categoryList, hottestTags } = this.state;
     return (
       <header>
         <nav>
           <div>
             <h1 className="welcomeTitle1">
-              Welcome to the Questions Categories tab!
+             QUESTION CATEGORIES
             </h1>
             <h3 className="welcomeTitle2">
-              Here you can find all the questions divided into different
-              categories.
+              MAIN CATEGORIES
             </h3>
           </div>
 
@@ -38,7 +47,7 @@ export class CategoryListPage extends React.Component {
                 <li key={key}>
                   <Link
                     to={`/categories/${category}`}
-                    style={{ color: "black" }}
+                    style={{ color: "rgb(38, 18, 155)" }}
                   >
                     {category}
                   </Link>
@@ -46,6 +55,40 @@ export class CategoryListPage extends React.Component {
               ))}
             </ul>
           </div>
+
+          <div>
+            <h3 className="welcomeTitle2">
+              HOTTEST TAGS
+            </h3>
+          </div>
+
+          <div className="categoryBox">
+            <ul className="bubbles">
+              {hottestTags.map((hotTags, key) => (
+                <li key={key}>
+                  <Link
+                    to={`/categories/${hotTags}`}
+                    style={{ color: "rgb(38, 18, 155)" }}
+                  >
+                    {hotTags}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="welcomeTitle2">
+              <Link
+                to={`/categories/mostrecent`}
+                style={{ color: "rgb(38, 18, 155)" }}
+              >
+              MOST RECENT QUESTIONS
+              </Link>
+            </h3>
+          </div>
+
+        <br />
         </nav>
       </header>
     );
