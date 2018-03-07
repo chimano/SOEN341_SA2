@@ -1,8 +1,17 @@
 .AnswerPage__question-title {
     margin-top: 15px;
+    text-align: center;
+    margin-bottom: 4%;
+    font-size: 2.0em;
 }
 .AnswerPage__question-body {
-    margin-top: 5%;
+    /* margin-top: 5%; */
+    margin-left: 2%;
+    margin-right: 2%;
+    padding: 2%;
+    background-color: rgb(216, 239, 241);
+    border-radius: 10px;
+    font-size: 1.2em;
 }
 
 .AnswerPage__seperator {
@@ -41,4 +50,9 @@
 
 .AnswerPage__question-creator {
     padding-top: 30px;
+    font-size: 1.2em;
+}
+
+.numberOfAnswersText {
+    margin-bottom: 3%;
 }

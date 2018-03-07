@@ -1,6 +1,11 @@
 import React from "react";
 import "./index.css";
+import {QuestionBox} from "../QuestionBox";
 import { AcceptRejectButton, VotingButtons } from "../../components";
+
+import {
+  formatDate
+} from "../../utils/api";
 
 export class AnswerBox extends React.Component {
   render() {
@@ -25,14 +30,16 @@ export class AnswerBox extends React.Component {
       answerBox_class = "AnswerBox--blue";
     }
 
+    let date = formatDate(x.date_created.replace("T", " at ").substring(0, 19));
+
     return (
       <div>
-        <div className={"AnswerBox " + answerBox_class}>
-          <div>{x.user_id.username}</div>
-          <div className="AnswerBox__answer">{x.answer_text}</div>
+        <fieldset className={"AnswerBox " + answerBox_class}>
+          <legend className="AnswerBox__username"> {x.user_id.username} </legend>
           <div className="AnswerBox__date">
-            {x.date_created.replace("T", " at ").substring(0, 19)}
+            {date}
           </div>
+          <div className="AnswerBox__answer">{x.answer_text}</div>
           <div className="AnswerBox__button-area">
             <VotingButtons
               handleDownvoteButton={handleDownvoteButton}
@@ -52,7 +59,7 @@ export class AnswerBox extends React.Component {
               ""
             )}
           </div>
-        </div>
+        </fieldset>
       </div>
     );
   }
