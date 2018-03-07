@@ -1,18 +1,17 @@
 import React from "react";
 import "./App.css";
-import { HomePage, AnswerPage, SearchPage } from "./pages";
-import { Route, Switch, Redirect } from "react-router-dom";
+import {
+  HomePage,
+  AnswerPage,
+  SearchPage,
+  CareerPage,
+  ProfilePage,
+  CategoryListPage,
+  CategoryPage
+} from "./pages";
+import { Route, Switch } from "react-router-dom";
 import { NavigationBar, Footer } from "./components";
 import { getApiUserMe, postApiUserLogout } from "./utils/api";
-
-import CategoryPage from "./pages/CategoryPage/CategoryPage";
-import Business from "./pages/CategoryPage/Categories/Business";
-import Cooking from "./pages/CategoryPage/Categories/Cooking";
-import Entertainment from "./pages/CategoryPage/Categories/Entertainment";
-import Fashion from "./pages/CategoryPage/Categories/Fashion";
-import Programming from "./pages/CategoryPage/Categories/Programming";
-import Social from "./pages/CategoryPage/Categories/Social";
-import Technology from "./pages/CategoryPage/Categories/Technology";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -66,6 +65,13 @@ export default class App extends React.Component {
   render() {
     console.log("App.js state: ", this.state);
 
+    const NestedCategoryListPage = ({ match }) => (
+      <div>
+        <CategoryListPage />
+        <Route path={`${match.url}/:category`} component={CategoryPage} />
+      </div>
+    );
+
     return (
       <main>
         <NavigationBar
@@ -97,20 +103,16 @@ export default class App extends React.Component {
               />
             )}
           />
+          <Route path="/profile" component={ProfilePage} />
           <Route
             path="/search/"
             render={props => (
               <SearchPage username={this.state.username} {...props} />
             )}
           />
-          <Route path="/categories" component={CategoryPage} />
-          <Route path="/categories/business" component={Business} />
-          <Route path="/categories/cooking" component={Cooking} />
-          <Route path="/categories/entertainment" component={Entertainment} />
-          <Route path="/categories/fashion" component={Fashion} />
-          <Route path="/categories/programming" component={Programming} />
-          <Route path="/categories/social" component={Social} />
-          <Route path="/categories/technology" component={Technology} />
+          <Route path="/categories" component={NestedCategoryListPage} />
+
+          <Route path="/careers" component={CareerPage} />
         </Switch>
         <Footer />
       </main>

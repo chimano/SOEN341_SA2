@@ -10,3 +10,4 @@ export * from "./AskQuestionButton";
 export * from "./AcceptRejectButton";
 export * from "./AnswerBox";
 export * from "./VotingButtons";
+export * from "./SideBar";

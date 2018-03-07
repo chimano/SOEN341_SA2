@@ -31,7 +31,16 @@
     margin: auto;
 }
 
+.navbar__button--link {
+    text-align: center;
+    padding: 8px 0;
+}
+
 .navbar__button:hover {
+    background-color: rgb(54, 33, 190);
+}
+
+.navbar__profile-button:hover {
     background-color: rgb(54, 33, 190);
 }
 
@@ -44,7 +53,6 @@
 }
 
 .navbar__logged-in {
-    min-width: 210px;
     color: white;
     text-align: center;
     display: flex;
