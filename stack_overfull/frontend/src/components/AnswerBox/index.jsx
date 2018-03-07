@@ -27,12 +27,15 @@ export class AnswerBox extends React.Component {
 
     return (
       <div>
-        <div className={"AnswerBox " + answerBox_class}>
-          <div>{x.user_id.username}</div>
-          <div className="AnswerBox__answer">{x.answer_text}</div>
+        <fieldset className={"AnswerBox " + answerBox_class}>
+          <legend className="AnswerBox__username"> Answer by {x.user_id.username} </legend>
           <div className="AnswerBox__date">
             {x.date_created.replace("T", " at ").substring(0, 19)}
           </div>
+          <div className="AnswerBox__answer">{x.answer_text}</div>
+          {/* <div className="AnswerBox__date">
+            {x.date_created.replace("T", " at ").substring(0, 19)}
+          </div> */}
           <div className="AnswerBox__button-area">
             <VotingButtons
               handleDownvoteButton={handleDownvoteButton}
@@ -52,7 +55,7 @@ export class AnswerBox extends React.Component {
               ""
             )}
           </div>
-        </div>
+        </fieldset>
       </div>
     );
   }
