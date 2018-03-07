@@ -1,5 +1,17 @@
 import React from "react";
 import "./index.css";
+import { Select } from 'antd';
+
+const Option = Select.Option;
+
+const children = [];
+for (let i = 10; i < 36; i++) {
+  children.push();
+}
+
+function handleChange(value) {
+  console.log(`selected ${value}`);
+}
 
 export class QuestionEdit extends React.Component {
   constructor(props) {
@@ -48,6 +60,18 @@ export class QuestionEdit extends React.Component {
               className="questionEdit-text"
               onChange={e => this.handleChange(e, 'question_text')}
             />
+
+            <div>
+              <Select
+              mode="tags"
+              style={{ width: '100%' }}
+              placeholder="Add tags"
+              onChange={handleChange}
+              >
+              {children}
+              </Select>
+            </div>
+
           </div>
           <button
             className="questionEdit-button button"
