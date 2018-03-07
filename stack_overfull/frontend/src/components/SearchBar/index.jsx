@@ -38,12 +38,14 @@ export class SearchBar extends React.Component {
   };
 
   render() {
-    const { search_text, search_url, redirect } = this.state;
+    const { search_url, redirect } = this.state;
 
     if (redirect) {
       console.log("Redirecting to", search_url);
       // reset redirect without triggering a state change
-      this.state.redirect = false;
+      this.setState({
+        redirect: false
+      })
 
       return <Redirect push to={search_url} />;
     }

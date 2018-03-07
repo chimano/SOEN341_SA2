@@ -74,7 +74,7 @@ export class QuestionBox extends React.Component {
      * 
      *  If month returns "error", then show the raw date
      */
-    if(month != "error") {
+    if(month !== "error") {
       date = month + " " + dayRaw + daySuffix + " " + year + " " + time;
     }
 
