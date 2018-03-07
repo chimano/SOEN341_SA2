@@ -39,5 +39,6 @@ urlpatterns = [
     # Usernames may contain alphanumeric, _, @, +, . and - characters.
     re_path(r'^user/name/(?P<username>[\w_@\+\.\-]+)/$', UserNameView.as_view()),
 
-    re_path(r'^search/$', SearchView.as_view())
+    re_path(r'^search/$', SearchView.as_view()),
+    re_path(r'^tag/$', TagView.as_view())
 ]

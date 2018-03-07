@@ -25,7 +25,7 @@ class UserViewTests(TestCase):
         user_list = response.json()['user_list']
 
         self.assertIs(response.status_code, 200)
-        self.assertEqual(len(user_list), User.objects.count())
+        self.assertTrue(len(user_list) <= User.objects.count())
 
 class UserMeViewTests(TestCase):
 
@@ -170,6 +170,11 @@ class QuestionViewTest(TestCase):
     def setUpTestData(cls):
         #Sets up data base for testcases
         Question.objects.create(id=1,question_head="Test Question?", question_text="Test Body?")
+
+        tag = Tag.objects.create(tag_text="testtag")
+        tagged = Question.objects.create(id=2,question_head="Test Question Tags?", question_text="Test Tags Body?")
+        tagged.tags.set([tag])
+
         User.objects.create_user(username=cls.login_info['username'], password=cls.login_info['password'])
 
 
@@ -193,7 +198,7 @@ class QuestionViewTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertTrue('id' in response.json())
-    
+
     def test_invalid_question_post(self):
         #Sends post request without logging in
         json_payload = json.dumps({
@@ -209,7 +214,7 @@ class QuestionViewTest(TestCase):
 
         self.assertEqual(response.status_code, 400)
         self.assertTrue('error' in response.json())
-    
+
     def test_invalid_short_question_post(self):
         #Sends a post request with a 1 character question
         self.client.post(
@@ -230,7 +235,36 @@ class QuestionViewTest(TestCase):
 
         self.assertEqual(response.status_code, 400)
         self.assertTrue('error' in response.json())
-    
+
+    def test_valid_question_post_with_tags(self):
+        #Sends a valid post request
+        self.client.post(
+            '/api/user/login/',
+            data=json.dumps(self.login_info),
+            content_type='application/json'
+        )
+        json_payload = json.dumps({
+            "question_head": "Question header",
+            "question_text": "Question text",
+            "tags": ["tag1", "tag2"]
+        })
+        response = self.client.post(
+            '/api/question/',
+            data=json_payload,
+            content_type='application/json'
+        )
+
+        json_response = response.json()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('id' in json_response)
+
+        tags = Question.objects.get(pk=json_response['id']).tags
+
+        self.assertTrue(tags.filter(tag_text='tag1').exists())
+        self.assertTrue(tags.filter(tag_text='tag2').exists())
+
+
     def test_valid_question_get(self):
         #Sends a get request with a valid id
         data = {
@@ -260,10 +294,26 @@ class QuestionViewTest(TestCase):
 
         response = self.client.get('/api/question/', data)
         self.assertEqual(response.status_code, 200)
-    
+
+    def test_question_list_get_with_tags(self):
+        #Sends a valid get request to get question list
+        data = {
+            "order": "asc",
+            "limit": 20,
+            "sort": "date_created",
+            "tags": ['testtag']
+        }
+
+        response = self.client.get('/api/question/', data)
+        question_list = response.json()['question_list']
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue( len(question_list) == 1)
+
     @classmethod
     def tearDownClass(cls):
         Question.objects.all().delete()
+        Tag.objects.all().delete()
         User.objects.all().delete()
 
 
@@ -299,7 +349,7 @@ class AnswerViewTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertTrue('id' in response.json())
-    
+
 
     def test_short_answer_post(self):
         #Sends an answer with 1 character
@@ -320,7 +370,7 @@ class AnswerViewTest(TestCase):
 
         self.assertEqual(response.status_code, 400)
         self.assertTrue('error' in response.json())
-    
+
 
     def test_logged_out_answer_post(self):
         #Sends an answer without logging in
@@ -357,7 +407,7 @@ class AnswerViewTest(TestCase):
 
         self.assertEqual(response.status_code, 400)
         self.assertTrue('error' in response.json())
-    
+
     def test_valid_answer_get(self):
         #Sends an answer get request for a valid question
         data = {
@@ -380,8 +430,8 @@ class AnswerViewTest(TestCase):
 
         self.assertEqual(response.status_code, 400)
         self.assertTrue('error' in response.json())
-       
-    
+
+
     @classmethod
     def tearDownClass(cls):
         Question.objects.all().delete()
@@ -421,7 +471,7 @@ class AnswerVoteViewTest(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertTrue('sucess' in response.json())
-    
+
     def test_valid_answer_downvote_post(self):
         #Sends a valid downvote
         self.client.post(
@@ -440,7 +490,7 @@ class AnswerVoteViewTest(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertTrue('sucess' in response.json())
-    
+
     def test_doublevote_post(self):
         #Sends a valid downvote
         self.client.post(
@@ -464,7 +514,7 @@ class AnswerVoteViewTest(TestCase):
         )
         self.assertEqual(response.status_code, 400)
         self.assertTrue('error' in response.json())
-        
+
 
     def test_logout_vote(self):
         #Sends a vote without being logged in
@@ -481,7 +531,7 @@ class AnswerVoteViewTest(TestCase):
         )
         self.assertEqual(response.status_code, 400)
         self.assertTrue('error' in response.json())
-     
+
     @classmethod
     def tearDownClass(cls):
         Question.objects.all().delete()
@@ -520,7 +570,7 @@ class QuestionVoteViewTest(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertTrue('sucess' in response.json())
-    
+
     def test_valid_question_downvote_post(self):
         #Sends a valid downvote
         self.client.post(
@@ -539,7 +589,7 @@ class QuestionVoteViewTest(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertTrue('sucess' in response.json())
-    
+
     def test_doublevote_question_post(self):
         #Sends a valid downvote
         self.client.post(
@@ -563,7 +613,7 @@ class QuestionVoteViewTest(TestCase):
         )
         self.assertEqual(response.status_code, 400)
         self.assertTrue('error' in response.json())
-        
+
 
     def test_logout_vote(self):
         #Sends a vote without being logged in
@@ -580,10 +630,33 @@ class QuestionVoteViewTest(TestCase):
         )
         self.assertEqual(response.status_code, 400)
         self.assertTrue('error' in response.json())
-     
+
     @classmethod
     def tearDownClass(cls):
         Question.objects.all().delete()
         Answer.objects.all().delete()
         User.objects.all().delete()
 
+
+class TagViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        #Sets up database for the testcases
+        Tag.objects.create(tag_text='tag1')
+        Tag.objects.create(tag_text='tag2')
+
+
+    def test_tag_get(self):
+        response = self.client.get('/api/tag/')
+        self.assertEqual(response.status_code, 200)
+
+        tag_list = response.json()['tag_list']
+        self.assertTrue( len(tag_list) == 2)
+
+
+    @classmethod
+    def tearDownClass(cls):
+        Question.objects.all().delete()
+        Answer.objects.all().delete()
+        Tag.objects.all().delete()
+        User.objects.all().delete()

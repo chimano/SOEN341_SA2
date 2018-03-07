@@ -9,9 +9,10 @@ class Question(models.Model):
     question_text = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True)
     #https://stackoverflow.com/questions/2606194/django-error-message-add-a-related-name-argument-to-the-definition
-    accepted_answer_id = models.OneToOneField('Answer', on_delete=models.SET_NULL, null=True, related_name='accepted_answer_set')
-    rejected_answers_ids = models.ManyToManyField('Answer', related_name='rejected_answers_set')
+    accepted_answer_id = models.OneToOneField('Answer', on_delete=models.SET_NULL, null=True, blank=True, related_name='accepted_answer_set')
+    rejected_answers_ids = models.ManyToManyField('Answer', related_name='rejected_answers_set', blank=True)
     points = models.IntegerField(default=0)
+    tags = models.ManyToManyField('Tag', related_name='question_set', blank=True)
 
 class Answer(models.Model):
     question_id = models.ForeignKey(Question, on_delete=models.CASCADE)
@@ -27,18 +28,22 @@ class Profile(models.Model):
     about_me = models.TextField(default='Add something about yourself')
     reputation = models.IntegerField(default=0)
 
-    upvoted_questions = models.ManyToManyField(Question, related_name='up_questions')
-    downvoted_questions = models.ManyToManyField(Question, related_name='down_questions')
-    upvoted_answers = models.ManyToManyField(Answer, related_name='up_answers')
-    downvoted_answers = models.ManyToManyField(Answer, related_name='down_answers')
+    upvoted_questions = models.ManyToManyField(Question, related_name='up_questions', blank=True)
+    downvoted_questions = models.ManyToManyField(Question, related_name='down_questions', blank=True)
+    upvoted_answers = models.ManyToManyField(Answer, related_name='up_answers', blank=True)
+    downvoted_answers = models.ManyToManyField(Answer, related_name='down_answers', blank=True)
 
     def update_profile_reputation(self, delta):
         self.reputation += delta
         self.save()
-        
+
     #Automaticly create a user profile when a user is created
     @receiver(post_save, sender=User)
     def create_user_profile(sender, **kwargs):
         user = kwargs["instance"]
         if kwargs["created"] is True:
             Profile.objects.create(user_id=user)
+
+class Tag(models.Model):
+    tag_text = models.CharField(max_length=128, primary_key=True)
+    date_created = models.DateTimeField(auto_now=True)
