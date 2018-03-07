@@ -9,22 +9,25 @@ for (let i = 10; i < 36; i++) {
   children.push();
 }
 
-function handleChange(value) {
-  console.log(`selected ${value}`);
-}
-
 export class QuestionEdit extends React.Component {
   constructor(props) {
     super(props);
+
+    this.tags = []
+
     this.state = {
       question_head: "",
-      question_text: ""
+      question_text: "",
     };
   }
 
   handleSubmitQuestionButton = () => {
     const { createQuestion, closeCreateQuestionBox } = this.props;
-    createQuestion(this.state);
+
+    // copy this.state and this.tags
+    let withTags = Object.assign({}, this.state, {tags:this.tags})
+    console.log(withTags)
+    createQuestion(withTags);
     closeCreateQuestionBox();
   };
 
@@ -33,7 +36,15 @@ export class QuestionEdit extends React.Component {
     this.setState({ [name]: event.target.value });
   };
 
+  handleTagsChange = (tags) => {
+    // Calling this.setState here breaks <Select /> component (?)
+    // saving tags in 'this' instead
+    // this.setState({tags: [...tags]})
+    this.tags = [...tags]
+  };
+
   render() {
+    console.log('rerendering')
     const { user, closeCreateQuestionBox } = this.props;
 
     return (
@@ -66,8 +77,7 @@ export class QuestionEdit extends React.Component {
               mode="tags"
               style={{ width: '100%' }}
               placeholder="Add tags"
-              onChange={handleChange}
-              >
+              onChange={tags => this.handleTagsChange(tags)} >
               {children}
               </Select>
             </div>
