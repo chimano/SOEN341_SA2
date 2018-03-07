@@ -4,8 +4,7 @@ import { Select } from 'antd';
 
 const Option = Select.Option;
 
-const children = [];
-for (let i = 10; i < 36; i++) {
+const children = [];{
   children.push();
 }
 
@@ -72,6 +71,8 @@ export class QuestionEdit extends React.Component {
               onChange={e => this.handleChange(e, 'question_text')}
             />
 
+          <div className="questionEdit-title">Tags</div>
+          <br />
             <div>
               <Select
               mode="tags"
@@ -79,6 +80,15 @@ export class QuestionEdit extends React.Component {
               placeholder="Add tags"
               onChange={tags => this.handleTagsChange(tags)} >
               {children}
+
+              <option value="A">business</option>
+              <option value="B">cooking</option>
+              <option value="C">entertainment</option>
+              <option value="D">fashion</option>
+              <option value="E">programming</option>
+              <option value="F">social</option>
+              <option value="G">technology</option>
+
               </Select>
             </div>
 
