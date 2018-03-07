@@ -13,12 +13,14 @@ from django.http import JsonResponse
 from django.contrib.auth import authenticate, login, logout
 
 from so_endpoint.serializers import (QuestionSerializer, AnswerSerializer,
-                                     AccountSerializerPrivate, AccountSerializerPublic)
-from so_endpoint.models import Question, Answer, Profile
+                                     AccountSerializerPrivate, AccountSerializerPublic,
+                                     TagViewSerializer)
+
+from so_endpoint.models import Question, Answer, Profile, Tag
+
 
 
 # Create your views here.
-
 
 class QuestionView(TemplateView):
     """
@@ -36,6 +38,8 @@ class QuestionView(TemplateView):
             json_data = json.loads(request.body)
             question_head = json_data['question_head']
             question_text = json_data['question_text']
+            question_tags = json_data.get('tags', None)
+
             try:
                 user = User.objects.get(username=request.user)
             except User.DoesNotExist:
@@ -48,6 +52,10 @@ class QuestionView(TemplateView):
                                 question_text=question_text, user_id=user)
 
             question.save()
+            #question should exist in db since question.tags is required
+            add_tags_to_question(question, question_tags)
+            question.save()
+
             return JsonResponse({'id': question.id})
 
         except KeyError:
@@ -61,14 +69,18 @@ class QuestionView(TemplateView):
         q_id = request.GET.get('id', None)
         order = request.GET.get('order', 'desc')
         sorted_by = request.GET.get('sort', 'points')
+        tags = request.GET.getlist('tags', list())
+
         if q_id is None:
             # If q_id is not set then it returns a list of questions
             limit = 10 if limit is None else int(limit)
             order = "desc" if order is None else order
             modifier = '-' if order == 'desc' else ''
 
-            questions = Question.objects.all().order_by(
-                modifier + sorted_by)[:limit]
+            questions = Question.objects.all()
+            questions = filter_questions_by_tags(questions, tags)
+            questions.order_by(modifier + sorted_by)[:limit]
+
             serialized = QuestionSerializer(questions, many=True).data
             return JsonResponse({'question_list': serialized})
 
@@ -223,7 +235,6 @@ class UserNameView(TemplateView):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, username):
-        print('Got', username)
         try:
             user = User.objects.get(username=username)
             user_serialized = AccountSerializerPublic(user).data
@@ -232,8 +243,6 @@ class UserNameView(TemplateView):
             return JsonResponse({'error': 'User does not exist'}, status=400)
 
 # Return the list of users in the database
-
-
 class UserView(TemplateView):
 
     @method_decorator(csrf_exempt)
@@ -582,6 +591,48 @@ class SearchView(TemplateView):
             serialized = QuestionSerializer(matching_questions, many=True).data
             return JsonResponse({'question_list': serialized})
 
-        except BaseException as error:  # either TypeError or ValueError from query params
+        except BaseException as error:
+            # either TypeError or ValueError from query params
             print(repr(error))
             return JsonResponse({'error': repr(error)}, status=400)
+
+class TagView(TemplateView):
+    """
+    This view handles the /api/tag/ endpoint
+    It returns a list of existing tags
+    """
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request):
+        tags = Tag.objects.all()
+        tags_serialized = TagViewSerializer(tags, many=True).data
+        return JsonResponse({"tag_list": tags_serialized})
+
+
+
+def add_tags_to_question(question, tags_list):
+
+    if tags_list is None or len(tags_list) == 0:
+        return question
+
+    #strip spaces and convert to lowercase
+    tags_list = [tag.strip().lower() for tag in tags_list]
+
+    for tag_text in tags_list:
+        tag, is_created = Tag.objects.get_or_create(tag_text=tag_text)
+        question.tags.add(tag)
+
+    return question
+
+
+def filter_questions_by_tags(question_set, tags_list):
+
+    if tags_list is None or len(tags_list) == 0:
+        return question_set
+
+    #strip spaces and convert to lowercase
+    tags_list = [tag.strip().lower() for tag in tags_list]
+
+    return question_set.filter(tags__in = tags_list)

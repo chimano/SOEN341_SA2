@@ -1,9 +1,9 @@
 from rest_framework import serializers
-from so_endpoint.models import Question, Answer, Profile
+from so_endpoint.models import Question, Answer, Profile, Tag
 from django.contrib.auth.models import User
 
 """
-This classes are used to serialize data to send them in a 
+This classes are used to serialize data to send them in a
 JSON format
 """
 class ProfileSerializerPrivate(serializers.ModelSerializer):
@@ -26,19 +26,25 @@ class AccountSerializerPublic(serializers.ModelSerializer):
     profile = ProfileSerializerPublic(read_only=True)
     class Meta:
         model = User
-        fields = ('id','username', 'first_name', 'last_name', 'email', 'last_login', 'date_joined', 'profile')
+        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'last_login', 'date_joined', 'profile')
 
 class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('username',)
 
+# A tag serializer used by the TagView
+class TagViewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = '__all__'
+
 class QuestionSerializer(serializers.ModelSerializer):
     user_id = AccountSerializer(read_only=True)
 
     class Meta:
         model = Question
-        fields = ('id', 'user_id', 'question_head', 'question_text', 'accepted_answer_id', 'rejected_answers_ids', 'date_created', 'points')
+        fields = ('id', 'user_id', 'question_head', 'question_text', 'accepted_answer_id', 'rejected_answers_ids', 'date_created', 'points', 'tags')
 
 class AnswerSerializer(serializers.ModelSerializer):
     user_id = AccountSerializer(read_only=True)
