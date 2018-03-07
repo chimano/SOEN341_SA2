@@ -96,7 +96,9 @@ export class HomePage extends React.Component {
               handleAskQuestionButton={this.handleAskQuestionButton}
             />
           </div>
-          <QuestionList questionList={questionList} />
+          <QuestionList 
+            questionList={questionList}
+             />
         </div>
         {createQuestionBox}
       </div>
