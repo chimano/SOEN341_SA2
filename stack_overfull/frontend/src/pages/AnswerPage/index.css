@@ -56,3 +56,8 @@
 .numberOfAnswersText {
     margin-bottom: 3%;
 }
+
+.AnswerPage__tags {
+    font-size: 1.2em;
+    text-align: right;
+}

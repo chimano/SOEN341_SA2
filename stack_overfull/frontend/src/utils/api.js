@@ -110,7 +110,8 @@ export function getApiUserMe() {
 export function postApiQuestion(question) {
   return axios.post("/api/question/", {
     question_head: question.question_head,
-    question_text: question.question_text
+    question_text: question.question_text,
+    tags: question.tags ? question.tags : []
   });
 }
 
