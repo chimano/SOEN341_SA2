@@ -239,13 +239,14 @@ export class AnswerPage extends React.Component {
     return (
       <div className="body-wrapper">
         <div className="page-width">
-          <div className="AnswerPage__question-creator">
-            Asked by <a>{q_user}</a>
-          </div>
+          
           <h1 className="AnswerPage__question-title">
             {question.question_head}
           </h1>
           {questionBodyBox}
+          <div className="AnswerPage__question-creator">
+            Asked by <a>{q_user}</a>
+          </div>
           <div className="AnswerPage__seperator" />
           {numberOfAnswersTitle}
           {answerListBox}
