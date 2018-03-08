@@ -8,11 +8,11 @@
 }
 
 .question-box__user {
-    width: 80%;
+    width: 90%;
 }
 
 .question-box__points {
-    width: 20%;
+    width: 10%;
     text-align: right;
 }
 
