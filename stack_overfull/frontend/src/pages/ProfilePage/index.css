@@ -4,3 +4,6 @@
 .ProfilePage div {
     padding-bottom: 20px;
 }
+.ProfilePage__question-list-title {
+    padding-top: 30px;
+}
