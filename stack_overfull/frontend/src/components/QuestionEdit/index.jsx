@@ -17,6 +17,7 @@ export class QuestionEdit extends React.Component {
     this.state = {
       question_head: "",
       question_text: "",
+      tags:[]
     };
   }
 
@@ -38,8 +39,7 @@ export class QuestionEdit extends React.Component {
   handleTagsChange = (tags) => {
     // Calling this.setState here breaks <Select /> component (?)
     // saving tags in 'this' instead
-    // this.setState({tags: [...tags]})
-    this.tags = [...tags];
+    this.setState({tags: [...tags]})
   };
 
   render() {
