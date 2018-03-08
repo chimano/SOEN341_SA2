@@ -20,6 +20,76 @@ export function getApiQuestion(order, limit, sort) {
   });
 }
 
+export function monthToText(monthRaw) {
+  switch(monthRaw){
+    case '01':
+      return "January";
+    case '02':
+      return "February";
+    case '03':
+      return "March";
+    case '04':
+      return "April";
+    case '05':
+      return "May";
+    case '06':
+      return "June";
+    case '07':
+      return "July";
+    case '08':
+      return "August";
+    case '09':
+      return "September";
+    case '10':
+      return "October";
+    case '11':
+      return "November";
+    case '12':
+      return "December";
+    default:
+      return "error";
+  }
+};
+
+export function dayFormat(dayRaw) {
+  switch(dayRaw) {
+    case '01':
+      return "st";
+    case '02':
+      return "nd";
+    case '03':
+      return "rd";
+    default:
+      return "th";
+  }
+}
+
+export function formatDate(dateRaw) {
+  /** Extracts year, month, day and time from the dateRaw */
+  const year = dateRaw.substring(0, 4);
+  const monthRaw = dateRaw.substring(5, 7);
+  const dayRaw = dateRaw.substring(8, 10);
+  const time = dateRaw.substring(11, 19);
+  
+  /** The following variables will call their respective method
+   *  For month, it will convert the month number to a text
+   *  For day, it will get the appropriate suffix
+   */
+  let month = monthToText(monthRaw); 
+  let daySuffix = dayFormat(dayRaw);
+
+  /** If month does not return "error", then date will have the 
+   *  date format in a specific order with suffix and converted month.
+   * 
+   *  If month returns "error", then show the raw date
+   */
+  if(month !== "error") {
+    return month + " " + dayRaw + daySuffix + " " + year + " " + time;
+  } else {
+    return dateRaw;
+  }
+}
+
 //get answer by id of the question
 export function getApiAnswerById(id, order, limit) {
   return axios.get("/api/answer/", {
@@ -40,7 +110,8 @@ export function getApiUserMe() {
 export function postApiQuestion(question) {
   return axios.post("/api/question/", {
     question_head: question.question_head,
-    question_text: question.question_text
+    question_text: question.question_text,
+    tags: question.tags ? question.tags : []
   });
 }
 

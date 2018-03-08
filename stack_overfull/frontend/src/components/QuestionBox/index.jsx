@@ -2,6 +2,7 @@ import React from "react";
 import "./index.css";
 import { Link } from "react-router-dom";
 import { VotingButtons } from "../../components";
+import { formatDate } from "../../utils/api";
 
 export class QuestionBox extends React.Component {
   handleChange = event => {
@@ -86,6 +87,7 @@ export class QuestionBox extends React.Component {
     if (month !== "error") {
       date = month + " " + dayRaw + daySuffix + " " + year + " " + time;
     }
+    let date = formatDate(date_created);
 
     return (
       <div className="question-box">
