@@ -22,7 +22,8 @@ export class AnswerPage extends React.Component {
       accepted_answer_id: "",
       rejected_answers_ids: [],
       verified: false,
-      q_user: ""
+      q_user: "",
+      
     };
   }
 
@@ -241,6 +242,12 @@ export class AnswerPage extends React.Component {
         <div className="page-width">
           <div className="AnswerPage__question-creator">
             Asked by <a>{q_user}</a>
+
+            <div className="AnswerPage__tags">
+            Tags
+            <br />
+            {question.tags}
+            </div>
           </div>
           <h1 className="AnswerPage__question-title">
             {question.question_head}
