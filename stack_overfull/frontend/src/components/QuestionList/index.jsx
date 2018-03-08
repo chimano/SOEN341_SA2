@@ -30,18 +30,19 @@ export class QuestionList extends React.Component {
     return (
       <div className="question-list-wrapper">
         <div className="question-list">
-          {questionList.map((x, key) => (
+          {questionList.map((question, key) => (
             <QuestionBox
               key={key}
-              date_created={x.date_created
+              date_created={question.date_created
                 .replace("T", " at ")
                 .substring(0, 19)}
-              question_head={x.question_head}
-              q_id={x.id}
-              username={x.user_id.username}
-              points={x.points}
+              question_head={question.question_head}
+              q_id={question.id}
+              username={question.user_id.username}
+              points={question.points}
               handleDownvoteButton={this.handleDownvoteButton}
               handleUpvoteButton={this.handleUpvoteButton}
+              showButtons
             />
           ))}
         </div>

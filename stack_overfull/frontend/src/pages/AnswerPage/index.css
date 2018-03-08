@@ -6,8 +6,8 @@
 }
 .AnswerPage__question-body {
     /* margin-top: 5%; */
-    margin-left: 2%;
-    margin-right: 2%;
+    /* margin-left: 2%; */
+    /* margin-right: 2%; */
     padding: 2%;
     background-color: rgb(216, 239, 241);
     border-radius: 10px;
@@ -49,8 +49,8 @@
 }
 
 .AnswerPage__question-creator {
-    padding-top: 30px;
     font-size: 1.2em;
+    text-align: right;
 }
 
 .numberOfAnswersText {

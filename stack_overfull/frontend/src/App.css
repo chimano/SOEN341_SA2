@@ -28,6 +28,9 @@
 }
 
 .body-wrapper {
-    /* background-color: rgb(241, 241, 241);  */
     min-height: calc(100vh - 87px - 233.19px);   
+}
+
+.grey-background {
+    background-color: rgb(241, 241, 241); 
 }

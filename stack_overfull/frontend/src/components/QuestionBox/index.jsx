@@ -2,10 +2,7 @@ import React from "react";
 import "./index.css";
 import { Link } from "react-router-dom";
 import { VotingButtons } from "../../components";
-
-import {
-  formatDate
-} from "../../utils/api";
+import { formatDate } from "../../utils/api";
 
 export class QuestionBox extends React.Component {
   handleChange = event => {
@@ -20,9 +17,9 @@ export class QuestionBox extends React.Component {
       q_id,
       points,
       handleUpvoteButton,
-      handleDownvoteButton
+      handleDownvoteButton,
+      showButtons
     } = this.props;
-
 
     let date = formatDate(date_created);
 
@@ -33,12 +30,16 @@ export class QuestionBox extends React.Component {
             Asked by {username} on {date}{" "}
           </div>
           <div className="question-box__points">
-          <VotingButtons 
-            handleDownvoteButton={handleDownvoteButton}
-            handleUpvoteButton={handleUpvoteButton}
-            id={q_id}
-            points={points}
-          />
+            {showButtons ? (
+              <VotingButtons
+                handleDownvoteButton={handleDownvoteButton}
+                handleUpvoteButton={handleUpvoteButton}
+                id={q_id}
+                points={points}
+              />
+            ) : (
+              ""
+            )}
           </div>
         </div>
         <div className="question-box__line" />
