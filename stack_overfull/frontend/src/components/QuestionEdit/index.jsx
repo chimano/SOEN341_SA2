@@ -1,10 +1,11 @@
 import React from "react";
 import "./index.css";
-import { Select } from 'antd';
+import { Select } from "antd";
 
 const Option = Select.Option;
 
-const children = [];{
+const children = [];
+{
   children.push();
 }
 
@@ -12,38 +13,31 @@ export class QuestionEdit extends React.Component {
   constructor(props) {
     super(props);
 
-    this.tags = []
-
     this.state = {
       question_head: "",
       question_text: "",
-      tags:[]
+      tags: []
     };
   }
 
   handleSubmitQuestionButton = () => {
     const { createQuestion, closeCreateQuestionBox } = this.props;
-
-    // copy this.state and this.tags
-    let withTags = Object.assign({}, this.state, {tags:this.tags})
-    console.log(withTags)
-    createQuestion(withTags);
+    createQuestion(this.state);
     closeCreateQuestionBox();
   };
-
 
   handleChange = (event, name) => {
     this.setState({ [name]: event.target.value });
   };
 
-  handleTagsChange = (tags) => {
+  handleTagsChange = tags => {
     // Calling this.setState here breaks <Select /> component (?)
     // saving tags in 'this' instead
-    this.setState({tags: [...tags]})
+    this.setState({ tags: [...tags] });
   };
 
   render() {
-    console.log('rerendering')
+    console.log("state of QuestionEdit: ", this.state);
     const { user, closeCreateQuestionBox } = this.props;
 
     return (
@@ -63,35 +57,34 @@ export class QuestionEdit extends React.Component {
             <div className="questionEdit-title">Question Header:</div>
             <textarea
               className="questionEdit-text"
-              onChange={e => this.handleChange(e, 'question_head')}
+              onChange={e => this.handleChange(e, "question_head")}
             />
             <div className="questionEdit-title">Question Body (Optional):</div>
             <textarea
               className="questionEdit-text"
-              onChange={e => this.handleChange(e, 'question_text')}
+              onChange={e => this.handleChange(e, "question_text")}
             />
 
-          <div className="questionEdit-title">Tags</div>
-          <br />
+            <div className="questionEdit-title">Tags</div>
+            <br />
             <div>
               <Select
-              mode="tags"
-              style={{ width: '100%' }}
-              placeholder="Add tags"
-              onChange={tags => this.handleTagsChange(tags)} >
-              {children}
+                mode="tags"
+                style={{ width: "100%" }}
+                placeholder="Add tags"
+                onChange={tags => this.handleTagsChange(tags)}
+              >
+                {children}
 
-              <Option value="business">business</Option>
-              <Option value="cooking">cooking</Option>
-              <Option value="entertainment">entertainment</Option>
-              <Option value="fashion">fashion</Option>
-              <Option value="programming">programming</Option>
-              <Option value="social">social</Option>
-              <Option value="technology">technology</Option>
-
+                <Option value="business">business</Option>
+                <Option value="cooking">cooking</Option>
+                <Option value="entertainment">entertainment</Option>
+                <Option value="fashion">fashion</Option>
+                <Option value="programming">programming</Option>
+                <Option value="social">social</Option>
+                <Option value="technology">technology</Option>
               </Select>
             </div>
-
           </div>
           <button
             className="questionEdit-button button"
