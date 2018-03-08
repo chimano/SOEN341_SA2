@@ -32,12 +32,14 @@ export class QuestionBox extends React.Component {
           <div className="question-box__user">
             Asked by {username} on {date}{" "}
           </div>
-          <VotingButtons
+          <div className="question-box__points">
+          <VotingButtons 
             handleDownvoteButton={handleDownvoteButton}
             handleUpvoteButton={handleUpvoteButton}
             id={q_id}
             points={points}
           />
+          </div>
         </div>
         <div className="question-box__line" />
         <Link to={`/question/${q_id}`} className="question-box__text">

@@ -8,13 +8,13 @@ export class VotingButtons extends React.Component {
     return (
       <div className="VotingButtons">
         <button className="VotingButtons__button button" onClick={() => handleDownvoteButton(id)}>
-          -
+        &#10134;
         </button>
         <div className="VotingButtons__votes">
-          <div className="VotingButtons__votes__text">{points} vote(s)</div>
+          <div className="VotingButtons__votes__text">{points}&nbsp;</div>
         </div>
         <button className="VotingButtons__button button" onClick={() => handleUpvoteButton(id)}>
-          +
+        &#10133;
         </button>
       </div>
     );
