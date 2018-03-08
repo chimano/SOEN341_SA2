@@ -5,18 +5,23 @@
 
 .VotingButtons__button {
     min-width: 20px;
-    color: white;
-    background: lightgray;
+    color: black;
+    background: white;
     text-align: center;
-    border: 1px solid grey;
+    border:none;
+}
+
+.VotingButtons__button:hover {
+    background: white;
 }
 
 .VotingButtons__votes {
-    width: 100px;
+    width: 30px;
     display: flex;
 }
 
 .VotingButtons__votes__text {
     margin: auto;
+    font-weight: bold;
 }
 
