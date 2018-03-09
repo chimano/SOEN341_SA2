@@ -244,7 +244,10 @@ export class AnswerPage extends React.Component {
       <div className="body-wrapper">
         <div className="page-width">
           <div className="AnswerPage__question-creator">
+<<<<<<< HEAD
             Asked by <a>{q_user}</a>
+=======
+>>>>>>> 3c545f134ca883553e2e439f5c76dcf1dff4e636
             <div className="AnswerPage__tags">
 
             {question.tags.map((tag) => (
@@ -259,6 +262,9 @@ export class AnswerPage extends React.Component {
             {question.question_head}
           </h1>
           {questionBodyBox}
+          <div className="AnswerPage__question-creator">
+            Asked by <a>{q_user}</a>
+          </div>
           <div className="AnswerPage__seperator" />
           {numberOfAnswersTitle}
           {answerListBox}
