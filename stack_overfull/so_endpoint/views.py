@@ -584,7 +584,7 @@ class SearchView(TemplateView):
             by_username = Question.objects.filter(
                 user_id__username__icontains=query)
 
-            matching_questions =by_question_head | by_question_text | by_username
+            matching_questions = by_question_head | by_question_text | by_username
 
             matching_questions = matching_questions.order_by(
                 modifier+sorted_by)[:limit]
