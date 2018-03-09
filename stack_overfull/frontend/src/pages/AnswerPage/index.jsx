@@ -1,8 +1,6 @@
 import React from "react";
 import "./index.css";
 import { AnswerBox } from "../../components";
-import { Link } from "react-router-dom";
-import { Tag } from 'antd';
 
 import {
   getApiQuestionById,
@@ -18,7 +16,6 @@ export class AnswerPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      //question: "",
       question: {tags: []},
       answerList: [],
       answer: "",
@@ -26,6 +23,7 @@ export class AnswerPage extends React.Component {
       rejected_answers_ids: [],
       verified: false,
       q_user: "",
+      
     };
   }
 
@@ -161,7 +159,7 @@ export class AnswerPage extends React.Component {
   };
 
   render() {
-    const { question, answerList, q_user, tags } = this.state;
+    const { question, answerList, q_user } = this.state;
     const { logged_in, username } = this.props;
     const q_id = this.props.match.params.id;
 
@@ -240,22 +238,17 @@ export class AnswerPage extends React.Component {
     }
 
     return (
-      
       <div className="body-wrapper">
         <div className="page-width">
           <div className="AnswerPage__question-creator">
-<<<<<<< HEAD
-            Asked by <a>{q_user}</a>
-=======
->>>>>>> 3c545f134ca883553e2e439f5c76dcf1dff4e636
             <div className="AnswerPage__tags">
-
+            Tags
+            <br />
             {question.tags.map((tag) => (
               <Tag>
               <Link to={`/categories/${tag}`}>{tag}</Link>
               </Tag>
               ))}
-
             </div>
           </div>
           <h1 className="AnswerPage__question-title">
