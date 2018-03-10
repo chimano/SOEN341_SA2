@@ -1,6 +1,8 @@
 import React from "react";
 import "./index.css";
 import { AnswerBox } from "../../components";
+import { Link } from "react-router-dom";
+import { Tag } from 'antd';
 
 import {
   getApiQuestionById,
@@ -16,7 +18,7 @@ export class AnswerPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      question: "",
+      question: {tags: []},
       answerList: [],
       answer: "",
       accepted_answer_id: "",
@@ -244,7 +246,11 @@ export class AnswerPage extends React.Component {
             <div className="AnswerPage__tags">
             Tags
             <br />
-            {question.tags}
+            {question.tags.map((tag) => (
+              <Tag>
+              <Link to={`/categories/${tag}`}>{tag}</Link>
+              </Tag>
+              ))}
             </div>
           </div>
           <h1 className="AnswerPage__question-title">
