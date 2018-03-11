@@ -1,7 +1,7 @@
 import React from "react";
 import "./index.css";
 import { Link } from "react-router-dom";
-import { VotingButtons } from "../../components";
+import { VotingButtons, TagList } from "../../components";
 import { formatDate } from "../../utils/api";
 
 export class QuestionBox extends React.Component {
@@ -18,7 +18,8 @@ export class QuestionBox extends React.Component {
       points,
       handleUpvoteButton,
       handleDownvoteButton,
-      showButtons
+      showButtons,
+      tags
     } = this.props;
 
     let date = formatDate(date_created);
@@ -26,9 +27,9 @@ export class QuestionBox extends React.Component {
     return (
       <div className="question-box">
         <div style={{ display: "flex" }}>
-          <div className="question-box__user">
-            Asked by {username} on {date}{" "}
-          </div>
+          <Link to={`/question/${q_id}`} className="question-box__text">
+            {question_head}
+          </Link>
           <div className="question-box__points">
             {showButtons ? (
               <VotingButtons
@@ -43,11 +44,12 @@ export class QuestionBox extends React.Component {
           </div>
         </div>
         <div className="question-box__line" />
-        <Link to={`/question/${q_id}`} className="question-box__text">
-          {question_head}
-        </Link>
-        {/* <div className="question-box__line" /> */}
-        {/* <div className="question-box__date">{date}</div> */}
+        <div style={{ display: "flex" }}>
+          <TagList tags={tags} />
+          <div className="question-box__user">
+            Asked by {username} on {date}{" "}
+          </div>
+        </div>
       </div>
     );
   }
