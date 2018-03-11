@@ -12,3 +12,4 @@ export * from "./AnswerBox";
 export * from "./VotingButtons";
 export * from "./SideBar";
 export * from "./SearchFiltersBar"
+export * from "./TagList";

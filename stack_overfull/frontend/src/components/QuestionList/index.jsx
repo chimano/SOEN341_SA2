@@ -42,6 +42,7 @@ export class QuestionList extends React.Component {
               points={question.points}
               handleDownvoteButton={this.handleDownvoteButton}
               handleUpvoteButton={this.handleUpvoteButton}
+              tags={question.tags}
               showButtons
             />
           ))}
