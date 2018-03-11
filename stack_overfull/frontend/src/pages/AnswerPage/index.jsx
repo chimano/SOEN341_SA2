@@ -1,6 +1,6 @@
 import React from "react";
 import "./index.css";
-import { AnswerBox } from "../../components";
+import { AnswerBox, TagList } from "../../components";
 
 import {
   getApiQuestionById,
@@ -244,7 +244,7 @@ export class AnswerPage extends React.Component {
             <div className="AnswerPage__tags">
             Tags
             <br />
-            {question.tags}
+            <TagList tags={question.tags}/>
             </div>
           </div>
           <h1 className="AnswerPage__question-title">
