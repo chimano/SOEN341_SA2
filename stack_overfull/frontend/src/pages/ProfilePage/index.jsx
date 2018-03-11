@@ -107,6 +107,7 @@ export class ProfilePage extends React.Component {
                   username={question.user_id.username}
                   points={question.points}
                   showButtons={false}
+                  tags={question.tags}
                 />
               ))}
             </div>
@@ -125,6 +126,7 @@ export class ProfilePage extends React.Component {
                   username={question.user_id.username}
                   points={question.points}
                   showButtons={false}
+                  tags={question.tags}
                 />
               ))}
             </div>
