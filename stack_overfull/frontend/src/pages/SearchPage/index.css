@@ -9,7 +9,14 @@
 .SearchPage__question-list-title {
     padding-top: 20px;
     font-size: 20px;
-    display: flex;
+    display: block;
+}
+
+.SearchPage__search-filters-bar {
+  float: right;
+  margin-right: 0;
+  max-width: 80%;
+  display: flex;
 }
 
 .query{
