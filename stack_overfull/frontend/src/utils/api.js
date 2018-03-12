@@ -70,17 +70,17 @@ export function formatDate(dateRaw) {
   const monthRaw = dateRaw.substring(5, 7);
   const dayRaw = dateRaw.substring(8, 10);
   const time = dateRaw.substring(11, 19);
-  
+
   /** The following variables will call their respective method
    *  For month, it will convert the month number to a text
    *  For day, it will get the appropriate suffix
    */
-  let month = monthToText(monthRaw); 
+  let month = monthToText(monthRaw);
   let daySuffix = dayFormat(dayRaw);
 
-  /** If month does not return "error", then date will have the 
+  /** If month does not return "error", then date will have the
    *  date format in a specific order with suffix and converted month.
-   * 
+   *
    *  If month returns "error", then show the raw date
    */
   if(month !== "error") {
@@ -186,14 +186,16 @@ export function getApiSearch(
   q = null,
   order = "desc",
   limit = 10,
-  sort = "date_created"
+  sort = "date_created",
+  filters = []
 ) {
   return axios.get("/api/search/", {
     params: {
       q: q, // the query string
       order: order,
       limit: limit,
-      sort: sort
+      sort: sort,
+      filters : filters
     }
   });
 }
