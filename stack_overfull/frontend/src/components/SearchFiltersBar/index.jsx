@@ -4,8 +4,15 @@ import {Tag} from "antd"
 
 const CheckableTag = Tag.CheckableTag;
 
-const filterNames = ['header', 'text', 'username', 'tags', 'notanswered', 'notaccepted']
-const filterDisplayNames = ['Header', 'Text', 'Usernames', 'Tags', 'No Answers', 'Not Accepted'];
+/* All filters supported by backend
+  'head', 'text', 'username', 'tags','answered', 'notanswered', 'accepted', 'notaccepted'
+*/
+
+// Filters that can be selected by users
+const filterNames = ['head', 'text', 'username', 'tags', 'answered', 'accepted']
+
+// Names for filters that are displayed for users
+const filterDisplayNames = ['Header', 'Text', 'Usernames', 'Tags', 'Answered', 'Accepted'];
 
 export class SearchFiltersBar extends React.Component {
   constructor(props) {
