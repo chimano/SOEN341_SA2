@@ -1,7 +1,6 @@
 import React from "react";
 import "./index.css";
 import { AnswerBox, TagList } from "../../components";
-
 import {
   getApiQuestionById,
   getApiAnswerById,
