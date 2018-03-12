@@ -16,14 +16,25 @@ export class AnswerPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      question: "",
+      question: {
+        id: null,
+        user_id: {
+          username: ""
+        },
+        question_head: "",
+        question_text: "",
+        accepted_answer_id: null,
+        rejected_answers_ids: [],
+        date_created: "",
+        points: null,
+        tags: []
+      },
       answerList: [],
       answer: "",
       accepted_answer_id: "",
       rejected_answers_ids: [],
       verified: false,
-      q_user: "",
-      
+      q_user: ""
     };
   }
 
@@ -242,9 +253,9 @@ export class AnswerPage extends React.Component {
         <div className="page-width">
           <div className="AnswerPage__question-creator">
             <div className="AnswerPage__tags">
-            Tags
-            <br />
-            <TagList tags={question.tags}/>
+              Tags
+              <br />
+              <TagList tags={question.tags} />
             </div>
           </div>
           <h1 className="AnswerPage__question-title">
