@@ -340,7 +340,7 @@ class QuestionViewTest(TestCase):
             "order": "asc",
             "limit": 20,
             "sort": "date_created",
-            "tags": ['testtag']
+            "tags[]": ['testtag']
         }
 
         response = self.client.get('/api/question/', data)

@@ -11,6 +11,7 @@ from django.views.generic import TemplateView
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.contrib.auth import authenticate, login, logout
+from django.db.models import Count
 
 from so_endpoint.serializers import (QuestionSerializer, AnswerSerializer,
                                      AccountSerializerPrivate, AccountSerializerPublic,
@@ -69,7 +70,7 @@ class QuestionView(TemplateView):
         q_id = request.GET.get('id', None)
         order = request.GET.get('order', 'desc')
         sorted_by = request.GET.get('sort', 'points')
-        tags = request.GET.getlist('tags', list())
+        tags = request.GET.getlist('tags[]', list())
 
         if q_id is None:
             # If q_id is not set then it returns a list of questions
@@ -559,7 +560,10 @@ class QuestionVoteView(TemplateView):
 class SearchView(TemplateView):
     """
     This view handles the /api/search/ endpoint
-    It returns a list of questions matching a query
+    It returns a list of questions matching a query and filters array
+    The filters array can contain any of:
+        ('head', 'text', 'username', 'tags',
+         'answered', 'notanswered', 'accepted', 'notaccepted')
     """
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -571,20 +575,70 @@ class SearchView(TemplateView):
             limit = request.GET.get('limit', 10)
             order = request.GET.get('order', 'desc')
             sorted_by = request.GET.get('sort', 'date_created')
+            filters = request.GET.getlist('filters[]', list())
 
             limit = int(limit)
             modifier = '-' if order == "desc" else ''
 
-            # filter questions by case-insensitive matching with question_text
-            by_question_text = Question.objects.filter(
-                question_text__icontains=query)
-            by_question_head = Question.objects.filter(
-                question_head__icontains=query)
-            # filter questions by case-insensitive matching with username
-            by_username = Question.objects.filter(
-                user_id__username__icontains=query)
+            filters = list() if filters is None else filters
 
-            matching_questions = by_question_head | by_question_text | by_username
+            # has_filters is true if any of the fitlers in filters[]
+            # depends on the search query ('q') parameter
+            if set(filters).intersection(['head', 'text', 'tags', 'username']):
+                has_filters = True
+            else:
+                has_filters = False
+
+            by_question_head = Question.objects.none()
+            by_question_text = Question.objects.none()
+            by_username      = Question.objects.none()
+            by_tags          = Question.objects.none()
+
+            # filter questions by case-insensitive matching with question_head
+            if has_filters is False or 'head' in filters:
+                by_question_head = Question.objects.filter(
+                    question_head__icontains=query)
+
+            # filter questions by case-insensitive matching with question_text
+            if has_filters is False or 'text' in filters:
+                by_question_text = Question.objects.filter(
+                    question_text__icontains=query)
+
+            # filter questions by case-insensitive matching with username
+            if has_filters is False or 'username' in filters:
+                by_username = Question.objects.filter(
+                    user_id__username__icontains=query)
+
+            # filter questions by case-insensitive matching with tags
+            if has_filters is False or 'tags' in filters:
+                by_tags = Question.objects.filter(
+                    tags__tag_text__icontains=query)
+
+            # find answered questions set
+            # https://stackoverflow.com/questions/258296/django-models-how-to-filter-number-of-foreignkey-objects
+            answered_set = Question.objects.all().annotate(
+                answers_count=Count('answer')
+            ).filter(answers_count__gt=0)
+
+            #Get a new answered_set without the answers_count annotation
+            answered_set = Question.objects.filter(pk__in=answered_set)
+
+            # find accepted questions set
+            accepted_set = Question.objects.all().filter(
+                accepted_answer_id__isnull=False)
+
+            matching_questions = by_question_head | by_question_text | by_username | by_tags
+            matching_questions = matching_questions.distinct()  # remove duplicates
+
+            if 'answered' in filters:
+                matching_questions = matching_questions.intersection( answered_set )
+            elif 'notanswered' in filters:
+                matching_questions = matching_questions.difference( answered_set )
+
+            if 'accepted' in filters:
+                matching_questions = matching_questions.intersection( accepted_set )
+            elif 'notaccepted' in filters:
+                matching_questions = matching_questions.difference( accepted_set )
 
             matching_questions = matching_questions.order_by(
                 modifier+sorted_by)[:limit]
