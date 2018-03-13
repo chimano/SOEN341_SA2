@@ -13,24 +13,22 @@
 }
 
 .SearchPage__search-filters-bar {
-  float: right;
-  margin-right: 0;
-  max-width: 80%;
-  display: flex;
+    display: flex;
+    justify-content: flex-end;
 }
 
-.query{
+.query {
     font-weight: bold;
     width: 100%;
     display: flex;
 }
 
-.SearchPage__results{
+.SearchPage__results {
     width: 100%;
     display: flex;
 }
 
-.num-results{
+.num-results {
     font-weight: bold;
     width: 100%;
     padding-left: 10px;
