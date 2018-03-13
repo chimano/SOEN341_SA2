@@ -430,7 +430,12 @@ class AnswerVoteView(TemplateView):
         if vote_type == "UP":
             # Checks to see if the user already upvoted for answer
             if answer in user.profile.upvoted_answers.all():
-                return JsonResponse({'error': 'User has already voted for this answer'}, status=400)
+                user.profile.upvoted_answers.remove(answer)
+                answer.points -= 1
+                answer.user_id.profile.update_profile_reputation(-1)
+                answer.save()
+                return JsonResponse({'success': 'Reverted upvote',
+                                    'points': answer.points},status=200)
 
             # Checks to see if user has previously downvoted the answer
             if answer in user.profile.downvoted_answers.all():
@@ -457,7 +462,12 @@ class AnswerVoteView(TemplateView):
         elif vote_type == "DOWN":
             # Checks to see if user has previously downvoted the answer
             if answer in user.profile.downvoted_answers.all():
-                return JsonResponse({'error': 'User has already voted for this answer'}, status=400)
+                user.profile.downvoted_answers.remove(answer)
+                answer.points += 1
+                answer.user_id.profile.update_profile_reputation(1)
+                answer.save()
+                return JsonResponse({'success': 'Reverted upvote',
+                                    'points': answer.points},status=200)
 
             # Checks to see if user has previously upvoted the answer
             if answer in user.profile.upvoted_answers.all():
@@ -511,8 +521,12 @@ class QuestionVoteView(TemplateView):
         # Handles upvotes and downvotes same way as the AnswerVoteView does
         if vote_type == "UP":
             if question in user.profile.upvoted_questions.all():
-                return JsonResponse({'error': 'User has already voted for this question'},
-                                    status=400)
+                user.profile.upvoted_questions.remove(question)
+                question.points -= 1
+                question.user_id.profile.update_profile_reputation(-1)
+                question.save()
+                return JsonResponse({'success': 'Reverted upvote',
+                                    'points': question.points},status=200)
 
             if question in user.profile.downvoted_questions.all():
                 user.profile.downvoted_questions.remove(question)
@@ -535,8 +549,12 @@ class QuestionVoteView(TemplateView):
         elif vote_type == "DOWN":
 
             if question in user.profile.downvoted_questions.all():
-                return JsonResponse({'error': 'User has already voted for this question'},
-                                    status=400)
+                user.profile.downvoted_questions.remove(question)
+                question.points += 1
+                question.user_id.profile.update_profile_reputation(1)
+                question.save()
+                return JsonResponse({'success': 'Reverted downvote',
+                                    'points': question.points},status=200)
 
             if question in user.profile.upvoted_questions.all():
                 user.profile.upvoted_questions.remove(question)
