@@ -1,6 +1,6 @@
 import React from "react";
 
-import { QuestionList, SearchFiltersBar } from "../../components";
+import { QuestionList, SearchFiltersBar, SearchBar } from "../../components";
 
 import { getApiSearch } from "../../utils/api";
 
@@ -13,7 +13,7 @@ export class SearchPage extends React.Component {
     this.state = {
       questionList: [],
       username: "",
-      filters: ['header', 'text', 'username']
+      filters: ["head", "text", "username"]
     };
   }
 
@@ -31,12 +31,11 @@ export class SearchPage extends React.Component {
     if (prevState.filters.length !== this.state.filters.length) {
       this.getSearchQuestionList();
     }
-
   };
 
-  handleFiltersChange = (newFilters) => {
-    this.setState({filters: [...newFilters]})
-  }
+  handleFiltersChange = newFilters => {
+    this.setState({ filters: [...newFilters] });
+  };
 
   getSearchQuestionList = () => {
     // get the query string from url (react includes '?' in the query string)
@@ -70,22 +69,23 @@ export class SearchPage extends React.Component {
 
     let resultsHeaderText = questionList.length
       ? "Here are the results found"
-      : "No results found"
+      : "No results found";
 
     return (
       <div className="SearchPage-wrapper">
         <div className="SearchPage page-width">
-          <div>
-            <h2 className="SearchPage__question-list-title" >
-              Search
-              <div className="SearchPage__search-filters-bar">
-                <SearchFiltersBar  defaultFilters={filters} onFiltersChange={this.handleFiltersChange} />
-              </div>
-            </h2>
-            <h3 className="SearchPage__results">
-              {resultsHeaderText}
-            </h3>
+          <h2 className="SearchPage__question-list-title">Search</h2>
+          <div style={{ paddingBottom: "15px" }}>
+            <SearchBar />
           </div>
+          <div className="SearchPage__search-filters-bar">
+            <SearchFiltersBar
+              defaultFilters={filters}
+              onFiltersChange={this.handleFiltersChange}
+            />
+          </div>
+          <h3 className="SearchPage__results">{resultsHeaderText}</h3>
+
           <QuestionList questionList={questionList} />
         </div>
       </div>
