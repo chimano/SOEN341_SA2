@@ -684,6 +684,32 @@ class TagView(TemplateView):
         return JsonResponse({"tag_list": tags_serialized})
 
 
+class ProfileQuestionView(TemplateView):
+    """
+    This view handles the /api/user/name/(?P<username>[\w_@\+\.\-]+)/questions/
+    end point
+    It is used to get a list of questions asked and answered by the user
+    """
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, username):
+        try:
+            user = User.objects.get(username=username)
+            asked_questions = Question.objects.filter(user_id=user)
+            answered_questions = Question.objects.filter(answer__user_id=user)
+
+            serialized_asked_questions = QuestionSerializer(
+                                            asked_questions, many=True).data
+            serialized_answered_questions = QuestionSerializer(
+                                            answered_questions, many=True).data
+
+            return JsonResponse({'asked_questions': serialized_asked_questions,
+                                'answered_questions': serialized_answered_questions})
+        except User.DoesNotExist:
+            return JsonResponse({'error': 'User does not exist'},
+                                status= 400)
 
 def add_tags_to_question(question, tags_list):
 
