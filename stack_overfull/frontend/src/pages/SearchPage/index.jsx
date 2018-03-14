@@ -1,6 +1,6 @@
 import React from "react";
 
-import { QuestionList } from "../../components";
+import { QuestionList, SearchFiltersBar, SearchBar } from "../../components";
 
 import { getApiSearch } from "../../utils/api";
 
@@ -12,7 +12,8 @@ export class SearchPage extends React.Component {
     super(props);
     this.state = {
       questionList: [],
-      username: ""
+      username: "",
+      filters: ["head", "text", "username"]
     };
   }
 
@@ -23,11 +24,17 @@ export class SearchPage extends React.Component {
   componentDidUpdate = (prevProps, prevState) => {
     // check if the current url has changed
     if (prevProps.location.search !== this.props.location.search) {
-      console.log("Fetching new SeachPage question list");
-
-      // get a new question list
       this.getSearchQuestionList();
     }
+
+    // check if the current filters have changed
+    if (prevState.filters.length !== this.state.filters.length) {
+      this.getSearchQuestionList();
+    }
+  };
+
+  handleFiltersChange = newFilters => {
+    this.setState({ filters: [...newFilters] });
   };
 
   getSearchQuestionList = () => {
@@ -38,10 +45,9 @@ export class SearchPage extends React.Component {
     const query_parsed = qs.parse(query_string, { ignoreQueryPrefix: true });
     const q = query_parsed.q;
 
-    console.log("Search query('q=') captured as url parameter:", q);
-
+    console.log("Fetching new questionList. Search query('q=') ", q);
     // do api call
-    getApiSearch(q, "desc", 36, "date_created")
+    getApiSearch(q, "desc", 36, "date_created", this.state.filters)
       .then(response => {
         console.log(
           'response of getApiSearch(q, "desc", 36, "date_created"): ',
@@ -59,21 +65,27 @@ export class SearchPage extends React.Component {
   render() {
     console.log("SearchPage state: ", this.state);
 
-    const { questionList } = this.state;
+    const { questionList, filters } = this.state;
+
+    let resultsHeaderText = questionList.length
+      ? "Here are the results found"
+      : "No results found";
 
     return (
       <div className="SearchPage-wrapper">
         <div className="SearchPage page-width">
-          <div>
-            <h2 className="SearchPage__question-list-title">Search</h2>
-            {questionList.length ? (
-              <h3 className="SearchPage__results">
-                Here are the results found
-              </h3>
-            ) : (
-              <h3 className="SearchPage__results">No results found</h3>
-            )}
+          <h2 className="SearchPage__question-list-title">Search</h2>
+          <div style={{ paddingBottom: "15px" }}>
+            <SearchBar />
           </div>
+          <div className="SearchPage__search-filters-bar">
+            <SearchFiltersBar
+              defaultFilters={filters}
+              onFiltersChange={this.handleFiltersChange}
+            />
+          </div>
+          <h3 className="SearchPage__results">{resultsHeaderText}</h3>
+
           <QuestionList questionList={questionList} />
         </div>
       </div>

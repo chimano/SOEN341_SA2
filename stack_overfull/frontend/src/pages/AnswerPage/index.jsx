@@ -18,7 +18,19 @@ export class AnswerPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      question: "",
+      question: {
+        id: null,
+        user_id: {
+          username: ""
+        },
+        question_head: "",
+        question_text: "",
+        accepted_answer_id: null,
+        rejected_answers_ids: [],
+        date_created: "",
+        points: null,
+        tags: []
+      },
       answerList: [],
       answer: "",
       accepted_answer_id: "",

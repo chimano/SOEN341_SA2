@@ -11,4 +11,7 @@ export * from "./AcceptRejectButton";
 export * from "./AnswerBox";
 export * from "./VotingButtons";
 export * from "./SideBar";
+export * from "./SearchFiltersBar"
 export * from "./TagList";
+export * from "./SortingTabs";
+export * from "./FilterTabs";

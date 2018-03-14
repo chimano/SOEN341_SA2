@@ -340,7 +340,7 @@ class QuestionViewTest(TestCase):
             "order": "asc",
             "limit": 20,
             "sort": "date_created",
-            "tags": ['testtag']
+            "tags[]": ['testtag']
         }
 
         response = self.client.get('/api/question/', data)
@@ -478,16 +478,20 @@ class AnswerViewTest(TestCase):
 
 
 class AnswerVoteViewTest(TestCase):
-    login_info = {
+    login_info = [{
         'username': 'testuser',
         'password': 'testpassword'
-    }
+    }, {
+        'username': 'testuser2',
+        'password': 'testpassword2'
+    }]
 
     @classmethod
     def setUpTestData(cls):
         #Sets up database for the testcases
         q = Question.objects.create(id=1,question_head="Test Question?", question_text="Test Body?")
-        u = User.objects.create_user(id=1,username=cls.login_info['username'], password=cls.login_info['password'])
+        u = User.objects.create_user(id=1,username=cls.login_info[0]['username'], password=cls.login_info[0]['password'])
+        User.objects.create_user(id=2,username=cls.login_info[1]['username'], password=cls.login_info[1]['password'])
         Answer.objects.create(id=1, answer_text="Test answer", question_id=q, user_id=u)
         Answer.objects.create(id=2, answer_text="Test answer2", question_id=q, user_id=u)
 
@@ -496,7 +500,7 @@ class AnswerVoteViewTest(TestCase):
         #Sends a valid upvote
         self.client.post(
             '/api/user/login/',
-            data=json.dumps(self.login_info),
+            data=json.dumps(self.login_info[1]),
             content_type='application/json'
         )
         json_payload = json.dumps({
@@ -515,7 +519,7 @@ class AnswerVoteViewTest(TestCase):
         #Sends a valid downvote
         self.client.post(
             '/api/user/login/',
-            data=json.dumps(self.login_info),
+            data=json.dumps(self.login_info[1]),
             content_type='application/json'
         )
         json_payload = json.dumps({
@@ -530,11 +534,11 @@ class AnswerVoteViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue('sucess' in response.json())
 
-    def test_doublevote_post(self):
+    def test_doubledownvote_post(self):
         #Sends a valid downvote
         self.client.post(
             '/api/user/login/',
-            data=json.dumps(self.login_info),
+            data=json.dumps(self.login_info[1]),
             content_type='application/json'
         )
         json_payload = json.dumps({
@@ -551,8 +555,34 @@ class AnswerVoteViewTest(TestCase):
             data=json_payload,
             content_type='application/json'
         )
-        self.assertEqual(response.status_code, 400)
-        self.assertTrue('error' in response.json())
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('success' in response.json())
+
+
+    def test_doubleupvote_post(self):
+        #Sends a valid downvote
+        self.client.post(
+            '/api/user/login/',
+            data=json.dumps(self.login_info[1]),
+            content_type='application/json'
+        )
+        json_payload = json.dumps({
+            "a_id": "2",
+            "vote_type": "UP"
+        })
+        response = self.client.post(
+            '/api/answer/vote/',
+            data=json_payload,
+            content_type='application/json'
+        )
+        response = self.client.post(
+            '/api/answer/vote/',
+            data=json_payload,
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('success' in response.json())
+
 
 
     def test_logout_vote(self):
@@ -578,24 +608,28 @@ class AnswerVoteViewTest(TestCase):
         User.objects.all().delete()
 
 class QuestionVoteViewTest(TestCase):
-    login_info = {
+    login_info = [{
         'username': 'testuser',
         'password': 'testpassword'
-    }
+    }, {
+        'username': 'testuser2',
+        'password': 'testpassword2'
+    }]
 
     @classmethod
     def setUpTestData(cls):
         #Sets up database for the testcases
-        Question.objects.create(id=1,question_head="Test Question?", question_text="Test Body?")
-        Question.objects.create(id=2,question_head="Test Question?2", question_text="Test Body?2")
-        User.objects.create_user(id=1,username=cls.login_info['username'], password=cls.login_info['password'])
+        u1 = User.objects.create_user(id=1,username=cls.login_info[0]['username'], password=cls.login_info[0]['password'])
+        u2 = User.objects.create_user(id=1,username=cls.login_info[1]['username'], password=cls.login_info[1]['password'])
+        Question.objects.create(id=1,question_head="Test Question?", question_text="Test Body?", user_id=u1)
+        Question.objects.create(id=2,question_head="Test Question?2", question_text="Test Body?2", user_id=u1)
 
 
     def test_valid_question_upvote_post(self):
         #Sends a valid upvote
         self.client.post(
             '/api/user/login/',
-            data=json.dumps(self.login_info),
+            data=json.dumps(self.login_info[1]),
             content_type='application/json'
         )
         json_payload = json.dumps({
@@ -614,7 +648,7 @@ class QuestionVoteViewTest(TestCase):
         #Sends a valid downvote
         self.client.post(
             '/api/user/login/',
-            data=json.dumps(self.login_info),
+            data=json.dumps(self.login_info[1]),
             content_type='application/json'
         )
         json_payload = json.dumps({
@@ -629,11 +663,11 @@ class QuestionVoteViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue('sucess' in response.json())
 
-    def test_doublevote_question_post(self):
+    def test_doubledownvote_question_post(self):
         #Sends a valid downvote
         self.client.post(
             '/api/user/login/',
-            data=json.dumps(self.login_info),
+            data=json.dumps(self.login_info[1]),
             content_type='application/json'
         )
         json_payload = json.dumps({
@@ -641,17 +675,45 @@ class QuestionVoteViewTest(TestCase):
             "vote_type": "DOWN"
         })
         response = self.client.post(
-            '/api/answer/vote/',
+            '/api/question/vote/',
             data=json_payload,
             content_type='application/json'
         )
+        self.assertEqual(response.status_code, 200)
         response = self.client.post(
-            '/api/answer/vote/',
+            '/api/question/vote/',
             data=json_payload,
             content_type='application/json'
         )
-        self.assertEqual(response.status_code, 400)
-        self.assertTrue('error' in response.json())
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('success' in response.json())
+    
+    def test_doubleupvote_question_post(self):
+        #Sends a valid downvote
+        self.client.post(
+            '/api/user/login/',
+            data=json.dumps(self.login_info[1]),
+            content_type='application/json'
+        )
+        json_payload = json.dumps({
+            "q_id": "2",
+            "vote_type": "UP"
+        })
+        response = self.client.post(
+            '/api/question/vote/',
+            data=json_payload,
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 200)
+        response = self.client.post(
+            '/api/question/vote/',
+            data=json_payload,
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('success' in response.json())
 
 
     def test_logout_vote(self):
