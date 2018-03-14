@@ -1,6 +1,8 @@
 .VotingButtons {
     width: 100%;
     display: flex;
+    justify-content: flex-end;
+    margin-bottom: auto;
 }
 
 .VotingButtons__button {

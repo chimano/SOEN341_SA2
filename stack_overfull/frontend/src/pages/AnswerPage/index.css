@@ -1,15 +1,21 @@
 .AnswerPage__question-title {
-    margin-top: 15px;
     text-align: center;
-    margin-bottom: 4%;
     font-size: 2.0em;
+    padding: 15px 0;
+}
+.AnswerPage__question-box{
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
+    margin-top: 20px;
+    border-radius: 20px;
+    padding: 2%;
+    background: white;
 }
 .AnswerPage__question-body {
     /* margin-top: 5%; */
     /* margin-left: 2%; */
     /* margin-right: 2%; */
     padding: 2%;
-    background-color: rgb(216, 239, 241);
+    /* background-color: rgb(216, 239, 241); */
     border-radius: 10px;
     font-size: 1.2em;
 }
@@ -23,7 +29,6 @@
 .AnswerPage__no-answer-text {
     text-align: center;
 }
-
 .AnswerPage__number-of-answers-text {
     margin-bottom: 3%;
 }
@@ -59,5 +64,5 @@
 
 .AnswerPage__tags {
     font-size: 1.2em;
-    text-align: right;
+    text-align: center;
 }
