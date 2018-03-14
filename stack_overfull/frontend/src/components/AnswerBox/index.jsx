@@ -31,7 +31,7 @@ export class AnswerBox extends React.Component {
 
     return (
       <div>
-        <div className={"AnswerBox " + answerBox_class}>
+        <div className={`AnswerBox ${answerBox_class} shadow`}>
           <div className="AnswerBox__row">
             <div className="AnswerBox__answer">{x.answer_text}</div>
 
@@ -58,7 +58,7 @@ export class AnswerBox extends React.Component {
               )}
             </div>
             <div className="AnswerBox__username">
-              Asked by&nbsp;<a>{x.user_id.username}</a>&nbsp;on {date}
+              Answered by&nbsp;<a>{x.user_id.username}</a>&nbsp;on {date}
             </div>
           </div>
         </div>

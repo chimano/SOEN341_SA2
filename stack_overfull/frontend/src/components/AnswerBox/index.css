@@ -1,5 +1,5 @@
 .AnswerBox {
-    margin-bottom: 1%;
+    margin-bottom: 2%;
     border-radius: 20px;
     border: 2px solid rgb(31, 145, 221);
     padding: 2%;
@@ -28,8 +28,8 @@
 
 .AnswerBox__answer {
     text-align: left;
-    margin-bottom: 4%;
     font-size: 1.2em;
+    width: 100%;
 }
 
 .AnswerBox__date {
