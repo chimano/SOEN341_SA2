@@ -5,12 +5,15 @@
     padding: 2%;
     background: white;
 }
+
 .AnswerBox__row {
     display: flex;
 }
+
 .AnswerBox__button-area {
     display: flex;
 }
+
 .AnswerBox--blue {
     border: 2px solid rgb(31, 145, 221);
 }

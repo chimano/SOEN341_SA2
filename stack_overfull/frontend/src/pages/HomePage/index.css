@@ -18,9 +18,9 @@ html {
     z-index: 1;
 }
 
-.HomePage-wrapper {
+/* .HomePage-wrapper {
     background-color: rgb(241, 241, 241);
-}
+} */
 
 .HomePage {
     min-height: calc(100vh - 87px - 233.19px);

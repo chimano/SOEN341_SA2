@@ -35,5 +35,8 @@
     background-color: rgb(241, 241, 241); 
 }
 .App {
-    background: #fcfcfc;
+    background: #fafafa;
+}
+.ant-divider-horizontal {
+    margin: 15px 0;
 }

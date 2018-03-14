@@ -2,8 +2,8 @@ import React from "react";
 import "./index.css";
 import { QuestionBox } from "../QuestionBox";
 import { AcceptRejectButton, VotingButtons } from "../../components";
-
 import { formatDate } from "../../utils/api";
+import { Divider } from "antd";
 
 export class AnswerBox extends React.Component {
   render() {
@@ -42,6 +42,7 @@ export class AnswerBox extends React.Component {
               points={x.points}
             />
           </div>
+          <Divider />
           <div className="AnswerBox__row">
             <div className="AnswerBox__button-area">
               {verified ? (
@@ -57,9 +58,8 @@ export class AnswerBox extends React.Component {
               )}
             </div>
             <div className="AnswerBox__username">
-              Asked by <a>{x.user_id.username}</a> on {date}
+              Asked by&nbsp;<a>{x.user_id.username}</a>&nbsp;on {date}
             </div>
-            
           </div>
         </div>
       </div>

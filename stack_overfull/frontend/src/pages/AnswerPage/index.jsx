@@ -1,6 +1,8 @@
 import React from "react";
 import "./index.css";
 import { AnswerBox, TagList } from "../../components";
+import { formatDate } from "../../utils/api";
+import { Divider } from "antd";
 
 import {
   getApiQuestionById,
@@ -230,7 +232,9 @@ export class AnswerPage extends React.Component {
     let questionBodyBox;
     if (question.question_text) {
       questionBodyBox = (
-        <div className="AnswerPage__question-body">{question.question_text}</div>
+        <div className="AnswerPage__question-body">
+          {question.question_text}
+        </div>
       );
     } else {
       questionBodyBox = "";
@@ -239,6 +243,13 @@ export class AnswerPage extends React.Component {
     let questionTags = "";
     if (question.tags) {
       questionTags = <TagList tags={question.tags} />;
+    }
+
+    let questionDate = "";
+    if (question.date_created) {
+      questionDate = formatDate(
+        question.date_created.replace("T", " at ").substring(0, 19)
+      );
     }
 
     return (
@@ -250,8 +261,9 @@ export class AnswerPage extends React.Component {
             </h1>
             <div className="AnswerPage__tags">{questionTags}</div>
             {questionBodyBox}
+            <Divider />
             <div className="AnswerPage__question-creator">
-              Asked by <a>{q_user}</a>
+              Asked by <a>{q_user}</a> on {questionDate}
             </div>
           </div>
 
