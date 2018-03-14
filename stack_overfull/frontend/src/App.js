@@ -65,13 +65,6 @@ export default class App extends React.Component {
   render() {
     console.log("App.js state: ", this.state);
 
-    const NestedCategoryListPage = ({ match }) => (
-      <div>
-        <CategoryListPage />
-        <Route path={`${match.url}/:category`} component={CategoryPage} />
-      </div>
-    );
-
     return (
       <main>
         <NavigationBar
@@ -110,7 +103,20 @@ export default class App extends React.Component {
               <SearchPage username={this.state.username} {...props} />
             )}
           />
-          <Route path="/categories" component={NestedCategoryListPage} />
+
+          <Route
+            path="/categories"
+            render={props => (
+              <CategoryListPage username={this.state.username} {...props} />
+            )}
+          />
+          
+          <Route
+            path="/tags/"
+            render={props => (
+              <CategoryPage username={this.state.username} {...props} />
+            )}
+          />
 
           <Route path="/careers" component={CareerPage} />
         </Switch>

@@ -1,0 +1,36 @@
+.CategoryPage-wrapper {
+    background-color: rgb(241, 241, 241);
+}
+
+.CategoryPage {
+    min-height: calc(100vh - 87px - 233.19px);
+}
+
+.CategoryPage__question-list-title {
+    padding-top: 20px;
+    font-size: 20px;
+    display: block;
+}
+
+.CategoryPage__search-filters-bar {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.query {
+    font-weight: bold;
+    width: 100%;
+    display: flex;
+}
+
+.CategoryPage__results {
+    width: 100%;
+    display: flex;
+}
+
+.num-results {
+    font-weight: bold;
+    width: 100%;
+    padding-left: 10px;
+    display: flex;
+}
