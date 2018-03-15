@@ -63,7 +63,7 @@ export class NavigationBar extends React.Component {
     }
 
     return (
-      <div className="navbar-wrapper">
+      <div className="navbar-wrapper shadow">
         <div className="navbar page-width">
           <div className="navbar__title">
             <Link to="/" style={{ color: "black" }}>

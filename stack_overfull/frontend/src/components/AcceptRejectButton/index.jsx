@@ -1,6 +1,7 @@
 import React from "react";
 import swal from "sweetalert";
 import "./index.css";
+import { Button } from "antd";
 
 export class AcceptRejectButton extends React.Component {
   reject() {
@@ -46,8 +47,19 @@ export class AcceptRejectButton extends React.Component {
   render() {
     return (
       <div className="AcceptRejectButton">
-        <button className="button" onClick={() => this.reject()}>Reject</button>
-        <button className="button" onClick={() => this.accept()}>Accept</button>
+        <Button onClick={() => this.reject()} type="primary">
+          Reject
+        </Button>
+        <div>&nbsp;</div>
+        <Button onClick={() => this.accept()} type="primary">
+          Accept
+        </Button>
+        {/* <button className="button" onClick={() => this.reject()}>
+          Reject
+        </button>
+        <button className="button" onClick={() => this.accept()}>
+          Accept
+        </button> */}
       </div>
     );
   }

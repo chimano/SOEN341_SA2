@@ -1,12 +1,19 @@
 .AnswerBox {
-    margin-bottom: 1%;
-    border-radius: 8px;
+    margin-bottom: 2%;
+    border-radius: 20px;
     border: 2px solid rgb(31, 145, 221);
-    padding: 1% 1% 0.5% 1%;
+    padding: 2%;
+    background: white;
 }
+
+.AnswerBox__row {
+    display: flex;
+}
+
 .AnswerBox__button-area {
     display: flex;
 }
+
 .AnswerBox--blue {
     border: 2px solid rgb(31, 145, 221);
 }
@@ -21,28 +28,23 @@
 
 .AnswerBox__answer {
     text-align: left;
-    margin-bottom: 4%;
-    margin-left: 2%;
-    margin-right: 2%;
     font-size: 1.2em;
+    width: 100%;
 }
 
 .AnswerBox__date {
     /* text-align: right;
     margin-top: 2%; */
-    position: absolute;
-    top: -0.1em;
-    right: 2%;
     background: white;
     padding-left: 0.8%;
     padding-right: 0.8%;
 }
 
 .AnswerBox__username {
-    width: auto;
-    margin-left: 2%;
-    padding-left: 0.8%;
-    padding-right: 0.8%;
+    display: flex;
+    width: 100%;
+    margin-top: auto;
+    justify-content: flex-end
 }
 
 fieldset {
