@@ -7,7 +7,7 @@ import {
   CareerPage,
   ProfilePage,
   CategoryListPage,
-  CategoryPage
+  TagPage
 } from "./pages";
 import { Route, Switch } from "react-router-dom";
 import { NavigationBar, Footer } from "./components";
@@ -114,7 +114,7 @@ export default class App extends React.Component {
           <Route
             path="/tags/"
             render={props => (
-              <CategoryPage username={this.state.username} {...props} />
+              <TagPage username={this.state.username} {...props} />
             )}
           />
 

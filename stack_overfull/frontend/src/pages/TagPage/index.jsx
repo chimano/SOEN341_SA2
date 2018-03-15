@@ -7,7 +7,7 @@ import { getApiSearch } from "../../utils/api";
 import "./index.css";
 import qs from "qs";
 
-export class CategoryPage extends React.Component {
+export class TagPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -64,23 +64,23 @@ export class CategoryPage extends React.Component {
     const { questionList, filters } = this.state;
 
     let resultsHeaderText = questionList.length
-      ? "Here are the questions with the selected tag found"
-      : "No questions with the selected tag found";
+      ? "Here are the questions found with the selected tag"
+      : "No questions found with the selected tag";
 
     return (
-      <div className="CategoryPage-wrapper">
-        <div className="CategoryPage page-width">
-          <h2 className="CategoryPage__question-list-title">Search</h2>
+      <div className="TagPage-wrapper">
+        <div className="TagPage page-width">
+          <h2 className="TagPage__question-list-title">Search</h2>
           <div style={{ paddingBottom: "15px" }}>
             <SearchBar />
           </div>
-          <div className="SearchPage__search-filters-bar">
+          <div className="TagPage__search-filters-bar">
             <SearchFiltersBar
               defaultFilters={filters}
               onFiltersChange={this.handleFiltersChange}
             />
           </div>
-          <h3 className="CategoryPage__results">{resultsHeaderText}</h3>
+          <h3 className="TagPage__results">{resultsHeaderText}</h3>
 
           <QuestionList questionList={questionList} />
         </div>

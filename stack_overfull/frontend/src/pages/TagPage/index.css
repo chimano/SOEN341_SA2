@@ -1,18 +1,18 @@
-.CategoryPage-wrapper {
+.TagPage-wrapper {
     background-color: rgb(241, 241, 241);
 }
 
-.CategoryPage {
+.TagPage {
     min-height: calc(100vh - 87px - 233.19px);
 }
 
-.CategoryPage__question-list-title {
+.TagPage__question-list-title {
     padding-top: 20px;
     font-size: 20px;
     display: block;
 }
 
-.CategoryPage__search-filters-bar {
+.TagPage__search-filters-bar {
     display: flex;
     justify-content: flex-end;
 }
@@ -23,7 +23,7 @@
     display: flex;
 }
 
-.CategoryPage__results {
+.TagPage__results {
     width: 100%;
     display: flex;
 }

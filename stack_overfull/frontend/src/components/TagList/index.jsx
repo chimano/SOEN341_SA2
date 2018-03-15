@@ -1,5 +1,6 @@
 import React from "react";
 import { Tag } from "antd";
+import { Link } from "react-router-dom";
 import "./index.css";
 
 export class TagList extends React.Component {
@@ -9,7 +10,7 @@ export class TagList extends React.Component {
       <div className="TagList">
         {tags.map((tag, key) => (
           <Tag key={key} color="#108ee9">
-            {tag}
+            <Link to={`/tags/?q=${tag}`}>{tag}</Link>
           </Tag>
         ))}
       </div>
