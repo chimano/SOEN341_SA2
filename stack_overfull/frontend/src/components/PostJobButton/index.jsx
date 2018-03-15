@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Modal, Form, Input, Radio, Select, Cascader } from "antd";
 const FormItem = Form.Item;
 const { TextArea } = Input;
+import { postApiJob } from "../../utils/api";
 
 const categories = [
   {
@@ -158,7 +159,6 @@ const PostJobForm = Form.create()(props => {
       onOk={onCreate}
     >
       <Form layout="vertical">
-
         {/* position of job */}
         <FormItem label="Position">
           {getFieldDecorator("position", {
@@ -247,11 +247,27 @@ export class PostJobButton extends React.Component {
       if (err) {
         return;
       }
-
       console.log("Received values of form: ", values);
+      this.createJob(values);
       form.resetFields();
       this.setState({ visible: false });
     });
+  };
+  createJob = values => {
+    postApiJob(
+      values.position,
+      values.type,
+      values.category[1],
+      values.company,
+      values.location,
+      values.description
+    )
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
   saveFormRef = form => {
     this.form = form;

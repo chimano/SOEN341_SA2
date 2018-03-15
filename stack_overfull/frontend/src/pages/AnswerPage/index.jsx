@@ -176,7 +176,6 @@ export class AnswerPage extends React.Component {
     const { logged_in, username } = this.props;
     const q_id = this.props.match.params.id;
 
-    console.log("State of AnswerPage: ", this.state);
     console.log("# OF ANSWERS: " + answerList.length);
 
     let verified;

@@ -16,3 +16,5 @@ export * from "./TagList";
 export * from "./SortingTabs";
 export * from "./FilterTabs";
 export * from "./PostJobButton";
+export * from "./JobBox";
+export * from "./JobList";

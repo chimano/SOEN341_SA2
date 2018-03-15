@@ -3,16 +3,181 @@ import "./index.css";
 import { Menu, Icon } from "antd";
 const SubMenu = Menu.SubMenu;
 
+const categories = [
+  {
+    value: "arts",
+    label: "Arts",
+    children: [
+      {
+        value: "photography",
+        label: "Photography"
+      },
+      {
+        value: "architechture",
+        label: "Architechture"
+      },
+      {
+        value: "music",
+        label: "Music"
+      },
+      {
+        value: "theatre",
+        label: "Theatre"
+      }
+    ]
+  },
+  {
+    value: "administration",
+    label: "Administration",
+    children: [
+      {
+        value: "receptionist",
+        label: "Receptionist"
+      },
+      {
+        value: "coordinator",
+        label: "Coordinator"
+      },
+      {
+        value: "payroll administrator",
+        label: "Payroll Administrator"
+      }
+    ]
+  },
+  {
+    value: "commerce",
+    label: "Commerce",
+    children: [
+      {
+        value: "sales Representative",
+        label: "Sales Representative"
+      },
+      {
+        value: "accountant",
+        label: "Accountant"
+      },
+      {
+        value: "marketing",
+        label: "Marketing"
+      }
+    ]
+  },
+  {
+    value: "engineering",
+    label: "Engineering",
+    children: [
+      {
+        value: "computer_science",
+        label: "Computer Science"
+      },
+      {
+        value: "software_engineering",
+        label: "Software Engineering"
+      },
+      {
+        value: "mechanical_engineering",
+        label: "Mechanical Engineering"
+      },
+      {
+        value: "electrical_engineering",
+        label: "Electrical Engineering"
+      },
+      {
+        value: "industrial_engineering",
+        label: "Industrial Engineering"
+      }
+    ]
+  },
+  {
+    value: "education",
+    label: "Education",
+    children: [
+      {
+        value: "tutor",
+        label: "Tutor"
+      },
+      {
+        value: "elementary_school_teacher",
+        label: "Elementary School Teacher"
+      },
+      {
+        value: "highschool_teacher",
+        label: "Highschool Teacher"
+      },
+      {
+        value: "cegep_teacher",
+        label: "Cegep Teacher"
+      },
+      {
+        value: "university_teacher",
+        label: "University Teacher"
+      }
+    ]
+  },
+  {
+    value: "science",
+    label: "Science",
+    children: [
+      {
+        value: "biology",
+        label: "Biology"
+      },
+      {
+        value: "chemistry",
+        label: "Chemistry"
+      },
+      {
+        value: "physics",
+        label: "Physics"
+      },
+      {
+        value: "sociology",
+        label: "Sociology"
+      },
+      {
+        value: "geoscience",
+        label: "Geoscience"
+      }
+    ]
+  }
+];
+
 export class SideBar extends React.Component {
   handleClick = e => {
-    const { handleCategory } = this.props;
+    const { getJobList } = this.props;
     console.log("click ", e);
 
-    handleCategory(e.key);
+    getJobList(e.key);
   };
 
   render() {
+    
+
+    let list = [];
+    categories.forEach((value,key) => {
+      list.push(
+        <SubMenu
+        key={key}
+        title={
+          <span>
+            <Icon type="setting" />
+            <span>{value.label}</span>
+          </span>
+        }
+        >
+      {value.children.map((v, key) => (
+        <Menu.Item style={{ cursor: "default" }}
+        key={v.value}>
+        <span style={{ color: { value: "blue", important: "true" } }}>
+          {v.label}
+        </span>
+        </Menu.Item>
+    ))}
+    </SubMenu>);
+    })  
+
     return (
+      
       <Menu
         onClick={this.handleClick}
         style={{ width: 256, marginLeft: "-25px" }}
@@ -20,95 +185,8 @@ export class SideBar extends React.Component {
         defaultOpenKeys={["sub1"]}
         mode="inline"
       >
-        <Menu.Item disabled style={{ cursor: "default" }}>
-          <span style={{ color: { value: "blue", important: "true" } }}>
-            CATEGORY
-          </span>
-        </Menu.Item>
-        <SubMenu
-          key="sub1"
-          title={
-            <span>
-              <Icon type="setting" />
-              <span>Arts</span>
-            </span>
-          }
-        />
-        <SubMenu
-          key="sub2"
-          title={
-            <span>
-              <Icon type="setting" />
-              <span>Administration</span>
-            </span>
-          }
-        />
-        <SubMenu
-          key="sub3"
-          title={
-            <span>
-              <Icon type="setting" />
-              <span>Commerce</span>
-            </span>
-          }
-        />
-        <SubMenu
-          key="sub4"
-          title={
-            <span>
-              <Icon type="setting" />
-              <span>Computer Science</span>
-            </span>
-          }
-        />
-        <SubMenu
-          key="sub5"
-          title={
-            <span>
-              <Icon type="setting" />
-              <span>Education</span>
-            </span>
-          }
-        />
-        <SubMenu
-          key="sub6"
-          title={
-            <span>
-              <Icon type="setting" />
-              <span>Engineering</span>
-            </span>
-          }
-        >
-          <Menu.Item key="1">Aerospace Engineering</Menu.Item>
-          <Menu.Item key="2">Building Engineering</Menu.Item>
-          <Menu.Item key="3">Civil Engineering</Menu.Item>
-          <Menu.Item key="4">Computer Engineering</Menu.Item>
-          <Menu.Item key="5">Industrial Engineering</Menu.Item>
-          <Menu.Item key="6">Mechanical Engineering</Menu.Item>
-          <Menu.Item key="7">Software Engineering</Menu.Item>
-        </SubMenu>
-        <SubMenu
-          key="sub7"
-          title={
-            <span>
-              <Icon type="setting" />
-              <span>Fine Arts</span>
-            </span>
-          }
-        />
-        <SubMenu
-          key="sub8"
-          title={
-            <span>
-              <Icon type="setting" />
-              <span>Science</span>
-            </span>
-          }
-        >
-          <Menu.Item key="8">Physics</Menu.Item>
-          <Menu.Item key="9">Psychology</Menu.Item>
-          <Menu.Item key="10">Statistics</Menu.Item>
-        </SubMenu>
+      {list}
+
       </Menu>
     );
   }
