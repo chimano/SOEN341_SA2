@@ -112,9 +112,14 @@ export default class App extends React.Component {
           />
           
           <Route
-            path="/tags/"
+            path="/tags/:tags"
             render={props => (
-              <TagPage username={this.state.username} {...props} />
+              <TagPage
+                username={this.state.username}
+                verifyLogin={this.verifyLogin}
+                logged_in={this.state.logged_in}
+                {...props}
+              />
             )}
           />
 

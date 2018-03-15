@@ -46,7 +46,7 @@ export class CategoryListPage extends React.Component {
               {categoryList.map((category, key) => (
                 <li key={key}>
                   <Link
-                    to={`/tags/?q=${category}`}
+                    to={`/tags/${category}`}
                     style={{ color: "rgb(38, 18, 155)" }}
                   >
                     {category}
@@ -67,7 +67,7 @@ export class CategoryListPage extends React.Component {
               {hottestTags.map((hotTags, key) => (
                 <li key={key}>
                   <Link
-                    to={`/tags/?q=${hotTags}`}
+                    to={`/tags/${hotTags}`}
                     style={{ color: "rgb(38, 18, 155)" }}
                   >
                     {hotTags}

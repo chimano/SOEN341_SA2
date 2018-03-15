@@ -10,7 +10,7 @@ export class TagList extends React.Component {
       <div className="TagList">
         {tags.map((tag, key) => (
           <Tag key={key} color="#108ee9">
-            <Link to={`/tags/?q=${tag}`}>{tag}</Link>
+            <Link to={`/tags/${tag}`}>{tag}</Link>
           </Tag>
         ))}
       </div>

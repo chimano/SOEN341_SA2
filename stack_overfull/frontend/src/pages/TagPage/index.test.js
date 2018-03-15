@@ -7,10 +7,11 @@ configure({ adapter: new Adapter() });
 
 describe("<TagPage />", () => {
   let component;
-  let location = { search: "/tags/?q=newtag" };
 
   beforeEach(() => {
-    component = shallow(<TagPage location={location} />);
+    component = shallow(
+      <TagPage />
+    );
   });
 
   it("renders 1 <TagPage /> component", () => {
