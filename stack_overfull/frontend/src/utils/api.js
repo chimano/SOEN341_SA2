@@ -22,14 +22,12 @@ export function getApiQuestion(order, limit, sort) {
 
 //get the list of jobs given the category and subcategory
 export function getApiJob(category) {
-  return (
-    axios.get("/api/job/"),
+  return axios.get("/api/job/",
     {
       params: {
         category: category
       }
-    }
-  );
+    });
 }
 
 export function postApiJob(
