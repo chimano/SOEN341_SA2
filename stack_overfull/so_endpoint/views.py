@@ -701,7 +701,7 @@ class JobView(TemplateView):
             # get list of job that are in the requested category
             job_list = Job.objects.filter(category=category)
             serialized = JobSerializer(job_list, many=True).data
-            return JsonResponse({'jobList': serialized})
+            return JsonResponse({'job_list': serialized})
         except Job.DoesNotExist:
             return JsonResponse({'error': 'This category does not exist'}, status=400)    
     
