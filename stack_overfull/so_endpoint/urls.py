@@ -20,7 +20,7 @@ from so_endpoint.views import (QuestionView, QuestionVoteView, AnswerView,
                               AnswerVoteView, AnswerAcceptView, AnswerRejectView,
                               UserLoginView, UserRegisterView, UserLogoutView,
                               UserView, UserMeView, UserNameView, ProfileQuestionView,
-                              SearchView, TagView)
+                              SearchView, TagView, JobView)
 
 urlpatterns = [
     re_path(r'^question/$', QuestionView.as_view()),
