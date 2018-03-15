@@ -7,17 +7,10 @@ configure({ adapter: new Adapter() });
 
 describe("<TagPage />", () => {
   let component;
+  let location = { search: "/tags/?q=newtag" };
 
   beforeEach(() => {
-    component = shallow(
-      <TagPage
-        match={{
-          params: { category: "software engineering" },
-          path: "",
-          url: ""
-        }}
-      />
-    );
+    component = shallow(<TagPage location={location} />);
   });
 
   it("renders 1 <TagPage /> component", () => {
