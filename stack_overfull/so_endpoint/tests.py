@@ -251,6 +251,23 @@ class JobViewTest(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertTrue('error' in response.json())
 
+    def test_invalid_description_length_job_post(self):
+        json_payload = json.dumps({
+            "position":"front-end developper",
+            "job_type":"Full-time",
+            "category":"computer_science",
+            "company":"Apple",
+            "location":"Montreal",
+            "description":"we are searching for student"
+        })
+        response = self.client.post(
+            '/api/job/',
+            data=json_payload,
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertTrue('error' in response.json())
+
     def test_valid_job_get(self):
         #Sends a get request with a valid category
         data = {
