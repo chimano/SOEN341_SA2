@@ -286,8 +286,6 @@ class QuestionViewTest(TestCase):
 
         User.objects.create_user(username=cls.login_info['username'], password=cls.login_info['password'])
 
-
-
     def test_valid_question_post(self):
         #Sends a valid post request
         self.client.post(
