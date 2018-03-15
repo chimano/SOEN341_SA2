@@ -716,21 +716,23 @@ class JobView(TemplateView):
         description = json_data['description']
 
         # Verify that category is right
-        if category in Job.CATEGORIES:
-            # Verify that type is right
-            if job_type in Job.TYPES:
-                job = Job(position=position, 
-                        job_type=job_type, 
-                        category=category, 
-                        company=company, 
-                        location=location,
-                        description=description)
-                job.save()
-                return JsonResponse({'success':'You have successfully added a job to the database'})
-            else: 
-                return JsonResponse({'error': 'Wrong Type'}, status=400)    
-        else:
-            return JsonResponse({'error': 'Wrong Category'}, status=400)    
+        if category not in Job.CATEGORIES:
+            return JsonResponse({'error': 'Wrong Category'}, status=400)  
+        # Verify that type is right
+        if job_type not in Job.TYPES:
+            return JsonResponse({'error': 'Wrong Type'}, status=400)  
+        # Verify that description has at least 50 characters
+        if len(description) < 50:
+            return JsonResponse({'error': 'The description has to be longer than 50 characters'}, status=400)  
+
+        job = Job(position=position, 
+                job_type=job_type, 
+                category=category, 
+                company=company, 
+                location=location,
+                description=description)
+        job.save()
+        return JsonResponse({'success':'You have successfully added a job to the database'})
 
 class ProfileQuestionView(TemplateView):
     """
