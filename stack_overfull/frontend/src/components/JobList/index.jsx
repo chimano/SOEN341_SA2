@@ -19,7 +19,7 @@ export class JobList extends React.Component {
                 job_location={job.location}
                 job_type={job.type}
                 job_category={job.category}
-                job_description={job.job_description}
+                job_description={job.description}
                 date_created={job.date_posted
                   .replace("T", " at ")
                   .substring(0, 19)}
