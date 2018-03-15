@@ -1,8 +1,7 @@
 import React from "react";
 import "./index.css";
-import { JobList } from "../../components";
 import { getApiJob, postApiJob } from "../../utils/api";
-import { SideBar, PostJobButton } from "../../components";
+import { SideBar, PostJobButton, JobList } from "../../components";
 import { Card } from "antd";
 
 export class CareerPage extends React.Component {
