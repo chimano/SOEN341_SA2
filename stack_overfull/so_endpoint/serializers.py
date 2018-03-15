@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from so_endpoint.models import Question, Answer, Profile, Tag
+from so_endpoint.models import Question, Answer, Profile, Tag, Job
 from django.contrib.auth.models import User
 
 """
@@ -69,3 +69,9 @@ class AnswerSerializer(serializers.ModelSerializer):
     def get_is_rejected(self, answer):
         try: return answer in answer.question_id.rejected_answers_ids.all()
         except: return False
+
+class JobSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Job
+        fields = ('job_id','position','job_type','category','company','location','description','date_posted')

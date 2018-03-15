@@ -3,6 +3,45 @@ import "./index.css";
 import { SideBar } from "../../components";
 import { Card } from "antd";
 
+const jobCategories = [
+  {
+    field: "Arts",
+    category: ["Photography", "Architechture", "Music", "Theatre"]
+  },
+  {
+    field: "Administration",
+    category: ["Receptionist", "Coordinator", "Payroll Administrator"]
+  },
+  {
+    field: "Commerce",
+    category: ["Sales Representative", "Accountant", "Marketing"]
+  },
+  {
+    field: "Engineering",
+    category: [
+      "Computer Science",
+      "Software Engineering",
+      "Mechanical Engineering",
+      "Electrical Engineering",
+      "Industrial Engineering"
+    ]
+  },
+  {
+    field: "Education",
+    category: [
+      "Tutor",
+      "Elementary School Teacher",
+      "Highschool Teacher",
+      "Cegep Teacher",
+      "University Teacher"
+    ]
+  },
+  {
+    field: "Science",
+    category: ["Biology", "Chemistry", "Physics", "Sociology", "Geoscience"]
+  }
+];
+
 const list1 = [
   {
     title: "Front-end Developper",
