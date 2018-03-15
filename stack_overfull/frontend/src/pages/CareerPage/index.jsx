@@ -3,91 +3,45 @@ import "./index.css";
 import { SideBar } from "../../components";
 import { Card } from "antd";
 
-const list1 = [
+const jobCategories = [
   {
-    title: "Front-end Developper",
-    category: "Sofware Engineering and Computer Science",
-    city: "Montreal",
-    province: "QC",
-    type: "Part-time",
-    date_posted: "25 days ago"
+    field: "Arts",
+    category: ["Photography", "Architechture", "Music", "Theatre"]
   },
   {
-    title: "Back-end Developper",
-    category: "Software Engineering and Computer Science",
-    city: "Toronto",
-    province: "ON",
-    type: "Full-time",
-    date_posted: "2 days ago"
+    field: "Administration",
+    category: ["Receptionist", "Coordinator", "Payroll Administrator"]
   },
   {
-    title: "Financial Assistant",
-    category: "Finance",
-    city: "Ottawa",
-    province: "ON",
-    type: "Internship",
-    date_posted: "13 days ago"
+    field: "Commerce",
+    category: ["Sales Representative", "Accountant", "Marketing"]
   },
   {
-    title: "English Tutor",
-    category: "English Literature",
-    city: "Montreal",
-    province: "QC",
-    type: "Internship",
-    date_posted: "17 days ago"
+    field: "Engineering",
+    category: [
+      "Computer Science",
+      "Software Engineering",
+      "Mechanical Engineering",
+      "Electrical Engineering",
+      "Industrial Engineering"
+    ]
   },
   {
-    title: "Mechanical Designer",
-    category: "Mechanical Engineering",
-    city: "Laval",
-    province: "QC",
-    type: "Full-time",
-    date_posted: "10 days ago"
+    field: "Education",
+    category: [
+      "Tutor",
+      "Elementary School Teacher",
+      "Highschool Teacher",
+      "Cegep Teacher",
+      "University Teacher"
+    ]
+  },
+  {
+    field: "Science",
+    category: ["Biology", "Chemistry", "Physics", "Sociology", "Geoscience"]
   }
 ];
 
-const list2 = [
-  {
-    title: "Front-end Developper",
-    category: "Sofware Engineering and Computer Science",
-    city: "Montreal",
-    province: "QC",
-    type: "Part-time",
-    date_posted: "25 days ago"
-  },
-  {
-    title: "Back-end Developper",
-    category: "Software Engineering and Computer Science",
-    city: "Toronto",
-    province: "ON",
-    type: "Full-time",
-    date_posted: "2 days ago"
-  },
-  {
-    title: "Financial Assistant",
-    category: "Finance",
-    city: "Ottawa",
-    province: "ON",
-    type: "Internship",
-    date_posted: "13 days ago"
-  },
-  {
-    title: "English Tutor",
-    category: "English Literature",
-    city: "Montreal",
-    province: "QC",
-    type: "Internship",
-    date_posted: "17 days ago"
-  },
-  {
-    title: "Mechanical Designer",
-    category: "Mechanical Engineering",
-    city: "Laval",
-    province: "QC",
-    type: "Full-time",
-    date_posted: "10 days ago"
-  }
-];
 export class CareerPage extends React.Component {
   constructor(props) {
     super(props);
