@@ -9,12 +9,12 @@ class Job(models.Model):
     position = models.CharField(max_length=48, null=False, default=None)
     TYPES = ['Full-time', 'Part-time', 'Internship', 'Contract', 'Temporary', 'Trainee']
     job_type = models.CharField(max_length=48, null=False, default=None)
-    CATEGORIES = ['Photography', 'Architechture', 'Music', 'Theatre', 'Receptionist',
-        'Coordinator', 'Payroll Administrator', 'Sales Representative', 'Accountant',
-        'Marketing', 'Computer Science', 'Software Engineering', 'Mechanical Engineering',
-        'Electrical Engineering', 'Industrial Engineering', 'Tutor', 'Elementary School Teacher',
-        'Highschool Teacher', 'Cegep Teacher', 'University Teacher', 'Biology', 'Chemistry',
-        'Physics', 'Sociology', 'Geoscience']
+    CATEGORIES = ['photography', 'architechture', 'music', 'theatre', 'receptionist',
+        'coordinator', 'payroll_administrator', 'sales_representative', 'accountant',
+        'marketing', 'computer_science', 'software_engineering', 'mechanical_engineering',
+        'electrical_engineering', 'industrial_engineering', 'tutor', 'elementary_school_teacher',
+        'highschool_teacher', 'cegep_teacher', 'university_teacher', 'biology', 'chemistry',
+        'physics', 'sociology', 'geoscience']
     category = models.CharField(max_length=48, null=False, default=None)
     company = models.CharField(max_length=48, null=False, default=None)
     location = models.CharField(max_length=84, null=False, default=None)
