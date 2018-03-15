@@ -1,6 +1,9 @@
 import React from "react";
 import "./index.css";
 import { AnswerBox, TagList } from "../../components";
+import { formatDate } from "../../utils/api";
+import { Divider } from "antd";
+
 import {
   getApiQuestionById,
   getApiAnswerById,
@@ -241,29 +244,41 @@ export class AnswerPage extends React.Component {
     let questionBodyBox;
     if (question.question_text) {
       questionBodyBox = (
-        <p className="AnswerPage__question-body">{question.question_text}</p>
+        <div className="AnswerPage__question-body">
+          {question.question_text}
+        </div>
       );
     } else {
       questionBodyBox = "";
     }
 
+    let questionTags = "";
+    if (question.tags) {
+      questionTags = <TagList tags={question.tags} />;
+    }
+
+    let questionDate = "";
+    if (question.date_created) {
+      questionDate = formatDate(
+        question.date_created.replace("T", " at ").substring(0, 19)
+      );
+    }
+
     return (
       <div className="body-wrapper">
         <div className="page-width">
-          <div className="AnswerPage__question-creator">
-            <div className="AnswerPage__tags">
-              Tags
-              <br />
-              <TagList tags={question.tags} />
+          <div className="AnswerPage__question-box">
+            <h1 className="AnswerPage__question-title">
+              {question.question_head}
+            </h1>
+            <div className="AnswerPage__tags">{questionTags}</div>
+            {questionBodyBox}
+            <Divider />
+            <div className="AnswerPage__question-creator">
+              Asked by <a>{q_user}</a> on {questionDate}
             </div>
           </div>
-          <h1 className="AnswerPage__question-title">
-            {question.question_head}
-          </h1>
-          {questionBodyBox}
-          <div className="AnswerPage__question-creator">
-            Asked by <a>{q_user}</a>
-          </div>
+
           <div className="AnswerPage__seperator" />
           {numberOfAnswersTitle}
           {answerListBox}

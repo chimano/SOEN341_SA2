@@ -73,7 +73,7 @@ export default class App extends React.Component {
     );
 
     return (
-      <main>
+      <main className="App">
         <NavigationBar
           handle_logout={this.handle_logout}
           handle_login={this.handle_login}
