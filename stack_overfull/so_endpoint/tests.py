@@ -952,3 +952,64 @@ class SearchViewTest(TestCase):
     def tearDownClass(cls):
         Question.objects.all().delete()
         User.objects.all().delete()
+
+
+class TagViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        #Sets up database for the testcases
+        Tag.objects.create(tag_text='tag1')
+        Tag.objects.create(tag_text='tag2')
+
+
+    def test_tag_get(self):
+        response = self.client.get('/api/tag/')
+        self.assertEqual(response.status_code, 200)
+
+        tag_list = response.json()['tag_list']
+        self.assertTrue( len(tag_list) == 2)
+
+
+    @classmethod
+    def tearDownClass(cls):
+        Question.objects.all().delete()
+        Answer.objects.all().delete()
+        Tag.objects.all().delete()
+        User.objects.all().delete()
+
+
+class ProfileQuestionViewTest(TestCase):
+    login_info = {
+        'username': 'testuser',
+        'password': 'testpassword'
+    }
+
+    @classmethod
+    def setUpTestData(cls):
+        #Sets up database for the testcases
+        author = User.objects.create_user(id=1, username=cls.login_info['username'], password=cls.login_info['password'])
+        responder = User.objects.create_user(id=2, username='second', password='12345')
+        qid = Question.objects.create(id=1, question_head="Author's q", question_text="Test Body", user_id=author)
+        Answer.objects.create(id=1, answer_text="Test answer", question_id=qid, user_id=responder)
+        Answer.objects.create(id=2, answer_text="Test answer2", question_id=qid, user_id=responder)
+
+
+    def test_valid_request(self):
+        #Test search by question_head
+        response = self.client.get(
+            '/api/user/name/' + self.login_info['username'] + '/questions/'
+        )
+        self.assertEqual(1 ,len(response.json()['asked_questions']))
+        self.assertEqual(0, len(response.json()['answered_questions']))
+
+    def test_invalid_request(self):
+        #Test search by question_head
+        response = self.client.get(
+            '/api/user/name/fakeuser/questions/'
+        )
+        self.assertEqual(400 ,response.status_code)
+
+    @classmethod
+    def tearDownClass(cls):
+        Question.objects.all().delete()
+        User.objects.all().delete()
