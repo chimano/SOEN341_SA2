@@ -4,7 +4,8 @@ import {
   QuestionList,
   QuestionEdit,
   AskQuestionButton,
-  SearchFiltersBar
+  SearchFiltersBar,
+  PostJobButton
 } from "../../components";
 import {
   getApiSearch,
@@ -124,6 +125,7 @@ export class HomePage extends React.Component {
 
     return (
       <div className="HomePage-wrapper">
+        <PostJobButton />
         <div className="HomePage page-width">
           <FilterTabs handleTabsChange={this.handleTabsChange} />
           <div className="HomePage__question-list-title">
