@@ -22,10 +22,9 @@ export function getApiQuestion(order, limit, sort) {
 
 //get the list of asked/answered questions
 export function getApiUserQuestionsAndAnsweredQuestions(username) {
-  return axios.get("/api/user/name/"+username+"/questions", {
-  });
+  return axios.get("/api/user/name/"+username+"/questions")
 }
-
+    
 //get the list of jobs given the category and subcategory
 export function getApiJob(category) {
   return axios.get("/api/job/",
