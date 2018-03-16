@@ -1,4 +1,4 @@
-.question-box {
+.QuestionBox {
     padding: 15px;
     background-color: rgb(255, 255, 255);
     box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
@@ -7,23 +7,23 @@
     border-radius: 10px;
 }
 
-.question-box__user {
+.QuestionBox__user {
     width: 90%;
     text-align: right;
 }
 
-.question-box__points {
+.QuestionBox__points {
     width: 10%;
     text-align: right;
 }
 
-.question-box__text {
+.QuestionBox__text {
     word-wrap: break-word;
     overflow: auto;
     font-size: 1.5em;
     width: 100%;
 }
 
-.question-box__date {
+.QuestionBox__date {
     margin-top: 1%;
 }
