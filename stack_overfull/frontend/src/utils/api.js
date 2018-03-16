@@ -20,6 +20,12 @@ export function getApiQuestion(order, limit, sort) {
   });
 }
 
+export function getApiUserQuestionsAndAnsweredQuestions(username) {
+  return axios.get("/api/user/name/"+username+"/questions", {
+
+  });
+}
+
 export function monthToText(monthRaw) {
   switch(monthRaw){
     case '01':
