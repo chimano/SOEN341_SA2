@@ -592,11 +592,12 @@ class AnswerVoteViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         #Sets up database for the testcases
-        q = Question.objects.create(id=1,question_head="Test Question?", question_text="Test Body?")
-        u = User.objects.create_user(id=1,username=cls.login_info[0]['username'], password=cls.login_info[0]['password'])
-        User.objects.create_user(id=2,username=cls.login_info[1]['username'], password=cls.login_info[1]['password'])
-        Answer.objects.create(id=1, answer_text="Test answer", question_id=q, user_id=u)
-        Answer.objects.create(id=2, answer_text="Test answer2", question_id=q, user_id=u)
+        question = Question.objects.create(id=1,question_head="Test Question?", question_text="Test Body?")
+        user1 = User.objects.create_user(id=1,username=cls.login_info[0]['username'], password=cls.login_info[0]['password'])
+        user2 = User.objects.create_user(id=2,username=cls.login_info[1]['username'], password=cls.login_info[1]['password'])
+        Answer.objects.create(id=1, answer_text="Test answer", question_id=question, user_id=user1)
+        Answer.objects.create(id=2, answer_text="Test answer2", question_id=question, user_id=user1)
+        Answer.objects.create(id=3, answer_text="Test answer3", question_id=question, user_id=user2)
 
 
     def test_valid_answer_upvote_post(self):
@@ -704,6 +705,27 @@ class AnswerVoteViewTest(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertTrue('error' in response.json())
 
+    
+    def test_self_vote(self):
+        #Tests user voting on their own answer
+        self.client.post(
+            '/api/user/login/',
+            data=json.dumps(self.login_info[1]),
+            content_type='application/json'
+        )
+        json_payload = json.dumps({
+            "a_id": "3",
+            "vote_type": "DOWN"
+        })
+
+        response = self.client.post(
+            '/api/answer/vote/',
+            data=json_payload,
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertTrue('error' in response.json())
+
     @classmethod
     def tearDownClass(cls):
         Question.objects.all().delete()
@@ -723,9 +745,10 @@ class QuestionVoteViewTest(TestCase):
     def setUpTestData(cls):
         #Sets up database for the testcases
         u1 = User.objects.create_user(id=1,username=cls.login_info[0]['username'], password=cls.login_info[0]['password'])
-        u2 = User.objects.create_user(id=1,username=cls.login_info[1]['username'], password=cls.login_info[1]['password'])
+        u2 = User.objects.create_user(id=2,username=cls.login_info[1]['username'], password=cls.login_info[1]['password'])
         Question.objects.create(id=1,question_head="Test Question?", question_text="Test Body?", user_id=u1)
         Question.objects.create(id=2,question_head="Test Question?2", question_text="Test Body?2", user_id=u1)
+        Question.objects.create(id=3,question_head="Test Question?3", question_text="Test Body?3", user_id=u2)
 
 
     def test_valid_question_upvote_post(self):
@@ -834,6 +857,27 @@ class QuestionVoteViewTest(TestCase):
         )
         self.assertEqual(response.status_code, 400)
         self.assertTrue('error' in response.json())
+    
+    def test_self_vote(self):
+        #Tests user voting on their own answer
+        self.client.post(
+            '/api/user/login/',
+            data=json.dumps(self.login_info[1]),
+            content_type='application/json'
+        )
+        json_payload = json.dumps({
+            "q_id": "3",
+            "vote_type": "DOWN"
+        })
+
+        response = self.client.post(
+            '/api/answer/vote/',
+            data=json_payload,
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertTrue('error' in response.json())
+
 
     @classmethod
     def tearDownClass(cls):
