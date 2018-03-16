@@ -8,6 +8,23 @@
     padding-top: 30px;
 }
 
-.question_related_to_user {
+.ProfilePage__question_related_to_user {
+    width: 100%;
+    text-align: center;
+    vertical-align: center;
+}
 
+.div_question_asked {
+    width: 45%;
+    display: inline-block;
+    margin-right: 2%;
+    margin-left: 2%;
+}
+
+.div_question_answered {
+    width: 45%;
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 2%;
+    margin-left: 2%;
 }

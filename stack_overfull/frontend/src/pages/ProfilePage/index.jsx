@@ -16,7 +16,8 @@ export class ProfilePage extends React.Component {
       downvoted_questions: [],
       upvoted_questions: [],
       questions_asked: [],
-      questions_answered: []
+      questions_answered: [],
+      // doRender: false
     };
   }
 
@@ -28,21 +29,12 @@ export class ProfilePage extends React.Component {
   getQuestionsRelatedToUser = () => {
     getApiUserQuestionsAndAnsweredQuestions(this.state.username)
       .then(response => {
-        console.log("response of getApiUserQuestionsAndAnsweredQuestions(): ", response);
-        console.log("asked of getApiUserQuestionsAndAnsweredQuestions(): ", response.data.asked_questions.map(function(askedQuestions){askedQuestions.id}));
-        console.log("answered of getApiUserQuestionsAndAnsweredQuestions(): ", response.data.answered_questions);
-
-        //////////// THIS RETURNS 2 arrays of IDS
+        //Return 2 arrays (question_asked and question_answered)
         var questionsType = Object.keys(response.data);
         var allIds = questionsType.map((t) => response.data[t].map((e) => e.id))
-        console.log("ALLIDS ", allIds);
-        console.log("ALLIDSASKED ", allIds[0]);
-        console.log("ALLIDSANSWERED ", allIds[1]);
-        //////////////////////////////////////////////
         
         this.setState({
-          // questions_asked_id: response.data.asked_questions.map(function(askedQuestions){askedQuestions.id})
-          questions_asked_id: allIds[0],//response.data.asked_questions.filter(function(value){ return value.id})
+          questions_asked_id: allIds[0],
           questions_answered_id: allIds[1]
         });
     })
@@ -54,7 +46,9 @@ export class ProfilePage extends React.Component {
       this.getQuestionsFromIdListAndSetStateOfQuestionList(
         this.state.questions_answered_id
       ).then(list => this.setState({ questions_answered: list })
-    )});console.log("HEEEEEELLLLLLO"); console.log("STATE " + this.state.questions_asked);
+    )}).then(() => {
+      setTimeout(() => this.forceUpdate(), 600);
+    });
   };
 
   getMyInfo = () => {
@@ -80,15 +74,10 @@ export class ProfilePage extends React.Component {
           this.state.downvoted_questions_id
         ).then(list => this.setState({ downvoted_questions: list }));
       })
-      // .then(() => {
-      //   this.getQuestionsRelatedToUser();
-      // }) 
       .then(() => {
         setTimeout(() => this.forceUpdate(), 500);
       })
       .catch(error => console.log(error));
-
-      console.log("UPQUESTION2 " + this.state.upvoted_questions_id);
   };
 
   getQuestionsFromIdListAndSetStateOfQuestionList = idList => {
@@ -121,9 +110,6 @@ export class ProfilePage extends React.Component {
       questions_asked,
       questions_answered
     } = this.state;
-
-    console.log("QUESTION UPDVOTED ARE " + upvoted_questions);
-    console.log("QUESTION ASKED ARE " + questions_asked);
 
     return (
       <div className="body-wrapper grey-background">
@@ -179,9 +165,27 @@ export class ProfilePage extends React.Component {
             </div>
           </div>
         </div>
-        <div className="question_related_to_user">
-          <div> 
+        <div className="ProfilePage__question_related_to_user">
+          <div className="div_question_asked"> 
+            <h3> Questions Asked </h3>
             {questions_asked.map((question, key) => (
+              <QuestionBox
+              key={key}
+              date_created={question.date_created
+                .replace("T", " at ")
+                .substring(0, 19)}
+              question_head={question.question_head}
+              q_id={question.id}
+              username={question.user_id.username}
+              points={question.points}
+              showButtons={false}
+              tags={question.tags}
+            />
+            ))}
+          </div>
+          <div className="div_question_answered">
+            <h3> Questions Answered </h3> 
+            {questions_answered.map((question, key) => (
               <QuestionBox
               key={key}
               date_created={question.date_created
