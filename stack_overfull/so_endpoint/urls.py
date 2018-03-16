@@ -20,11 +20,7 @@ from so_endpoint.views import (QuestionView, QuestionVoteView, AnswerView,
                               AnswerVoteView, AnswerAcceptView, AnswerRejectView,
                               UserLoginView, UserRegisterView, UserLogoutView,
                               UserView, UserMeView, UserNameView, ProfileQuestionView,
-<<<<<<< HEAD
-                              SearchView, TagView, TagSearchView)
-=======
                               SearchView, TagView, TagViewName)
->>>>>>> pagination-tags-backend
 
 urlpatterns = [
     re_path(r'^question/$', QuestionView.as_view()),
@@ -49,9 +45,5 @@ urlpatterns = [
     re_path(r'^user/name/(?P<username>[\w_@\+\.\-]+)/questions/$', ProfileQuestionView.as_view()),
     re_path(r'^search/$', SearchView.as_view()),
     re_path(r'^tag/$', TagView.as_view()),
-<<<<<<< HEAD
-    re_path(r'^tags/$', TagSearchView.as_view())
-=======
     re_path(r'^tag/name/(?P<tagname>\w+)/$', TagViewName.as_view()),
->>>>>>> pagination-tags-backend
 ]
