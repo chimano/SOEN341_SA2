@@ -7,6 +7,8 @@ import {
 } from "../../components";
 import {
   getApiQuestion,
+  getApiTags,
+  getApiTagInfo
 } from "../../utils/api";
 
 export class TagPage extends React.Component {
@@ -16,12 +18,16 @@ export class TagPage extends React.Component {
       questionList: [],
       order: "desc",
       title: "All",
-      filters: [""]
+      filters: [""],
+      tagInfo: {},
+      mostUsedTagsList: [],
     };
   }
 
   componentDidMount = () => {
     this.getQuestionList();
+    this.getTagInfo();
+    this.getMostUsedTagsList();
   };
 
   getQuestionList = () => {
@@ -36,6 +42,49 @@ export class TagPage extends React.Component {
         );
         this.setState({
           questionList: response.data.question_list
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  getTagInfo = () => {
+    // get tagname from url match
+    const tagname = this.props.match.params.tags
+
+    getApiTagInfo(tagname)
+      .then(response => {
+        console.log(
+          "response of getApiTagInfo(tagname)",
+          response
+        );
+        this.setState({
+          tagInfo: response.data
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  getMostUsedTagsList = () => {
+
+    getApiTags("desc", "10", "question_count")
+      .then(response => {
+        console.log(
+          'response of getApiTags("desc", 10, "question_count")',
+          response
+        );
+
+        let mostUsedTagsList = []
+        //collect tag names from the api response
+        response.data.tag_list.forEach(tagInfo => {
+            mostUsedTagsList.push(tagInfo.tag_text)
+        })
+
+        this.setState({
+          mostUsedTagsList: mostUsedTagsList
         });
       })
       .catch(error => {
