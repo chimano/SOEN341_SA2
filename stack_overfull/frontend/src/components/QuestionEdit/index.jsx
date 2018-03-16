@@ -37,7 +37,6 @@ export class QuestionEdit extends React.Component {
   };
 
   render() {
-    console.log("state of QuestionEdit: ", this.state);
     const { user, closeCreateQuestionBox } = this.props;
 
     return (
