@@ -2,14 +2,13 @@ import React from "react";
 import "./index.css";
 import {
   QuestionList,
-  SearchFiltersBar,
-  SearchBar
 } from "../../components";
 import {
   getApiQuestion,
   getApiTags,
   getApiTagInfo
 } from "../../utils/api";
+import qs from "qs";
 
 export class TagPage extends React.Component {
   constructor(props) {
@@ -28,6 +27,22 @@ export class TagPage extends React.Component {
     this.getQuestionList();
     this.getTagInfo();
     this.getMostUsedTagsList();
+  };
+
+  componentDidUpdate = (prevProps, prevState) => {
+    // check if the current url has changed
+    if (prevProps.location !== this.props.location) {
+      this.getQuestionList();
+      this.getTagInfo();
+      this.getMostUsedTagsList();
+    }
+
+    // check if the current filters have changed
+    if (prevState.filters.length !== this.state.filters.length) {
+      this.getQuestionList();
+      this.getTagInfo();
+      this.getMostUsedTagsList();
+    }
   };
 
   getQuestionList = () => {
@@ -105,15 +120,6 @@ export class TagPage extends React.Component {
         <div className="TagPage-wrapper">
           <div className="TagPage page-width">
             <h2 className="TagPage__question-list-title">Search</h2>
-            <div style={{ paddingBottom: "15px" }}>
-              <SearchBar />
-            </div>
-            <div className="TagPage__search-filters-bar">
-              <SearchFiltersBar
-                defaultFilters={filters}
-                onFiltersChange={this.handleFiltersChange}
-              />
-            </div>
             <h3 className="TagPage__results">{resultsHeaderText}</h3>
 
             <QuestionList

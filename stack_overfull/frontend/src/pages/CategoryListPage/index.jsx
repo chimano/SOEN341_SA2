@@ -36,7 +36,9 @@ export class CategoryListPage extends React.Component {
             <h1 className="welcomeTitle1">
              QUESTION CATEGORIES AND TAGS
             </h1>
+          
             <h3 className="welcomeTitle2">
+            <br />
               MAIN CATEGORIES
             </h3>
           </div>
@@ -55,29 +57,7 @@ export class CategoryListPage extends React.Component {
               ))}
             </ul>
           </div>
-
-          <div>
-            <h3 className="welcomeTitle2">
-              HOTTEST TAGS
-            </h3>
-          </div>
-
-          <div className="categoryBox">
-            <ul className="bubbles">
-              {hottestTags.map((hotTags, key) => (
-                <li key={key}>
-                  <Link
-                    to={`/tags/${hotTags}`}
-                    style={{ color: "rgb(38, 18, 155)" }}
-                  >
-                    {hotTags}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          
-
+   
         <br />
         </nav>
       </header>
