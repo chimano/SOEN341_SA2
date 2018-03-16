@@ -13,6 +13,15 @@ class Question(models.Model):
     rejected_answers_ids = models.ManyToManyField('Answer', related_name='rejected_answers_set', blank=True)
     points = models.IntegerField(default=0)
     tags = models.ManyToManyField('Tag', related_name='question_set', blank=True)
+    answer_count = models.IntegerField(default=0)
+
+    @receiver(post_save, sender='so_endpoint.Answer')
+    def update_answer_count(sender, **kwargs):
+        if kwargs["created"] is True:
+            answer = kwargs["instance"]
+            question = answer.question_id
+            question.answer_count += 1
+            question.save()
 
 class Answer(models.Model):
     question_id = models.ForeignKey(Question, on_delete=models.CASCADE)
@@ -20,6 +29,7 @@ class Answer(models.Model):
     answer_text = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True)
     points = models.IntegerField(default=0)
+
 
 #User Profile
 #https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html
@@ -47,3 +57,4 @@ class Profile(models.Model):
 class Tag(models.Model):
     tag_text = models.CharField(max_length=128, primary_key=True)
     date_created = models.DateTimeField(auto_now=True)
+    question_count = models.IntegerField(default=0)

@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.test import Client
 
 from so_endpoint.models import *
+from so_endpoint.views import add_tags_to_question
 import json
 
 # Create your tests here.
@@ -688,7 +689,7 @@ class QuestionVoteViewTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertTrue('success' in response.json())
-    
+
     def test_doubleupvote_question_post(self):
         #Sends a valid downvote
         self.client.post(
@@ -882,30 +883,6 @@ class AnswerAcceptRejectViewTest(TestCase):
         User.objects.all().delete()
 
 
-class TagViewTest(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        #Sets up database for the testcases
-        Tag.objects.create(tag_text='tag1')
-        Tag.objects.create(tag_text='tag2')
-
-
-    def test_tag_get(self):
-        response = self.client.get('/api/tag/')
-        self.assertEqual(response.status_code, 200)
-
-        tag_list = response.json()['tag_list']
-        self.assertTrue( len(tag_list) == 2)
-
-
-    @classmethod
-    def tearDownClass(cls):
-        Question.objects.all().delete()
-        Answer.objects.all().delete()
-        Tag.objects.all().delete()
-        User.objects.all().delete()
-
-
 class SearchViewTest(TestCase):
     login_info = {
         'username': 'testuser',
@@ -960,6 +937,12 @@ class TagViewTest(TestCase):
         #Sets up database for the testcases
         Tag.objects.create(tag_text='tag1')
         Tag.objects.create(tag_text='tag2')
+        qid1 = Question.objects.create(id=1, question_head="Test Q", question_text="Test Body")
+        qid2 = Question.objects.create(id=2, question_head="Test Q2", question_text="Test Body")
+        add_tags_to_question(qid1, ['tag2'])
+        add_tags_to_question(qid2, ['tag2'])
+        qid1.save()
+        qid2.save()
 
 
     def test_tag_get(self):
@@ -968,6 +951,14 @@ class TagViewTest(TestCase):
 
         tag_list = response.json()['tag_list']
         self.assertTrue( len(tag_list) == 2)
+
+    def test_tagname_get(self):
+        test_tagname = "tag2"
+        response = self.client.get(f'/api/tag/name/{test_tagname}/')
+
+        self.assertEqual(response.status_code, 200)
+        body = response.json()
+        self.assertTrue(body['question_count'] == 2)
 
 
     @classmethod
