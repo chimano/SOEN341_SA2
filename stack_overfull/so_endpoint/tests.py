@@ -267,6 +267,23 @@ class JobViewTest(TestCase):
         )
         self.assertEqual(response.status_code, 400)
         self.assertTrue('error' in response.json())
+    
+    def test_invalid_empty_input_job_post(self):
+        json_payload = json.dumps({
+            "position":"",
+            "job_type":"Full-time",
+            "category":"computer_science",
+            "company":"Apple",
+            "location":"Montreal",
+            "description":"Bring your competitive spirit, your love of innovation, and your desire to be at the forefront of an evolutionary change in our digital workforce. Now is the time to become a part of an exciting company where your ideas, passion and commitment to excellence will have a direct impact on the products that we build, the new markets we create and the people that we engage."
+        })
+        response = self.client.post(
+            '/api/job/',
+            data=json_payload,
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertTrue('error' in response.json())
 
     def test_valid_job_get(self):
         #Sends a get request with a valid category
@@ -282,9 +299,10 @@ class JobViewTest(TestCase):
         data = {
             "category" : "assassination"
         }
-
         response = self.client.get('/api/job/', data)
-        self.assertEqual(response.status_code, 200)
+        
+        self.assertEqual(response.status_code, 400)
+        self.assertTrue('error' in response.json())
 
 class QuestionViewTest(TestCase):
     login_info = {
