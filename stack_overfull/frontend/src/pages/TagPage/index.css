@@ -12,25 +12,7 @@
     display: block;
 }
 
-.TagPage__search-filters-bar {
-    display: flex;
-    justify-content: flex-end;
-}
-
-.query {
-    font-weight: bold;
-    width: 100%;
-    display: flex;
-}
-
 .TagPage__results {
     width: 100%;
-    display: flex;
-}
-
-.num-results {
-    font-weight: bold;
-    width: 100%;
-    padding-left: 10px;
     display: flex;
 }
