@@ -104,7 +104,6 @@ export class HomePage extends React.Component {
   };
 
   render() {
-    console.log("HomePage state: ", this.state);
 
     const { showCreateQuestionBox, questionList } = this.state;
     const { username } = this.props;
