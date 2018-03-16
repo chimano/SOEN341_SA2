@@ -40,31 +40,31 @@ export class QuestionEdit extends React.Component {
     const { user, closeCreateQuestionBox } = this.props;
 
     return (
-      <div className="questionEdit-floating-box">
-        <div className="questionEdit-wrapper">
+      <div className="QuestionEdit__floating-box">
+        <div className="QuestionEdit__wrapper">
           <div
-            className="questionEdit__close-button"
+            className="QuestionEdit__close-button"
             onClick={() => closeCreateQuestionBox()}
           >
             &#10005;
           </div>
 
-          <div className="questionEdit">
-            <a className="questionEdit-user">{user}</a>
-            <div className="line" />
+          <div className="QuestionEdit">
+            <a className="QuestionEdit__user">{user}</a>
+            <div className="QuestionEdit__lines" />
             <h3>Ask a question to the community</h3>
-            <div className="questionEdit-title">Question Header:</div>
+            <div className="QuestionEdit__title">Question Header:</div>
             <textarea
-              className="questionEdit-text"
+              className="QuestionEdit__text"
               onChange={e => this.handleChange(e, "question_head")}
             />
-            <div className="questionEdit-title">Question Body (Optional):</div>
+            <div className="QuestionEdit__title">Question Body (Optional):</div>
             <textarea
-              className="questionEdit-text"
+              className="QuestionEdit__text"
               onChange={e => this.handleChange(e, "question_text")}
             />
 
-            <div className="questionEdit-title">Tags</div>
+            <div className="QuestionEdit__title">Tags</div>
             <br />
             <div>
               <Select
@@ -74,7 +74,6 @@ export class QuestionEdit extends React.Component {
                 onChange={tags => this.handleTagsChange(tags)}
               >
                 {children}
-
                 <Option value="business">business</Option>
                 <Option value="cooking">cooking</Option>
                 <Option value="entertainment">entertainment</Option>
@@ -86,7 +85,7 @@ export class QuestionEdit extends React.Component {
             </div>
           </div>
           <button
-            className="questionEdit-button button"
+            className="QuestionEdit__button button"
             onClick={() => this.handleSubmitQuestionButton()}
             style={{ color: "#ffffff" }}
           >
