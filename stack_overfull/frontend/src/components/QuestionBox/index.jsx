@@ -3,6 +3,7 @@ import "./index.css";
 import { Link } from "react-router-dom";
 import { VotingButtons, TagList } from "../../components";
 import { formatDate } from "../../utils/api";
+import { Divider } from "antd";
 
 export class QuestionBox extends React.Component {
   handleChange = event => {
@@ -43,7 +44,7 @@ export class QuestionBox extends React.Component {
             )}
           </div>
         </div>
-        <div className="question-box__line" />
+        <Divider />
         <div style={{ display: "flex" }}>
           <TagList tags={tags} />
           <div className="question-box__user">

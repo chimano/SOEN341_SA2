@@ -68,7 +68,6 @@ export class ProfilePage extends React.Component {
   };
 
   render() {
-    console.log("The state of ProfilPage: ", this.state);
     const {
       username,
       email,

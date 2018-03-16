@@ -1,0 +1,33 @@
+.JobBox {
+    display: flex;
+    padding: 15px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
+    margin: 10px 0 20px 0;
+    color: black;
+    border-radius: 10px;
+}
+
+.JobBox__position {
+    width: 50%;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.JobBox__companylocation {
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.JobBox__description {
+    width: 70%;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.JobBox__generalinfo {
+    width: 30%;
+    display: flex;
+    justify-content: flex-end;
+}
