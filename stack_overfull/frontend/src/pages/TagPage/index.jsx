@@ -3,7 +3,7 @@ import "./index.css";
 import {
   QuestionList,
   SearchFiltersBar,
-  SearchBar 
+  SearchBar
 } from "../../components";
 import {
   getApiQuestion,
@@ -25,7 +25,10 @@ export class TagPage extends React.Component {
   };
 
   getQuestionList = () => {
-    getApiQuestion("desc", 36, "date_created",)
+    // get tagname from url match
+    const tagname = this.props.match.params.tags
+
+    getApiQuestion("desc", 36, "date_created", [tagname])
       .then(response => {
         console.log(
           'response of getQuestion(desc",36,"date_created", ["<tagname>"])',
@@ -63,8 +66,8 @@ export class TagPage extends React.Component {
               />
             </div>
             <h3 className="TagPage__results">{resultsHeaderText}</h3>
-  
-            <QuestionList 
+
+            <QuestionList
             questionList={questionList}
             getQuestionList={this.getQuestionList}
             />

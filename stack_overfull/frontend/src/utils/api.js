@@ -10,12 +10,13 @@ export function getApiQuestionById(id) {
 }
 
 //get the list of questions
-export function getApiQuestion(order, limit, sort) {
+export function getApiQuestion(order, limit, sort, tags=[]) {
   return axios.get("/api/question/", {
     params: {
       order: order,
       limit: limit,
-      sort: sort
+      sort: sort,
+      tags: tags
     }
   });
 }
