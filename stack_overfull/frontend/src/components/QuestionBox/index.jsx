@@ -26,12 +26,12 @@ export class QuestionBox extends React.Component {
     let date = formatDate(date_created);
 
     return (
-      <div className="question-box">
+      <div className="QuestionBox">
         <div style={{ display: "flex" }}>
-          <Link to={`/question/${q_id}`} className="question-box__text">
+          <Link to={`/question/${q_id}`} className="QuestionBox__text">
             {question_head}
           </Link>
-          <div className="question-box__points">
+          <div className="QuestionBox__points">
             {showButtons ? (
               <VotingButtons
                 handleDownvoteButton={handleDownvoteButton}
@@ -47,7 +47,7 @@ export class QuestionBox extends React.Component {
         <Divider />
         <div style={{ display: "flex" }}>
           <TagList tags={tags} />
-          <div className="question-box__user">
+          <div className="QuestionBox__user">
             Asked by {username} on {date}{" "}
           </div>
         </div>

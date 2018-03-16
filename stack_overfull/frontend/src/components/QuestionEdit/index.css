@@ -1,8 +1,8 @@
-.questionEdit {
+.QuestionEdit {
     padding: 10px;
 }
 
-.questionEdit-wrapper {
+.QuestionEdit__wrapper {
     padding: 10px;
     width: 600px;
     box-shadow: 0 0 5px #545454;
@@ -11,30 +11,30 @@
     position: relative;
 }
 
-.questionEdit-user {
+.QuestionEdit__user {
     display: flex;
 }
 
-.questionEdit-text {
+.QuestionEdit__text {
     width: 100%;
     min-height: 90%;
     margin-top: 2%;
     height: 100px;
 }
 
-.questionEdit-button {
+.QuestionEdit__button {
     margin-right: 1.5%;
     float: right;
 }
 
-.questionEdit-title {
+.QuestionEdit__title {
     padding-top: 20px;
     font-size: 20px;
     margin-right: 1%;
     text-align: left;   
 }
 
-.questionEdit-floating-box {
+.QuestionEdit__floating-box {
     display: -ms-flexbox;
     display: flex;
     -ms-flex-align: center;
@@ -49,7 +49,7 @@
     left: 0;
     z-index: 1;
 }
-.questionEdit__close-button {
+.QuestionEdit__close-button {
     text-align: right;
     position: absolute;
     right: 4px;
