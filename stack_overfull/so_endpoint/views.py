@@ -411,21 +411,25 @@ class AnswerVoteView(TemplateView):
             a_id = json_data['a_id']
 
             # Checks to see if answer exists
-            try:
-                answer = Answer.objects.get(id=a_id)
-            except Answer.DoesNotExist:
-                return JsonResponse({'error': 'Answer id is not valid'}, status=400)
 
+            answer = Answer.objects.get(id=a_id)
             vote_type = json_data['vote_type']
+
             # Checks to see if user is logged in
             if request.user.is_authenticated:
                 user = request.user
             else:
                 return JsonResponse({'error': 'User is not logged in'}, status=400)
+            
+            if answer.user_id == user:
+                return JsonResponse({'error': 'Cannot vote on your own answer'},
+                                    status=400)
 
         except KeyError:
             return JsonResponse({'error': 'There was an error extracting the parameters'},
                                 status=400)
+        except Answer.DoesNotExist:
+            return JsonResponse({'error': 'Answer id is not valid'}, status=400)
 
         if vote_type == "UP":
             # Checks to see if the user already upvoted for answer
@@ -512,6 +516,10 @@ class QuestionVoteView(TemplateView):
                 user = request.user
             else:
                 return JsonResponse({'error': 'User is not logged in'}, status=400)
+
+            if question.user_id == user:
+                return JsonResponse({'error': 'Cannot vote on your own question'},
+                                    status=400)
         except Question.DoesNotExist:
             return JsonResponse({'error': 'Question id is not valid'}, status=400)
         except KeyError:
