@@ -20,7 +20,7 @@ from so_endpoint.views import (QuestionView, QuestionVoteView, AnswerView,
                               AnswerVoteView, AnswerAcceptView, AnswerRejectView,
                               UserLoginView, UserRegisterView, UserLogoutView,
                               UserView, UserMeView, UserNameView, ProfileQuestionView,
-                              SearchView, TagView, TagViewName)
+                              SearchView, TagView, TagViewName, JobView)
 
 urlpatterns = [
     re_path(r'^question/$', QuestionView.as_view()),
@@ -46,4 +46,6 @@ urlpatterns = [
     re_path(r'^search/$', SearchView.as_view()),
     re_path(r'^tag/$', TagView.as_view()),
     re_path(r'^tag/name/(?P<tagname>\w+)/$', TagViewName.as_view()),
+
+    re_path(r'^job/$', JobView.as_view()),
 ]

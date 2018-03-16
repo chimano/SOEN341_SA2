@@ -63,7 +63,6 @@ export class SearchPage extends React.Component {
   };
 
   render() {
-    console.log("SearchPage state: ", this.state);
 
     const { questionList, filters } = this.state;
 

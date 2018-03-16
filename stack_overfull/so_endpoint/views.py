@@ -15,9 +15,9 @@ from django.db.models import Count
 
 from so_endpoint.serializers import (QuestionSerializer, AnswerSerializer,
                                      AccountSerializerPrivate, AccountSerializerPublic,
-                                     TagViewSerializer)
+                                     TagViewSerializer, JobSerializer)
 
-from so_endpoint.models import Question, Answer, Profile, Tag
+from so_endpoint.models import Question, Answer, Profile, Tag, Job
 
 
 
@@ -754,6 +754,57 @@ class TagViewName(TemplateView):
             return JsonResponse({'error': 'Tag does not exist'}, status=400)
 
 
+class JobView(TemplateView):
+    """
+    This view handles the /api/job/ endpoint
+    It returns a list of jobs
+    """
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request):
+        """
+        Extracts GET request parameters
+        """
+        category = request.GET.get('category', 0)
+        if category not in Job.CATEGORIES:
+            return JsonResponse({'error': 'Invalid Category'}, status=400) 
+        # get list of job that are in the requested category
+        job_list = Job.objects.filter(category=category)
+        serialized = JobSerializer(job_list, many=True).data
+        return JsonResponse({'job_list': serialized})   
+    
+    def post(self, request):
+        # Extracts job info from request
+        json_data = json.loads(request.body)
+        position = json_data['position']
+        job_type = json_data['job_type']
+        category = json_data['category']
+        company = json_data['company']
+        location = json_data['location']
+        description = json_data['description']
+
+        # Verify that category is right
+        if category not in Job.CATEGORIES:
+            return JsonResponse({'error': 'Wrong Category'}, status=400)  
+        # Verify that type is right
+        if job_type not in Job.TYPES:
+            return JsonResponse({'error': 'Wrong Type'}, status=400)  
+        # Verify that description has at least 50 characters
+        if len(description) < 50:
+            return JsonResponse({'error': 'The description has to be longer than 50 characters'}, status=400)  
+        # Verify that length of other input to be bigger than 0
+        if len(position) < 1 or len(job_type) < 1 or len(category) < 1 or len(company) < 1 or len(location) < 1:
+            return JsonResponse({'error': 'No Input can be empty'}, status=400)  
+        job = Job(position=position, 
+                job_type=job_type, 
+                category=category, 
+                company=company, 
+                location=location,
+                description=description)
+        job.save()
+        return JsonResponse({'success':'You have successfully added a job to the database'})
 
 class ProfileQuestionView(TemplateView):
     """
