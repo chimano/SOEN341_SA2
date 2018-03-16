@@ -207,7 +207,7 @@ class JobViewTest(TestCase):
             "category":"computer_science",
             "company":"Apple",
             "location":"Montreal",
-            "description":"we are searching for student"
+            "description":"Bring your competitive spirit, your love of innovation, and your desire to be at the forefront of an evolutionary change in our digital workforce. Now is the time to become a part of an exciting company where your ideas, passion and commitment to excellence will have a direct impact on the products that we build, the new markets we create and the people that we engage."
         })
         response = self.client.post(
             '/api/job/',
