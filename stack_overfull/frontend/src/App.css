@@ -28,9 +28,37 @@
 }
 
 .body-wrapper {
-    min-height: calc(100vh - 87px - 233.19px);   
+    min-height: calc(100vh - 87px - 233.19px);
 }
 
 .grey-background {
-    background-color: rgb(241, 241, 241); 
+    background-color: rgb(241, 241, 241);
+}
+
+.App {
+    background: #fafafa;
+}
+
+.ant-divider-horizontal {
+    margin: 15px 0;
+}
+
+.login-wrap {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 2;
+}
+
+.shadow {
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px
 }

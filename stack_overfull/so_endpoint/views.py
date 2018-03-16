@@ -15,9 +15,9 @@ from django.db.models import Count
 
 from so_endpoint.serializers import (QuestionSerializer, AnswerSerializer,
                                      AccountSerializerPrivate, AccountSerializerPublic,
-                                     TagViewSerializer)
+                                     TagViewSerializer, JobSerializer)
 
-from so_endpoint.models import Question, Answer, Profile, Tag
+from so_endpoint.models import Question, Answer, Profile, Tag, Job
 
 
 
@@ -683,6 +683,54 @@ class TagView(TemplateView):
         tags_serialized = TagViewSerializer(tags, many=True).data
         return JsonResponse({"tag_list": tags_serialized})
 
+class JobView(TemplateView):
+    """
+    This view handles the /api/job/ endpoint
+    It returns a list of jobs
+    """
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request):
+        """
+        Extracts GET request parameters
+        """
+        try:
+            category = request.GET.get('category', 0)
+            # get list of job that are in the requested category
+            job_list = Job.objects.filter(category=category)
+            serialized = JobSerializer(job_list, many=True).data
+            return JsonResponse({'job_list': serialized})
+        except Job.DoesNotExist:
+            return JsonResponse({'error': 'This category does not exist'}, status=400)    
+    
+    def post(self, request):
+        # Extracts job info from request
+        json_data = json.loads(request.body)
+        position = json_data['position']
+        job_type = json_data['job_type']
+        category = json_data['category']
+        company = json_data['company']
+        location = json_data['location']
+        description = json_data['description']
+
+        # Verify that category is right
+        if category in Job.CATEGORIES:
+            # Verify that type is right
+            if job_type in Job.TYPES:
+                job = Job(position=position, 
+                        job_type=job_type, 
+                        category=category, 
+                        company=company, 
+                        location=location,
+                        description=description)
+                job.save()
+                return JsonResponse({'success':'You have successfully added a job to the database'})
+            else: 
+                return JsonResponse({'error': 'Wrong Type'}, status=400)    
+        else:
+            return JsonResponse({'error': 'Wrong Category'}, status=400)    
 
 class ProfileQuestionView(TemplateView):
     """

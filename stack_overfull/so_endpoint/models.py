@@ -3,6 +3,24 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 # Create your models here.
+
+class Job(models.Model):
+    job_id = models.IntegerField(primary_key=True)
+    position = models.CharField(max_length=48, null=False, default=None)
+    TYPES = ['Full-time', 'Part-time', 'Internship', 'Contract', 'Temporary', 'Trainee']
+    job_type = models.CharField(max_length=48, null=False, default=None)
+    CATEGORIES = ['photography', 'architechture', 'music', 'theatre', 'receptionist',
+        'coordinator', 'payroll_administrator', 'sales_representative', 'accountant',
+        'marketing', 'computer_science', 'software_engineering', 'mechanical_engineering',
+        'electrical_engineering', 'industrial_engineering', 'tutor', 'elementary_school_teacher',
+        'highschool_teacher', 'cegep_teacher', 'university_teacher', 'biology', 'chemistry',
+        'physics', 'sociology', 'geoscience']
+    category = models.CharField(max_length=48, null=False, default=None)
+    company = models.CharField(max_length=48, null=False, default=None)
+    location = models.CharField(max_length=84, null=False, default=None)
+    description = models.TextField()
+    date_posted = models.DateTimeField(auto_now_add=True)
+
 class Question(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     question_head = models.CharField(max_length=128, null=True, default=None)

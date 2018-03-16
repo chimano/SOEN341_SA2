@@ -20,44 +20,72 @@ export function getApiQuestion(order, limit, sort) {
   });
 }
 
+//get the list of jobs given the category and subcategory
+export function getApiJob(category) {
+  return axios.get("/api/job/",
+    {
+      params: {
+        category: category
+      }
+    });
+}
+
+export function postApiJob(
+  position,
+  job_type,
+  category,
+  company,
+  location,
+  description
+) {
+  return axios.post("/api/job/", {
+    position: position,
+    job_type: job_type,
+    category: category,
+    company: company,
+    location: location,
+    description: description
+  });
+}
+
 export function monthToText(monthRaw) {
-  switch(monthRaw){
-    case '01':
+  switch (monthRaw) {
+    case "01":
       return "January";
-    case '02':
+    case "02":
       return "February";
-    case '03':
+    case "03":
       return "March";
-    case '04':
+    case "04":
       return "April";
-    case '05':
+    case "05":
       return "May";
-    case '06':
+    case "06":
       return "June";
-    case '07':
+    case "07":
       return "July";
-    case '08':
+    case "08":
       return "August";
-    case '09':
+    case "09":
       return "September";
-    case '10':
+    case "10":
       return "October";
-    case '11':
+    case "11":
       return "November";
-    case '12':
+    case "12":
       return "December";
     default:
       return "error";
   }
-};
+}
 
 export function dayFormat(dayRaw) {
-  switch(dayRaw) {
-    case '01':
+  switch (dayRaw) {
+    case "01":
       return "st";
-    case '02':
+    case "02":
       return "nd";
-    case '03':
+    case "03":
       return "rd";
     default:
       return "th";
@@ -83,7 +111,7 @@ export function formatDate(dateRaw) {
    *
    *  If month returns "error", then show the raw date
    */
-  if(month !== "error") {
+  if (month !== "error") {
     return month + " " + dayRaw + daySuffix + " " + year + " " + time;
   } else {
     return dateRaw;
@@ -131,7 +159,7 @@ export function voteAnswer(vote_type, a_id) {
 
 //vote on question, return updated value of points
 //vote_type either "UP" or "DOWN"
-export function voteQuestion(vote_type, q_id){
+export function voteQuestion(vote_type, q_id) {
   return axios.post("api/question/vote/", {
     vote_type: vote_type,
     q_id: q_id
@@ -195,7 +223,7 @@ export function getApiSearch(
       order: order,
       limit: limit,
       sort: sort,
-      filters : filters
+      filters: filters
     }
   });
 }
