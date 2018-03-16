@@ -696,14 +696,13 @@ class JobView(TemplateView):
         """
         Extracts GET request parameters
         """
-        try:
-            category = request.GET.get('category', 0)
-            # get list of job that are in the requested category
-            job_list = Job.objects.filter(category=category)
-            serialized = JobSerializer(job_list, many=True).data
-            return JsonResponse({'job_list': serialized})
-        except Job.DoesNotExist:
-            return JsonResponse({'error': 'This category does not exist'}, status=400)    
+        category = request.GET.get('category', 0)
+        if category not in Job.CATEGORIES:
+            return JsonResponse({'error': 'Invalid Category'}, status=400) 
+        # get list of job that are in the requested category
+        job_list = Job.objects.filter(category=category)
+        serialized = JobSerializer(job_list, many=True).data
+        return JsonResponse({'job_list': serialized})   
     
     def post(self, request):
         # Extracts job info from request
@@ -724,7 +723,9 @@ class JobView(TemplateView):
         # Verify that description has at least 50 characters
         if len(description) < 50:
             return JsonResponse({'error': 'The description has to be longer than 50 characters'}, status=400)  
-
+        # Verify that length of other input to be bigger than 0
+        if len(position) < 1 or len(job_type) < 1 or len(category) < 1 or len(company) < 1 or len(location) < 1:
+            return JsonResponse({'error': 'No Input can be empty'}, status=400)  
         job = Job(position=position, 
                 job_type=job_type, 
                 category=category, 
