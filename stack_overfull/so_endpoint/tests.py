@@ -598,6 +598,8 @@ class AnswerVoteViewTest(TestCase):
         Answer.objects.create(id=1, answer_text="Test answer", question_id=question, user_id=user1)
         Answer.objects.create(id=2, answer_text="Test answer2", question_id=question, user_id=user1)
         Answer.objects.create(id=3, answer_text="Test answer3", question_id=question, user_id=user2)
+        Answer.objects.create(id=4, answer_text="Test answer4", question_id=question, user_id=user1)
+        Answer.objects.create(id=5, answer_text="Test answer5", question_id=question, user_id=user1)
 
 
     def test_valid_answer_upvote_post(self):
@@ -617,7 +619,7 @@ class AnswerVoteViewTest(TestCase):
             content_type='application/json'
         )
         self.assertEqual(response.status_code, 200)
-        self.assertTrue('sucess' in response.json())
+        self.assertTrue('success' in response.json())
 
     def test_valid_answer_downvote_post(self):
         #Sends a valid downvote
@@ -636,7 +638,7 @@ class AnswerVoteViewTest(TestCase):
             content_type='application/json'
         )
         self.assertEqual(response.status_code, 200)
-        self.assertTrue('sucess' in response.json())
+        self.assertTrue('success' in response.json())
 
     def test_doubledownvote_post(self):
         #Sends a valid downvote
@@ -725,6 +727,71 @@ class AnswerVoteViewTest(TestCase):
         )
         self.assertEqual(response.status_code, 400)
         self.assertTrue('error' in response.json())
+    
+    def test_updown_vote(self):
+        #Tests a user downvoting a question they
+        #previously upvoted
+        self.client.post(
+            '/api/user/login/',
+            data=json.dumps(self.login_info[1]),
+            content_type='application/json'
+        )
+        json_payload = json.dumps({
+            "a_id": "4",
+            "vote_type": "UP"
+        })
+
+        response = self.client.post(
+            '/api/answer/vote/',
+            data=json_payload,
+            content_type='application/json'
+        )
+        json_payload = json.dumps({
+            "a_id": "4",
+            "vote_type": "DOWN"
+        })
+        response = self.client.post(
+            '/api/answer/vote/',
+            data=json_payload,
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('success' in response.json())
+        self.assertEqual(-1, response.json()['points'])
+
+    def test_downup_vote(self):
+        #Tests a user upvoting a question they
+        #previously downvoted
+        self.client.post(
+            '/api/user/login/',
+            data=json.dumps(self.login_info[1]),
+            content_type='application/json'
+        )
+        json_payload = json.dumps({
+            "a_id": "5",
+            "vote_type": "DOWN"
+        })
+
+        response = self.client.post(
+            '/api/answer/vote/',
+            data=json_payload,
+            content_type='application/json'
+        )
+        json_payload = json.dumps({
+            "a_id": "5",
+            "vote_type": "UP"
+        })
+        response = self.client.post(
+            '/api/answer/vote/',
+            data=json_payload,
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('success' in response.json())
+        self.assertEqual(1, response.json()['points'])
+
+
 
     @classmethod
     def tearDownClass(cls):
@@ -749,6 +816,8 @@ class QuestionVoteViewTest(TestCase):
         Question.objects.create(id=1,question_head="Test Question?", question_text="Test Body?", user_id=u1)
         Question.objects.create(id=2,question_head="Test Question?2", question_text="Test Body?2", user_id=u1)
         Question.objects.create(id=3,question_head="Test Question?3", question_text="Test Body?3", user_id=u2)
+        Question.objects.create(id=4,question_head="Test Question?4", question_text="Test Body?4", user_id=u1)
+        Question.objects.create(id=5,question_head="Test Question?5", question_text="Test Body?5", user_id=u1)
 
 
     def test_valid_question_upvote_post(self):
@@ -768,7 +837,7 @@ class QuestionVoteViewTest(TestCase):
             content_type='application/json'
         )
         self.assertEqual(response.status_code, 200)
-        self.assertTrue('sucess' in response.json())
+        self.assertTrue('success' in response.json())
 
     def test_valid_question_downvote_post(self):
         #Sends a valid downvote
@@ -787,7 +856,7 @@ class QuestionVoteViewTest(TestCase):
             content_type='application/json'
         )
         self.assertEqual(response.status_code, 200)
-        self.assertTrue('sucess' in response.json())
+        self.assertTrue('success' in response.json())
 
     def test_doubledownvote_question_post(self):
         #Sends a valid downvote
@@ -877,6 +946,69 @@ class QuestionVoteViewTest(TestCase):
         )
         self.assertEqual(response.status_code, 400)
         self.assertTrue('error' in response.json())
+    
+    def test_updown_vote(self):
+        #Tests a user downvoting a question they
+        #previously upvoted
+        self.client.post(
+            '/api/user/login/',
+            data=json.dumps(self.login_info[1]),
+            content_type='application/json'
+        )
+        json_payload = json.dumps({
+            "q_id": "4",
+            "vote_type": "UP"
+        })
+
+        response = self.client.post(
+            '/api/question/vote/',
+            data=json_payload,
+            content_type='application/json'
+        )
+        json_payload = json.dumps({
+            "q_id": "4",
+            "vote_type": "DOWN"
+        })
+        response = self.client.post(
+            '/api/question/vote/',
+            data=json_payload,
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('success' in response.json())
+        self.assertEqual(-1, response.json()['points'])
+
+    def test_downup_vote(self):
+        #Tests a user upvoting a question they
+        #previously downvoted
+        self.client.post(
+            '/api/user/login/',
+            data=json.dumps(self.login_info[1]),
+            content_type='application/json'
+        )
+        json_payload = json.dumps({
+            "q_id": "5",
+            "vote_type": "DOWN"
+        })
+
+        response = self.client.post(
+            '/api/question/vote/',
+            data=json_payload,
+            content_type='application/json'
+        )
+        json_payload = json.dumps({
+            "q_id": "5",
+            "vote_type": "UP"
+        })
+        response = self.client.post(
+            '/api/question/vote/',
+            data=json_payload,
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('success' in response.json())
+        self.assertEqual(1, response.json()['points'])
 
 
     @classmethod

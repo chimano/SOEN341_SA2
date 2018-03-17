@@ -460,7 +460,7 @@ class AnswerVoteView(TemplateView):
                 # It should never come to this section
                 print("Answer has no user")
             answer.save()
-            return JsonResponse({'sucess': 'Upvoted the answer',
+            return JsonResponse({'success': 'Upvoted the answer',
                                  'points': answer.points}, status=200)
 
         elif vote_type == "DOWN":
@@ -489,7 +489,7 @@ class AnswerVoteView(TemplateView):
             except AttributeError:
                 print("Answer has no user")
             answer.save()
-            return JsonResponse({'sucess': 'Downvoted the answer',
+            return JsonResponse({'success': 'Downvoted the answer',
                                  'points': answer.points}, status=200)
 
 
@@ -551,7 +551,7 @@ class QuestionVoteView(TemplateView):
             except AttributeError:
                 print("Question has no user")
             question.save()
-            return JsonResponse({'sucess': 'Upvoted the question',
+            return JsonResponse({'success': 'Upvoted the question',
                                  'points': question.points}, status=200)
 
         elif vote_type == "DOWN":
@@ -579,7 +579,7 @@ class QuestionVoteView(TemplateView):
             except AttributeError:
                 print("Question has no user")
             question.save()
-            return JsonResponse({'sucess': 'Downvoted the question',
+            return JsonResponse({'success': 'Downvoted the question',
                                  'points': question.points}, status=200)
 
 
