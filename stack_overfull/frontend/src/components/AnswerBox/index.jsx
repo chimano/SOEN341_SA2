@@ -2,10 +2,16 @@ import React from "react";
 import "./index.css";
 import { QuestionBox } from "../QuestionBox";
 import { AcceptRejectButton, VotingButtons } from "../../components";
-import { formatDate } from "../../utils/api";
+
+import {
+  formatDate,
+  getApiUserMe
+} from "../../utils/api";
+
 import { Divider } from "antd";
 
 export class AnswerBox extends React.Component {
+  
   render() {
     const {
       handleAccept,
@@ -13,7 +19,9 @@ export class AnswerBox extends React.Component {
       handleDownvoteButton,
       handleUpvoteButton,
       verified,
-      x
+      x,
+      upvoted,
+      downvoted
     } = this.props;
 
     console.log("verified: ", verified);
@@ -40,6 +48,8 @@ export class AnswerBox extends React.Component {
               handleUpvoteButton={handleUpvoteButton}
               id={x.id}
               points={x.points}
+              upvoted={upvoted}
+              downvoted={downvoted}
             />
           </div>
           <Divider />
