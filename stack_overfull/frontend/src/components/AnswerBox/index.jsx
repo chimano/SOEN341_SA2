@@ -4,10 +4,12 @@ import {QuestionBox} from "../QuestionBox";
 import { AcceptRejectButton, VotingButtons } from "../../components";
 
 import {
-  formatDate
+  formatDate,
+  getApiUserMe
 } from "../../utils/api";
 
 export class AnswerBox extends React.Component {
+  
   render() {
     
     const {
@@ -16,7 +18,9 @@ export class AnswerBox extends React.Component {
       handleDownvoteButton,
       handleUpvoteButton,
       verified,
-      x
+      x,
+      upvoted,
+      downvoted
     } = this.props;
 
     console.log("verified: ",verified);
@@ -46,6 +50,8 @@ export class AnswerBox extends React.Component {
               handleUpvoteButton={handleUpvoteButton}
               id={x.id}
               points={x.points}
+              upvoted={upvoted}
+              downvoted={downvoted}
             />
             {verified ? (
               <AcceptRejectButton

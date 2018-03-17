@@ -23,7 +23,8 @@ export class AnswerPage extends React.Component {
       rejected_answers_ids: [],
       verified: false,
       q_user: "",
-      
+      downvoted_answers_id: [],
+      upvoted_answers_id: []
     };
   }
 
@@ -36,6 +37,7 @@ export class AnswerPage extends React.Component {
     console.log("received props");
     this.getAnswerList();
     this.verifyUserAccess();
+    this.getUserVotes();
   };
 
   verifyUserAccess = () => {
@@ -64,6 +66,19 @@ export class AnswerPage extends React.Component {
         verified: false
       });
     }
+  };
+
+  // For more responsive voting buttons
+  getUserVotes = () => {
+    getApiUserMe()
+      .then(response => {
+        console.log("response of getApiUserMe(): ", response);
+        this.setState({
+          downvoted_answers_id: response.data.profile.downvoted_answers,
+          upvoted_answers_id: response.data.profile.upvoted_answers
+        });
+      })
+      .catch(error => console.log(error));
   };
 
   getQuestion = () => {
@@ -124,12 +139,14 @@ export class AnswerPage extends React.Component {
     console.log("ID IS: " + id);
     this.upvoteAnswer(id);
     setTimeout(() => this.getAnswerList(), 500);
+    setTimeout(() => this.getUserVotes(), 500);
   };
 
   handleDownvoteButton = id => {
     console.log("ID IS: " + id);
     this.downvoteAnswer(id);
     setTimeout(() => this.getAnswerList(), 500);
+    setTimeout(() => this.getUserVotes(), 500);
   };
 
   upvoteAnswer = id => {
@@ -159,12 +176,22 @@ export class AnswerPage extends React.Component {
   };
 
   render() {
-    const { question, answerList, q_user } = this.state;
-    const { logged_in, username } = this.props;
+    const { 
+      question, 
+      answerList, 
+      q_user,
+      downvoted_answers_id,
+      upvoted_answers_id,
+     } = this.state;
+    
+     const { logged_in, username } = this.props;
     const q_id = this.props.match.params.id;
 
     console.log("State of AnswerPage: ", this.state);
     console.log("# OF ANSWERS: " + answerList.length);
+    console.log("Number of downvoted answers: "+downvoted_answers_id.length);
+    console.log("Number of upvoted answers: "+upvoted_answers_id.length);
+
 
     let verified;
     if (logged_in && q_user === username) {
@@ -193,9 +220,20 @@ export class AnswerPage extends React.Component {
     let answerListBox = [];
     let acceptedAnswerKey;
 
+    let upvoted = false;
+    let downvoted = false;
+
+      console.log("!!"+ upvoted_answers_id);
     //add the accepted answer box first
     answerList.forEach((x, key) => {
+      console.log("!"+x.id);
       if (x.is_accepted) {
+        if (upvoted_answers_id.indexOf(x.id) != -1){
+          upvoted = true;
+        } 
+        if (downvoted_answers_id.indexOf(x.id) != -1){
+          downvoted = true;
+        }
         acceptedAnswerKey = key;
         answerListBox.push(
           <AnswerBox
@@ -206,6 +244,8 @@ export class AnswerPage extends React.Component {
             handleUpvoteButton={this.handleUpvoteButton}
             verified={verified}
             x={x}
+            upvoted={upvoted}
+            downvoted={downvoted}
           />
         );
       }
@@ -214,6 +254,12 @@ export class AnswerPage extends React.Component {
     //add the rest of the answerbox
     answerList.forEach((x, key) => {
       if (key !== acceptedAnswerKey) {
+        if (upvoted_answers_id.indexOf(x.id) != -1){
+          upvoted = true;
+        }
+        if (downvoted_answers_id.indexOf(x.id) != -1){
+          downvoted = true;
+        }
         answerListBox.push(
           <AnswerBox
             key={key}
@@ -223,6 +269,8 @@ export class AnswerPage extends React.Component {
             handleUpvoteButton={this.handleUpvoteButton}
             verified={verified}
             x={x}
+            upvoted={upvoted}
+            downvoted={downvoted}
           />
         );
       }

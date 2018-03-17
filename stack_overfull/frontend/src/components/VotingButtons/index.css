@@ -5,10 +5,17 @@
 
 .VotingButtons__button {
     min-width: 20px;
-    color: black;
     background: white;
     text-align: center;
     border:none;
+}
+
+.VotingButtons--selected {
+    color: rgb(31, 145, 221);
+}
+
+.VotingButtons--default {
+    color: black;
 }
 
 .VotingButtons__button:hover {
