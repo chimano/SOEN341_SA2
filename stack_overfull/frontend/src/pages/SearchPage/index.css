@@ -9,21 +9,26 @@
 .SearchPage__question-list-title {
     padding-top: 20px;
     font-size: 20px;
-    display: flex;
+    display: block;
 }
 
-.query{
+.SearchPage__search-filters-bar {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.query {
     font-weight: bold;
     width: 100%;
     display: flex;
 }
 
-.SearchPage__results{
+.SearchPage__results {
     width: 100%;
     display: flex;
 }
 
-.num-results{
+.num-results {
     font-weight: bold;
     width: 100%;
     padding-left: 10px;

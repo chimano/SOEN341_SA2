@@ -3,20 +3,26 @@ import "./index.css";
 import {
   QuestionList,
   QuestionEdit,
-  AskQuestionButton
+  AskQuestionButton,
+  SearchFiltersBar
 } from "../../components";
 import {
+  getApiSearch,
   getApiQuestion,
   postApiQuestion,
   postApiAnswer
 } from "../../utils/api";
+import { FilterTabs } from "../../components/FilterTabs/index";
 
 export class HomePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       showCreateQuestionBox: false,
-      questionList: []
+      questionList: [],
+      order: "desc",
+      currentFilters: [],
+      title: "All"
     };
   }
 
@@ -25,10 +31,10 @@ export class HomePage extends React.Component {
   };
 
   getQuestionList = () => {
-    getApiQuestion("desc", 36, "date_created")
+    getApiSearch("", "desc", 36, "date_created", this.state.currentFilters)
       .then(response => {
         console.log(
-          'response of getApiQuestion("desc", 36, "date_created")',
+          'response of getApiSearch("","desc",36,"date_created")',
           response
         );
         this.setState({
@@ -68,8 +74,36 @@ export class HomePage extends React.Component {
     this.setState({ showCreateQuestionBox: false });
   };
 
+  // onFiltersChange = selectedFilters => {
+  //   console.log(selectedFilters);
+  //   this.setState({
+  //     currentFilters: selectedFilters
+  //   });
+  //   setTimeout(() => this.getQuestionList(), 100);
+  // };
+
+  handleTabsChange = key => {
+    switch (key) {
+      case "1":
+        this.setState({
+          currentFilters: []
+        });
+        break;
+      case "2":
+        this.setState({
+          currentFilters: ["notanswered"]
+        });
+        break;
+      case "3":
+        this.setState({
+          currentFilters: ["notaccepted"]
+        });
+        break;
+    }
+    setTimeout(() => this.getQuestionList(), 100);
+  };
+
   render() {
-    console.log("HomePage state: ", this.state);
 
     const { showCreateQuestionBox, questionList } = this.state;
     const { username } = this.props;
@@ -90,8 +124,9 @@ export class HomePage extends React.Component {
     return (
       <div className="HomePage-wrapper">
         <div className="HomePage page-width">
+          <FilterTabs handleTabsChange={this.handleTabsChange} />
           <div className="HomePage__question-list-title">
-            <h3>TOP QUESTIONS</h3>
+            <h3>QUESTIONS</h3>
             <AskQuestionButton
               handleAskQuestionButton={this.handleAskQuestionButton}
             />

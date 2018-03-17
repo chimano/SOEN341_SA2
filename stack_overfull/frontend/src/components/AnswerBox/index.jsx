@@ -1,6 +1,6 @@
 import React from "react";
 import "./index.css";
-import {QuestionBox} from "../QuestionBox";
+import { QuestionBox } from "../QuestionBox";
 import { AcceptRejectButton, VotingButtons } from "../../components";
 
 import {
@@ -8,10 +8,11 @@ import {
   getApiUserMe
 } from "../../utils/api";
 
+import { Divider } from "antd";
+
 export class AnswerBox extends React.Component {
   
   render() {
-    
     const {
       handleAccept,
       handleReject,
@@ -23,7 +24,7 @@ export class AnswerBox extends React.Component {
       downvoted
     } = this.props;
 
-    console.log("verified: ",verified);
+    console.log("verified: ", verified);
 
     let answerBox_class;
     if (x.is_accepted) {
@@ -38,13 +39,10 @@ export class AnswerBox extends React.Component {
 
     return (
       <div>
-        <fieldset className={"AnswerBox " + answerBox_class}>
-          <legend className="AnswerBox__username"> {x.user_id.username} </legend>
-          <div className="AnswerBox__date">
-            {date}
-          </div>
-          <div className="AnswerBox__answer">{x.answer_text}</div>
-          <div className="AnswerBox__button-area">
+        <div className={`AnswerBox ${answerBox_class} shadow`}>
+          <div className="AnswerBox__row">
+            <div className="AnswerBox__answer">{x.answer_text}</div>
+
             <VotingButtons
               handleDownvoteButton={handleDownvoteButton}
               handleUpvoteButton={handleUpvoteButton}
@@ -53,19 +51,27 @@ export class AnswerBox extends React.Component {
               upvoted={upvoted}
               downvoted={downvoted}
             />
-            {verified ? (
-              <AcceptRejectButton
-                handleAccept={() => handleAccept(x.id)}
-                handleReject={() => handleReject(x.id)}
-                accepted={x.is_accepted}
-                rejected={x.is_rejected}
-                a_id={x.id}
-              />
-            ) : (
-              ""
-            )}
           </div>
-        </fieldset>
+          <Divider />
+          <div className="AnswerBox__row">
+            <div className="AnswerBox__button-area">
+              {verified ? (
+                <AcceptRejectButton
+                  handleAccept={() => handleAccept(x.id)}
+                  handleReject={() => handleReject(x.id)}
+                  accepted={x.is_accepted}
+                  rejected={x.is_rejected}
+                  a_id={x.id}
+                />
+              ) : (
+                ""
+              )}
+            </div>
+            <div className="AnswerBox__username">
+              Answered by&nbsp;<a>{x.user_id.username}</a>&nbsp;on {date}
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

@@ -4,13 +4,13 @@
 }
 
 .navbar-wrapper {
-    background-color: rgb(38, 18, 155);
+    background-color: #0161b5;
 }
 
 .navbar__title {
     min-width: 150px;
     font-size: 18px;
-    color: white;
+    color: black;
     margin: auto;
 }
 
@@ -23,7 +23,7 @@
 .navbar__button {
     min-width: 80px;
     border: none;
-    background-color: rgb(38, 18, 155);
+    background-color:#0161b5;
     color: white;
     cursor: pointer;
     outline: none;
@@ -37,11 +37,11 @@
 }
 
 .navbar__button:hover {
-    background-color: rgb(54, 33, 190);
+    background-color: #0074D9;
 }
 
 .navbar__profile-button:hover {
-    background-color: rgb(54, 33, 190);
+    background-color: #0074D9;
 }
 
 .navbar__auth {
@@ -56,4 +56,12 @@
     color: white;
     text-align: center;
     display: flex;
+}
+
+.navbar__buttons {
+    display: flex;
+}
+
+navbar__secondrow {
+    box-shadow: 0 1px 4px rgba(0,0,0,.22);
 }

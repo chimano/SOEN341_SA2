@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from so_endpoint.models import Question, Answer, Profile, Tag
+from so_endpoint.models import Question, Answer, Profile, Tag, Job
 from django.contrib.auth.models import User
 
 """
@@ -41,10 +41,17 @@ class TagViewSerializer(serializers.ModelSerializer):
 
 class QuestionSerializer(serializers.ModelSerializer):
     user_id = AccountSerializer(read_only=True)
+    answer_count = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Question
-        fields = ('id', 'user_id', 'question_head', 'question_text', 'accepted_answer_id', 'rejected_answers_ids', 'date_created', 'points', 'tags')
+        fields = ('id', 'user_id', 'question_head', 'question_text',
+                'accepted_answer_id', 'rejected_answers_ids', 'date_created',
+                'answer_count', 'points', 'tags')
+
+    def get_answer_count(self, question):
+        return len(question.answer_set.all())
+
 
 class AnswerSerializer(serializers.ModelSerializer):
     user_id = AccountSerializer(read_only=True)
@@ -62,3 +69,9 @@ class AnswerSerializer(serializers.ModelSerializer):
     def get_is_rejected(self, answer):
         try: return answer in answer.question_id.rejected_answers_ids.all()
         except: return False
+
+class JobSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Job
+        fields = ('job_id','position','job_type','category','company','location','description','date_posted')

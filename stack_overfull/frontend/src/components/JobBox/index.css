@@ -1,0 +1,43 @@
+.JobBox {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 15px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
+    margin: 10px 0 20px 0;
+    color: black;
+    border-radius: 10px;
+}
+
+.JobBox__position {
+    width: 50%;
+    display: flex;
+    font-weight: bold;
+    font-family: 'Oswald', sans-serif;
+    font-size: 22px;
+    color: #0074D9;
+    justify-content: flex-start;
+}
+
+.JobBox__company {
+    width: 50%;
+    display: flex;
+    font-weight: bold;
+    font-family: 'Oswald', sans-serif;
+    font-size: 15px;
+    text-align: center;
+    color: #0074D9;
+    justify-content: flex-end;
+}
+
+.JobBox__description {
+    width: 80%;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.JobBox__generalinfo {
+    width: 20%;
+    display: flex;
+    justify-content: flex-end;
+}

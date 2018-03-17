@@ -1,6 +1,7 @@
 .VotingButtons {
-    width: 100%;
     display: flex;
+    justify-content: flex-end;
+    margin-bottom: auto;
 }
 
 .VotingButtons__button {
@@ -8,6 +9,7 @@
     background: white;
     text-align: center;
     border:none;
+    font-size: 20px;
 }
 
 .VotingButtons--selected {

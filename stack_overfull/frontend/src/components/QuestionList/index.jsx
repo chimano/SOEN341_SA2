@@ -28,8 +28,8 @@ export class QuestionList extends React.Component {
     const { questionList } = this.props;
 
     return (
-      <div className="question-list-wrapper">
-        <div className="question-list">
+      <div className="page-width">
+        <div className="QuestionList">
           {questionList.map((question, key) => (
             <QuestionBox
               key={key}
@@ -42,6 +42,7 @@ export class QuestionList extends React.Component {
               points={question.points}
               handleDownvoteButton={this.handleDownvoteButton}
               handleUpvoteButton={this.handleUpvoteButton}
+              tags={question.tags}
               showButtons
             />
           ))}

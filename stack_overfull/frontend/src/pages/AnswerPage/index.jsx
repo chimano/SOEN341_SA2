@@ -1,6 +1,8 @@
 import React from "react";
 import "./index.css";
-import { AnswerBox } from "../../components";
+import { AnswerBox, TagList } from "../../components";
+import { formatDate } from "../../utils/api";
+import { Divider } from "antd";
 
 import {
   getApiQuestionById,
@@ -16,7 +18,19 @@ export class AnswerPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      question: "",
+      question: {
+        id: null,
+        user_id: {
+          username: ""
+        },
+        question_head: "",
+        question_text: "",
+        accepted_answer_id: null,
+        rejected_answers_ids: [],
+        date_created: "",
+        points: null,
+        tags: []
+      },
       answerList: [],
       answer: "",
       accepted_answer_id: "",
@@ -188,7 +202,6 @@ export class AnswerPage extends React.Component {
      const { logged_in, username } = this.props;
     const q_id = this.props.match.params.id;
 
-    console.log("State of AnswerPage: ", this.state);
     console.log("# OF ANSWERS: " + answerList.length);
     console.log("Number of downvoted answers: "+downvoted_answers_id.length);
     console.log("Number of upvoted answers: "+upvoted_answers_id.length);
@@ -280,29 +293,41 @@ export class AnswerPage extends React.Component {
     let questionBodyBox;
     if (question.question_text) {
       questionBodyBox = (
-        <p className="AnswerPage__question-body">{question.question_text}</p>
+        <div className="AnswerPage__question-body">
+          {question.question_text}
+        </div>
       );
     } else {
       questionBodyBox = "";
     }
 
+    let questionTags = "";
+    if (question.tags) {
+      questionTags = <TagList tags={question.tags} />;
+    }
+
+    let questionDate = "";
+    if (question.date_created) {
+      questionDate = formatDate(
+        question.date_created.replace("T", " at ").substring(0, 19)
+      );
+    }
+
     return (
       <div className="body-wrapper">
         <div className="page-width">
-          <div className="AnswerPage__question-creator">
-            <div className="AnswerPage__tags">
-            Tags
-            <br />
-            {question.tags}
+          <div className="AnswerPage__question-box">
+            <h1 className="AnswerPage__question-title">
+              {question.question_head}
+            </h1>
+            <div className="AnswerPage__tags">{questionTags}</div>
+            {questionBodyBox}
+            <Divider />
+            <div className="AnswerPage__question-creator">
+              Asked by <a>{q_user}</a> on {questionDate}
             </div>
           </div>
-          <h1 className="AnswerPage__question-title">
-            {question.question_head}
-          </h1>
-          {questionBodyBox}
-          <div className="AnswerPage__question-creator">
-            Asked by <a>{q_user}</a>
-          </div>
+
           <div className="AnswerPage__seperator" />
           {numberOfAnswersTitle}
           {answerListBox}

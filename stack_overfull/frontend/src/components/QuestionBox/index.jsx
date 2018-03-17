@@ -1,8 +1,9 @@
 import React from "react";
 import "./index.css";
 import { Link } from "react-router-dom";
-import { VotingButtons } from "../../components";
+import { VotingButtons, TagList } from "../../components";
 import { formatDate } from "../../utils/api";
+import { Divider } from "antd";
 
 export class QuestionBox extends React.Component {
   handleChange = event => {
@@ -18,18 +19,19 @@ export class QuestionBox extends React.Component {
       points,
       handleUpvoteButton,
       handleDownvoteButton,
-      showButtons
+      showButtons,
+      tags
     } = this.props;
 
     let date = formatDate(date_created);
 
     return (
-      <div className="question-box">
+      <div className="QuestionBox">
         <div style={{ display: "flex" }}>
-          <div className="question-box__user">
-            Asked by {username} on {date}{" "}
-          </div>
-          <div className="question-box__points">
+          <Link to={`/question/${q_id}`} className="QuestionBox__text">
+            {question_head}
+          </Link>
+          <div className="QuestionBox__points">
             {showButtons ? (
               <VotingButtons
                 handleDownvoteButton={handleDownvoteButton}
@@ -42,12 +44,13 @@ export class QuestionBox extends React.Component {
             )}
           </div>
         </div>
-        <div className="question-box__line" />
-        <Link to={`/question/${q_id}`} className="question-box__text">
-          {question_head}
-        </Link>
-        {/* <div className="question-box__line" /> */}
-        {/* <div className="question-box__date">{date}</div> */}
+        <Divider />
+        <div style={{ display: "flex" }}>
+          <TagList tags={tags} />
+          <div className="QuestionBox__user">
+            Asked by {username} on {date}{" "}
+          </div>
+        </div>
       </div>
     );
   }

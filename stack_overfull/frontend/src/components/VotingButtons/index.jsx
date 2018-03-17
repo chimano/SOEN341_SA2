@@ -1,6 +1,6 @@
 import React from "react";
 import "./index.css";
-import {Icon} from 'antd';
+import { Icon } from "antd";
 
 export class VotingButtons extends React.Component {
   render() {
@@ -36,14 +36,18 @@ export class VotingButtons extends React.Component {
 
     return (
       <div className="VotingButtons">
-        <button className={"VotingButtons__button "+button_class_DOWN+" button"} onClick={() => handleDownvoteButton(id)}>
-        <Icon type="minus" />
+        <button 
+          className={"VotingButtons__button "+button_class_DOWN+" button"} 
+          onClick={() => handleDownvoteButton(id)}>
+          <Icon type="minus" />
         </button>
         <div className="VotingButtons__votes">
           <div className="VotingButtons__votes__text">{points}&nbsp;</div>
         </div>
-        <button className={"VotingButtons__button "+button_class_UP+" button"} onClick={() => handleUpvoteButton(id)}>
-        <Icon type="plus" />
+        <button 
+          className={"VotingButtons__button "+button_class_UP+" button"} 
+          onClick={() => handleUpvoteButton(id)}>
+            <Icon type="plus" />
         </button>
       </div>
     );

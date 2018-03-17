@@ -16,7 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.generic import TemplateView
-from so_endpoint.views import *
+from so_endpoint.views import (QuestionView, QuestionVoteView, AnswerView,
+                              AnswerVoteView, AnswerAcceptView, AnswerRejectView,
+                              UserLoginView, UserRegisterView, UserLogoutView,
+                              UserView, UserMeView, UserNameView, ProfileQuestionView,
+                              SearchView, TagView, JobView)
 
 urlpatterns = [
     re_path(r'^question/$', QuestionView.as_view()),
@@ -38,7 +42,9 @@ urlpatterns = [
     # Get a specific user by username ex. api/user/name/TestUser/
     # Usernames may contain alphanumeric, _, @, +, . and - characters.
     re_path(r'^user/name/(?P<username>[\w_@\+\.\-]+)/$', UserNameView.as_view()),
-
+    re_path(r'^user/name/(?P<username>[\w_@\+\.\-]+)/questions/$', ProfileQuestionView.as_view()),
     re_path(r'^search/$', SearchView.as_view()),
-    re_path(r'^tag/$', TagView.as_view())
+    re_path(r'^tag/$', TagView.as_view()),
+
+    re_path(r'^job/$', JobView.as_view()),
 ]
