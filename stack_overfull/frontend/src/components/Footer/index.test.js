@@ -11,13 +11,13 @@ describe("<Footer />", () => {
     expect(component).toHaveLength(1);
   });
 
-  it("has 4 unordered list", () => {
+  it("has 3 unordered list", () => {
     const component = shallow(<Footer />);
-    expect(component.find(".footer").children()).toHaveLength(4);
+    expect(component.find(".footer").children()).toHaveLength(3);
   });
 
   it("has a list with h3 title equal \"Questions\"", () => {
     const component = shallow(<Footer />);
-    expect(component.contains(<h3>Questions</h3>)).toEqual(true);
+    expect(component.contains(<h3>Questions</h3>)).toEqual(false);
   });
 });
