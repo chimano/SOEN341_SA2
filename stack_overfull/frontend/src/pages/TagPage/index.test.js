@@ -10,7 +10,7 @@ describe("<TagPage />", () => {
 
   beforeEach(() => {
     component = shallow(
-      <TagPage />
+      <TagPage match={{ params: { tags: 1 }}}/>
     );
   });
 

@@ -1,7 +1,10 @@
 import React from "react";
+import { Tag } from "antd";
+import { Link } from "react-router-dom";
 import "./index.css";
 import {
   QuestionList,
+  HottestTagList
 } from "../../components";
 import {
   getApiQuestion,
@@ -110,7 +113,7 @@ export class TagPage extends React.Component {
   render() {
     console.log("TagPage state: ", this.state);
 
-    const { questionList, filters } = this.state;
+    const { questionList, filters, tagname = this.props.match.params.tags, mostUsedTagsList} = this.state;
 
     let resultsHeaderText = questionList.length
     ? "Here are the questions found with the selected tag"
@@ -119,9 +122,15 @@ export class TagPage extends React.Component {
     return (
         <div className="TagPage-wrapper">
           <div className="TagPage page-width">
-            <h2 className="TagPage__question-list-title">Search</h2>
+            <h3 className="TagPage__question-list-title">
+            <div className="TagPage__question-list-title">
+              <Tag className="TagPage__tag" color="#108ee9">
+                <Link to={`/tags/${tagname}`}>{tagname}</Link>
+              </Tag>
+              TAG PAGE
+            </div>
+            </h3>
             <h3 className="TagPage__results">{resultsHeaderText}</h3>
-
             <QuestionList
             questionList={questionList}
             getQuestionList={this.getQuestionList}

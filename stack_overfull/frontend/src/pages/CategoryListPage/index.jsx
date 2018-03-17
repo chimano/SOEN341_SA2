@@ -1,11 +1,28 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Tag } from "antd";
 import "./index.css";
+import {
+  QuestionList,
+  HottestTagList,
+} from "../../components";
+import {
+  getApiTags,
+} from "../../utils/api";
+import qs from "qs";
+
 
 export class CategoryListPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      questionList: [],
+      order: "desc",
+      title: "All",
+      filters: [""],
+      tagInfo: {},
+      mostUsedTagsList: [],
+
       categoryList: [
         "business",
         "cooking",
@@ -15,20 +32,47 @@ export class CategoryListPage extends React.Component {
         "social",
         "technology"
       ],
-
-      hottestTags: [
-        "python",
-        "react",
-        "django",
-        "school",
-        "concordia",
-        "internship",
-      ],
-
     };
   }
+
+  componentWillMount = () => {
+    this.getMostUsedTagsList();
+  };
+
+  getMostUsedTagsList = () => {
+
+    getApiTags("desc", "10", "question_count")
+      .then(response => {
+        console.log(
+          'response of getApiTags("desc", 10, "question_count")',
+          response
+        );
+
+        let mostUsedTagsList = []
+        //collect tag names from the api response
+        response.data.tag_list.forEach(tagInfo => {
+            mostUsedTagsList.push(tagInfo.tag_text)
+        })
+
+        this.setState({
+          mostUsedTagsList: mostUsedTagsList
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
   render() {
-    const { categoryList, hottestTags } = this.state;
+    console.log("CategoryListPage state: ", this.state);
+
+    const { categoryList, filters, tagname = this.props.match.params.tags, mostUsedTagsList} = this.state;
+
+    let hottestTags = "";
+    if (mostUsedTagsList) {
+      hottestTags = <HottestTagList hotTags={mostUsedTagsList} />;
+    }
+
     return (
       <header>
         <nav>
@@ -47,14 +91,22 @@ export class CategoryListPage extends React.Component {
             <ul className="bubbles">
               {categoryList.map((category, key) => (
                 <li key={key}>
-                  <Link
-                    to={`/tags/${category}`}
-                    style={{ color: "rgb(38, 18, 155)" }}
-                  >
-                    {category}
-                  </Link>
+                  <Tag key={key} color="#108ee9">
+                    <Link to={`/tags/${category}`}>{category}</Link>
+                  </Tag>
                 </li>
               ))}
+            </ul>
+          </div>
+
+            <h3 className="welcomeTitle2">
+            <br />
+              HOTTEST TAGS
+            </h3>
+
+          <div className="categoryBox">
+            <ul className="bubbles">
+            {hottestTags}
             </ul>
           </div>
    

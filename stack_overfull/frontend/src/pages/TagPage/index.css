@@ -8,11 +8,16 @@
 
 .TagPage__question-list-title {
     padding-top: 20px;
-    font-size: 20px;
+    font-size: 18px;
     display: block;
+    font-weight: 600;
 }
 
 .TagPage__results {
     width: 100%;
     display: flex;
+}
+
+.TagPage__tag {
+    font-weight: 400;
 }
