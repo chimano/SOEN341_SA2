@@ -4,7 +4,7 @@
 }
 
 .navbar-wrapper {
-    background-color: rgb(38, 18, 155);
+    background-color: #0161b5;
 }
 
 .navbar__title {
@@ -23,7 +23,7 @@
 .navbar__button {
     min-width: 80px;
     border: none;
-    background-color: rgb(38, 18, 155);
+    background-color:#0161b5;
     color: white;
     cursor: pointer;
     outline: none;
@@ -37,11 +37,11 @@
 }
 
 .navbar__button:hover {
-    background-color: rgb(54, 33, 190);
+    background-color: #0074D9;
 }
 
 .navbar__profile-button:hover {
-    background-color: rgb(54, 33, 190);
+    background-color: #0074D9;
 }
 
 .navbar__auth {
