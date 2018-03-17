@@ -15,9 +15,9 @@ from django.db.models import Count
 
 from so_endpoint.serializers import (QuestionSerializer, AnswerSerializer,
                                      AccountSerializerPrivate, AccountSerializerPublic,
-                                     TagViewSerializer, JobSerializer)
+                                     TagViewSerializer, JobSerializer, JobAppSerializer)
 
-from so_endpoint.models import Question, Answer, Profile, Tag, Job
+from so_endpoint.models import Question, Answer, Profile, Tag, Job, JobApp
 
 
 
@@ -785,34 +785,92 @@ class JobView(TemplateView):
     
     def post(self, request):
         # Extracts job info from request
-        json_data = json.loads(request.body)
-        position = json_data['position']
-        job_type = json_data['job_type']
-        category = json_data['category']
-        company = json_data['company']
-        location = json_data['location']
-        description = json_data['description']
+        try:
+            json_data = json.loads(request.body)
+            position = json_data['position']
+            job_type = json_data['job_type']
+            category = json_data['category']
+            company = json_data['company']
+            location = json_data['location']
+            description = json_data['description']
 
-        # Verify that category is right
-        if category not in Job.CATEGORIES:
-            return JsonResponse({'error': 'Wrong Category'}, status=400)  
-        # Verify that type is right
-        if job_type not in Job.TYPES:
-            return JsonResponse({'error': 'Wrong Type'}, status=400)  
-        # Verify that description has at least 50 characters
-        if len(description) < 50:
-            return JsonResponse({'error': 'The description has to be longer than 50 characters'}, status=400)  
-        # Verify that length of other input to be bigger than 0
-        if len(position) < 1 or len(job_type) < 1 or len(category) < 1 or len(company) < 1 or len(location) < 1:
-            return JsonResponse({'error': 'No Input can be empty'}, status=400)  
-        job = Job(position=position, 
-                job_type=job_type, 
-                category=category, 
-                company=company, 
-                location=location,
-                description=description)
-        job.save()
-        return JsonResponse({'success':'You have successfully added a job to the database'})
+            # Verify that category is right
+            if category not in Job.CATEGORIES:
+                return JsonResponse({'error': 'Wrong Category'}, status=400)  
+            # Verify that type is right
+            if job_type not in Job.TYPES:
+                return JsonResponse({'error': 'Wrong Type'}, status=400)  
+            # Verify that description has at least 50 characters
+            if len(description) < 50:
+                return JsonResponse({'error': 'The description has to be longer than 50 characters'}, status=400)  
+            # Verify that length of other input to be bigger than 0
+            if len(position) < 1 or len(job_type) < 1 or len(category) < 1 or len(company) < 1 or len(location) < 1:
+                return JsonResponse({'error': 'No Input can be empty'}, status=400)  
+            if request.user.profile.is_employer:
+                job = Job(position=position, 
+                        job_type=job_type, 
+                        category=category, 
+                        company=company, 
+                        location=location,
+                        description=description,
+                        posted_by=request.user)
+                job.save()
+                return JsonResponse({'success':'You have successfully added a job to the database'})
+                
+            return JsonResponse({'error':'This account is not an employer'}, status=400)
+        except KeyError:
+            return JsonResponse({'error':'There was an error parsing the request'}, status=400)
+
+
+class JobAppView(TemplateView):
+    """
+    This view handles the /api/job/ endpoint
+    It returns a list of jobs
+    """
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request):
+        """
+        Extracts GET request parameters
+        """
+        try:
+            job_id = request.GET['job_id']
+            job = Job.objects.get(job_id=job_id)
+
+            if request.user != job.posted_by:
+                return JsonResponse({'error': 'Cannot view postings of a job you did not post'},
+                                    status=400)
+
+            applications = JobApp.objects.filter(job_id=job)
+            # get list of job that are in the requested category
+            serialized_applications = JobAppSerializer(applications, many=True).data
+
+            return JsonResponse({'application_list': serialized_applications})
+        except Job.DoesNotExist:
+            return JsonResponse({'error': 'Job does not exist'}, status=400)
+    
+    def post(self, request):
+        """
+        This handles the post request and creates a job application
+        with it
+        """
+        # Extracts job application info from request
+        try:
+            json_data = json.loads(request.body)
+            job_id = json_data['job_id']
+            user = request.user
+            if not user.is_authenticated:
+                return JsonResponse({'error': 'User is not authenticated'}, status=400)
+            job = Job.objects.get(job_id=job_id)
+            JobApp.objects.create(job_id=job, user_id=user)
+            return JsonResponse({'success': 'Application was successfully created'})
+        except Job.DoesNotExist:
+            return JsonResponse({'error': 'Job id is not valid'}, status=400)
+
+        
+
 
 class ProfileQuestionView(TemplateView):
     """
