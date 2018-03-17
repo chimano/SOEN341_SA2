@@ -32,6 +32,7 @@ export class AnswerPage extends React.Component {
     this.getQuestion();
     this.verifyUserAccess();
     this.getAnswerList();
+    this.getUserVotes();
   };
   componentWillReceiveProps = () => {
     console.log("received props");
