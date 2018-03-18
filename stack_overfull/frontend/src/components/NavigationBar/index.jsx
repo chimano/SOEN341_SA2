@@ -66,7 +66,7 @@ export class NavigationBar extends React.Component {
       <div className="navbar-wrapper shadow">
         <div className="navbar page-width">
           <div className="navbar__title">
-            <Link to="/" style={{ color: "black" }}>
+            <Link to="/" style={{ color: "white" }}>
               Stack Overfull
             </Link>
           </div>
