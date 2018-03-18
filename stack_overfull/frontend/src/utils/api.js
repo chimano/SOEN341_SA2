@@ -165,7 +165,7 @@ export function voteAnswer(vote_type, a_id) {
 //vote on question, return updated value of points
 //vote_type either "UP" or "DOWN"
 export function voteQuestion(vote_type, q_id) {
-  return axios.post("api/question/vote/", {
+  return axios.post("/api/question/vote/", {
     vote_type: vote_type,
     q_id: q_id
   });
