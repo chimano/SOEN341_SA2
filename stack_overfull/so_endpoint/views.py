@@ -66,6 +66,8 @@ class QuestionView(TemplateView):
         """
         Extracts GET request parameters
         """
+
+        page = request.GET.get('page', 1)
         limit = request.GET.get('limit', 10)
         q_id = request.GET.get('id', None)
         order = request.GET.get('order', 'desc')
@@ -74,16 +76,26 @@ class QuestionView(TemplateView):
 
         if q_id is None:
             # If q_id is not set then it returns a list of questions
+            page = 1  if page is None else int(page)
             limit = 10 if limit is None else int(limit)
             order = "desc" if order is None else order
             modifier = '-' if order == 'desc' else ''
 
             questions = Question.objects.all()
             questions = filter_questions_by_tags(questions, tags)
-            questions = questions.order_by(modifier + sorted_by)[:limit]
+            questions = questions.order_by(modifier + sorted_by)
 
-            serialized = QuestionSerializer(questions, many=True).data
-            return JsonResponse({'question_list': serialized})
+            total_items = questions.count()
+            paginated = paginate(questions, limit, page)
+            serialized = QuestionSerializer(paginated, many=True).data
+
+            response = {
+                'question_list': serialized,
+                'total_items': total_items,
+                'page': page
+            }
+
+            return JsonResponse(response)
 
         # Returns a single question
         try:
@@ -598,11 +610,13 @@ class SearchView(TemplateView):
     def get(self, request):
         try:
             query = request.GET.get('q', '')
+            page = request.GET.get('page', 1)
             limit = request.GET.get('limit', 10)
             order = request.GET.get('order', 'desc')
             sorted_by = request.GET.get('sort', 'date_created')
             filters = request.GET.getlist('filters[]', list())
 
+            page = int(page)
             limit = int(limit)
             modifier = '-' if order == "desc" else ''
 
@@ -667,10 +681,19 @@ class SearchView(TemplateView):
                 matching_questions = matching_questions.difference( accepted_set )
 
             matching_questions = matching_questions.order_by(
-                modifier+sorted_by)[:limit]
+                modifier+sorted_by)
 
-            serialized = QuestionSerializer(matching_questions, many=True).data
-            return JsonResponse({'question_list': serialized})
+            total_items = matching_questions.count()
+            paginated = paginate(matching_questions, limit, page)
+            serialized = QuestionSerializer(paginated, many=True).data
+
+            response = {
+                'question_list': serialized,
+                'total_items': total_items,
+                'page': page
+            }
+
+            return JsonResponse(response)
 
         except BaseException as error:
             # either TypeError or ValueError from query params
@@ -687,9 +710,57 @@ class TagView(TemplateView):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request):
-        tags = Tag.objects.all()
-        tags_serialized = TagViewSerializer(tags, many=True).data
-        return JsonResponse({"tag_list": tags_serialized})
+        inname = request.GET.get('inname', '')
+        page = request.GET.get('page', 1)
+        limit = request.GET.get('limit', 10)
+        order = request.GET.get('order', 'desc')
+        sorted_by = request.GET.get('sort', 'question_count')
+
+        try:
+            page = int(page)
+            limit = int(limit)
+            modifier = '-' if order == "desc" else ''
+
+            tags_set = Tag.objects.all()
+            tags_set = tags_set.filter(tag_text__icontains=inname)
+            tags_set = tags_set.order_by(
+                modifier+sorted_by)
+
+            total_items = tags_set.count()
+            paginated = paginate(tags_set, limit, page)
+            tags_serialized = TagViewSerializer(paginated, many=True).data
+
+            response = {
+                'tag_list': tags_serialized,
+                'total_items': total_items,
+                'page': page
+            }
+
+            return JsonResponse(response)
+
+        except BaseException as error:
+            # either TypeError or ValueError from query params
+            print(repr(error))
+            return JsonResponse({'error': repr(error)}, status=400)
+
+class TagViewName(TemplateView):
+    """
+    This view handles the /api/tag/<tagname> endpoint
+    It returns a tag matching <tagname>
+    """
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, tagname):
+        try:
+            tag = Tag.objects.get(tag_text=tagname)
+            tag_serialized = TagViewSerializer(tag).data
+            print(tag_serialized)
+            return JsonResponse(tag_serialized)
+        except Tag.DoesNotExist :
+            return JsonResponse({'error': 'Tag does not exist'}, status=400)
+
 
 class JobView(TemplateView):
     """
@@ -778,6 +849,15 @@ class ProfileQuestionView(TemplateView):
             return JsonResponse({'error': 'User does not exist'},
                                 status= 400)
 
+
+def paginate(query_set, page_size, page):
+
+    first_index = (page-1)*page_size
+    last_index  = (page-1)*page_size + page_size
+
+    return query_set[first_index:last_index]
+
+
 def add_tags_to_question(question, tags_list):
 
     if tags_list is None or len(tags_list) == 0:
@@ -788,6 +868,10 @@ def add_tags_to_question(question, tags_list):
 
     for tag_text in tags_list:
         tag, is_created = Tag.objects.get_or_create(tag_text=tag_text)
+
+        tag.question_count += 1
+        tag.save()
+
         question.tags.add(tag)
 
     return question

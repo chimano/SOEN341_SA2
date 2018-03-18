@@ -25,6 +25,6 @@ urlpatterns = [
     path('search/', TemplateView.as_view(template_name='templates/index.html')),
     path('profile/', TemplateView.as_view(template_name='templates/index.html')),
     path('careers/', TemplateView.as_view(template_name='templates/index.html')),
-    path('categories/<category>', TemplateView.as_view(template_name='templates/index.html')),
+    path('tags/<tags>', TemplateView.as_view(template_name='templates/index.html')),
     path('categories/', TemplateView.as_view(template_name='templates/index.html'))
 ]

@@ -10,12 +10,13 @@ export function getApiQuestionById(id) {
 }
 
 //get the list of questions
-export function getApiQuestion(order, limit, sort) {
+export function getApiQuestion(order, limit, sort, tags=[]) {
   return axios.get("/api/question/", {
     params: {
       order: order,
       limit: limit,
-      sort: sort
+      sort: sort,
+      tags: tags
     }
   });
 }
@@ -231,4 +232,20 @@ export function getApiSearch(
       filters: filters
     }
   });
+}
+
+//get the list of tags
+export function getApiTags(order="desc", limit="10", sort="question_count") {
+  return axios.get("/api/tag/", {
+    params: {
+      order: order,
+      limit: limit,
+      sort: sort,
+    }
+  });
+}
+
+//get the tags information by tagname
+export function getApiTagInfo(tagname) {
+  return axios.get("/api/tag/name/" + tagname + "/");
 }

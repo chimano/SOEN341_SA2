@@ -1,0 +1,23 @@
+.TagPage-wrapper {
+    background-color: rgb(241, 241, 241);
+}
+
+.TagPage {
+    min-height: calc(100vh - 87px - 233.19px);
+}
+
+.TagPage__question-list-title {
+    padding-top: 20px;
+    font-size: 18px;
+    display: block;
+    font-weight: 600;
+}
+
+.TagPage__results {
+    width: 100%;
+    display: flex;
+}
+
+.TagPage__tag {
+    font-weight: 400;
+}

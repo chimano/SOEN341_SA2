@@ -18,3 +18,4 @@ export * from "./FilterTabs";
 export * from "./PostJobButton";
 export * from "./JobBox";
 export * from "./JobList";
+export * from "./HottestTagList";

@@ -1,13 +1,13 @@
 .welcomeTitle1 {
     margin-top: 2%;
     text-align: center;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .welcomeTitle2 {
     margin-top: 2%;
     text-align: center;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .categoryBox {
@@ -26,4 +26,5 @@
 
 .bubbles {
     list-style-type : none;
+    font-weight: 400;
 }
