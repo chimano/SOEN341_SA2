@@ -758,14 +758,22 @@ class ProfileQuestionView(TemplateView):
             user = User.objects.get(username=username)
             asked_questions = Question.objects.filter(user_id=user)
             answered_questions = Question.objects.filter(answer__user_id=user)
+            upvoted_questions = user.profile.upvoted_questions
+            downvoted_questions = user.profile.downvoted_questions
 
             serialized_asked_questions = QuestionSerializer(
                                             asked_questions, many=True).data
             serialized_answered_questions = QuestionSerializer(
                                             answered_questions, many=True).data
+            serialized_upvoted_questions = QuestionSerializer(
+                                            upvoted_questions, many=True).data
+            serialized_downvoted_questions = QuestionSerializer(
+                                            downvoted_questions, many=True).data
 
             return JsonResponse({'asked_questions': serialized_asked_questions,
-                                'answered_questions': serialized_answered_questions})
+                                'answered_questions': serialized_answered_questions,
+                                'upvoted_questions': serialized_upvoted_questions,
+                                'downvoted_questions': serialized_downvoted_questions})
         except User.DoesNotExist:
             return JsonResponse({'error': 'User does not exist'},
                                 status= 400)
