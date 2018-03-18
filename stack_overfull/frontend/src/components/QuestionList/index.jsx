@@ -39,9 +39,6 @@ export class QuestionList extends React.Component {
               question_head={question.question_head}
               q_id={question.id}
               username={question.user_id.username}
-              points={question.points}
-              handleDownvoteButton={this.handleDownvoteButton}
-              handleUpvoteButton={this.handleUpvoteButton}
               tags={question.tags}
               showButtons
             />

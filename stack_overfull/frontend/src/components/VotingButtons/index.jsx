@@ -37,17 +37,17 @@ export class VotingButtons extends React.Component {
     return (
       <div className="VotingButtons">
         <button 
-          className={"VotingButtons__button "+button_class_DOWN+" button"} 
-          onClick={() => handleDownvoteButton(id)}>
-          <Icon type="minus" />
-        </button>
-        <div className="VotingButtons__votes">
-          <div className="VotingButtons__votes__text">{points}&nbsp;</div>
-        </div>
-        <button 
           className={"VotingButtons__button "+button_class_UP+" button"} 
           onClick={() => handleUpvoteButton(id)}>
-            <Icon type="plus" />
+            <Icon type="caret-up" />
+        </button>
+        <div className="VotingButtons__votes">
+          <div className="VotingButtons__votes__text">&nbsp;{points}</div>
+        </div>
+        <button 
+          className={"VotingButtons__button "+button_class_DOWN+" button"} 
+          onClick={() => handleDownvoteButton(id)}>
+          <Icon type="caret-down" />
         </button>
       </div>
     );

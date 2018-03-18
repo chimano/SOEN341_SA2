@@ -1,12 +1,14 @@
 .VotingButtons {
-    display: flex;
-    justify-content: flex-end;
+    /*display: flex;
+    justify-content: flex-end;*/
     margin-bottom: auto;
+    font-size: 1.2em;
+    color: black;
 }
 
 .VotingButtons__button {
     min-width: 20px;
-    background: white;
+    background: none;
     text-align: center;
     border:none;
     font-size: 20px;
