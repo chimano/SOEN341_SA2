@@ -16,9 +16,6 @@ export class QuestionBox extends React.Component {
       question_head,
       username,
       q_id,
-      points,
-      handleUpvoteButton,
-      handleDownvoteButton,
       showButtons,
       tags
     } = this.props;
@@ -31,18 +28,6 @@ export class QuestionBox extends React.Component {
           <Link to={`/question/${q_id}`} className="QuestionBox__text">
             {question_head}
           </Link>
-          <div className="QuestionBox__points">
-            {showButtons ? (
-              <VotingButtons
-                handleDownvoteButton={handleDownvoteButton}
-                handleUpvoteButton={handleUpvoteButton}
-                id={q_id}
-                points={points}
-              />
-            ) : (
-              ""
-            )}
-          </div>
         </div>
         <Divider />
         <div style={{ display: "flex" }}>

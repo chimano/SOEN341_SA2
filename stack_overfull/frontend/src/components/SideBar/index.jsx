@@ -199,7 +199,11 @@ export class SideBar extends React.Component {
           openKeys={this.state.openKeys}
           onOpenChange={this.onOpenChange}
           onClick={this.handleClick}
-          style={{ width: 256, marginLeft: "-15px" }}
+          style={{
+            width: 256,
+            marginLeft: "-15px",
+            border: "solid 1px #ececec"
+          }}
           defaultSelectedKeys={["computer_science"]}
           mode="inline"
         >
