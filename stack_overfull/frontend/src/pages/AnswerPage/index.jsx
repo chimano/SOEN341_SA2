@@ -202,6 +202,7 @@ export class AnswerPage extends React.Component {
       upvoted_answers_id,
      } = this.state;
     
+    const { logged_in, username } = this.props;
     const q_id = this.props.match.params.id;
 
     console.log("# OF ANSWERS: " + answerList.length);
@@ -326,7 +327,7 @@ export class AnswerPage extends React.Component {
             {questionBodyBox}
             <Divider />
             <div className="AnswerPage__question-creator">
-              Asked by <Link to={`/user/${q_id}`}>{q_user}</Link> on {questionDate}
+              Asked by <Link to="/user">{q_user}</Link> on {questionDate}
             </div>
           </div>
 
