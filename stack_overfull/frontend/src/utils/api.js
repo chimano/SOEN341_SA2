@@ -25,7 +25,7 @@ export function getApiQuestion(order, limit, sort, tags=[]) {
 export function getApiUserQuestionsAndAnsweredQuestions(username) {
   return axios.get("/api/user/name/"+username+"/questions")
 }
-    
+
 //get the list of jobs given the category and subcategory
 export function getApiJob(category) {
   return axios.get("/api/job/",
@@ -139,6 +139,19 @@ export function getApiAnswerById(id, order, limit) {
 export function getApiUserMe() {
   return axios.get("/api/user/me");
 }
+
+
+//edit info of the currently logged in user
+//sending null doesn't modify the field
+export function postApiUserMe(email=null, first_name=null, last_name=null, about_me=null ) {
+  return axios.post("/api/user/me/", {
+    email: email,
+    first_name: first_name,
+    last_name: last_name,
+    about_me: about_me
+  });
+}
+
 
 //post question
 export function postApiQuestion(question) {
