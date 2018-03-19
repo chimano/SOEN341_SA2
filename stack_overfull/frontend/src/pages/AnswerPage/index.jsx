@@ -3,6 +3,7 @@ import "./index.css";
 import { AnswerBox, TagList } from "../../components";
 import { formatDate } from "../../utils/api";
 import { Divider } from "antd";
+import { VotingButtons } from "../../components";
 
 import {
   getApiQuestionById,
@@ -11,7 +12,8 @@ import {
   getApiUserMe,
   postApiAnswerIdAccept,
   postApiAnswerIdReject,
-  voteAnswer
+  voteAnswer,
+  voteQuestion
 } from "../../utils/api";
 
 export class AnswerPage extends React.Component {
@@ -172,6 +174,28 @@ export class AnswerPage extends React.Component {
     voteAnswer("DOWN", id);
   };
 
+  handleUpvoteQuestion = id => {
+    console.log("Q ID: "+id);
+    this.upvoteQuestion(id);
+    setTimeout(() => this.getQuestion(), 500);
+  }
+
+  handleDownvoteQuestion = id => {
+    console.log("Q ID: "+id);
+    this.downvoteQuestion(id);
+    setTimeout(() => this.getQuestion(), 500);
+  }
+
+  upvoteQuestion = id => {
+    voteQuestion("UP", id)
+    .catch(error => console.log(error));
+  }
+
+  downvoteQuestion = id => {
+    voteQuestion("DOWN", id)
+    .catch(error => console.log(error));
+  }
+
   answerQuestion = (answer, q_id) => {
     postApiAnswer(answer, q_id);
   };
@@ -316,6 +340,18 @@ export class AnswerPage extends React.Component {
     return (
       <div className="body-wrapper">
         <div className="page-width">
+        
+        <div className="AnswerPage__question-area">
+          <div className="AnswerPage__question-voting">
+          <VotingButtons
+              handleDownvoteButton={this.handleDownvoteQuestion}
+              handleUpvoteButton={this.handleUpvoteQuestion}
+              id={question.id}
+              points={question.points}
+              upvoted={upvoted}
+              downvoted={downvoted}
+            />
+          </div>
           <div className="AnswerPage__question-box">
             <h1 className="AnswerPage__question-title">
               {question.question_head}
@@ -327,6 +363,8 @@ export class AnswerPage extends React.Component {
               Asked by <a>{q_user}</a> on {questionDate}
             </div>
           </div>
+          </div>
+
 
           <div className="AnswerPage__seperator" />
           {numberOfAnswersTitle}
