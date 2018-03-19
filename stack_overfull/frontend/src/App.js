@@ -7,7 +7,8 @@ import {
   CareerPage,
   ProfilePage,
   CategoryListPage,
-  TagPage
+  TagPage,
+  UserPage
 } from "./pages";
 import { Route, Switch } from "react-router-dom";
 import { NavigationBar, Footer } from "./components";
@@ -123,6 +124,7 @@ export default class App extends React.Component {
           />
 
           <Route path="/careers" component={CareerPage} />
+          <Route path="/user" component={UserPage} />
         </Switch>
         <Footer />
       </main>
