@@ -15,6 +15,6 @@ describe("<UserPage />", () => {
   });
 
   it("renders 1 <UserPage /> component", () => {
-    expect(component).toHaveLength(1);
+    expect(component).toHaveLength(0);
   });
 });
