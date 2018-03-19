@@ -40,7 +40,9 @@ export class AnswerPage extends React.Component {
       verified: false,
       q_user: "",
       downvoted_answers_id: [],
-      upvoted_answers_id: []
+      upvoted_answers_id: [],
+      downvoted_questions_id: [],
+      upvoted_questions_id: []
     };
   }
 
@@ -50,6 +52,7 @@ export class AnswerPage extends React.Component {
     this.getAnswerList();
     this.getUserVotes();
   };
+  
   componentWillReceiveProps = () => {
     console.log("received props");
     this.getAnswerList();
@@ -92,11 +95,14 @@ export class AnswerPage extends React.Component {
         console.log("response of getApiUserMe(): ", response);
         this.setState({
           downvoted_answers_id: response.data.profile.downvoted_answers,
-          upvoted_answers_id: response.data.profile.upvoted_answers
+          upvoted_answers_id: response.data.profile.upvoted_answers,
+          downvoted_questions_id: response.data.profile.downvoted_questions,
+          upvoted_questions_id:response.data.profile.upvoted_questions
         });
       })
       .catch(error => console.log(error));
   };
+
 
   getQuestion = () => {
     const q_id = this.props.match.params.id;
@@ -221,14 +227,18 @@ export class AnswerPage extends React.Component {
       q_user,
       downvoted_answers_id,
       upvoted_answers_id,
+      downvoted_questions_id,
+      upvoted_questions_id
      } = this.state;
     
-     const { logged_in, username } = this.props;
+    const { logged_in, username } = this.props;
     const q_id = this.props.match.params.id;
 
     console.log("# OF ANSWERS: " + answerList.length);
     console.log("Number of downvoted answers: "+downvoted_answers_id.length);
     console.log("Number of upvoted answers: "+upvoted_answers_id.length);
+    console.log("Number of downvoted answers: "+downvoted_questions_id.length);
+    console.log("Number of upvoted answers: "+upvoted_questions_id.length);
 
 
     let verified;
@@ -261,17 +271,11 @@ export class AnswerPage extends React.Component {
     let upvoted = false;
     let downvoted = false;
 
-      console.log("!!"+ upvoted_answers_id);
+    
     //add the accepted answer box first
     answerList.forEach((x, key) => {
       console.log("!"+x.id);
       if (x.is_accepted) {
-        if (upvoted_answers_id.indexOf(x.id) != -1){
-          upvoted = true;
-        } 
-        if (downvoted_answers_id.indexOf(x.id) != -1){
-          downvoted = true;
-        }
         acceptedAnswerKey = key;
         answerListBox.push(
           <AnswerBox
@@ -282,8 +286,8 @@ export class AnswerPage extends React.Component {
             handleUpvoteButton={this.handleUpvoteButton}
             verified={verified}
             x={x}
-            upvoted={upvoted}
-            downvoted={downvoted}
+            upvoted_array={this.state.upvoted_answers_id}
+            downvoted_array={this.state.downvoted_answers_id}
           />
         );
       }
@@ -292,12 +296,6 @@ export class AnswerPage extends React.Component {
     //add the rest of the answerbox
     answerList.forEach((x, key) => {
       if (key !== acceptedAnswerKey) {
-        if (upvoted_answers_id.indexOf(x.id) != -1){
-          upvoted = true;
-        }
-        if (downvoted_answers_id.indexOf(x.id) != -1){
-          downvoted = true;
-        }
         answerListBox.push(
           <AnswerBox
             key={key}
@@ -307,9 +305,9 @@ export class AnswerPage extends React.Component {
             handleUpvoteButton={this.handleUpvoteButton}
             verified={verified}
             x={x}
-            upvoted={upvoted}
-            downvoted={downvoted}
-          />
+            upvoted_array={this.state.upvoted_answers_id}
+            downvoted_array={this.state.downvoted_answers_id}
+            />
         );
       }
     });
@@ -348,8 +346,10 @@ export class AnswerPage extends React.Component {
               handleUpvoteButton={this.handleUpvoteQuestion}
               id={question.id}
               points={question.points}
-              upvoted={upvoted}
-              downvoted={downvoted}
+              upvoted_array={this.state.upvoted_questions_id}
+              downvoted_array={this.state.downvoted_questions_id}
+              question_buttons={true}
+              answer_buttons={false}
             />
           </div>
           <div className="AnswerPage__question-box">
