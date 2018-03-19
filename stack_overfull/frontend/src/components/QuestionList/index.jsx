@@ -4,25 +4,6 @@ import "./index.css";
 import { voteQuestion } from "../../utils/api";
 
 export class QuestionList extends React.Component {
-  handleUpvoteButton = id => {
-    const { getQuestionList } = this.props;
-    console.log("ID IS: " + id);
-    voteQuestion("UP", id)
-      .then(() => {
-        setTimeout(() => getQuestionList(), 500);
-      })
-      .catch(error => console.log(error));
-  };
-
-  handleDownvoteButton = id => {
-    const { getQuestionList } = this.props;
-    console.log("ID IS: " + id);
-    voteQuestion("DOWN", id)
-      .then(() => {
-        setTimeout(() => getQuestionList(), 500);
-      })
-      .catch(error => console.log(error));
-  };
 
   render() {
     const { questionList } = this.props;
@@ -39,9 +20,6 @@ export class QuestionList extends React.Component {
               question_head={question.question_head}
               q_id={question.id}
               username={question.user_id.username}
-              points={question.points}
-              handleDownvoteButton={this.handleDownvoteButton}
-              handleUpvoteButton={this.handleUpvoteButton}
               tags={question.tags}
               showButtons
             />

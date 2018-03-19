@@ -43,7 +43,6 @@ export class AnswerBox extends React.Component {
         <div className={`AnswerBox ${answerBox_class} shadow`}>
           <div className="AnswerBox__row">
             <div className="AnswerBox__answer">{x.answer_text}</div>
-
             <VotingButtons
               handleDownvoteButton={handleDownvoteButton}
               handleUpvoteButton={handleUpvoteButton}
