@@ -2,14 +2,6 @@ html {
   font-size: 13px;
 }
 
-/* .HomePage-wrapper {
-    background-color: rgb(241, 241, 241);
-} */
-
-.HomePage {
-  min-height: calc(100vh - 87px - 233.19px);
-}
-
 .HomePage__question-list-title {
     font-size: 20px;
     display: flex;

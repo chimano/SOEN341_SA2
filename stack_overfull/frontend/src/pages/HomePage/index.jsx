@@ -122,7 +122,7 @@ export class HomePage extends React.Component {
     }
 
     return (
-      <div className="HomePage-wrapper">
+      <div className="body-wrapper">
         <div className="HomePage page-width">
           <FilterTabs handleTabsChange={this.handleTabsChange} />
           <div className="HomePage__question-list-title">

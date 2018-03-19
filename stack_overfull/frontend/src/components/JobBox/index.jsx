@@ -22,11 +22,11 @@ export class JobBox extends React.Component {
     return (
       <div className="JobBox">
         <div className="JobBox__position">{job_position}</div>
-        <div className="JobBox__company">
-          Position posted by {job_company}
-        </div>
+        <div className="JobBox__company">Position posted by {job_company}</div>
         <Divider />
-        <div className="JobBox__description">{job_description}</div>
+        <div className="JobBox__description">
+          <p>{job_description}</p>
+        </div>
         <div className="JobBox__generalinfo">
           {job_category} <br />
           {job_type} <br />
