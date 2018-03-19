@@ -16,8 +16,7 @@ export class ProfilePage extends React.Component {
       downvoted_questions: [],
       upvoted_questions: [],
       questions_asked: [],
-      questions_answered: [],
-      // doRender: false
+      questions_answered: []
     };
   }
 
@@ -25,31 +24,15 @@ export class ProfilePage extends React.Component {
     this.getMyInfo();
     setTimeout(() => this.getQuestionsRelatedToUser(), 2500);
   }
-
+  
   getQuestionsRelatedToUser = () => {
     getApiUserQuestionsAndAnsweredQuestions(this.state.username)
       .then(response => {
-        //Return 2 arrays (question_asked and question_answered)
-        var questionsType = Object.keys(response.data);
-        var allIds = questionsType.map((t) => response.data[t].map((e) => e.id))
-        
-        this.setState({
-          questions_asked_id: allIds[0],
-          questions_answered_id: allIds[1]
-        });
-    })
-    .then(() => {
-      this.getQuestionsFromIdListAndSetStateOfQuestionList(
-        this.state.questions_asked_id
-      ).then(list => this.setState({ questions_asked: list })
-    )}).then(() => {
-      this.getQuestionsFromIdListAndSetStateOfQuestionList(
-        this.state.questions_answered_id
-      ).then(list => this.setState({ questions_answered: list })
-    )}).then(() => {
-      setTimeout(() => this.forceUpdate(), 600);
-    });
-  };
+        this.setState({ questions_asked: response.data.asked_questions });
+        this.setState({ questions_answered: response.data.answered_questions });
+      })
+  }
+  
 
   getMyInfo = () => {
     getApiUserMe()
@@ -63,7 +46,6 @@ export class ProfilePage extends React.Component {
           downvoted_questions_id: response.data.profile.downvoted_questions,
           upvoted_questions_id: response.data.profile.upvoted_questions
         });
-        console.log("UPVOTEDQUESTIONS " + this.state.upvoted_questions_id);
       })
       .then(() => {
         this.getQuestionsFromIdListAndSetStateOfQuestionList(
