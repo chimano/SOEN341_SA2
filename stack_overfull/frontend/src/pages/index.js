@@ -5,3 +5,4 @@ export * from "./ProfilePage";
 export * from "./CareerPage";
 export * from "./CategoryListPage";
 export * from "./TagPage";
+export * from "./UserPage";

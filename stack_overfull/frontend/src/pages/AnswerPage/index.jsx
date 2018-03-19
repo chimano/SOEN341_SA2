@@ -325,7 +325,7 @@ export class AnswerPage extends React.Component {
             {questionBodyBox}
             <Divider />
             <div className="AnswerPage__question-creator">
-              Asked by <Link to="/user">{q_user}</Link> on {questionDate}
+              Asked by <Link to={`/user/${q_user}`}>{q_user}</Link> on {questionDate}
             </div>
           </div>
 

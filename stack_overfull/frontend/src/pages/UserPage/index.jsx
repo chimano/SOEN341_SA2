@@ -1,5 +1,9 @@
 import React from "react";
-import { getApiUserMe, getApiQuestionById, getApiUserQuestionsAndAnsweredQuestions } from "../../utils/api";
+import {
+  getApiQuestionById,
+  getApiUserQuestionsAndAnsweredQuestions,
+  getApiUserNameInfo
+} from "../../utils/api";
 import "./index.css";
 import { QuestionBox } from "../../components/QuestionBox/index";
 
@@ -16,45 +20,49 @@ export class UserPage extends React.Component {
       downvoted_questions: [],
       upvoted_questions: [],
       questions_asked: [],
-      questions_answered: [],
+      questions_answered: []
       // doRender: false
     };
   }
 
   componentWillMount() {
-    this.getMyInfo();
+    const username = this.props.match.params.username;
+    this.getUserInfo(username);
     setTimeout(() => this.getQuestionsRelatedToUser(), 2500);
   }
 
   getQuestionsRelatedToUser = () => {
-    getApiUserQuestionsAndAnsweredQuestions(this.state.username)
+    const username = this.props.match.params.username;
+    getApiUserQuestionsAndAnsweredQuestions(username)
       .then(response => {
         //Return 2 arrays (question_asked and question_answered)
         var questionsType = Object.keys(response.data);
-        var allIds = questionsType.map((t) => response.data[t].map((e) => e.id))
-        
+        var allIds = questionsType.map(t => response.data[t].map(e => e.id));
+
         this.setState({
           questions_asked_id: allIds[0],
           questions_answered_id: allIds[1]
         });
-    })
-    .then(() => {
-      this.getQuestionsFromIdListAndSetStateOfQuestionList(
-        this.state.questions_asked_id
-      ).then(list => this.setState({ questions_asked: list })
-    )}).then(() => {
-      this.getQuestionsFromIdListAndSetStateOfQuestionList(
-        this.state.questions_answered_id
-      ).then(list => this.setState({ questions_answered: list })
-    )}).then(() => {
-      setTimeout(() => this.forceUpdate(), 600);
-    });
+      })
+      .then(() => {
+        this.getQuestionsFromIdListAndSetStateOfQuestionList(
+          this.state.questions_asked_id
+        ).then(list => this.setState({ questions_asked: list }));
+      })
+      .then(() => {
+        this.getQuestionsFromIdListAndSetStateOfQuestionList(
+          this.state.questions_answered_id
+        ).then(list => this.setState({ questions_answered: list }));
+      })
+      .then(() => {
+        setTimeout(() => this.forceUpdate(), 600);
+      });
   };
 
-  getMyInfo = () => {
-    getApiUserMe()
+  getUserInfo = username => {
+    getApiUserNameInfo(username)
       .then(response => {
-        console.log("response of getApiUserMe(): ", response);
+        console.log("response of getApiUserNameInfo(username): ", response);
         this.setState({
           username: response.data.username,
           email: response.data.email,
@@ -68,7 +76,6 @@ export class UserPage extends React.Component {
       .then(() => {
         this.getQuestionsFromIdListAndSetStateOfQuestionList(
           this.state.upvoted_questions_id
-          
         ).then(list => this.setState({ upvoted_questions: list }));
         this.getQuestionsFromIdListAndSetStateOfQuestionList(
           this.state.downvoted_questions_id
@@ -109,8 +116,6 @@ export class UserPage extends React.Component {
       questions_asked,
       questions_answered
     } = this.state;
-
-   
 
     return (
       <div className="body-wrapper grey-background">
@@ -167,38 +172,38 @@ export class UserPage extends React.Component {
           </div>
         </div>
         <div className="ProfilePage__question_related_to_user">
-          <div className="div_question_asked"> 
+          <div className="div_question_asked">
             <h3> Questions Asked </h3>
             {questions_asked.map((question, key) => (
               <QuestionBox
-              key={key}
-              date_created={question.date_created
-                .replace("T", " at ")
-                .substring(0, 19)}
-              question_head={question.question_head}
-              q_id={question.id}
-              username={question.user_id.username}
-              points={question.points}
-              showButtons={false}
-              tags={question.tags}
-            />
+                key={key}
+                date_created={question.date_created
+                  .replace("T", " at ")
+                  .substring(0, 19)}
+                question_head={question.question_head}
+                q_id={question.id}
+                username={question.user_id.username}
+                points={question.points}
+                showButtons={false}
+                tags={question.tags}
+              />
             ))}
           </div>
           <div className="div_question_answered">
-            <h3> Questions Answered </h3> 
+            <h3> Questions Answered </h3>
             {questions_answered.map((question, key) => (
               <QuestionBox
-              key={key}
-              date_created={question.date_created
-                .replace("T", " at ")
-                .substring(0, 19)}
-              question_head={question.question_head}
-              q_id={question.id}
-              username={question.user_id.username}
-              points={question.points}
-              showButtons={false}
-              tags={question.tags}
-            />
+                key={key}
+                date_created={question.date_created
+                  .replace("T", " at ")
+                  .substring(0, 19)}
+                question_head={question.question_head}
+                q_id={question.id}
+                username={question.user_id.username}
+                points={question.points}
+                showButtons={false}
+                tags={question.tags}
+              />
             ))}
           </div>
         </div>

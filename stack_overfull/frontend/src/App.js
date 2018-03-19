@@ -124,7 +124,7 @@ export default class App extends React.Component {
           />
 
           <Route path="/careers" component={CareerPage} />
-          <Route path="/user" component={UserPage} />
+          <Route path="/user/:username" component={UserPage} />
         </Switch>
         <Footer />
       </main>
