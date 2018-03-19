@@ -27,5 +27,5 @@ urlpatterns = [
     path('careers/', TemplateView.as_view(template_name='templates/index.html')),
     path('tags/<tags>', TemplateView.as_view(template_name='templates/index.html')),
     path('categories/', TemplateView.as_view(template_name='templates/index.html')),
-    path('user/', TemplateView.as_view(template_name='templates/index.html'))
+    path('user/<id>', TemplateView.as_view(template_name='templates/index.html'))
 ]

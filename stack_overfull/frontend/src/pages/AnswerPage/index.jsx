@@ -103,11 +103,13 @@ export class AnswerPage extends React.Component {
       .then(response => {
         console.log("response of getApiQuestionById(q_id): ", response);
         let q_user = response.data.user_id.username;
+        let q_user_id = response.data.user_id;
         this.setState({
           question: response.data,
           accepted_answer_id: response.data.accepted_answer_id,
           rejected_answers_ids: response.data.rejected_answers_ids,
-          q_user: q_user
+          q_user: q_user,
+          q_user_id:q_user_id
         });
       })
       .catch(error => {
@@ -200,7 +202,6 @@ export class AnswerPage extends React.Component {
       upvoted_answers_id,
      } = this.state;
     
-    const { logged_in, username } = this.props;
     const q_id = this.props.match.params.id;
 
     console.log("# OF ANSWERS: " + answerList.length);
@@ -325,7 +326,7 @@ export class AnswerPage extends React.Component {
             {questionBodyBox}
             <Divider />
             <div className="AnswerPage__question-creator">
-              Asked by <Link to="/user">{q_user}</Link> on {questionDate}
+              Asked by <Link to={`/user/${q_id}`}>{q_user}</Link> on {questionDate}
             </div>
           </div>
 
