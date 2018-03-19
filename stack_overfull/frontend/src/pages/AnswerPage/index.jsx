@@ -340,11 +340,10 @@ export class AnswerPage extends React.Component {
     return (
       <div className="body-wrapper">
         <div className="page-width">
-          <div className="AnswerPage__question-box">
-            <h1 className="AnswerPage__question-title">
-              {question.question_head}
-            </h1>
-            <VotingButtons
+        
+        <div className="AnswerPage__question-area">
+          <div className="AnswerPage__question-voting">
+          <VotingButtons
               handleDownvoteButton={this.handleDownvoteQuestion}
               handleUpvoteButton={this.handleUpvoteQuestion}
               id={question.id}
@@ -352,6 +351,11 @@ export class AnswerPage extends React.Component {
               upvoted={upvoted}
               downvoted={downvoted}
             />
+          </div>
+          <div className="AnswerPage__question-box">
+            <h1 className="AnswerPage__question-title">
+              {question.question_head}
+            </h1>
             <div className="AnswerPage__tags">{questionTags}</div>
             {questionBodyBox}
             <Divider />
@@ -359,6 +363,8 @@ export class AnswerPage extends React.Component {
               Asked by <a>{q_user}</a> on {questionDate}
             </div>
           </div>
+          </div>
+
 
           <div className="AnswerPage__seperator" />
           {numberOfAnswersTitle}

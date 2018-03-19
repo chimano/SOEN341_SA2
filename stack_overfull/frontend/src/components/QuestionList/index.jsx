@@ -4,6 +4,7 @@ import "./index.css";
 import { voteQuestion } from "../../utils/api";
 
 export class QuestionList extends React.Component {
+  /*
   handleUpvoteButton = id => {
     const { getQuestionList } = this.props;
     console.log("ID IS: " + id);
@@ -22,7 +23,7 @@ export class QuestionList extends React.Component {
         setTimeout(() => getQuestionList(), 500);
       })
       .catch(error => console.log(error));
-  };
+  };*/
 
   render() {
     const { questionList } = this.props;

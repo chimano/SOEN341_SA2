@@ -23,7 +23,7 @@
 }
 
 .VotingButtons__button:hover {
-    background: white;
+    background: none;
 }
 
 .VotingButtons__votes {
