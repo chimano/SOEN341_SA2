@@ -36,6 +36,11 @@
     justify-content: flex-start;
 }
 
+.JobBox__description p { 
+    max-width: 450px;
+    word-wrap: break-word;
+}
+
 .JobBox__generalinfo {
     width: 20%;
     display: flex;

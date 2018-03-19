@@ -74,7 +74,7 @@ export class CategoryListPage extends React.Component {
     }
 
     return (
-      <header>
+      <header className="body-wrapper">
         <nav>
           <div>
             <h1 className="welcomeTitle1">

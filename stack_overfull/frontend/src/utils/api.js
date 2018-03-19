@@ -10,7 +10,7 @@ export function getApiQuestionById(id) {
 }
 
 //get the list of questions
-export function getApiQuestion(order, limit, sort, tags=[]) {
+export function getApiQuestion(order, limit, sort, tags = []) {
   return axios.get("/api/question/", {
     params: {
       order: order,
@@ -23,17 +23,21 @@ export function getApiQuestion(order, limit, sort, tags=[]) {
 
 //get the list of asked/answered questions
 export function getApiUserQuestionsAndAnsweredQuestions(username) {
-  return axios.get("/api/user/name/"+username+"/questions")
+  return axios.get("/api/user/name/" + username + "/questions");
 }
-    
+
+//get user information
+export function getApiUserNameInfo(username) {
+  return axios.get("/api/user/name/" + username);
+}
+
 //get the list of jobs given the category and subcategory
 export function getApiJob(category) {
-  return axios.get("/api/job/",
-    {
-      params: {
-        category: category
-      }
-    });
+  return axios.get("/api/job/", {
+    params: {
+      category: category
+    }
+  });
 }
 
 export function postApiJob(
@@ -235,12 +239,16 @@ export function getApiSearch(
 }
 
 //get the list of tags
-export function getApiTags(order="desc", limit="10", sort="question_count") {
+export function getApiTags(
+  order = "desc",
+  limit = "10",
+  sort = "question_count"
+) {
   return axios.get("/api/tag/", {
     params: {
       order: order,
       limit: limit,
-      sort: sort,
+      sort: sort
     }
   });
 }
