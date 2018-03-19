@@ -23,7 +23,8 @@ export class CareerPage extends React.Component {
   }
 
   componentDidMount = () => {
-    this.getJobList();
+    const { category } = this.state;
+    this.getJobList(category);
   };
 
   getJobList = category => {
@@ -47,12 +48,10 @@ export class CareerPage extends React.Component {
     return (
       <div className="body-wrapper">
         <div className="page-width CareerPage">
-          <SideBar
-            getJobList={this.getJobList}
-          />
+          <SideBar getJobList={this.getJobList} />
           <div className="CareerPage__list">
             <div className="CareerPage__title-button">
-              <h3 className="CareerPage__title">{title}</h3>
+              <h2 className="CareerPage__title">{title}</h2>
               <PostJobButton />
             </div>
             <JobList jobList={jobList} />

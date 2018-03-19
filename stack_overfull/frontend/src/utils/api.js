@@ -221,7 +221,8 @@ export function getApiSearch(
   order = "desc",
   limit = 10,
   sort = "date_created",
-  filters = []
+  filters = [],
+  page = 1
 ) {
   return axios.get("/api/search/", {
     params: {
@@ -229,7 +230,8 @@ export function getApiSearch(
       order: order,
       limit: limit,
       sort: sort,
-      filters: filters
+      filters: filters,
+      page: page
     }
   });
 }
