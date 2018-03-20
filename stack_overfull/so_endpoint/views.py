@@ -820,6 +820,8 @@ class JobView(TemplateView):
             return JsonResponse({'error':'This account is not an employer'}, status=400)
         except KeyError:
             return JsonResponse({'error':'There was an error parsing the request'}, status=400)
+        except AttributeError:
+            return JsonResponse({'error':'User is not logged in'}, status=400)
 
 
 class JobAppView(TemplateView):

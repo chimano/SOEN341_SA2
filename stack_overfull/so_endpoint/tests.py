@@ -200,8 +200,27 @@ class UserLoginViewTests(TestCase):
         User.objects.all().delete()
 
 class JobViewTest(TestCase):
-    
+    login_info = {
+        'username': 'testuser',
+        'password': 'testpassword'
+    }
+    @classmethod
+    def setUpTestData(cls):
+        #Sets up database for the testcases
+        user = User.objects.create_user(id=1, 
+                                username=cls.login_info['username'],
+                                password=cls.login_info['password'])
+        user.profile.is_employer = True
+        user.profile.save()
+
+
     def test_valid_job_post(self):
+        self.client.post(
+            '/api/user/login/',
+            data=json.dumps(self.login_info),
+            content_type='application/json'
+        )
+
         json_payload = json.dumps({
             "position":"front-end developper",
             "job_type":"Full-time",
@@ -215,6 +234,7 @@ class JobViewTest(TestCase):
             data=json_payload,
             content_type='application/json'
         )
+        print(response.json())
         self.assertEqual(response.status_code, 200)
         self.assertTrue('success' in response.json())
 
@@ -304,6 +324,11 @@ class JobViewTest(TestCase):
         
         self.assertEqual(response.status_code, 400)
         self.assertTrue('error' in response.json())
+    
+    @classmethod
+    def tearDownClass(cls):
+        User.objects.all().delete()
+        Job.objects.all().delete()
 
 class QuestionViewTest(TestCase):
     login_info = {
@@ -1282,4 +1307,186 @@ class ProfileQuestionViewTest(TestCase):
     @classmethod
     def tearDownClass(cls):
         Question.objects.all().delete()
+        User.objects.all().delete()
+
+
+class ProfileJobViewTest(TestCase):
+    login_info = {
+        'username': 'testuser',
+        'password': 'testpassword'
+    }
+    job_info = {
+        'category': 'coordinator',
+        'job_type': 'Contract',
+        'position': 'Coordinator',
+        'company': 'Google',
+        'location': 'Montreal',
+        'description': 'Lorem ipsum dolor sit amet, ut \
+        qui vero detraxit. No enim iudico vix, \
+        in sea legendos deseruisse. Qui utinam \
+        vituperata neglegentur ei, mazim iudico \
+        virtute te vim, officiis ocurreret no eum. \
+        Assum aperiri ancillae cu ius, oratio \
+        adipiscing ad nam.'
+    }
+    @classmethod
+    def setUpTestData(cls):
+        #Sets up database for the testcases
+        author = User.objects.create_user(id=1, 
+                                        username=cls.login_info['username'],
+                                        password=cls.login_info['password'],
+                                        )
+        author.profile.is_employer = True
+        author.save()
+        Job.objects.create(position=cls.job_info['position'],
+                          job_type=cls.job_info['job_type'],
+                          category=cls.job_info['category'],
+                          company=cls.job_info['company'],
+                          location=cls.job_info['location'],
+                          description=cls.job_info['description'],
+                          posted_by=author)
+
+
+    def test_valid_request(self):
+        #Test with valid username
+        response = self.client.get(
+            '/api/user/name/' + self.login_info['username'] + '/jobs/'
+        )
+        self.assertEqual(1 ,len(response.json()['posted_positions']))
+
+    def test_invalid_request(self):
+        #Test with invalid username
+        response = self.client.get(
+            '/api/user/name/fakeuser/questions/'
+        )
+        self.assertEqual(400 ,response.status_code)
+
+    @classmethod
+    def tearDownClass(cls):
+        Job.objects.all().delete()
+        User.objects.all().delete()
+
+
+class JobAppViewTest(TestCase):
+    login_info = [{
+        'username': 'testuser',
+        'password': 'testpassword'
+    }, {
+        'username': 'testuser2',
+        'password': 'testpassword2'
+    }]
+    job_info = {
+        'category': 'coordinator',
+        'job_type': 'Contract',
+        'position': 'Coordinator',
+        'company': 'Google',
+        'location': 'Montreal',
+        'description': 'Lorem ipsum dolor sit amet, ut \
+        qui vero detraxit. No enim iudico vix, \
+        in sea legendos deseruisse. Qui utinam \
+        vituperata neglegentur ei, mazim iudico \
+        virtute te vim, officiis ocurreret no eum. \
+        Assum aperiri ancillae cu ius, oratio \
+        adipiscing ad nam.'
+    }
+    @classmethod
+    def setUpTestData(cls):
+        #Sets up database for the testcases
+        author = User.objects.create_user(id=1, 
+                                        username=cls.login_info[0]['username'],
+                                        password=cls.login_info[0]['password'],
+                                        )
+        author.profile.is_employer = True
+        author.save()
+        Job.objects.create(job_id=1, position=cls.job_info['position'],
+                          job_type=cls.job_info['job_type'],
+                          category=cls.job_info['category'],
+                          company=cls.job_info['company'],
+                          location=cls.job_info['location'],
+                          description=cls.job_info['description'],
+                          posted_by=author)
+        User.objects.create_user(id=2,
+                                username=cls.login_info[1]['username'],
+                                password=cls.login_info[1]['password'])
+
+
+    def test_invalid_get_request(self):
+        # Get with an account that did not post the position
+        response = self.client.get('/api/job/application/',
+                                  {"job_id":1})
+
+        self.assertEqual(400 ,response.status_code)
+
+    def test_invalid_id_get_request(self):
+        # Get with a job that does not exist
+        response = self.client.get('/api/job/application/',
+                                  {"job_id":54})
+
+        self.assertEqual(400 ,response.status_code)
+
+    def test_valid_get_request(self):
+        # Get with an account that did post the position
+
+        self.client.post(
+            '/api/user/login/',
+            data=json.dumps(self.login_info[0]),
+            content_type='application/json'
+        )
+        response = self.client.get('/api/job/application/',
+                                  {"job_id":1})
+
+        self.assertEqual(200 ,response.status_code)
+    
+    def test_logged_out_post_request(self):
+        # Post with an account that is not logged in
+        json_data = json.dumps({
+            "job_id": 1
+        })
+        response = self.client.post('/api/job/application/',
+                                  data=json_data,
+                                  content_type='application/json')
+
+        self.assertEqual(400 ,response.status_code)
+    
+    def test_valid_post_request(self):
+        # Post with an account that is logged in
+
+        self.client.post(
+            '/api/user/login/',
+            data=json.dumps(self.login_info[1]),
+            content_type='application/json'
+        )
+
+        json_data = json.dumps({
+            "job_id": 1
+        })
+        response = self.client.post('/api/job/application/',
+                                  data=json_data,
+                                  content_type='application/json')
+
+        self.assertEqual(200 ,response.status_code)
+
+    def test_invalid_post_request(self):
+        # Post with an incorrect job id
+
+        self.client.post(
+            '/api/user/login/',
+            data=json.dumps(self.login_info[1]),
+            content_type='application/json'
+        )
+
+        json_data = json.dumps({
+            "job_id": 412
+        })
+        response = self.client.post('/api/job/application/',
+                                  data=json_data,
+                                  content_type='application/json')
+
+        self.assertEqual(400 ,response.status_code)
+
+    
+
+    @classmethod
+    def tearDownClass(cls):
+        Job.objects.all().delete()
         User.objects.all().delete()
