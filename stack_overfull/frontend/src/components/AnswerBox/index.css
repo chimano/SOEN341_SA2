@@ -6,6 +6,10 @@
     background: white;
 }
 
+.AnswerBox__wrapper {
+    display: flex;
+}
+
 .AnswerBox__row {
     display: flex;
 }
@@ -16,14 +20,17 @@
 
 .AnswerBox--blue {
     border: 2px solid rgb(31, 145, 221);
+    width: 95%;
 }
 
 .AnswerBox--red {
     border: 2px solid rgb(221, 69, 31);
+    width: 95%;
 }
 
 .AnswerBox--green {
     border: 2px solid rgb(75, 221, 31);
+    width: 95%;
 }
 
 .AnswerBox__answer {

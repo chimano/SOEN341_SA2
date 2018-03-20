@@ -340,10 +340,9 @@ export class AnswerPage extends React.Component {
     return (
       <div className="body-wrapper">
         <div className="page-width">
-        
         <div className="AnswerPage__question-area">
           <div className="AnswerPage__question-voting">
-          <VotingButtons
+          <VotingButtons 
               handleDownvoteButton={this.handleDownvoteQuestion}
               handleUpvoteButton={this.handleUpvoteQuestion}
               id={question.id}
