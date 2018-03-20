@@ -1,5 +1,11 @@
 import React from "react";
-import { getApiUserMe, postApiUserMe, getApiQuestionById, getApiUserQuestionsAndAnsweredQuestions} from "../../utils/api";
+import {
+  getApiUserMe,
+  postApiUserMe,
+  getApiQuestionById,
+  getApiUserQuestionsAndAnsweredQuestions,
+  getApiUserNameInfo
+} from "../../utils/api";
 import "./index.css";
 import { QuestionBox } from "../../components/QuestionBox/index";
 import { Input, TextField, Button } from "antd";
@@ -10,18 +16,16 @@ export class ProfilePage extends React.Component {
     this.state = {
       username: "",
       email: "",
-      first_name : "",
-      last_name : "",
+      first_name: "",
+      last_name: "",
       aboutMe: "",
       reputation: "",
-      downvoted_questions_id: [],
-      upvoted_questions_id: [],
       downvoted_questions: [],
       upvoted_questions: [],
       questions_asked: [],
       questions_answered: [],
       is_editing: false, // make user info fields editable
-      is_saving_myinfo: false, // loading indicator for the edit button
+      is_saving_myinfo: false // loading indicator for the edit button
       // doRender: false
     };
   }
@@ -34,17 +38,24 @@ export class ProfilePage extends React.Component {
   getQuestionsRelatedToUser = () => {
     getApiUserQuestionsAndAnsweredQuestions(this.state.username)
       .then(response => {
-        this.setState({ questions_asked: response.data.asked_questions });
-        this.setState({ questions_answered: response.data.answered_questions });
+        this.setState({
+          questions_asked: response.data.asked_questions,
+          questions_answered: response.data.answered_questions,
+          upvoted_questions: response.data.upvoted_questions,
+          downvoted_questions: response.data.downvoted_questions
+        });
       })
-  }
-  
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
   onInputChange = (field, event) => {
     this.setState({ [field]: event.target.value });
-  }
+  };
 
   onEditButtonClick = () => {
-    const {is_editing} = this.state;
+    const { is_editing } = this.state;
 
     // save the info if the user was editing it
     if (is_editing) {
@@ -52,8 +63,8 @@ export class ProfilePage extends React.Component {
     }
 
     // toggle the button between Save and Edit
-    this.setState({is_editing: !is_editing});
-  }
+    this.setState({ is_editing: !is_editing });
+  };
 
   getMyInfo = () => {
     getApiUserMe()
@@ -65,58 +76,27 @@ export class ProfilePage extends React.Component {
           first_name: response.data.first_name,
           last_name: response.data.last_name,
           aboutMe: response.data.profile.about_me,
-          reputation: response.data.profile.reputation,
-          downvoted_questions_id: response.data.profile.downvoted_questions,
-          upvoted_questions_id: response.data.profile.upvoted_questions
+          reputation: response.data.profile.reputation
         });
-      })
-      .then(() => {
-        this.getQuestionsFromIdListAndSetStateOfQuestionList(
-          this.state.upvoted_questions_id
-
-        ).then(list => this.setState({ upvoted_questions: list }));
-        this.getQuestionsFromIdListAndSetStateOfQuestionList(
-          this.state.downvoted_questions_id
-        ).then(list => this.setState({ downvoted_questions: list }));
-      })
-      .then(() => {
-        setTimeout(() => this.forceUpdate(), 500);
       })
       .catch(error => console.log(error));
   };
 
   saveMyInfo = () => {
-    const {email, first_name, last_name, aboutMe} = this.state;
+    const { email, first_name, last_name, aboutMe } = this.state;
 
-    this.setState({is_saving_myinfo: true});
+    this.setState({ is_saving_myinfo: true });
 
     postApiUserMe(email, first_name, last_name, aboutMe)
       .then(response => {
         console.log("response of postApiUserMe(): ", response);
-        this.setState({is_saving_myinfo: false});
+        this.setState({ is_saving_myinfo: false });
       })
       .catch(error => console.log(error));
-  }
-
-  getQuestionsFromIdListAndSetStateOfQuestionList = idList => {
-    return new Promise((resolve, reject) => {
-      let tempQuestionList = [];
-      idList.forEach(id => {
-        getApiQuestionById(id)
-          .then(response => {
-            console.log("response of getApiQuestionById(id): ", response);
-            tempQuestionList.push(response.data);
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      });
-      console.log("tempQuestionList", tempQuestionList);
-      resolve(tempQuestionList);
-    });
   };
 
   render() {
+    console.log("my state", this.state);
     const {
       username,
       email,
@@ -133,27 +113,48 @@ export class ProfilePage extends React.Component {
     } = this.state;
 
     let editButtonElement = (
-      <Button type="primary" size="small" onClick={this.onEditButtonClick} loading={is_saving_myinfo} >
-        { is_editing ? "Save" : "Edit" }
+      <Button
+        type="primary"
+        size="small"
+        onClick={this.onEditButtonClick}
+        loading={is_saving_myinfo}
+      >
+        {is_editing ? "Save" : "Edit"}
       </Button>
     );
 
-    let emailElement = is_editing
-      ? (<Input value={email} onChange={e => this.onInputChange('email', e)} />)
-      : (<div>{email}</div>);
+    let emailElement = is_editing ? (
+      <Input value={email} onChange={e => this.onInputChange("email", e)} />
+    ) : (
+      <div>{email}</div>
+    );
 
-    let firstNameElement = is_editing
-      ? (<Input value={first_name} onChange={e => this.onInputChange('first_name', e)} />)
-      : (<div>{first_name}</div>);
+    let firstNameElement = is_editing ? (
+      <Input
+        value={first_name}
+        onChange={e => this.onInputChange("first_name", e)}
+      />
+    ) : (
+      <div>{first_name}</div>
+    );
 
-    let lastNameElement = is_editing
-      ? (<Input value={last_name} onChange={e => this.onInputChange('last_name', e)} />)
-      : (<div>{last_name}</div>);
+    let lastNameElement = is_editing ? (
+      <Input
+        value={last_name}
+        onChange={e => this.onInputChange("last_name", e)}
+      />
+    ) : (
+      <div>{last_name}</div>
+    );
 
-    let aboutMeElement = is_editing
-      ? (<Input.TextArea value={aboutMe} onChange={e => this.onInputChange('aboutMe', e)} />)
-      : (<div>{aboutMe}</div>);
-
+    let aboutMeElement = is_editing ? (
+      <Input.TextArea
+        value={aboutMe}
+        onChange={e => this.onInputChange("aboutMe", e)}
+      />
+    ) : (
+      <div>{aboutMe}</div>
+    );
 
     return (
       <div className="body-wrapper grey-background">
@@ -171,6 +172,7 @@ export class ProfilePage extends React.Component {
             {aboutMeElement}
             <h3>Reputation</h3>
             <div>{reputation} points</div>
+
             {editButtonElement}
           </div>
           <div style={{ width: "100%" }}>
@@ -219,34 +221,34 @@ export class ProfilePage extends React.Component {
             <h3> Questions Asked </h3>
             {questions_asked.map((question, key) => (
               <QuestionBox
-              key={key}
-              date_created={question.date_created
-                .replace("T", " at ")
-                .substring(0, 19)}
-              question_head={question.question_head}
-              q_id={question.id}
-              username={question.user_id.username}
-              points={question.points}
-              showButtons={false}
-              tags={question.tags}
-            />
+                key={key}
+                date_created={question.date_created
+                  .replace("T", " at ")
+                  .substring(0, 19)}
+                question_head={question.question_head}
+                q_id={question.id}
+                username={question.user_id.username}
+                points={question.points}
+                showButtons={false}
+                tags={question.tags}
+              />
             ))}
           </div>
           <div className="div_question_answered">
             <h3> Questions Answered </h3>
             {questions_answered.map((question, key) => (
               <QuestionBox
-              key={key}
-              date_created={question.date_created
-                .replace("T", " at ")
-                .substring(0, 19)}
-              question_head={question.question_head}
-              q_id={question.id}
-              username={question.user_id.username}
-              points={question.points}
-              showButtons={false}
-              tags={question.tags}
-            />
+                key={key}
+                date_created={question.date_created
+                  .replace("T", " at ")
+                  .substring(0, 19)}
+                question_head={question.question_head}
+                q_id={question.id}
+                username={question.user_id.username}
+                points={question.points}
+                showButtons={false}
+                tags={question.tags}
+              />
             ))}
           </div>
         </div>

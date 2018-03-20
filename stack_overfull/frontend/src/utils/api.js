@@ -26,10 +26,6 @@ export function getApiUserQuestionsAndAnsweredQuestions(username) {
   return axios.get("/api/user/name/" + username + "/questions");
 }
 
-//get user information
-export function getApiUserNameInfo(username) {
-  return axios.get("/api/user/name/" + username);
-}
 
 //get the list of jobs given the category and subcategory
 export function getApiJob(category) {
@@ -144,6 +140,11 @@ export function getApiUserMe() {
   return axios.get("/api/user/me");
 }
 
+
+//get user information
+export function getApiUserNameInfo(username) {
+  return axios.get("/api/user/name/" + username);
+}
 
 //edit info of the currently logged in user
 //sending null doesn't modify the field

@@ -15,15 +15,15 @@ export class UserPage extends React.Component {
     this.state = {
       username: "",
       email: "",
+      first_name: "",
+      last_name: "",
       aboutMe: "",
       reputation: "",
-      downvoted_questions_id: [],
-      upvoted_questions_id: [],
       downvoted_questions: [],
       upvoted_questions: [],
       questions_asked: [],
       questions_answered: [],
-      job_posted:[]
+      job_posted: []
       // doRender: false
     };
   }
@@ -35,62 +35,24 @@ export class UserPage extends React.Component {
   }
 
   getQuestionsRelatedToUser = () => {
+    if(this.props.match.params.username){
+      console.log("asjkdhakjsdjkhasdkjasdhjkah")
+    }
     const username = this.props.match.params.username;
-    getApiUserQuestionsAndAnsweredQuestions(username)
-      .then(response => {
-        //Return 2 arrays (question_asked and question_answered)
-        var questionsType = Object.keys(response.data);
-        var allIds = questionsType.map(t => response.data[t].map(e => e.id));
-
-        this.setState({
-          questions_asked_id: allIds[0],
-          questions_answered_id: allIds[1]
-        });
-      })
-      .then(() => {
-        this.getQuestionsFromIdListAndSetStateOfQuestionList(
-          this.state.questions_asked_id
-        ).then(list => this.setState({ questions_asked: list }));
-      })
-      .then(() => {
-        this.getQuestionsFromIdListAndSetStateOfQuestionList(
-          this.state.questions_answered_id
-        ).then(list => this.setState({ questions_answered: list }));
-      })
-      .then(() => {
-        setTimeout(() => this.forceUpdate(), 600);
-      });
+    getApiUserQuestionsAndAnsweredQuestions(this.state.username).then(
+      response => {
+        console.log("getApiUserQuestionsAndAnsweredQuestions(this.state.username)",response);
+        this.setState({ questions_asked: response.data.asked_questions });
+        this.setState({ questions_answered: response.data.answered_questions });
+        this.setState({ upvoted_questions: response.data.upvoted_questions });
+        this.setState({ downvoted_questions: response.data.downvoted_questions });
+      }
+    );
   };
 
   getJobRelatedToUser = () => {
     const username = this.props.match.params.username;
-    getApiJob(username)
-      .then(response => {
-        //Return 2 arrays (question_asked and question_answered)
-        console.log(response.data);
-        var questionsType = Object.keys(response.data);
-        var allIds = questionsType.map(t => response.data[t].map(e => e.id));
-
-        this.setState({
-          questions_asked_id: allIds[0],
-          questions_answered_id: allIds[1]
-        });
-      })
-      .then(() => {
-        this.getQuestionsFromIdListAndSetStateOfQuestionList(
-          this.state.questions_asked_id
-        ).then(list => this.setState({ questions_asked: list }));
-      })
-      .then(() => {
-        this.getQuestionsFromIdListAndSetStateOfQuestionList(
-          this.state.questions_answered_id
-        ).then(list => this.setState({ questions_answered: list }));
-      })
-      .then(() => {
-        setTimeout(() => this.forceUpdate(), 600);
-      });
   };
-
 
   getUserInfo = username => {
     getApiUserNameInfo(username)
@@ -100,6 +62,8 @@ export class UserPage extends React.Component {
           username: response.data.username,
           email: response.data.email,
           aboutMe: response.data.profile.about_me,
+          first_name: response.data.first_name,
+          last_name: response.data.last_name,
           reputation: response.data.profile.reputation,
           downvoted_questions_id: response.data.profile.downvoted_questions,
           upvoted_questions_id: response.data.profile.upvoted_questions
@@ -107,35 +71,9 @@ export class UserPage extends React.Component {
         console.log("UPVOTEDQUESTIONS " + this.state.upvoted_questions_id);
       })
       .then(() => {
-        this.getQuestionsFromIdListAndSetStateOfQuestionList(
-          this.state.upvoted_questions_id
-        ).then(list => this.setState({ upvoted_questions: list }));
-        this.getQuestionsFromIdListAndSetStateOfQuestionList(
-          this.state.downvoted_questions_id
-        ).then(list => this.setState({ downvoted_questions: list }));
-      })
-      .then(() => {
         setTimeout(() => this.forceUpdate(), 500);
       })
       .catch(error => console.log(error));
-  };
-
-  getQuestionsFromIdListAndSetStateOfQuestionList = idList => {
-    return new Promise((resolve, reject) => {
-      let tempQuestionList = [];
-      idList.forEach(id => {
-        getApiQuestionById(id)
-          .then(response => {
-            console.log("response of getApiQuestionById(id): ", response);
-            tempQuestionList.push(response.data);
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      });
-      console.log("tempQuestionList", tempQuestionList);
-      resolve(tempQuestionList);
-    });
   };
 
   render() {
@@ -143,6 +81,8 @@ export class UserPage extends React.Component {
       username,
       email,
       aboutMe,
+      first_name,
+      last_name,
       reputation,
       downvoted_questions,
       upvoted_questions,
@@ -159,15 +99,17 @@ export class UserPage extends React.Component {
             <div>{username}</div>
             <h3>Email</h3>
             <div>{email}</div>
+            <h3>First Name</h3>
+            <div>{first_name}</div>
+            <h3>Last Name</h3>
+            <div>{last_name}</div>
             <h3>About Me</h3>
             <div>{aboutMe}</div>
             <h3>Reputation</h3>
             <div>{reputation} points</div>
           </div>
           <div style={{ width: "100%" }}>
-            <h3 className="Userpage__question-list-title">
-              Upvoted Questions
-            </h3>
+            <h3 className="Userpage__question-list-title">Upvoted Questions</h3>
             <div>
               {upvoted_questions.map((question, key) => (
                 <QuestionBox
