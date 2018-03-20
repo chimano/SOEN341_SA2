@@ -2,7 +2,7 @@ import React from "react";
 import { getApiUserMe, postApiUserMe, getApiQuestionById, getApiUserQuestionsAndAnsweredQuestions} from "../../utils/api";
 import "./index.css";
 import { QuestionBox } from "../../components/QuestionBox/index";
-import { Input, TextField, Button } from "antd";
+import { Input, Button } from "antd";
 
 export class ProfilePage extends React.Component {
   constructor(props) {
