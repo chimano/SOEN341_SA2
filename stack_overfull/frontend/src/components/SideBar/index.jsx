@@ -143,51 +143,73 @@ const categories = [
 ];
 
 export class SideBar extends React.Component {
+  rootSubmenuKeys = ["0", "1", "2", "3", "4", "5"];
+  state = {
+    openKeys: ["3"]
+  };
+
   handleClick = e => {
     const { getJobList } = this.props;
     console.log("click ", e);
-
     getJobList(e.key);
   };
 
-  render() {
-    
+  onOpenChange = openKeys => {
+    console.log(openKeys);
+    const latestOpenKey = openKeys.find(
+      key => this.state.openKeys.indexOf(key) === -1
+    );
+    if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
+      this.setState({ openKeys });
+    } else {
+      this.setState({
+        openKeys: latestOpenKey ? [latestOpenKey] : []
+      });
+    }
+  };
 
+  render() {
     let list = [];
-    categories.forEach((value,key) => {
+    categories.forEach((value, key) => {
       list.push(
         <SubMenu
-        key={key}
-        title={
-          <span>
-            <Icon type="setting" />
-            <span>{value.label}</span>
-          </span>
-        }
+          key={key}
+          title={
+            <span>
+              <Icon type="setting" />
+              <span>{value.label}</span>
+            </span>
+          }
         >
-      {value.children.map((v, key) => (
-        <Menu.Item style={{ cursor: "default" }}
-        key={v.value}>
-        <span style={{ color: { value: "blue", important: "true" } }}>
-          {v.label}
-        </span>
-        </Menu.Item>
-    ))}
-    </SubMenu>);
-    })  
+          {value.children.map((v, key) => (
+            <Menu.Item style={{ cursor: "default" }} key={v.value}>
+              <span style={{ color: { value: "blue", important: "true" } }}>
+                {v.label}
+              </span>
+            </Menu.Item>
+          ))}
+        </SubMenu>
+      );
+    });
 
     return (
-      
-      <Menu
-        onClick={this.handleClick}
-        style={{ width: 256, marginLeft: "-25px" }}
-        defaultSelectedKeys={["1"]}
-        defaultOpenKeys={["sub1"]}
-        mode="inline"
-      >
-      {list}
-
-      </Menu>
+      <div className="SideBar">
+        <Menu
+          mode="inline"
+          openKeys={this.state.openKeys}
+          onOpenChange={this.onOpenChange}
+          onClick={this.handleClick}
+          style={{
+            width: 256,
+            marginLeft: "-15px",
+            border: "solid 1px #ececec"
+          }}
+          defaultSelectedKeys={["computer_science"]}
+          mode="inline"
+        >
+          {list}
+        </Menu>
+      </div>
     );
   }
 }

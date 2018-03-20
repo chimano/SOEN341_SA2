@@ -4,9 +4,16 @@
 
 .CareerPage__list {
     width: 100%;
+    padding: 15px;
 }
 
 .CareerPage__list__card {
     background: "#ECECEC";
     padding: "30px";
+}
+.CareerPage__title-button {
+    display: flex;
+}
+.CareerPage__title {
+    width: 100%;
 }
