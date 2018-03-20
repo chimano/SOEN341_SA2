@@ -22,7 +22,6 @@ export class ProfilePage extends React.Component {
       questions_answered: [],
       is_editing: false, // make user info fields editable
       is_saving_myinfo: false, // loading indicator for the edit button
-      // doRender: false
     };
   }
 
@@ -31,6 +30,16 @@ export class ProfilePage extends React.Component {
     setTimeout(() => this.getQuestionsRelatedToUser(), 2500);
   }
 
+  getQuestionsRelatedToUser = () => {
+    getApiUserQuestionsAndAnsweredQuestions(this.state.username)
+      .then(response => {
+        this.setState({ questions_asked: response.data.asked_questions,
+                        questions_answered: response.data.answered_questions,
+                        downvoted_questions: response.data.downvoted_questions,
+                        upvoted_questions: response.data.upvoted_questions });
+      })
+  }
+  
   onInputChange = (field, event) => {
     this.setState({ [field]: event.target.value });
   }
@@ -46,32 +55,7 @@ export class ProfilePage extends React.Component {
     // toggle the button between Save and Edit
     this.setState({is_editing: !is_editing});
   }
-
-  getQuestionsRelatedToUser = () => {
-    getApiUserQuestionsAndAnsweredQuestions(this.state.username)
-      .then(response => {
-        //Return 2 arrays (question_asked and question_answered)
-        var questionsType = Object.keys(response.data);
-        var allIds = questionsType.map((t) => response.data[t].map((e) => e.id))
-
-        this.setState({
-          questions_asked_id: allIds[0],
-          questions_answered_id: allIds[1]
-        });
-    })
-    .then(() => {
-      this.getQuestionsFromIdListAndSetStateOfQuestionList(
-        this.state.questions_asked_id
-      ).then(list => this.setState({ questions_asked: list })
-    )}).then(() => {
-      this.getQuestionsFromIdListAndSetStateOfQuestionList(
-        this.state.questions_answered_id
-      ).then(list => this.setState({ questions_answered: list })
-    )}).then(() => {
-      setTimeout(() => this.forceUpdate(), 600);
-    });
-  };
-
+  
   getMyInfo = () => {
     getApiUserMe()
       .then(response => {
@@ -82,20 +66,8 @@ export class ProfilePage extends React.Component {
           first_name: response.data.first_name,
           last_name: response.data.last_name,
           aboutMe: response.data.profile.about_me,
-          reputation: response.data.profile.reputation,
-          downvoted_questions_id: response.data.profile.downvoted_questions,
-          upvoted_questions_id: response.data.profile.upvoted_questions
+          reputation: response.data.profile.reputation
         });
-        console.log("UPVOTEDQUESTIONS " + this.state.upvoted_questions_id);
-      })
-      .then(() => {
-        this.getQuestionsFromIdListAndSetStateOfQuestionList(
-          this.state.upvoted_questions_id
-
-        ).then(list => this.setState({ upvoted_questions: list }));
-        this.getQuestionsFromIdListAndSetStateOfQuestionList(
-          this.state.downvoted_questions_id
-        ).then(list => this.setState({ downvoted_questions: list }));
       })
       .then(() => {
         setTimeout(() => this.forceUpdate(), 500);
@@ -116,23 +88,6 @@ export class ProfilePage extends React.Component {
       .catch(error => console.log(error));
   }
 
-  getQuestionsFromIdListAndSetStateOfQuestionList = idList => {
-    return new Promise((resolve, reject) => {
-      let tempQuestionList = [];
-      idList.forEach(id => {
-        getApiQuestionById(id)
-          .then(response => {
-            console.log("response of getApiQuestionById(id): ", response);
-            tempQuestionList.push(response.data);
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      });
-      console.log("tempQuestionList", tempQuestionList);
-      resolve(tempQuestionList);
-    });
-  };
 
   render() {
     const {
