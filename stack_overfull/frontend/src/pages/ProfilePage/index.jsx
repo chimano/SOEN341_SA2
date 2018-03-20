@@ -30,6 +30,14 @@ export class ProfilePage extends React.Component {
     setTimeout(() => this.getQuestionsRelatedToUser(), 2500);
   }
 
+  getQuestionsRelatedToUser = () => {
+    getApiUserQuestionsAndAnsweredQuestions(this.state.username)
+      .then(response => {
+        this.setState({ questions_asked: response.data.asked_questions });
+        this.setState({ questions_answered: response.data.answered_questions });
+      })
+  }
+  
   onInputChange = (field, event) => {
     this.setState({ [field]: event.target.value });
   }
@@ -45,15 +53,7 @@ export class ProfilePage extends React.Component {
     // toggle the button between Save and Edit
     this.setState({is_editing: !is_editing});
   }
-
-  getQuestionsRelatedToUser = () => {
-    getApiUserQuestionsAndAnsweredQuestions(this.state.username)
-      .then(response => {
-        this.setState({ questions_asked: response.data.asked_questions });
-        this.setState({ questions_answered: response.data.answered_questions });
-      })
-  }
-
+  
   getMyInfo = () => {
     getApiUserMe()
       .then(response => {
