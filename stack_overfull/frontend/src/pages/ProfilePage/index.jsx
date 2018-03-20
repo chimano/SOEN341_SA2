@@ -14,8 +14,6 @@ export class ProfilePage extends React.Component {
       last_name : "",
       aboutMe: "",
       reputation: "",
-      downvoted_questions_id: [],
-      upvoted_questions_id: [],
       downvoted_questions: [],
       upvoted_questions: [],
       questions_asked: [],
@@ -69,10 +67,10 @@ export class ProfilePage extends React.Component {
           reputation: response.data.profile.reputation
         });
       })
-      .then(() => {
-        setTimeout(() => this.forceUpdate(), 500);
-      })
-      .catch(error => console.log(error));
+      // .then(() => {
+      //   setTimeout(() => this.forceUpdate(), 500);
+      // })
+      // .catch(error => console.log(error));
   };
 
   saveMyInfo = () => {
@@ -87,7 +85,6 @@ export class ProfilePage extends React.Component {
       })
       .catch(error => console.log(error));
   }
-
 
   render() {
     const {
