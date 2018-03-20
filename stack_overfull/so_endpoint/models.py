@@ -6,6 +6,7 @@ from django.dispatch import receiver
 
 class Job(models.Model):
     job_id = models.IntegerField(primary_key=True)
+    posted_by = models.ForeignKey(User, on_delete=models.CASCADE, default=None, null=True)
     position = models.CharField(max_length=48, null=False, default=None)
     TYPES = ['Full-time', 'Part-time', 'Internship', 'Contract', 'Temporary', 'Trainee']
     job_type = models.CharField(max_length=48, null=False, default=None)
@@ -20,6 +21,12 @@ class Job(models.Model):
     location = models.CharField(max_length=84, null=False, default=None)
     description = models.TextField()
     date_posted = models.DateTimeField(auto_now_add=True)
+    
+
+class JobApp(models.Model):
+    job_id = models.ForeignKey(Job, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+
 
 class Question(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
@@ -55,6 +62,11 @@ class Profile(models.Model):
     user_id = models.OneToOneField(User, on_delete=models.CASCADE)
     about_me = models.TextField(default='Add something about yourself')
     reputation = models.IntegerField(default=0)
+    first_name = models.CharField(max_length=32, default="Unset Name", null=False)
+    last_name = models.CharField(max_length=32, default="Unset Last Name", null=False)
+    github = models.CharField(max_length=64, null=True)
+    linkedin = models.CharField(max_length=64, null=True)
+    is_employer = models.BooleanField(default=False)
 
     upvoted_questions = models.ManyToManyField(Question, related_name='up_questions', blank=True)
     downvoted_questions = models.ManyToManyField(Question, related_name='down_questions', blank=True)
