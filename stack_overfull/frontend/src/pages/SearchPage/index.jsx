@@ -75,7 +75,7 @@ export class SearchPage extends React.Component {
         <div className="SearchPage page-width">
           <h2 className="SearchPage__question-list-title">Search</h2>
           <div style={{ paddingBottom: "15px" }}>
-            <SearchBar />
+            <SearchBar preserveInput />
           </div>
           <div className="SearchPage__search-filters-bar">
             <SearchFiltersBar

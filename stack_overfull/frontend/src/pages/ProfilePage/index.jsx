@@ -7,8 +7,8 @@ import {
   getApiUserNameInfo
 } from "../../utils/api";
 import "./index.css";
-import { QuestionBox } from "../../components/QuestionBox/index";
-import { Input, TextField, Button } from "antd";
+import { QuestionList, UserInfo } from "../../components";
+import { Input, Button } from "antd";
 
 export class ProfilePage extends React.Component {
   constructor(props) {
@@ -26,13 +26,12 @@ export class ProfilePage extends React.Component {
       questions_answered: [],
       is_editing: false, // make user info fields editable
       is_saving_myinfo: false // loading indicator for the edit button
-      // doRender: false
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.getMyInfo();
-    setTimeout(() => this.getQuestionsRelatedToUser(), 2500);
+    setTimeout(() => this.getQuestionsRelatedToUser(), 1000);
   }
 
   getQuestionsRelatedToUser = () => {
@@ -112,144 +111,39 @@ export class ProfilePage extends React.Component {
       is_saving_myinfo
     } = this.state;
 
-    let editButtonElement = (
-      <Button
-        type="primary"
-        size="small"
-        onClick={this.onEditButtonClick}
-        loading={is_saving_myinfo}
-      >
-        {is_editing ? "Save" : "Edit"}
-      </Button>
-    );
-
-    let emailElement = is_editing ? (
-      <Input value={email} onChange={e => this.onInputChange("email", e)} />
-    ) : (
-      <div>{email}</div>
-    );
-
-    let firstNameElement = is_editing ? (
-      <Input
-        value={first_name}
-        onChange={e => this.onInputChange("first_name", e)}
-      />
-    ) : (
-      <div>{first_name}</div>
-    );
-
-    let lastNameElement = is_editing ? (
-      <Input
-        value={last_name}
-        onChange={e => this.onInputChange("last_name", e)}
-      />
-    ) : (
-      <div>{last_name}</div>
-    );
-
-    let aboutMeElement = is_editing ? (
-      <Input.TextArea
-        value={aboutMe}
-        onChange={e => this.onInputChange("aboutMe", e)}
-      />
-    ) : (
-      <div>{aboutMe}</div>
-    );
-
     return (
       <div className="body-wrapper grey-background">
         <div className="page-width" style={{ display: "flex" }}>
-          <div className="ProfilePage" style={{ minWidth: "300px" }}>
-            <h3>Username</h3>
-            <div>{username}</div>
-            <h3>Email</h3>
-            {emailElement}
-            <h3>First Name</h3>
-            {firstNameElement}
-            <h3>Last Name</h3>
-            {lastNameElement}
-            <h3>About Me</h3>
-            {aboutMeElement}
-            <h3>Reputation</h3>
-            <div>{reputation} points</div>
+          <UserInfo
+            is_editing={is_editing}
+            onInputChange={this.onInputChange}
+            onEditButtonClick = {this.onEditButtonClick}
+            is_saving_myinfo={is_saving_myinfo}
+            username = {username}
+            email = {email}
+            first_name = {first_name}
+            last_name = {last_name}
+            aboutMe = {aboutMe}
+            reputation = {reputation}
+          />
 
-            {editButtonElement}
-          </div>
           <div style={{ width: "100%" }}>
             <h3 className="ProfilePage__question-list-title">
               Upvoted Questions
             </h3>
-            <div>
-              {upvoted_questions.map((question, key) => (
-                <QuestionBox
-                  key={key}
-                  date_created={question.date_created
-                    .replace("T", " at ")
-                    .substring(0, 19)}
-                  question_head={question.question_head}
-                  q_id={question.id}
-                  username={question.user_id.username}
-                  points={question.points}
-                  showButtons={false}
-                  tags={question.tags}
-                />
-              ))}
-            </div>
+            <QuestionList questionList={upvoted_questions} />
             <h3 className="ProfilePage__question-list-title">
               Downvoted Questions
             </h3>
-            <div>
-              {downvoted_questions.map((question, key) => (
-                <QuestionBox
-                  key={key}
-                  date_created={question.date_created
-                    .replace("T", " at ")
-                    .substring(0, 19)}
-                  question_head={question.question_head}
-                  q_id={question.id}
-                  username={question.user_id.username}
-                  points={question.points}
-                  showButtons={false}
-                  tags={question.tags}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-        <div className="ProfilePage__question_related_to_user">
-          <div className="div_question_asked">
-            <h3> Questions Asked </h3>
-            {questions_asked.map((question, key) => (
-              <QuestionBox
-                key={key}
-                date_created={question.date_created
-                  .replace("T", " at ")
-                  .substring(0, 19)}
-                question_head={question.question_head}
-                q_id={question.id}
-                username={question.user_id.username}
-                points={question.points}
-                showButtons={false}
-                tags={question.tags}
-              />
-            ))}
-          </div>
-          <div className="div_question_answered">
-            <h3> Questions Answered </h3>
-            {questions_answered.map((question, key) => (
-              <QuestionBox
-                key={key}
-                date_created={question.date_created
-                  .replace("T", " at ")
-                  .substring(0, 19)}
-                question_head={question.question_head}
-                q_id={question.id}
-                username={question.user_id.username}
-                points={question.points}
-                showButtons={false}
-                tags={question.tags}
-              />
-            ))}
+            <QuestionList questionList={downvoted_questions} />
+            <h3 className="ProfilePage__question-list-title">
+              Questions Asked
+            </h3>
+            <QuestionList questionList={questions_asked} />
+            <h3 className="ProfilePage__question-list-title">
+              Questions Answered
+            </h3>
+            <QuestionList questionList={questions_answered} />
           </div>
         </div>
       </div>

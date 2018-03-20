@@ -6,8 +6,7 @@ import {
   getApiJob
 } from "../../utils/api";
 import "./index.css";
-import { QuestionBox } from "../../components/QuestionBox/index";
-import { JobBox } from "../../components/JobBox/index";
+import { QuestionList, UserInfo, JobBox } from "../../components";
 
 export class UserPage extends React.Component {
   constructor(props) {
@@ -28,24 +27,29 @@ export class UserPage extends React.Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const username = this.props.match.params.username;
     this.getUserInfo(username);
-    setTimeout(() => this.getQuestionsRelatedToUser(), 2500);
+    setTimeout(() => this.getQuestionsRelatedToUser(), 1000);
   }
 
   getQuestionsRelatedToUser = () => {
-    if(this.props.match.params.username){
-      console.log("asjkdhakjsdjkhasdkjasdhjkah")
+    if (this.props.match.params.username) {
+      console.log("asjkdhakjsdjkhasdkjasdhjkah");
     }
     const username = this.props.match.params.username;
     getApiUserQuestionsAndAnsweredQuestions(this.state.username).then(
       response => {
-        console.log("getApiUserQuestionsAndAnsweredQuestions(this.state.username)",response);
-        this.setState({ questions_asked: response.data.asked_questions });
-        this.setState({ questions_answered: response.data.answered_questions });
-        this.setState({ upvoted_questions: response.data.upvoted_questions });
-        this.setState({ downvoted_questions: response.data.downvoted_questions });
+        console.log(
+          "getApiUserQuestionsAndAnsweredQuestions(this.state.username)",
+          response
+        );
+        this.setState({
+          questions_asked: response.data.asked_questions,
+          questions_answered: response.data.answered_questions,
+          upvoted_questions: response.data.upvoted_questions,
+          downvoted_questions: response.data.downvoted_questions
+        });
       }
     );
   };
@@ -94,111 +98,32 @@ export class UserPage extends React.Component {
     return (
       <div className="body-wrapper grey-background">
         <div className="page-width" style={{ display: "flex" }}>
-          <div className="Userpage" style={{ minWidth: "300px" }}>
-            <h3>Username</h3>
-            <div>{username}</div>
-            <h3>Email</h3>
-            <div>{email}</div>
-            <h3>First Name</h3>
-            <div>{first_name}</div>
-            <h3>Last Name</h3>
-            <div>{last_name}</div>
-            <h3>About Me</h3>
-            <div>{aboutMe}</div>
-            <h3>Reputation</h3>
-            <div>{reputation} points</div>
-          </div>
+          <UserInfo
+            username={username}
+            email={email}
+            first_name={first_name}
+            last_name={last_name}
+            aboutMe={aboutMe}
+            reputation={reputation}
+            no_edit
+          />
           <div style={{ width: "100%" }}>
-            <h3 className="Userpage__question-list-title">Upvoted Questions</h3>
-            <div>
-              {upvoted_questions.map((question, key) => (
-                <QuestionBox
-                  key={key}
-                  date_created={question.date_created
-                    .replace("T", " at ")
-                    .substring(0, 19)}
-                  question_head={question.question_head}
-                  q_id={question.id}
-                  username={question.user_id.username}
-                  points={question.points}
-                  showButtons={false}
-                  tags={question.tags}
-                />
-              ))}
-            </div>
-            <h3 className="Userpage__question-list-title">
+            <h3 className="ProfilePage__question-list-title">
+              Upvoted Questions
+            </h3>
+            <QuestionList questionList={upvoted_questions} />
+            <h3 className="ProfilePage__question-list-title">
               Downvoted Questions
             </h3>
-            <div>
-              {downvoted_questions.map((question, key) => (
-                <QuestionBox
-                  key={key}
-                  date_created={question.date_created
-                    .replace("T", " at ")
-                    .substring(0, 19)}
-                  question_head={question.question_head}
-                  q_id={question.id}
-                  username={question.user_id.username}
-                  points={question.points}
-                  showButtons={false}
-                  tags={question.tags}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-        <div className="UserPage__question_related_to_user">
-          <div className="Userpage__div_question_asked">
-            <h3> Questions Asked </h3>
-            {questions_asked.map((question, key) => (
-              <QuestionBox
-                key={key}
-                date_created={question.date_created
-                  .replace("T", " at ")
-                  .substring(0, 19)}
-                question_head={question.question_head}
-                q_id={question.id}
-                username={question.user_id.username}
-                points={question.points}
-                showButtons={false}
-                tags={question.tags}
-              />
-            ))}
-          </div>
-          <div className="Userpage__div_question_answered">
-            <h3> Questions Answered </h3>
-            {questions_answered.map((question, key) => (
-              <QuestionBox
-                key={key}
-                date_created={question.date_created
-                  .replace("T", " at ")
-                  .substring(0, 19)}
-                question_head={question.question_head}
-                q_id={question.id}
-                username={question.user_id.username}
-                points={question.points}
-                showButtons={false}
-                tags={question.tags}
-              />
-            ))}
-          </div>
-          <div className="Userpage__div_job_posted">
-            <h3>Job posted</h3>
-            {job_posted.map((job, key) => (
-              <JobBox
-                key={key}
-                job_id={job.id}
-                job_company={job.company}
-                job_position={job.position}
-                job_location={job.location}
-                job_type={job.job_type}
-                job_category={job.category}
-                job_description={job.description}
-                date_created={job.date_posted
-                  .replace("T", " at ")
-                  .substring(0, 19)}
-              />
-            ))}
+            <QuestionList questionList={downvoted_questions} />
+            <h3 className="ProfilePage__question-list-title">
+              Questions Asked
+            </h3>
+            <QuestionList questionList={questions_asked} />
+            <h3 className="ProfilePage__question-list-title">
+              Questions Answered
+            </h3>
+            <QuestionList questionList={questions_answered} />
           </div>
         </div>
       </div>
