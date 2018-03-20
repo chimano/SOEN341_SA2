@@ -12,7 +12,7 @@ export class Footer extends React.Component {
             <h3> Stack Overfull </h3>
             <li>
               {" "}
-              <Link style={{ color: "white" }} to="/About">
+              <Link style={{ color: "white" }} to="/about">
                 {" "}
                 About{" "}
               </Link>{" "}
@@ -20,16 +20,6 @@ export class Footer extends React.Component {
             <li>Help</li>
             <li>Contact Us</li>
             <li>Terms & Conditions</li>
-          </ul>
-          <ul>
-            <h3>Questions</h3>
-            <li>Business</li>
-            <li>Cooking</li>
-            <li>Fashion</li>
-            <li>Entertainment</li>
-            <li>Programming</li>
-            <li>Social</li>
-            <li>Technology</li>
           </ul>
           <ul>
             <h3> Social Media </h3>

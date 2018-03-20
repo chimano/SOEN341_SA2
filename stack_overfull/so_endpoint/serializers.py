@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from so_endpoint.models import Question, Answer, Profile, Tag, Job
+from so_endpoint.models import Question, Answer, Profile, Tag, Job, JobApp
 from django.contrib.auth.models import User
 
 """
@@ -20,7 +20,7 @@ class AccountSerializerPrivate(serializers.ModelSerializer):
 class ProfileSerializerPublic(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ('reputation', 'about_me')
+        fields = ('reputation', 'about_me', 'github', 'linkedin')
 
 class AccountSerializerPublic(serializers.ModelSerializer):
     profile = ProfileSerializerPublic(read_only=True)
@@ -75,3 +75,10 @@ class JobSerializer(serializers.ModelSerializer):
     class Meta:
         model = Job
         fields = ('job_id','position','job_type','category','company','location','description','date_posted')
+
+class JobAppSerializer(serializers.ModelSerializer):
+    user_id = AccountSerializerPublic(read_only=True)
+
+    class Meta:
+        model = JobApp
+        fields = ('id','job_id', 'user_id')

@@ -1,26 +1,20 @@
 import React from "react";
-import { CategoryPage } from "./index.jsx";
+import { TagPage } from "./index.jsx";
 import { configure, shallow, mount, render } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 
 configure({ adapter: new Adapter() });
 
-describe("<CategoryPage />", () => {
+describe("<TagPage />", () => {
   let component;
 
   beforeEach(() => {
     component = shallow(
-      <CategoryPage
-        match={{
-          params: { category: "software engineering" },
-          path: "",
-          url: ""
-        }}
-      />
+      <TagPage match={{ params: { tags: 1 }}}/>
     );
   });
 
-  it("renders 1 <CategoryPage /> component", () => {
+  it("renders 1 <TagPage /> component", () => {
     expect(component).toHaveLength(1);
   });
 });

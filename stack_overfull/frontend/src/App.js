@@ -7,7 +7,7 @@ import {
   CareerPage,
   ProfilePage,
   CategoryListPage,
-  CategoryPage
+  TagPage
 } from "./pages";
 import { Route, Switch } from "react-router-dom";
 import { NavigationBar, Footer } from "./components";
@@ -64,13 +64,6 @@ export default class App extends React.Component {
 
   render() {
 
-    const NestedCategoryListPage = ({ match }) => (
-      <div>
-        <CategoryListPage />
-        <Route path={`${match.url}/:category`} component={CategoryPage} />
-      </div>
-    );
-
     return (
       <main className="App">
         <NavigationBar
@@ -109,7 +102,25 @@ export default class App extends React.Component {
               <SearchPage username={this.state.username} {...props} />
             )}
           />
-          <Route path="/categories" component={NestedCategoryListPage} />
+
+          <Route
+            path="/categories"
+            render={props => (
+              <CategoryListPage username={this.state.username} {...props} />
+            )}
+          />
+          
+          <Route
+            path="/tags/:tags"
+            render={props => (
+              <TagPage
+                username={this.state.username}
+                verifyLogin={this.verifyLogin}
+                logged_in={this.state.logged_in}
+                {...props}
+              />
+            )}
+          />
 
           <Route path="/careers" component={CareerPage} />
         </Switch>

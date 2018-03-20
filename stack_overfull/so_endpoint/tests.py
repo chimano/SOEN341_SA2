@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.test import Client
 
 from so_endpoint.models import *
+from so_endpoint.views import add_tags_to_question
 import json
 
 # Create your tests here.
@@ -199,8 +200,27 @@ class UserLoginViewTests(TestCase):
         User.objects.all().delete()
 
 class JobViewTest(TestCase):
-    
+    login_info = {
+        'username': 'testuser',
+        'password': 'testpassword'
+    }
+    @classmethod
+    def setUpTestData(cls):
+        #Sets up database for the testcases
+        user = User.objects.create_user(id=1, 
+                                username=cls.login_info['username'],
+                                password=cls.login_info['password'])
+        user.profile.is_employer = True
+        user.profile.save()
+
+
     def test_valid_job_post(self):
+        self.client.post(
+            '/api/user/login/',
+            data=json.dumps(self.login_info),
+            content_type='application/json'
+        )
+
         json_payload = json.dumps({
             "position":"front-end developper",
             "job_type":"Full-time",
@@ -214,6 +234,7 @@ class JobViewTest(TestCase):
             data=json_payload,
             content_type='application/json'
         )
+        print(response.json())
         self.assertEqual(response.status_code, 200)
         self.assertTrue('success' in response.json())
 
@@ -303,6 +324,11 @@ class JobViewTest(TestCase):
         
         self.assertEqual(response.status_code, 400)
         self.assertTrue('error' in response.json())
+    
+    @classmethod
+    def tearDownClass(cls):
+        User.objects.all().delete()
+        Job.objects.all().delete()
 
 class QuestionViewTest(TestCase):
     login_info = {
@@ -592,11 +618,14 @@ class AnswerVoteViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         #Sets up database for the testcases
-        q = Question.objects.create(id=1,question_head="Test Question?", question_text="Test Body?")
-        u = User.objects.create_user(id=1,username=cls.login_info[0]['username'], password=cls.login_info[0]['password'])
-        User.objects.create_user(id=2,username=cls.login_info[1]['username'], password=cls.login_info[1]['password'])
-        Answer.objects.create(id=1, answer_text="Test answer", question_id=q, user_id=u)
-        Answer.objects.create(id=2, answer_text="Test answer2", question_id=q, user_id=u)
+        question = Question.objects.create(id=1,question_head="Test Question?", question_text="Test Body?")
+        user1 = User.objects.create_user(id=1,username=cls.login_info[0]['username'], password=cls.login_info[0]['password'])
+        user2 = User.objects.create_user(id=2,username=cls.login_info[1]['username'], password=cls.login_info[1]['password'])
+        Answer.objects.create(id=1, answer_text="Test answer", question_id=question, user_id=user1)
+        Answer.objects.create(id=2, answer_text="Test answer2", question_id=question, user_id=user1)
+        Answer.objects.create(id=3, answer_text="Test answer3", question_id=question, user_id=user2)
+        Answer.objects.create(id=4, answer_text="Test answer4", question_id=question, user_id=user1)
+        Answer.objects.create(id=5, answer_text="Test answer5", question_id=question, user_id=user1)
 
 
     def test_valid_answer_upvote_post(self):
@@ -616,7 +645,7 @@ class AnswerVoteViewTest(TestCase):
             content_type='application/json'
         )
         self.assertEqual(response.status_code, 200)
-        self.assertTrue('sucess' in response.json())
+        self.assertTrue('success' in response.json())
 
     def test_valid_answer_downvote_post(self):
         #Sends a valid downvote
@@ -635,7 +664,7 @@ class AnswerVoteViewTest(TestCase):
             content_type='application/json'
         )
         self.assertEqual(response.status_code, 200)
-        self.assertTrue('sucess' in response.json())
+        self.assertTrue('success' in response.json())
 
     def test_doubledownvote_post(self):
         #Sends a valid downvote
@@ -704,6 +733,92 @@ class AnswerVoteViewTest(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertTrue('error' in response.json())
 
+    
+    def test_self_vote(self):
+        #Tests user voting on their own answer
+        self.client.post(
+            '/api/user/login/',
+            data=json.dumps(self.login_info[1]),
+            content_type='application/json'
+        )
+        json_payload = json.dumps({
+            "a_id": "3",
+            "vote_type": "DOWN"
+        })
+
+        response = self.client.post(
+            '/api/answer/vote/',
+            data=json_payload,
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertTrue('error' in response.json())
+    
+    def test_updown_vote(self):
+        #Tests a user downvoting a question they
+        #previously upvoted
+        self.client.post(
+            '/api/user/login/',
+            data=json.dumps(self.login_info[1]),
+            content_type='application/json'
+        )
+        json_payload = json.dumps({
+            "a_id": "4",
+            "vote_type": "UP"
+        })
+
+        response = self.client.post(
+            '/api/answer/vote/',
+            data=json_payload,
+            content_type='application/json'
+        )
+        json_payload = json.dumps({
+            "a_id": "4",
+            "vote_type": "DOWN"
+        })
+        response = self.client.post(
+            '/api/answer/vote/',
+            data=json_payload,
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('success' in response.json())
+        self.assertEqual(-1, response.json()['points'])
+
+    def test_downup_vote(self):
+        #Tests a user upvoting a question they
+        #previously downvoted
+        self.client.post(
+            '/api/user/login/',
+            data=json.dumps(self.login_info[1]),
+            content_type='application/json'
+        )
+        json_payload = json.dumps({
+            "a_id": "5",
+            "vote_type": "DOWN"
+        })
+
+        response = self.client.post(
+            '/api/answer/vote/',
+            data=json_payload,
+            content_type='application/json'
+        )
+        json_payload = json.dumps({
+            "a_id": "5",
+            "vote_type": "UP"
+        })
+        response = self.client.post(
+            '/api/answer/vote/',
+            data=json_payload,
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('success' in response.json())
+        self.assertEqual(1, response.json()['points'])
+
+
+
     @classmethod
     def tearDownClass(cls):
         Question.objects.all().delete()
@@ -723,9 +838,12 @@ class QuestionVoteViewTest(TestCase):
     def setUpTestData(cls):
         #Sets up database for the testcases
         u1 = User.objects.create_user(id=1,username=cls.login_info[0]['username'], password=cls.login_info[0]['password'])
-        u2 = User.objects.create_user(id=1,username=cls.login_info[1]['username'], password=cls.login_info[1]['password'])
+        u2 = User.objects.create_user(id=2,username=cls.login_info[1]['username'], password=cls.login_info[1]['password'])
         Question.objects.create(id=1,question_head="Test Question?", question_text="Test Body?", user_id=u1)
         Question.objects.create(id=2,question_head="Test Question?2", question_text="Test Body?2", user_id=u1)
+        Question.objects.create(id=3,question_head="Test Question?3", question_text="Test Body?3", user_id=u2)
+        Question.objects.create(id=4,question_head="Test Question?4", question_text="Test Body?4", user_id=u1)
+        Question.objects.create(id=5,question_head="Test Question?5", question_text="Test Body?5", user_id=u1)
 
 
     def test_valid_question_upvote_post(self):
@@ -745,7 +863,7 @@ class QuestionVoteViewTest(TestCase):
             content_type='application/json'
         )
         self.assertEqual(response.status_code, 200)
-        self.assertTrue('sucess' in response.json())
+        self.assertTrue('success' in response.json())
 
     def test_valid_question_downvote_post(self):
         #Sends a valid downvote
@@ -764,7 +882,7 @@ class QuestionVoteViewTest(TestCase):
             content_type='application/json'
         )
         self.assertEqual(response.status_code, 200)
-        self.assertTrue('sucess' in response.json())
+        self.assertTrue('success' in response.json())
 
     def test_doubledownvote_question_post(self):
         #Sends a valid downvote
@@ -791,7 +909,7 @@ class QuestionVoteViewTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertTrue('success' in response.json())
-    
+
     def test_doubleupvote_question_post(self):
         #Sends a valid downvote
         self.client.post(
@@ -834,6 +952,90 @@ class QuestionVoteViewTest(TestCase):
         )
         self.assertEqual(response.status_code, 400)
         self.assertTrue('error' in response.json())
+    
+    def test_self_vote(self):
+        #Tests user voting on their own answer
+        self.client.post(
+            '/api/user/login/',
+            data=json.dumps(self.login_info[1]),
+            content_type='application/json'
+        )
+        json_payload = json.dumps({
+            "q_id": "3",
+            "vote_type": "DOWN"
+        })
+
+        response = self.client.post(
+            '/api/answer/vote/',
+            data=json_payload,
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertTrue('error' in response.json())
+    
+    def test_updown_vote(self):
+        #Tests a user downvoting a question they
+        #previously upvoted
+        self.client.post(
+            '/api/user/login/',
+            data=json.dumps(self.login_info[1]),
+            content_type='application/json'
+        )
+        json_payload = json.dumps({
+            "q_id": "4",
+            "vote_type": "UP"
+        })
+
+        response = self.client.post(
+            '/api/question/vote/',
+            data=json_payload,
+            content_type='application/json'
+        )
+        json_payload = json.dumps({
+            "q_id": "4",
+            "vote_type": "DOWN"
+        })
+        response = self.client.post(
+            '/api/question/vote/',
+            data=json_payload,
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('success' in response.json())
+        self.assertEqual(-1, response.json()['points'])
+
+    def test_downup_vote(self):
+        #Tests a user upvoting a question they
+        #previously downvoted
+        self.client.post(
+            '/api/user/login/',
+            data=json.dumps(self.login_info[1]),
+            content_type='application/json'
+        )
+        json_payload = json.dumps({
+            "q_id": "5",
+            "vote_type": "DOWN"
+        })
+
+        response = self.client.post(
+            '/api/question/vote/',
+            data=json_payload,
+            content_type='application/json'
+        )
+        json_payload = json.dumps({
+            "q_id": "5",
+            "vote_type": "UP"
+        })
+        response = self.client.post(
+            '/api/question/vote/',
+            data=json_payload,
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('success' in response.json())
+        self.assertEqual(1, response.json()['points'])
+
 
     @classmethod
     def tearDownClass(cls):
@@ -985,30 +1187,6 @@ class AnswerAcceptRejectViewTest(TestCase):
         User.objects.all().delete()
 
 
-class TagViewTest(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        #Sets up database for the testcases
-        Tag.objects.create(tag_text='tag1')
-        Tag.objects.create(tag_text='tag2')
-
-
-    def test_tag_get(self):
-        response = self.client.get('/api/tag/')
-        self.assertEqual(response.status_code, 200)
-
-        tag_list = response.json()['tag_list']
-        self.assertTrue( len(tag_list) == 2)
-
-
-    @classmethod
-    def tearDownClass(cls):
-        Question.objects.all().delete()
-        Answer.objects.all().delete()
-        Tag.objects.all().delete()
-        User.objects.all().delete()
-
-
 class SearchViewTest(TestCase):
     login_info = {
         'username': 'testuser',
@@ -1063,6 +1241,12 @@ class TagViewTest(TestCase):
         #Sets up database for the testcases
         Tag.objects.create(tag_text='tag1')
         Tag.objects.create(tag_text='tag2')
+        qid1 = Question.objects.create(id=1, question_head="Test Q", question_text="Test Body")
+        qid2 = Question.objects.create(id=2, question_head="Test Q2", question_text="Test Body")
+        add_tags_to_question(qid1, ['tag2'])
+        add_tags_to_question(qid2, ['tag2'])
+        qid1.save()
+        qid2.save()
 
 
     def test_tag_get(self):
@@ -1071,6 +1255,14 @@ class TagViewTest(TestCase):
 
         tag_list = response.json()['tag_list']
         self.assertTrue( len(tag_list) == 2)
+
+    def test_tagname_get(self):
+        test_tagname = "tag2"
+        response = self.client.get(f'/api/tag/name/{test_tagname}/')
+
+        self.assertEqual(response.status_code, 200)
+        body = response.json()
+        self.assertTrue(body['question_count'] == 2)
 
 
     @classmethod
@@ -1115,4 +1307,186 @@ class ProfileQuestionViewTest(TestCase):
     @classmethod
     def tearDownClass(cls):
         Question.objects.all().delete()
+        User.objects.all().delete()
+
+
+class ProfileJobViewTest(TestCase):
+    login_info = {
+        'username': 'testuser',
+        'password': 'testpassword'
+    }
+    job_info = {
+        'category': 'coordinator',
+        'job_type': 'Contract',
+        'position': 'Coordinator',
+        'company': 'Google',
+        'location': 'Montreal',
+        'description': 'Lorem ipsum dolor sit amet, ut \
+        qui vero detraxit. No enim iudico vix, \
+        in sea legendos deseruisse. Qui utinam \
+        vituperata neglegentur ei, mazim iudico \
+        virtute te vim, officiis ocurreret no eum. \
+        Assum aperiri ancillae cu ius, oratio \
+        adipiscing ad nam.'
+    }
+    @classmethod
+    def setUpTestData(cls):
+        #Sets up database for the testcases
+        author = User.objects.create_user(id=1, 
+                                        username=cls.login_info['username'],
+                                        password=cls.login_info['password'],
+                                        )
+        author.profile.is_employer = True
+        author.save()
+        Job.objects.create(position=cls.job_info['position'],
+                          job_type=cls.job_info['job_type'],
+                          category=cls.job_info['category'],
+                          company=cls.job_info['company'],
+                          location=cls.job_info['location'],
+                          description=cls.job_info['description'],
+                          posted_by=author)
+
+
+    def test_valid_request(self):
+        #Test with valid username
+        response = self.client.get(
+            '/api/user/name/' + self.login_info['username'] + '/jobs/'
+        )
+        self.assertEqual(1 ,len(response.json()['posted_positions']))
+
+    def test_invalid_request(self):
+        #Test with invalid username
+        response = self.client.get(
+            '/api/user/name/fakeuser/questions/'
+        )
+        self.assertEqual(400 ,response.status_code)
+
+    @classmethod
+    def tearDownClass(cls):
+        Job.objects.all().delete()
+        User.objects.all().delete()
+
+
+class JobAppViewTest(TestCase):
+    login_info = [{
+        'username': 'testuser',
+        'password': 'testpassword'
+    }, {
+        'username': 'testuser2',
+        'password': 'testpassword2'
+    }]
+    job_info = {
+        'category': 'coordinator',
+        'job_type': 'Contract',
+        'position': 'Coordinator',
+        'company': 'Google',
+        'location': 'Montreal',
+        'description': 'Lorem ipsum dolor sit amet, ut \
+        qui vero detraxit. No enim iudico vix, \
+        in sea legendos deseruisse. Qui utinam \
+        vituperata neglegentur ei, mazim iudico \
+        virtute te vim, officiis ocurreret no eum. \
+        Assum aperiri ancillae cu ius, oratio \
+        adipiscing ad nam.'
+    }
+    @classmethod
+    def setUpTestData(cls):
+        #Sets up database for the testcases
+        author = User.objects.create_user(id=1, 
+                                        username=cls.login_info[0]['username'],
+                                        password=cls.login_info[0]['password'],
+                                        )
+        author.profile.is_employer = True
+        author.save()
+        Job.objects.create(job_id=1, position=cls.job_info['position'],
+                          job_type=cls.job_info['job_type'],
+                          category=cls.job_info['category'],
+                          company=cls.job_info['company'],
+                          location=cls.job_info['location'],
+                          description=cls.job_info['description'],
+                          posted_by=author)
+        User.objects.create_user(id=2,
+                                username=cls.login_info[1]['username'],
+                                password=cls.login_info[1]['password'])
+
+
+    def test_invalid_get_request(self):
+        # Get with an account that did not post the position
+        response = self.client.get('/api/job/application/',
+                                  {"job_id":1})
+
+        self.assertEqual(400 ,response.status_code)
+
+    def test_invalid_id_get_request(self):
+        # Get with a job that does not exist
+        response = self.client.get('/api/job/application/',
+                                  {"job_id":54})
+
+        self.assertEqual(400 ,response.status_code)
+
+    def test_valid_get_request(self):
+        # Get with an account that did post the position
+
+        self.client.post(
+            '/api/user/login/',
+            data=json.dumps(self.login_info[0]),
+            content_type='application/json'
+        )
+        response = self.client.get('/api/job/application/',
+                                  {"job_id":1})
+
+        self.assertEqual(200 ,response.status_code)
+    
+    def test_logged_out_post_request(self):
+        # Post with an account that is not logged in
+        json_data = json.dumps({
+            "job_id": 1
+        })
+        response = self.client.post('/api/job/application/',
+                                  data=json_data,
+                                  content_type='application/json')
+
+        self.assertEqual(400 ,response.status_code)
+    
+    def test_valid_post_request(self):
+        # Post with an account that is logged in
+
+        self.client.post(
+            '/api/user/login/',
+            data=json.dumps(self.login_info[1]),
+            content_type='application/json'
+        )
+
+        json_data = json.dumps({
+            "job_id": 1
+        })
+        response = self.client.post('/api/job/application/',
+                                  data=json_data,
+                                  content_type='application/json')
+
+        self.assertEqual(200 ,response.status_code)
+
+    def test_invalid_post_request(self):
+        # Post with an incorrect job id
+
+        self.client.post(
+            '/api/user/login/',
+            data=json.dumps(self.login_info[1]),
+            content_type='application/json'
+        )
+
+        json_data = json.dumps({
+            "job_id": 412
+        })
+        response = self.client.post('/api/job/application/',
+                                  data=json_data,
+                                  content_type='application/json')
+
+        self.assertEqual(400 ,response.status_code)
+
+    
+
+    @classmethod
+    def tearDownClass(cls):
+        Job.objects.all().delete()
         User.objects.all().delete()

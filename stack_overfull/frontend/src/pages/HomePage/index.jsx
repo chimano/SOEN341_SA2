@@ -1,10 +1,12 @@
 import React from "react";
 import "./index.css";
+import { Pagination } from "antd";
 import {
   QuestionList,
   QuestionEdit,
   AskQuestionButton,
-  SearchFiltersBar
+  SearchFiltersBar,
+  FilterTabs
 } from "../../components";
 import {
   getApiSearch,
@@ -12,7 +14,6 @@ import {
   postApiQuestion,
   postApiAnswer
 } from "../../utils/api";
-import { FilterTabs } from "../../components/FilterTabs/index";
 
 export class HomePage extends React.Component {
   constructor(props) {
@@ -22,7 +23,10 @@ export class HomePage extends React.Component {
       questionList: [],
       order: "desc",
       currentFilters: [],
-      title: "All"
+      title: "All",
+      currentPage: 1,
+      totalQuestions: 0,
+      questionPerPage: 10
     };
   }
 
@@ -31,14 +35,24 @@ export class HomePage extends React.Component {
   };
 
   getQuestionList = () => {
-    getApiSearch("", "desc", 36, "date_created", this.state.currentFilters)
+    const { currentFilters, currentPage, questionPerPage } = this.state;
+    getApiSearch(
+      "",
+      "desc",
+      questionPerPage,
+      "date_created",
+      currentFilters,
+      currentPage
+    )
       .then(response => {
         console.log(
-          'response of getApiSearch("","desc",36,"date_created")',
+          'response of getApiSearch("", "desc", questionPerPage, "date_created", currentFilters, currentPage)',
           response
         );
         this.setState({
-          questionList: response.data.question_list
+          questionList: response.data.question_list,
+          currentPage: response.data.page,
+          totalQuestions: response.data.total_items
         });
       })
       .catch(error => {
@@ -47,8 +61,9 @@ export class HomePage extends React.Component {
   };
 
   createQuestion = question => {
-    postApiQuestion(question).catch(error => console.log(error));
-    setTimeout(() => this.getQuestionList(), 100);
+    postApiQuestion(question)
+      .then(() => this.getQuestionList())
+      .catch(error => console.log(error));
   };
 
   answerQuestion(answer, q_id) {
@@ -74,39 +89,53 @@ export class HomePage extends React.Component {
     this.setState({ showCreateQuestionBox: false });
   };
 
-  // onFiltersChange = selectedFilters => {
-  //   console.log(selectedFilters);
-  //   this.setState({
-  //     currentFilters: selectedFilters
-  //   });
-  //   setTimeout(() => this.getQuestionList(), 100);
-  // };
-
   handleTabsChange = key => {
-    switch (key) {
-      case "1":
-        this.setState({
-          currentFilters: []
-        });
-        break;
-      case "2":
-        this.setState({
-          currentFilters: ["notanswered"]
-        });
-        break;
-      case "3":
-        this.setState({
-          currentFilters: ["notaccepted"]
-        });
-        break;
-    }
-    setTimeout(() => this.getQuestionList(), 100);
+    new Promise(resolve => {
+      switch (key) {
+        case "1":
+          this.setState({
+            currentFilters: []
+          });
+          break;
+        case "2":
+          this.setState({
+            currentFilters: ["notanswered"]
+          });
+          break;
+        case "3":
+          this.setState({
+            currentFilters: ["notaccepted"]
+          });
+          break;
+      }
+      resolve();
+    }).then(() => {
+      this.getQuestionList();
+    });
+  };
+
+  handlePaginationButton = e => {
+    new Promise(resolve => {
+      let page = parseInt(e);
+      this.setState({
+        currentPage: page
+      });
+      resolve();
+    }).then(() => {
+      this.getQuestionList();
+    });
   };
 
   render() {
-
-    const { showCreateQuestionBox, questionList } = this.state;
+    const {
+      showCreateQuestionBox,
+      questionList,
+      currentPage,
+      totalQuestions,
+      questionsPerPage
+    } = this.state;
     const { username } = this.props;
+    console.log(this.state);
 
     let createQuestionBox;
     if (showCreateQuestionBox) {
@@ -122,7 +151,7 @@ export class HomePage extends React.Component {
     }
 
     return (
-      <div className="HomePage-wrapper">
+      <div className="body-wrapper">
         <div className="HomePage page-width">
           <FilterTabs handleTabsChange={this.handleTabsChange} />
           <div className="HomePage__question-list-title">
@@ -134,6 +163,14 @@ export class HomePage extends React.Component {
           <QuestionList
             questionList={questionList}
             getQuestionList={this.getQuestionList}
+          />
+          <Pagination
+            style={{ textAlign: "center", paddingBottom: "60px" }}
+            defaultCurrent={1}
+            defaultPageSize={questionsPerPage}
+            current={currentPage}
+            total={totalQuestions}
+            onChange={e => this.handlePaginationButton(e)}
           />
         </div>
         {createQuestionBox}

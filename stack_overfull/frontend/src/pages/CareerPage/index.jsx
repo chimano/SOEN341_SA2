@@ -4,25 +4,37 @@ import { getApiJob, postApiJob } from "../../utils/api";
 import { SideBar, PostJobButton, JobList } from "../../components";
 import { Card } from "antd";
 
+function humanize(str) {
+  var frags = str.split("_");
+  for (let i = 0; i < frags.length; i++) {
+    frags[i] = frags[i].charAt(0).toUpperCase() + frags[i].slice(1);
+  }
+  return frags.join(" ");
+}
+
 export class CareerPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       jobList: [],
-      category: "computer_science"
+      category: "computer_science",
+      title: "Computer Science"
     };
   }
 
   componentDidMount = () => {
-    this.getJobList();
+    const { category } = this.state;
+    this.getJobList(category);
   };
 
   getJobList = category => {
     getApiJob(category)
       .then(response => {
         console.log("response of getApiJob(category)", response);
+        let categoryName = humanize(category);
         this.setState({
-          jobList: response.data.job_list
+          jobList: response.data.job_list,
+          title: categoryName
         });
       })
       .catch(error => {
@@ -31,18 +43,17 @@ export class CareerPage extends React.Component {
   };
 
   render() {
-    const { jobList } = this.state;
+    const { jobList, title } = this.state;
 
     return (
       <div className="body-wrapper">
         <div className="page-width CareerPage">
-          <PostJobButton />
-
-          <SideBar
-            handleCategory={this.handleCategory}
-            getJobList={this.getJobList}
-          />
+          <SideBar getJobList={this.getJobList} />
           <div className="CareerPage__list">
+            <div className="CareerPage__title-button">
+              <h2 className="CareerPage__title">{title}</h2>
+              <PostJobButton />
+            </div>
             <JobList jobList={jobList} />
           </div>
         </div>

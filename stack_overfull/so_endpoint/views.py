@@ -15,9 +15,9 @@ from django.db.models import Count
 
 from so_endpoint.serializers import (QuestionSerializer, AnswerSerializer,
                                      AccountSerializerPrivate, AccountSerializerPublic,
-                                     TagViewSerializer, JobSerializer)
+                                     TagViewSerializer, JobSerializer, JobAppSerializer)
 
-from so_endpoint.models import Question, Answer, Profile, Tag, Job
+from so_endpoint.models import Question, Answer, Profile, Tag, Job, JobApp
 
 
 
@@ -66,6 +66,8 @@ class QuestionView(TemplateView):
         """
         Extracts GET request parameters
         """
+
+        page = request.GET.get('page', 1)
         limit = request.GET.get('limit', 10)
         q_id = request.GET.get('id', None)
         order = request.GET.get('order', 'desc')
@@ -74,16 +76,26 @@ class QuestionView(TemplateView):
 
         if q_id is None:
             # If q_id is not set then it returns a list of questions
+            page = 1  if page is None else int(page)
             limit = 10 if limit is None else int(limit)
             order = "desc" if order is None else order
             modifier = '-' if order == 'desc' else ''
 
             questions = Question.objects.all()
             questions = filter_questions_by_tags(questions, tags)
-            questions = questions.order_by(modifier + sorted_by)[:limit]
+            questions = questions.order_by(modifier + sorted_by)
 
-            serialized = QuestionSerializer(questions, many=True).data
-            return JsonResponse({'question_list': serialized})
+            total_items = questions.count()
+            paginated = paginate(questions, limit, page)
+            serialized = QuestionSerializer(paginated, many=True).data
+
+            response = {
+                'question_list': serialized,
+                'total_items': total_items,
+                'page': page
+            }
+
+            return JsonResponse(response)
 
         # Returns a single question
         try:
@@ -411,21 +423,25 @@ class AnswerVoteView(TemplateView):
             a_id = json_data['a_id']
 
             # Checks to see if answer exists
-            try:
-                answer = Answer.objects.get(id=a_id)
-            except Answer.DoesNotExist:
-                return JsonResponse({'error': 'Answer id is not valid'}, status=400)
 
+            answer = Answer.objects.get(id=a_id)
             vote_type = json_data['vote_type']
+
             # Checks to see if user is logged in
             if request.user.is_authenticated:
                 user = request.user
             else:
                 return JsonResponse({'error': 'User is not logged in'}, status=400)
+            
+            if answer.user_id == user:
+                return JsonResponse({'error': 'Cannot vote on your own answer'},
+                                    status=400)
 
         except KeyError:
             return JsonResponse({'error': 'There was an error extracting the parameters'},
                                 status=400)
+        except Answer.DoesNotExist:
+            return JsonResponse({'error': 'Answer id is not valid'}, status=400)
 
         if vote_type == "UP":
             # Checks to see if the user already upvoted for answer
@@ -456,7 +472,7 @@ class AnswerVoteView(TemplateView):
                 # It should never come to this section
                 print("Answer has no user")
             answer.save()
-            return JsonResponse({'sucess': 'Upvoted the answer',
+            return JsonResponse({'success': 'Upvoted the answer',
                                  'points': answer.points}, status=200)
 
         elif vote_type == "DOWN":
@@ -485,7 +501,7 @@ class AnswerVoteView(TemplateView):
             except AttributeError:
                 print("Answer has no user")
             answer.save()
-            return JsonResponse({'sucess': 'Downvoted the answer',
+            return JsonResponse({'success': 'Downvoted the answer',
                                  'points': answer.points}, status=200)
 
 
@@ -512,6 +528,10 @@ class QuestionVoteView(TemplateView):
                 user = request.user
             else:
                 return JsonResponse({'error': 'User is not logged in'}, status=400)
+
+            if question.user_id == user:
+                return JsonResponse({'error': 'Cannot vote on your own question'},
+                                    status=400)
         except Question.DoesNotExist:
             return JsonResponse({'error': 'Question id is not valid'}, status=400)
         except KeyError:
@@ -543,7 +563,7 @@ class QuestionVoteView(TemplateView):
             except AttributeError:
                 print("Question has no user")
             question.save()
-            return JsonResponse({'sucess': 'Upvoted the question',
+            return JsonResponse({'success': 'Upvoted the question',
                                  'points': question.points}, status=200)
 
         elif vote_type == "DOWN":
@@ -571,7 +591,7 @@ class QuestionVoteView(TemplateView):
             except AttributeError:
                 print("Question has no user")
             question.save()
-            return JsonResponse({'sucess': 'Downvoted the question',
+            return JsonResponse({'success': 'Downvoted the question',
                                  'points': question.points}, status=200)
 
 
@@ -590,11 +610,13 @@ class SearchView(TemplateView):
     def get(self, request):
         try:
             query = request.GET.get('q', '')
+            page = request.GET.get('page', 1)
             limit = request.GET.get('limit', 10)
             order = request.GET.get('order', 'desc')
             sorted_by = request.GET.get('sort', 'date_created')
             filters = request.GET.getlist('filters[]', list())
 
+            page = int(page)
             limit = int(limit)
             modifier = '-' if order == "desc" else ''
 
@@ -659,10 +681,19 @@ class SearchView(TemplateView):
                 matching_questions = matching_questions.difference( accepted_set )
 
             matching_questions = matching_questions.order_by(
-                modifier+sorted_by)[:limit]
+                modifier+sorted_by)
 
-            serialized = QuestionSerializer(matching_questions, many=True).data
-            return JsonResponse({'question_list': serialized})
+            total_items = matching_questions.count()
+            paginated = paginate(matching_questions, limit, page)
+            serialized = QuestionSerializer(paginated, many=True).data
+
+            response = {
+                'question_list': serialized,
+                'total_items': total_items,
+                'page': page
+            }
+
+            return JsonResponse(response)
 
         except BaseException as error:
             # either TypeError or ValueError from query params
@@ -679,9 +710,57 @@ class TagView(TemplateView):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request):
-        tags = Tag.objects.all()
-        tags_serialized = TagViewSerializer(tags, many=True).data
-        return JsonResponse({"tag_list": tags_serialized})
+        inname = request.GET.get('inname', '')
+        page = request.GET.get('page', 1)
+        limit = request.GET.get('limit', 10)
+        order = request.GET.get('order', 'desc')
+        sorted_by = request.GET.get('sort', 'question_count')
+
+        try:
+            page = int(page)
+            limit = int(limit)
+            modifier = '-' if order == "desc" else ''
+
+            tags_set = Tag.objects.all()
+            tags_set = tags_set.filter(tag_text__icontains=inname)
+            tags_set = tags_set.order_by(
+                modifier+sorted_by)
+
+            total_items = tags_set.count()
+            paginated = paginate(tags_set, limit, page)
+            tags_serialized = TagViewSerializer(paginated, many=True).data
+
+            response = {
+                'tag_list': tags_serialized,
+                'total_items': total_items,
+                'page': page
+            }
+
+            return JsonResponse(response)
+
+        except BaseException as error:
+            # either TypeError or ValueError from query params
+            print(repr(error))
+            return JsonResponse({'error': repr(error)}, status=400)
+
+class TagViewName(TemplateView):
+    """
+    This view handles the /api/tag/<tagname> endpoint
+    It returns a tag matching <tagname>
+    """
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, tagname):
+        try:
+            tag = Tag.objects.get(tag_text=tagname)
+            tag_serialized = TagViewSerializer(tag).data
+            print(tag_serialized)
+            return JsonResponse(tag_serialized)
+        except Tag.DoesNotExist :
+            return JsonResponse({'error': 'Tag does not exist'}, status=400)
+
 
 class JobView(TemplateView):
     """
@@ -706,34 +785,94 @@ class JobView(TemplateView):
     
     def post(self, request):
         # Extracts job info from request
-        json_data = json.loads(request.body)
-        position = json_data['position']
-        job_type = json_data['job_type']
-        category = json_data['category']
-        company = json_data['company']
-        location = json_data['location']
-        description = json_data['description']
+        try:
+            json_data = json.loads(request.body)
+            position = json_data['position']
+            job_type = json_data['job_type']
+            category = json_data['category']
+            company = json_data['company']
+            location = json_data['location']
+            description = json_data['description']
 
-        # Verify that category is right
-        if category not in Job.CATEGORIES:
-            return JsonResponse({'error': 'Wrong Category'}, status=400)  
-        # Verify that type is right
-        if job_type not in Job.TYPES:
-            return JsonResponse({'error': 'Wrong Type'}, status=400)  
-        # Verify that description has at least 50 characters
-        if len(description) < 50:
-            return JsonResponse({'error': 'The description has to be longer than 50 characters'}, status=400)  
-        # Verify that length of other input to be bigger than 0
-        if len(position) < 1 or len(job_type) < 1 or len(category) < 1 or len(company) < 1 or len(location) < 1:
-            return JsonResponse({'error': 'No Input can be empty'}, status=400)  
-        job = Job(position=position, 
-                job_type=job_type, 
-                category=category, 
-                company=company, 
-                location=location,
-                description=description)
-        job.save()
-        return JsonResponse({'success':'You have successfully added a job to the database'})
+            # Verify that category is right
+            if category not in Job.CATEGORIES:
+                return JsonResponse({'error': 'Wrong Category'}, status=400)  
+            # Verify that type is right
+            if job_type not in Job.TYPES:
+                return JsonResponse({'error': 'Wrong Type'}, status=400)  
+            # Verify that description has at least 50 characters
+            if len(description) < 50:
+                return JsonResponse({'error': 'The description has to be longer than 50 characters'}, status=400)  
+            # Verify that length of other input to be bigger than 0
+            if len(position) < 1 or len(job_type) < 1 or len(category) < 1 or len(company) < 1 or len(location) < 1:
+                return JsonResponse({'error': 'No Input can be empty'}, status=400)  
+            if request.user.profile.is_employer:
+                job = Job(position=position, 
+                        job_type=job_type, 
+                        category=category, 
+                        company=company, 
+                        location=location,
+                        description=description,
+                        posted_by=request.user)
+                job.save()
+                return JsonResponse({'success':'You have successfully added a job to the database'})
+                
+            return JsonResponse({'error':'This account is not an employer'}, status=400)
+        except KeyError:
+            return JsonResponse({'error':'There was an error parsing the request'}, status=400)
+        except AttributeError:
+            return JsonResponse({'error':'User is not logged in'}, status=400)
+
+
+class JobAppView(TemplateView):
+    """
+    This view handles the /api/job/ endpoint
+    It returns a list of jobs
+    """
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request):
+        """
+        Extracts GET request parameters
+        """
+        try:
+            job_id = request.GET['job_id']
+            job = Job.objects.get(job_id=job_id)
+
+            if request.user != job.posted_by:
+                return JsonResponse({'error': 'Cannot view postings of a job you did not post'},
+                                    status=400)
+
+            applications = JobApp.objects.filter(job_id=job)
+            # get list of job that are in the requested category
+            serialized_applications = JobAppSerializer(applications, many=True).data
+
+            return JsonResponse({'application_list': serialized_applications})
+        except Job.DoesNotExist:
+            return JsonResponse({'error': 'Job does not exist'}, status=400)
+    
+    def post(self, request):
+        """
+        This handles the post request and creates a job application
+        with it
+        """
+        # Extracts job application info from request
+        try:
+            json_data = json.loads(request.body)
+            job_id = json_data['job_id']
+            user = request.user
+            if not user.is_authenticated:
+                return JsonResponse({'error': 'User is not authenticated'}, status=400)
+            job = Job.objects.get(job_id=job_id)
+            JobApp.objects.create(job_id=job, user_id=user)
+            return JsonResponse({'success': 'Application was successfully created'})
+        except Job.DoesNotExist:
+            return JsonResponse({'error': 'Job id is not valid'}, status=400)
+
+        
+
 
 class ProfileQuestionView(TemplateView):
     """
@@ -750,17 +889,54 @@ class ProfileQuestionView(TemplateView):
             user = User.objects.get(username=username)
             asked_questions = Question.objects.filter(user_id=user)
             answered_questions = Question.objects.filter(answer__user_id=user)
+            upvoted_questions = user.profile.upvoted_questions
+            downvoted_questions = user.profile.downvoted_questions
 
             serialized_asked_questions = QuestionSerializer(
                                             asked_questions, many=True).data
             serialized_answered_questions = QuestionSerializer(
                                             answered_questions, many=True).data
+            serialized_upvoted_questions = QuestionSerializer(
+                                            upvoted_questions, many=True).data
+            serialized_downvoted_questions = QuestionSerializer(
+                                            downvoted_questions, many=True).data
 
             return JsonResponse({'asked_questions': serialized_asked_questions,
-                                'answered_questions': serialized_answered_questions})
+                                'answered_questions': serialized_answered_questions,
+                                'upvoted_questions': serialized_upvoted_questions,
+                                'downvoted_questions': serialized_downvoted_questions})
         except User.DoesNotExist:
             return JsonResponse({'error': 'User does not exist'},
                                 status= 400)
+
+
+def paginate(query_set, page_size, page):
+
+    first_index = (page-1)*page_size
+    last_index  = (page-1)*page_size + page_size
+
+    return query_set[first_index:last_index]
+    
+class ProfileJobView(TemplateView):
+    """
+    This view handles the /api/user/name/(?P<username>[\w_@\+\.\-]+)/jobs/
+    end point
+    It is used to get a list of jobs posted by the user
+    """
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, username):
+        try:
+            user = User.objects.get(username=username)
+            posted_jobs = Job.objects.filter(posted_by=user)
+            serialized_jobs = JobSerializer(posted_jobs, many=True).data
+            return JsonResponse({'posted_positions': serialized_jobs})
+        except User.DoesNotExist:
+            return JsonResponse({'error': 'User does not exist'},
+                                status= 400)
+
 
 def add_tags_to_question(question, tags_list):
 
@@ -772,6 +948,10 @@ def add_tags_to_question(question, tags_list):
 
     for tag_text in tags_list:
         tag, is_created = Tag.objects.get_or_create(tag_text=tag_text)
+
+        tag.question_count += 1
+        tag.save()
+
         question.tags.add(tag)
 
     return question

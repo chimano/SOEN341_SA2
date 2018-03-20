@@ -4,4 +4,4 @@ export * from "./SearchPage";
 export * from "./ProfilePage";
 export * from "./CareerPage";
 export * from "./CategoryListPage";
-export * from "./CategoryPage";
+export * from "./TagPage";

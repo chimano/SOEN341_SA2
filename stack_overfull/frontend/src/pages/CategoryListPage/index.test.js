@@ -9,7 +9,9 @@ describe("<CategoryListPage />", () => {
   let component;
 
   beforeEach(() => {
-    component = shallow(<CategoryListPage />);
+    component = shallow(
+      <CategoryListPage match={{ params: { tags: 1 }}}/>
+    );
   });
 
   it("renders 1 <CategoryListPage /> component", () => {
