@@ -33,8 +33,10 @@ export class ProfilePage extends React.Component {
   getQuestionsRelatedToUser = () => {
     getApiUserQuestionsAndAnsweredQuestions(this.state.username)
       .then(response => {
-        this.setState({ questions_asked: response.data.asked_questions });
-        this.setState({ questions_answered: response.data.answered_questions });
+        this.setState({ questions_asked: response.data.asked_questions,
+                        questions_answered: response.data.answered_questions,
+                        downvoted_questions: response.data.downvoted_questions,
+                        upvoted_questions: response.data.upvoted_questions });
       })
   }
   
@@ -64,19 +66,8 @@ export class ProfilePage extends React.Component {
           first_name: response.data.first_name,
           last_name: response.data.last_name,
           aboutMe: response.data.profile.about_me,
-          reputation: response.data.profile.reputation,
-          downvoted_questions_id: response.data.profile.downvoted_questions,
-          upvoted_questions_id: response.data.profile.upvoted_questions
+          reputation: response.data.profile.reputation
         });
-      })
-      .then(() => {
-        this.getQuestionsFromIdListAndSetStateOfQuestionList(
-          this.state.upvoted_questions_id
-
-        ).then(list => this.setState({ upvoted_questions: list }));
-        this.getQuestionsFromIdListAndSetStateOfQuestionList(
-          this.state.downvoted_questions_id
-        ).then(list => this.setState({ downvoted_questions: list }));
       })
       .then(() => {
         setTimeout(() => this.forceUpdate(), 500);
@@ -97,23 +88,6 @@ export class ProfilePage extends React.Component {
       .catch(error => console.log(error));
   }
 
-  getQuestionsFromIdListAndSetStateOfQuestionList = idList => {
-    return new Promise((resolve, reject) => {
-      let tempQuestionList = [];
-      idList.forEach(id => {
-        getApiQuestionById(id)
-          .then(response => {
-            console.log("response of getApiQuestionById(id): ", response);
-            tempQuestionList.push(response.data);
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      });
-      console.log("tempQuestionList", tempQuestionList);
-      resolve(tempQuestionList);
-    });
-  };
 
   render() {
     const {
