@@ -52,7 +52,7 @@ export class AnswerPage extends React.Component {
     this.getAnswerList();
     this.getUserVotes();
   };
-  
+
   componentWillReceiveProps = () => {
     console.log("received props");
     this.getAnswerList();
@@ -184,12 +184,14 @@ export class AnswerPage extends React.Component {
     console.log("Q ID: "+id);
     this.upvoteQuestion(id);
     setTimeout(() => this.getQuestion(), 500);
+    setTimeout(() => this.getUserVotes(), 500);
   }
 
   handleDownvoteQuestion = id => {
     console.log("Q ID: "+id);
     this.downvoteQuestion(id);
     setTimeout(() => this.getQuestion(), 500);
+    setTimeout(() => this.getUserVotes(), 500);
   }
 
   upvoteQuestion = id => {
@@ -348,8 +350,6 @@ export class AnswerPage extends React.Component {
               points={question.points}
               upvoted_array={this.state.upvoted_questions_id}
               downvoted_array={this.state.downvoted_questions_id}
-              question_buttons={true}
-              answer_buttons={false}
             />
           </div>
           <div className="AnswerPage__question-box">

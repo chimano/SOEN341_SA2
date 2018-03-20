@@ -9,7 +9,7 @@
     border-radius: 20px;
     padding: 2%;
     background: white;
-    min-width: 90%;
+    width: 95%;
 }
 .AnswerPage__question-body {
     /* margin-top: 5%; */

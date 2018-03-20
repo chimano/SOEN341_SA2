@@ -51,8 +51,6 @@ export class AnswerBox extends React.Component {
               points={x.points}
               upvoted_array={upvoted_array}
               downvoted_array={downvoted_array}
-              question_buttons={false}
-              answer_buttons={true}
             />
           </div>
           <Divider />
