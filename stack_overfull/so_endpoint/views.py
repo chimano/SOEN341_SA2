@@ -914,6 +914,26 @@ def paginate(query_set, page_size, page):
     last_index  = (page-1)*page_size + page_size
 
     return query_set[first_index:last_index]
+    
+class ProfileJobView(TemplateView):
+    """
+    This view handles the /api/user/name/(?P<username>[\w_@\+\.\-]+)/jobs/
+    end point
+    It is used to get a list of jobs posted by the user
+    """
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, username):
+        try:
+            user = User.objects.get(username=username)
+            posted_jobs = Job.objects.filter(posted_by=user)
+            serialized_jobs = JobSerializer(posted_jobs, many=True).data
+            return JsonResponse({'posted_positions': serialized_jobs})
+        except User.DoesNotExist:
+            return JsonResponse({'error': 'User does not exist'},
+                                status= 400)
 
 
 def add_tags_to_question(question, tags_list):
