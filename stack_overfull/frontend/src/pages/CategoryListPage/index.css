@@ -1,16 +1,16 @@
-.welcomeTitle1 {
+.CategoryListPage__welcomeTitle1 {
     margin-top: 2%;
     text-align: center;
     font-weight: 600;
 }
 
-.welcomeTitle2 {
+.CategoryListPage__welcomeTitle2 {
     margin-top: 2%;
     text-align: center;
     font-weight: 600;
 }
 
-.categoryBox {
+.CategoryListPage__categoryBox {
     text-align: center;
     font-weight: bold;
     width: 90%;
@@ -24,7 +24,7 @@
     padding-right: 1%;
 }
 
-.bubbles {
+.CategoryListPage__bubbles {
     list-style-type : none;
     font-weight: 400;
 }

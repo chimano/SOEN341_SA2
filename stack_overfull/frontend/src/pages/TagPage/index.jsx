@@ -120,8 +120,8 @@ export class TagPage extends React.Component {
     : "No questions found with the selected tag";
 
     return (
-        <div className="TagPage-wrapper">
-          <div className="TagPage page-width">
+        <div className="TagPage__wrapper">
+          <div div className="TagPage page-width">
             <h3 className="TagPage__question-list-title">
             <div className="TagPage__question-list-title">
               <Tag className="TagPage__tag" color="#108ee9">

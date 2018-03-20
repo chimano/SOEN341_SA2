@@ -12,15 +12,6 @@
     padding: 0;
 }
 
-.footer__credits {
-    width: 550px !important;
-}
-
 .footer-wrapper {
     background-color: #0161b5;
-}
-
-.footer icon Icon {
-    font-size: 25px;
-    margin: 5px;
 }

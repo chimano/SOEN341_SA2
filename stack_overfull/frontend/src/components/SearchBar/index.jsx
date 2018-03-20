@@ -75,7 +75,7 @@ class SearchBarNR extends React.Component {
           value={search_text}
           onSearch={value => this.handleSearch(value)}
           onChange={e => this.handleChange(e)}
-          enterButton
+          enterButton="Search"
         />
     );
   }
