@@ -1,5 +1,5 @@
 import React from "react";
-import { ProfilePage } from "./index.jsx";
+import { UserPage } from "./index.jsx";
 import { configure, shallow, mount, render } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 
@@ -10,7 +10,7 @@ describe("<UserPage />", () => {
 
   beforeEach(() => {
     component = shallow(
-      <UserPage />
+      <UserPage match={{ params: { username: "wkgui" }, path: "", url: "" }}/>
     );
   });
 
