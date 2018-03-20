@@ -9,6 +9,7 @@
     border-radius: 20px;
     padding: 2%;
     background: white;
+    min-width: 90%;
 }
 .AnswerPage__question-body {
     /* margin-top: 5%; */
@@ -65,4 +66,13 @@
 .AnswerPage__tags {
     font-size: 1.2em;
     text-align: center;
+}
+
+.AnswerPage__question-area {
+    display:flex;
+}
+
+.AnswerPage__question-voting {
+    margin-top: 3%;
+    margin-right: 1%;
 }

@@ -1,30 +1,38 @@
-.ProfilePage {
+.Userpage {
     padding-top: 30px;
 }
-.ProfilePage div {
+.Userpage div {
     padding-bottom: 20px;
 }
-.ProfilePage__question-list-title {
+.Userpage__question-list-title {
     padding-top: 30px;
 }
 
-.ProfilePage__question_related_to_user {
+.UserPage__question_related_to_user {
     width: 100%;
     text-align: center;
     vertical-align: center;
 }
 
-.div_question_asked {
+.Userpage__div_question_asked {
     width: 45%;
     display: inline-block;
     margin-right: 2%;
     margin-left: 2%;
 }
 
-.div_question_answered {
+.Userpage__div_question_answered {
     width: 45%;
     display: inline-block;
     vertical-align: top;
     margin-right: 2%;
     margin-left: 2%;
+}
+Userpage__div_job_posted{
+    width: 45%;
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 2%;
+    margin-left: 2%;
+
 }

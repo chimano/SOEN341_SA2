@@ -144,6 +144,19 @@ export function getApiUserMe() {
   return axios.get("/api/user/me");
 }
 
+
+//edit info of the currently logged in user
+//sending null doesn't modify the field
+export function postApiUserMe(email=null, first_name=null, last_name=null, about_me=null ) {
+  return axios.post("/api/user/me/", {
+    email: email,
+    first_name: first_name,
+    last_name: last_name,
+    about_me: about_me
+  });
+}
+
+
 //post question
 export function postApiQuestion(question) {
   return axios.post("/api/question/", {
@@ -170,7 +183,7 @@ export function voteAnswer(vote_type, a_id) {
 //vote on question, return updated value of points
 //vote_type either "UP" or "DOWN"
 export function voteQuestion(vote_type, q_id) {
-  return axios.post("api/question/vote/", {
+  return axios.post("/api/question/vote/", {
     vote_type: vote_type,
     q_id: q_id
   });
@@ -225,7 +238,8 @@ export function getApiSearch(
   order = "desc",
   limit = 10,
   sort = "date_created",
-  filters = []
+  filters = [],
+  page = 1
 ) {
   return axios.get("/api/search/", {
     params: {
@@ -233,7 +247,8 @@ export function getApiSearch(
       order: order,
       limit: limit,
       sort: sort,
-      filters: filters
+      filters: filters,
+      page: page
     }
   });
 }
