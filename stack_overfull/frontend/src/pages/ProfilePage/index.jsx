@@ -2,7 +2,7 @@ import React from "react";
 import { getApiUserMe, postApiUserMe, getApiQuestionById, getApiUserQuestionsAndAnsweredQuestions} from "../../utils/api";
 import "./index.css";
 import { QuestionBox } from "../../components/QuestionBox/index";
-import { Input, TextField, Button } from "antd";
+import { Input, Button } from "antd";
 
 export class ProfilePage extends React.Component {
   constructor(props) {
@@ -31,10 +31,10 @@ export class ProfilePage extends React.Component {
   getQuestionsRelatedToUser = () => {
     getApiUserQuestionsAndAnsweredQuestions(this.state.username)
       .then(response => {
-        this.setState({ questions_asked: response.data.asked_questions });
-        this.setState({ questions_answered: response.data.answered_questions });
-        this.setState({ upvoted_questions: response.data.upvoted_questions });
-        this.setState({ downvoted_questions: response.data.downvoted_questions });
+        this.setState({ questions_asked: response.data.asked_questions,
+                        questions_answered: response.data.answered_questions,
+                        downvoted_questions: response.data.downvoted_questions,
+                        upvoted_questions: response.data.upvoted_questions });
       })
   }
   
