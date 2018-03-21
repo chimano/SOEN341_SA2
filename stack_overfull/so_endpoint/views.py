@@ -344,15 +344,22 @@ class UserRegisterView(TemplateView):
         # expected Json Body: {'username':'myname', password:'mypassword'}
         try:
             raw_data = json.loads(request.body)
+
             username = raw_data['username']
             password = raw_data['password']
+            is_employer = raw_data.get('is_employer', False)
+
             email = raw_data.get('email', None)
 
             if User.objects.filter(username=username).exists():
                 return JsonResponse({'error': 'Username already exists'}, status=400)
 
-            User.objects.create_user(
+            created_user = User.objects.create_user(
                 username=username, password=password, email=email)
+            
+            created_user.profile.is_employer = is_employer
+            created_user.profile.save()
+
             user = authenticate(request, username=username, password=password)
             login(request, user)
 

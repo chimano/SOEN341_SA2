@@ -204,11 +204,12 @@ export function postApiUserLogout() {
 }
 
 //register user
-export function postApiUserRegister(username, password, email) {
+export function postApiUserRegister(username, password, email, is_employer) {
   return axios.post("/api/user/register/", {
     username: username,
     password: password,
-    email: email
+    email: email,
+    is_employer: is_employer
   });
 }
 
