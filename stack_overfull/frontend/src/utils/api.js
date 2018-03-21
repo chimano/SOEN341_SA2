@@ -26,7 +26,6 @@ export function getApiUserQuestionsAndAnsweredQuestions(username) {
   return axios.get("/api/user/name/" + username + "/questions");
 }
 
-
 //get the list of jobs given the category and subcategory
 export function getApiJob(category) {
   return axios.get("/api/job/", {
@@ -36,6 +35,12 @@ export function getApiJob(category) {
   });
 }
 
+//get a list of jobs posted by a certain employer
+export function getApiUserNameJobs(username) {
+  return axios.get("/api/user/name/" + username + "/jobs");
+}
+
+//post a job
 export function postApiJob(
   position,
   job_type,
@@ -140,7 +145,6 @@ export function getApiUserMe() {
   return axios.get("/api/user/me");
 }
 
-
 //get user information
 export function getApiUserNameInfo(username) {
   return axios.get("/api/user/name/" + username);
@@ -148,7 +152,12 @@ export function getApiUserNameInfo(username) {
 
 //edit info of the currently logged in user
 //sending null doesn't modify the field
-export function postApiUserMe(email=null, first_name=null, last_name=null, about_me=null ) {
+export function postApiUserMe(
+  email = null,
+  first_name = null,
+  last_name = null,
+  about_me = null
+) {
   return axios.post("/api/user/me/", {
     email: email,
     first_name: first_name,
@@ -156,7 +165,6 @@ export function postApiUserMe(email=null, first_name=null, last_name=null, about
     about_me: about_me
   });
 }
-
 
 //post question
 export function postApiQuestion(question) {
