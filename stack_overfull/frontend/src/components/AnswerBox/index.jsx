@@ -21,8 +21,8 @@ export class AnswerBox extends React.Component {
       handleUpvoteButton,
       verified,
       x,
-      upvoted,
-      downvoted
+      upvoted_array,
+      downvoted_array
     } = this.props;
 
     console.log("verified: ", verified);
@@ -36,21 +36,23 @@ export class AnswerBox extends React.Component {
       answerBox_class = "AnswerBox--blue";
     }
 
+    console.log("UOVOTED: "+upvoted_array);
+    console.log("DOWNVOTED: "+downvoted_array);
     let date = formatDate(x.date_created.replace("T", " at ").substring(0, 19));
 
     return (
-      <div>
-        <div className={`AnswerBox ${answerBox_class} shadow`}>
-          <div className="AnswerBox__row">
-            <div className="AnswerBox__answer">{x.answer_text}</div>
-            <VotingButtons
+      <div className="AnswerBox__wrapper">
+        <VotingButtons
               handleDownvoteButton={handleDownvoteButton}
               handleUpvoteButton={handleUpvoteButton}
               id={x.id}
               points={x.points}
-              upvoted={upvoted}
-              downvoted={downvoted}
+              upvoted_array={upvoted_array}
+              downvoted_array={downvoted_array}
             />
+        <div className={`AnswerBox ${answerBox_class} shadow`}>
+          <div className="AnswerBox__row">
+            <div className="AnswerBox__answer">{x.answer_text}</div>
           </div>
           <Divider />
           <div className="AnswerBox__row">
