@@ -3,36 +3,37 @@ import "./index.css";
 import { Icon } from "antd";
 
 export class VotingButtons extends React.Component {
+  
   render() {
     const { handleUpvoteButton, 
       handleDownvoteButton, 
       id, 
       points,
-      upvoted,
-      downvoted
+      upvoted_array,
+      downvoted_array,
+      question_buttons,
+      answer_buttons
     } = this.props;
 
-   //console.log("upvoted button: "+upvoted);
-    //console.log("downvoted button: "+downvoted);
-
+    
     let button_class_UP;
     let button_class_DOWN;
-    if(upvoted){
+
+    if (upvoted_array.indexOf(id) != -1) {
       button_class_UP = "VotingButtons--selected";
       button_class_DOWN = "VotingButtons--default";
-      console.log("upvoted button: "+upvoted);
-    } else if(downvoted){
+    } else if (downvoted_array.indexOf(id) != -1) {
       button_class_UP = "VotingButtons--default";
       button_class_DOWN = "VotingButtons--selected";
-      console.log("downvoted button: "+downvoted);
-    } else{
+    }else {
       button_class_UP = "VotingButtons--default";
       button_class_DOWN = "VotingButtons--default";
-      console.log("buttons: user has not voted/is not logged in");
     }
-
+    
     console.log("UP Button className: "+button_class_UP);
     console.log("DOWN Button className: "+button_class_DOWN);
+    console.log("UPVOTED ARRAY VB:"+upvoted_array);
+    console.log("DOWNVOTED ARRAY VB:"+downvoted_array);
 
     return (
       <div className="VotingButtons">
