@@ -9,47 +9,17 @@ export class Footer extends React.Component {
       <div className="footer-wrapper">
         <div className="footer page-width">
           <ul>
-            <h3> Stack Overfull </h3>
+            <h3>
+              <Link style={{ color: "white" }} to="/">
+              © Stack Overfull 2018
+              </Link>
+            </h3>
             <li>
-              {" "}
-              <Link style={{ color: "white" }} to="/about">
-                {" "}
-                About{" "}
-              </Link>{" "}
+              <a style={{ color: "white" }} href="https://github.com/chimano/SOEN341_SA2/wiki">About</a>
             </li>
-            <li>Help</li>
-            <li>Contact Us</li>
-            <li>Terms & Conditions</li>
-          </ul>
-          <ul>
-            <h3> Social Media </h3>
-            <li>Facebook</li>
-            <li>Intagram</li>
-            <li>Twitter</li>
-          </ul>
-          <ul className="footer__credits">
-            <p>© Stack Overfull 2018</p>
-            <Icon
-              type="android"
-              style={{
-                fontSize: 20,
-                marginRight: 5
-              }}
-            />
-            <Icon
-              type="apple"
-              style={{
-                fontSize: 20,
-                marginRight: 5
-              }}
-            />
-            <Icon
-              type="windows"
-              style={{
-                fontSize: 20,
-                marginRight: 5
-              }}
-            />
+            <li>
+              <a style={{ color: "white" }} href="https://github.com/chimano/SOEN341_SA2/wiki/How-to-Set-up-Localhost">Help</a>
+            </li>
           </ul>
         </div>
       </div>

@@ -74,21 +74,21 @@ export class CategoryListPage extends React.Component {
     }
 
     return (
-      <header className="body-wrapper">
+      <header>
         <nav>
           <div>
-            <h1 className="welcomeTitle1">
+            <h1 className="CategoryListPage__welcomeTitle1">
              QUESTION CATEGORIES AND TAGS
             </h1>
           
-            <h3 className="welcomeTitle2">
+            <h3 className="CategoryListPage__welcomeTitle2">
             <br />
               MAIN CATEGORIES
             </h3>
           </div>
 
-          <div className="categoryBox">
-            <ul className="bubbles">
+          <div className="CategoryListPage__categoryBox">
+            <ul className="CategoryListPage__bubbles">
               {categoryList.map((category, key) => (
                 <li key={key}>
                   <Tag key={key} color="#108ee9">
@@ -99,13 +99,13 @@ export class CategoryListPage extends React.Component {
             </ul>
           </div>
 
-            <h3 className="welcomeTitle2">
+            <h3 className="CategoryListPage__welcomeTitle2">
             <br />
               HOTTEST TAGS
             </h3>
 
-          <div className="categoryBox">
-            <ul className="bubbles">
+          <div className="CategoryListPage__categoryBox">
+            <ul className="CategoryListPage__bubbles">
             {hottestTags}
             </ul>
           </div>
