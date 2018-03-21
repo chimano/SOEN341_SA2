@@ -50,7 +50,7 @@ export class AnswerBox extends React.Component {
               upvoted_array={upvoted_array}
               downvoted_array={downvoted_array}
             />
-        <div className={`AnswerBox ${answerBox_class} shadow`}>
+        <div className={`AnswerBox ${answerBox_class}`}>
           <div className="AnswerBox__row">
             <div className="AnswerBox__answer">{x.answer_text}</div>
           </div>

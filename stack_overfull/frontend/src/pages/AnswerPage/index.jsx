@@ -354,7 +354,7 @@ export class AnswerPage extends React.Component {
               downvoted_array={this.state.downvoted_questions_id}
             />
           </div>
-          <div className="AnswerPage__question-box">
+          <div className="AnswerPage__question-box grey-border">
             <h1 className="AnswerPage__question-title">
               {question.question_head}
             </h1>

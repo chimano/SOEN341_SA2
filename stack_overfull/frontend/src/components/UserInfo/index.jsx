@@ -1,5 +1,6 @@
 import React from "react";
 import { Input, Button } from "antd";
+import "./index.css";
 
 export class UserInfo extends React.Component {
   render() {
@@ -63,7 +64,7 @@ export class UserInfo extends React.Component {
       <div>{aboutMe}</div>
     );
     return (
-      <div className="ProfilePage" style={{ minWidth: "300px" }}>
+      <div className="UserInfo">
         <h3>Username</h3>
         <div>{username}</div>
         <h3>Email</h3>

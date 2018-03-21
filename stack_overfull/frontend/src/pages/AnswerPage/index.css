@@ -2,23 +2,22 @@
     text-align: center;
     font-size: 2.0em;
     padding: 15px 0;
+    word-wrap: break-word;
 }
-.AnswerPage__question-box{
-    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
+
+.AnswerPage__question-box {
     margin-top: 30px;
     border-radius: 20px;
     padding: 2%;
     background: white;
     width: 95%;
 }
+
 .AnswerPage__question-body {
-    /* margin-top: 5%; */
-    /* margin-left: 2%; */
-    /* margin-right: 2%; */
     padding: 2%;
-    /* background-color: rgb(216, 239, 241); */
     border-radius: 10px;
     font-size: 1.2em;
+    word-wrap: break-word;
 }
 
 .AnswerPage__seperator {
@@ -30,6 +29,7 @@
 .AnswerPage__no-answer-text {
     text-align: center;
 }
+
 .AnswerPage__number-of-answers-text {
     margin-bottom: 3%;
 }
@@ -69,7 +69,7 @@
 }
 
 .AnswerPage__question-area {
-    display:flex;
+    display: flex;
 }
 
 .AnswerPage__question-voting {
