@@ -48,7 +48,6 @@ urlpatterns = [
     re_path(r'^search/$', SearchView.as_view()),
     re_path(r'^tag/$', TagView.as_view()),
     re_path(r'^tag/name/(?P<tagname>\w+)/$', TagViewName.as_view()),
-
     re_path(r'^job/$', JobView.as_view()),
     re_path(r'^job/application/$', JobAppView.as_view()),
 ]

@@ -1,16 +1,14 @@
 import React from "react";
 import {
-  getApiUserMe,
-  postApiUserMe,
   getApiQuestionById,
   getApiUserQuestionsAndAnsweredQuestions,
-  getApiUserNameInfo
+  getApiUserNameInfo,
+  getApiJob
 } from "../../utils/api";
 import "./index.css";
-import { QuestionList, UserInfo } from "../../components";
-import { Input, Button } from "antd";
+import { QuestionList, UserInfo, JobBox } from "../../components";
 
-export class ProfilePage extends React.Component {
+export class UserPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -24,109 +22,91 @@ export class ProfilePage extends React.Component {
       upvoted_questions: [],
       questions_asked: [],
       questions_answered: [],
-      is_editing: false, // make user info fields editable
-      is_saving_myinfo: false // loading indicator for the edit button
+      job_posted: []
+      // doRender: false
     };
   }
 
   componentDidMount() {
-    this.getMyInfo();
+    const username = this.props.match.params.username;
+    this.getUserInfo(username);
     setTimeout(() => this.getQuestionsRelatedToUser(), 1000);
   }
 
   getQuestionsRelatedToUser = () => {
-    getApiUserQuestionsAndAnsweredQuestions(this.state.username)
-      .then(response => {
+    if (this.props.match.params.username) {
+      console.log("asjkdhakjsdjkhasdkjasdhjkah");
+    }
+    const username = this.props.match.params.username;
+    getApiUserQuestionsAndAnsweredQuestions(this.state.username).then(
+      response => {
+        console.log(
+          "getApiUserQuestionsAndAnsweredQuestions(this.state.username)",
+          response
+        );
         this.setState({
           questions_asked: response.data.asked_questions,
           questions_answered: response.data.answered_questions,
           upvoted_questions: response.data.upvoted_questions,
           downvoted_questions: response.data.downvoted_questions
         });
-      })
-      .catch(error => {
-        console.log(error);
-      });
+      }
+    );
   };
 
-  onInputChange = (field, event) => {
-    this.setState({ [field]: event.target.value });
+  getJobRelatedToUser = () => {
+    const username = this.props.match.params.username;
   };
 
-  onEditButtonClick = () => {
-    const { is_editing } = this.state;
-
-    // save the info if the user was editing it
-    if (is_editing) {
-      this.saveMyInfo();
-    }
-
-    // toggle the button between Save and Edit
-    this.setState({ is_editing: !is_editing });
-  };
-
-  getMyInfo = () => {
-    getApiUserMe()
+  getUserInfo = username => {
+    getApiUserNameInfo(username)
       .then(response => {
-        console.log("response of getApiUserMe(): ", response);
+        console.log("response of getApiUserNameInfo(username): ", response);
         this.setState({
           username: response.data.username,
           email: response.data.email,
+          aboutMe: response.data.profile.about_me,
           first_name: response.data.first_name,
           last_name: response.data.last_name,
-          aboutMe: response.data.profile.about_me,
-          reputation: response.data.profile.reputation
+          reputation: response.data.profile.reputation,
+          downvoted_questions_id: response.data.profile.downvoted_questions,
+          upvoted_questions_id: response.data.profile.upvoted_questions
         });
+        console.log("UPVOTEDQUESTIONS " + this.state.upvoted_questions_id);
       })
-      .catch(error => console.log(error));
-  };
-
-  saveMyInfo = () => {
-    const { email, first_name, last_name, aboutMe } = this.state;
-
-    this.setState({ is_saving_myinfo: true });
-
-    postApiUserMe(email, first_name, last_name, aboutMe)
-      .then(response => {
-        console.log("response of postApiUserMe(): ", response);
-        this.setState({ is_saving_myinfo: false });
+      .then(() => {
+        setTimeout(() => this.forceUpdate(), 500);
       })
       .catch(error => console.log(error));
   };
 
   render() {
-    console.log("my state", this.state);
     const {
       username,
       email,
+      aboutMe,
       first_name,
       last_name,
-      aboutMe,
       reputation,
       downvoted_questions,
       upvoted_questions,
       questions_asked,
       questions_answered,
-      is_editing,
-      is_saving_myinfo
+      job_posted
     } = this.state;
 
     return (
       <div className="body-wrapper grey-background">
         <div className="page-width" style={{ display: "flex" }}>
           <UserInfo
-            is_editing={is_editing}
-            onInputChange={this.onInputChange}
-            onEditButtonClick = {this.onEditButtonClick}
-            is_saving_myinfo={is_saving_myinfo}
-            username = {username}
-            email = {email}
-            first_name = {first_name}
-            last_name = {last_name}
-            aboutMe = {aboutMe}
-            reputation = {reputation}
+            username={username}
+            email={email}
+            first_name={first_name}
+            last_name={last_name}
+            aboutMe={aboutMe}
+            reputation={reputation}
+            no_edit
           />
-
           <div style={{ width: "100%" }}>
             <h3 className="ProfilePage__question-list-title">
               Upvoted Questions
