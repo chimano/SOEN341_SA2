@@ -1,6 +1,6 @@
 import React from "react";
 import "./index.css";
-import { Form, Input, Tooltip, Icon, Checkbox, Button } from "antd";
+import { Form, Input, Tooltip, Icon, Checkbox, Button, Select } from "antd";
 import { postApiUserRegister } from "../../utils/api";
 
 const FormItem = Form.Item;
@@ -18,7 +18,8 @@ class SignUpForm extends React.Component {
         this.doUserRegisterRequest(
           values.username,
           values.password,
-          values.email
+          values.email,
+          values.is_employer
         );
       }
     });
@@ -43,8 +44,8 @@ class SignUpForm extends React.Component {
     callback();
   };
 
-  doUserRegisterRequest(username, password, email) {
-    postApiUserRegister(username, password, email)
+  doUserRegisterRequest(username, password, email, is_employer) {
+    postApiUserRegister(username, password, email, is_employer)
       .then(response => {
         console.log(
           "response for postApiUserRegister(username, password, email): ",
@@ -178,6 +179,19 @@ class SignUpForm extends React.Component {
               }
             ]
           })(<Input type="password" onBlur={this.handleConfirmBlur} />)}
+        </FormItem>
+        {/* Account Type */}
+        <FormItem {...formItemLayout} label="Are you an employer?">
+          {getFieldDecorator("is_employer", {
+            rules: [
+              { required: true, message: "Please select your answer." }
+            ]
+          })(
+            <Select>
+                <Option value={0} >No</Option>
+                <Option value={1} >Yes</Option>
+            </Select>
+            )}
         </FormItem>
 
         <FormItem {...tailFormItemLayout}>

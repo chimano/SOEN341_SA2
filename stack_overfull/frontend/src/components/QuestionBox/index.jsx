@@ -33,7 +33,7 @@ export class QuestionBox extends React.Component {
         <div style={{ display: "flex" }}>
           <TagList tags={tags} />
           <div className="QuestionBox__user">
-            Asked by {username} on {date}{" "}
+            Asked by <Link to={`/user/${username}`}>{username}</Link> on {date}{" "}
           </div>
         </div>
       </div>
