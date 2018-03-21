@@ -25,12 +25,8 @@ export class ProfilePage extends React.Component {
       questions_asked: [],
       questions_answered: [],
       is_editing: false, // make user info fields editable
-<<<<<<< HEAD
       is_saving_myinfo: false // loading indicator for the edit button
       // doRender: false
-=======
-      is_saving_myinfo: false, // loading indicator for the edit button
->>>>>>> 48c44e5eb5dbdc9f05f31c35cb0673fcf8c481dd
     };
   }
 
@@ -42,19 +38,12 @@ export class ProfilePage extends React.Component {
   getQuestionsRelatedToUser = () => {
     getApiUserQuestionsAndAnsweredQuestions(this.state.username)
       .then(response => {
-<<<<<<< HEAD
         this.setState({
           questions_asked: response.data.asked_questions,
           questions_answered: response.data.answered_questions,
           upvoted_questions: response.data.upvoted_questions,
           downvoted_questions: response.data.downvoted_questions
         });
-=======
-        this.setState({ questions_asked: response.data.asked_questions,
-                        questions_answered: response.data.answered_questions,
-                        downvoted_questions: response.data.downvoted_questions,
-                        upvoted_questions: response.data.upvoted_questions });
->>>>>>> 48c44e5eb5dbdc9f05f31c35cb0673fcf8c481dd
       })
       .catch(error => {
         console.log(error);
@@ -74,15 +63,9 @@ export class ProfilePage extends React.Component {
     }
 
     // toggle the button between Save and Edit
-<<<<<<< HEAD
     this.setState({ is_editing: !is_editing });
   };
 
-=======
-    this.setState({is_editing: !is_editing});
-  }
-  
->>>>>>> 48c44e5eb5dbdc9f05f31c35cb0673fcf8c481dd
   getMyInfo = () => {
     getApiUserMe()
       .then(response => {
@@ -96,14 +79,7 @@ export class ProfilePage extends React.Component {
           reputation: response.data.profile.reputation
         });
       })
-<<<<<<< HEAD
       .catch(error => console.log(error));
-=======
-      // .then(() => {
-      //   setTimeout(() => this.forceUpdate(), 500);
-      // })
-      // .catch(error => console.log(error));
->>>>>>> 48c44e5eb5dbdc9f05f31c35cb0673fcf8c481dd
   };
 
   saveMyInfo = () => {
@@ -117,11 +93,7 @@ export class ProfilePage extends React.Component {
         this.setState({ is_saving_myinfo: false });
       })
       .catch(error => console.log(error));
-<<<<<<< HEAD
   };
-=======
-  }
->>>>>>> 48c44e5eb5dbdc9f05f31c35cb0673fcf8c481dd
 
   render() {
     console.log("my state", this.state);
