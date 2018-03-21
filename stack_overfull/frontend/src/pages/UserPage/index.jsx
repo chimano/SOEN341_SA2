@@ -6,7 +6,12 @@ import {
   getApiJob
 } from "../../utils/api";
 import "./index.css";
-import { QuestionList, UserInfo, JobBox } from "../../components";
+import {
+  QuestionList,
+  UserInfo,
+  JobBox,
+  UserQuestionList
+} from "../../components";
 
 export class UserPage extends React.Component {
   constructor(props) {
@@ -98,32 +103,25 @@ export class UserPage extends React.Component {
     return (
       <div className="body-wrapper grey-background">
         <div className="page-width" style={{ display: "flex" }}>
-          <UserInfo
-            username={username}
-            email={email}
-            first_name={first_name}
-            last_name={last_name}
-            aboutMe={aboutMe}
-            reputation={reputation}
-            no_edit
-          />
-          <div style={{ width: "100%" }}>
-            <h3 className="ProfilePage__question-list-title">
-              Upvoted Questions
-            </h3>
-            <QuestionList questionList={upvoted_questions} />
-            <h3 className="ProfilePage__question-list-title">
-              Downvoted Questions
-            </h3>
-            <QuestionList questionList={downvoted_questions} />
-            <h3 className="ProfilePage__question-list-title">
-              Questions Asked
-            </h3>
-            <QuestionList questionList={questions_asked} />
-            <h3 className="ProfilePage__question-list-title">
-              Questions Answered
-            </h3>
-            <QuestionList questionList={questions_answered} />
+          <div style={{ width: "30%" }}>
+            <UserInfo
+              username={username}
+              email={email}
+              first_name={first_name}
+              last_name={last_name}
+              aboutMe={aboutMe}
+              reputation={reputation}
+              no_edit
+            />
+          </div>
+
+          <div style={{ width: "70%", paddingLeft: "10px" }}>
+            <UserQuestionList
+              upvoted_questions={upvoted_questions}
+              downvoted_questions={downvoted_questions}
+              questions_asked={questions_asked}
+              questions_answered={questions_answered}
+            />
           </div>
         </div>
       </div>
