@@ -23,7 +23,7 @@ export class QuestionBox extends React.Component {
     let date = formatDate(date_created);
 
     return (
-      <div className="QuestionBox">
+      <div className="QuestionBox grey-border">
         <div style={{ display: "flex" }}>
           <Link to={`/question/${q_id}`} className="QuestionBox__text">
             {question_head}

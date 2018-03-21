@@ -153,7 +153,6 @@ export class ProfilePage extends React.Component {
                 reputation={reputation}
               />
             </div>
-
             <div style={{ width: "70%", paddingLeft: "10px" }}>
               <UserQuestionList
                 upvoted_questions={upvoted_questions}

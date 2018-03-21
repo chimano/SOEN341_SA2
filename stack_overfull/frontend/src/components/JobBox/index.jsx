@@ -20,7 +20,7 @@ export class JobBox extends React.Component {
     let date = formatDate(date_created);
 
     return (
-      <div className="JobBox">
+      <div className="JobBox grey-border">
         <div className="JobBox__position">{job_position}</div>
         <div className="JobBox__company">Position posted by {job_company}</div>
         <Divider />

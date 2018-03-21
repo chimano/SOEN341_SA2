@@ -37,6 +37,7 @@
     text-align: left;
     font-size: 1.2em;
     width: 100%;
+    word-wrap: break-word;
 }
 
 .AnswerBox__date {
