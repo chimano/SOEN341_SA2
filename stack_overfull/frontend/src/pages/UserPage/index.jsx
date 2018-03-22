@@ -25,6 +25,9 @@ export class UserPage extends React.Component {
       last_name: "",
       aboutMe: "",
       reputation: "",
+      github: "",
+      linkedin: "",
+      last_login: "",
       downvoted_questions: [],
       upvoted_questions: [],
       questions_asked: [],
@@ -83,6 +86,9 @@ export class UserPage extends React.Component {
             first_name: response.data.first_name,
             last_name: response.data.last_name,
             reputation: response.data.profile.reputation,
+            github: response.data.profile.github,
+            linkedin: response.data.profile.linkedin,
+            last_login: response.data.last_login,
             downvoted_questions_id: response.data.profile.downvoted_questions,
             upvoted_questions_id: response.data.profile.upvoted_questions,
             is_employer: response.data.profile.is_employer
@@ -102,6 +108,9 @@ export class UserPage extends React.Component {
       first_name,
       last_name,
       reputation,
+      github,
+      linkedin,
+      last_login,
       downvoted_questions,
       upvoted_questions,
       questions_asked,
@@ -114,7 +123,7 @@ export class UserPage extends React.Component {
       <div className="body-wrapper grey-background">
         <div className="page-width">
           <div style={{ display: "flex" }}>
-            <div style={{ width: "30%" }}>
+            <div style={{minWidth:"15%", marginRight:"15px"}}>
               <UserInfo
                 username={username}
                 email={email}
@@ -122,6 +131,9 @@ export class UserPage extends React.Component {
                 last_name={last_name}
                 aboutMe={aboutMe}
                 reputation={reputation}
+                github={github}
+                linkedin={linkedin}
+                last_login={last_login}
                 no_edit
               />
             </div>
