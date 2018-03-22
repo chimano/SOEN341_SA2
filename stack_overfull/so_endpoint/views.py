@@ -62,7 +62,7 @@ class QuestionView(TemplateView):
         except KeyError:
             return JsonResponse({'error': 'There was an error parsing the request'}, status=400)
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         """
         Extracts GET request parameters
         """
@@ -147,7 +147,7 @@ class AnswerView(TemplateView):
         except KeyError:
             return JsonResponse({'error': 'There was an error parsing the request'}, status=400)
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
 
         try:
             # Gets a list of answers from the question id
@@ -247,8 +247,9 @@ class UserNameView(TemplateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request, username):
+    def get(self, request, *args, **kwargs):
         try:
+            username = kwargs['username']
             user = User.objects.get(username=username)
             user_serialized = AccountSerializerPublic(user).data
             return JsonResponse(user_serialized)
@@ -262,7 +263,7 @@ class UserView(TemplateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
 
         inname = request.GET.get('inname', '')
         limit = request.GET.get('limit', 10)
@@ -292,7 +293,7 @@ class UserMeView(TemplateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return JsonResponse({'error': 'User is not logged in'}, status=400)
 
@@ -356,7 +357,7 @@ class UserRegisterView(TemplateView):
 
             created_user = User.objects.create_user(
                 username=username, password=password, email=email)
-            
+
             created_user.profile.is_employer = is_employer
             created_user.profile.save()
 
@@ -439,7 +440,7 @@ class AnswerVoteView(TemplateView):
                 user = request.user
             else:
                 return JsonResponse({'error': 'User is not logged in'}, status=400)
-            
+
             if answer.user_id == user:
                 return JsonResponse({'error': 'Cannot vote on your own answer'},
                                     status=400)
@@ -458,7 +459,7 @@ class AnswerVoteView(TemplateView):
                 answer.user_id.profile.update_profile_reputation(-1)
                 answer.save()
                 return JsonResponse({'success': 'Reverted upvote',
-                                    'points': answer.points},status=200)
+                                     'points': answer.points}, status=200)
 
             # Checks to see if user has previously downvoted the answer
             if answer in user.profile.downvoted_answers.all():
@@ -482,7 +483,7 @@ class AnswerVoteView(TemplateView):
             return JsonResponse({'success': 'Upvoted the answer',
                                  'points': answer.points}, status=200)
 
-        elif vote_type == "DOWN":
+        else:
             # Checks to see if user has previously downvoted the answer
             if answer in user.profile.downvoted_answers.all():
                 user.profile.downvoted_answers.remove(answer)
@@ -490,7 +491,7 @@ class AnswerVoteView(TemplateView):
                 answer.user_id.profile.update_profile_reputation(1)
                 answer.save()
                 return JsonResponse({'success': 'Reverted upvote',
-                                    'points': answer.points},status=200)
+                                     'points': answer.points}, status=200)
 
             # Checks to see if user has previously upvoted the answer
             if answer in user.profile.upvoted_answers.all():
@@ -553,7 +554,7 @@ class QuestionVoteView(TemplateView):
                 question.user_id.profile.update_profile_reputation(-1)
                 question.save()
                 return JsonResponse({'success': 'Reverted upvote',
-                                    'points': question.points},status=200)
+                                     'points': question.points}, status=200)
 
             if question in user.profile.downvoted_questions.all():
                 user.profile.downvoted_questions.remove(question)
@@ -573,7 +574,7 @@ class QuestionVoteView(TemplateView):
             return JsonResponse({'success': 'Upvoted the question',
                                  'points': question.points}, status=200)
 
-        elif vote_type == "DOWN":
+        else:
 
             if question in user.profile.downvoted_questions.all():
                 user.profile.downvoted_questions.remove(question)
@@ -581,7 +582,7 @@ class QuestionVoteView(TemplateView):
                 question.user_id.profile.update_profile_reputation(1)
                 question.save()
                 return JsonResponse({'success': 'Reverted downvote',
-                                    'points': question.points},status=200)
+                                     'points': question.points}, status=200)
 
             if question in user.profile.upvoted_questions.all():
                 user.profile.upvoted_questions.remove(question)
@@ -614,7 +615,7 @@ class SearchView(TemplateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         try:
             query = request.GET.get('q', '')
             page = request.GET.get('page', 1)
@@ -638,8 +639,8 @@ class SearchView(TemplateView):
 
             by_question_head = Question.objects.none()
             by_question_text = Question.objects.none()
-            by_username      = Question.objects.none()
-            by_tags          = Question.objects.none()
+            by_username = Question.objects.none()
+            by_tags = Question.objects.none()
 
             # filter questions by case-insensitive matching with question_head
             if has_filters is False or 'head' in filters:
@@ -678,14 +679,14 @@ class SearchView(TemplateView):
             matching_questions = matching_questions.distinct()  # remove duplicates
 
             if 'answered' in filters:
-                matching_questions = matching_questions.intersection( answered_set )
+                matching_questions = matching_questions.intersection(answered_set)
             elif 'notanswered' in filters:
-                matching_questions = matching_questions.difference( answered_set )
+                matching_questions = matching_questions.difference(answered_set)
 
             if 'accepted' in filters:
-                matching_questions = matching_questions.intersection( accepted_set )
+                matching_questions = matching_questions.intersection(accepted_set)
             elif 'notaccepted' in filters:
-                matching_questions = matching_questions.difference( accepted_set )
+                matching_questions = matching_questions.difference(accepted_set)
 
             matching_questions = matching_questions.order_by(
                 modifier+sorted_by)
@@ -716,7 +717,7 @@ class TagView(TemplateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         inname = request.GET.get('inname', '')
         page = request.GET.get('page', 1)
         limit = request.GET.get('limit', 10)
@@ -759,13 +760,14 @@ class TagViewName(TemplateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request, tagname):
+    def get(self, request, *args, **kwargs):
         try:
+            tagname = kwargs['tagname']
             tag = Tag.objects.get(tag_text=tagname)
             tag_serialized = TagViewSerializer(tag).data
             print(tag_serialized)
             return JsonResponse(tag_serialized)
-        except Tag.DoesNotExist :
+        except Tag.DoesNotExist:
             return JsonResponse({'error': 'Tag does not exist'}, status=400)
 
 
@@ -778,18 +780,18 @@ class JobView(TemplateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         """
         Extracts GET request parameters
         """
         category = request.GET.get('category', 0)
         if category not in Job.CATEGORIES:
-            return JsonResponse({'error': 'Invalid Category'}, status=400) 
+            return JsonResponse({'error': 'Invalid Category'}, status=400)
         # get list of job that are in the requested category
         job_list = Job.objects.filter(category=category)
         serialized = JobSerializer(job_list, many=True).data
-        return JsonResponse({'job_list': serialized})   
-    
+        return JsonResponse({'job_list': serialized})
+
     def post(self, request):
         # Extracts job info from request
         try:
@@ -803,32 +805,40 @@ class JobView(TemplateView):
 
             # Verify that category is right
             if category not in Job.CATEGORIES:
-                return JsonResponse({'error': 'Wrong Category'}, status=400)  
+                raise ValueError
+
             # Verify that type is right
             if job_type not in Job.TYPES:
-                return JsonResponse({'error': 'Wrong Type'}, status=400)  
+                raise ValueError
             # Verify that description has at least 50 characters
             if len(description) < 50:
-                return JsonResponse({'error': 'The description has to be longer than 50 characters'}, status=400)  
+                raise ValueError
             # Verify that length of other input to be bigger than 0
-            if len(position) < 1 or len(job_type) < 1 or len(category) < 1 or len(company) < 1 or len(location) < 1:
-                return JsonResponse({'error': 'No Input can be empty'}, status=400)  
+
+            if (len(position) < 1 or len(job_type) < 1
+                    or len(category) < 1 or len(company) < 1
+                    or len(location) < 1):
+                raise ValueError
+
             if request.user.profile.is_employer:
-                job = Job(position=position, 
-                        job_type=job_type, 
-                        category=category, 
-                        company=company, 
-                        location=location,
-                        description=description,
-                        posted_by=request.user)
+                job = Job(position=position,
+                          job_type=job_type,
+                          category=category,
+                          company=company,
+                          location=location,
+                          description=description,
+                          posted_by=request.user)
                 job.save()
                 return JsonResponse({'success':'You have successfully added a job to the database'})
-                
+
             return JsonResponse({'error':'This account is not an employer'}, status=400)
         except KeyError:
             return JsonResponse({'error':'There was an error parsing the request'}, status=400)
         except AttributeError:
             return JsonResponse({'error':'User is not logged in'}, status=400)
+        except ValueError:
+            return JsonResponse({'error': 'One or more inputs are invalid'},
+                                status=400)
 
 
 class JobAppView(TemplateView):
@@ -840,7 +850,7 @@ class JobAppView(TemplateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         """
         Extracts GET request parameters
         """
@@ -859,7 +869,7 @@ class JobAppView(TemplateView):
             return JsonResponse({'application_list': serialized_applications})
         except Job.DoesNotExist:
             return JsonResponse({'error': 'Job does not exist'}, status=400)
-    
+
     def post(self, request):
         """
         This handles the post request and creates a job application
@@ -878,12 +888,12 @@ class JobAppView(TemplateView):
         except Job.DoesNotExist:
             return JsonResponse({'error': 'Job id is not valid'}, status=400)
 
-        
+
 
 
 class ProfileQuestionView(TemplateView):
     """
-    This view handles the /api/user/name/(?P<username>[\w_@\+\.\-]+)/questions/
+    This view handles the /api/user/name/<username>/questions/
     end point
     It is used to get a list of questions asked and answered by the user
     """
@@ -891,8 +901,9 @@ class ProfileQuestionView(TemplateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request, username):
+    def get(self, request, *args, **kwargs):
         try:
+            username = kwargs['username']
             user = User.objects.get(username=username)
             asked_questions = Question.objects.filter(user_id=user)
             answered_questions = Question.objects.filter(answer__user_id=user)
@@ -900,33 +911,36 @@ class ProfileQuestionView(TemplateView):
             downvoted_questions = user.profile.downvoted_questions
 
             serialized_asked_questions = QuestionSerializer(
-                                            asked_questions, many=True).data
+                asked_questions, many=True).data
+
             serialized_answered_questions = QuestionSerializer(
-                                            answered_questions, many=True).data
+                answered_questions, many=True).data
+
             serialized_upvoted_questions = QuestionSerializer(
-                                            upvoted_questions, many=True).data
+                upvoted_questions, many=True).data
+
             serialized_downvoted_questions = QuestionSerializer(
-                                            downvoted_questions, many=True).data
+                downvoted_questions, many=True).data
 
             return JsonResponse({'asked_questions': serialized_asked_questions,
-                                'answered_questions': serialized_answered_questions,
-                                'upvoted_questions': serialized_upvoted_questions,
-                                'downvoted_questions': serialized_downvoted_questions})
+                                 'answered_questions': serialized_answered_questions,
+                                 'upvoted_questions': serialized_upvoted_questions,
+                                 'downvoted_questions': serialized_downvoted_questions})
         except User.DoesNotExist:
             return JsonResponse({'error': 'User does not exist'},
-                                status= 400)
+                                status=400)
 
 
 def paginate(query_set, page_size, page):
 
     first_index = (page-1)*page_size
-    last_index  = (page-1)*page_size + page_size
+    last_index = (page-1)*page_size + page_size
 
     return query_set[first_index:last_index]
-    
+
 class ProfileJobView(TemplateView):
     """
-    This view handles the /api/user/name/(?P<username>[\w_@\+\.\-]+)/jobs/
+    This view handles the /api/user/name/<username>/jobs/
     end point
     It is used to get a list of jobs posted by the user
     """
@@ -934,27 +948,28 @@ class ProfileJobView(TemplateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request, username):
+    def get(self, request, *args, **kwargs):
         try:
+            username = kwargs['username']
             user = User.objects.get(username=username)
             posted_jobs = Job.objects.filter(posted_by=user)
             serialized_jobs = JobSerializer(posted_jobs, many=True).data
             return JsonResponse({'posted_positions': serialized_jobs})
         except User.DoesNotExist:
             return JsonResponse({'error': 'User does not exist'},
-                                status= 400)
+                                status=400)
 
 
 def add_tags_to_question(question, tags_list):
 
-    if tags_list is None or len(tags_list) == 0:
+    if not tags_list:
         return question
 
     #strip spaces and convert to lowercase
     tags_list = [tag.strip().lower() for tag in tags_list]
 
     for tag_text in tags_list:
-        tag, is_created = Tag.objects.get_or_create(tag_text=tag_text)
+        tag, _ = Tag.objects.get_or_create(tag_text=tag_text)
 
         tag.question_count += 1
         tag.save()
@@ -966,10 +981,10 @@ def add_tags_to_question(question, tags_list):
 
 def filter_questions_by_tags(question_set, tags_list):
 
-    if tags_list is None or len(tags_list) == 0:
+    if not tags_list:
         return question_set
 
     #strip spaces and convert to lowercase
     tags_list = [tag.strip().lower() for tag in tags_list]
 
-    return question_set.filter(tags__in = tags_list)
+    return question_set.filter(tags__in=tags_list)
