@@ -137,29 +137,29 @@ export class UserInfo extends React.Component {
           )}
         </div>
 
-        {(email !== "" || is_editing) ? (
+        {(email || is_editing) ? (
           emailElement
         ) : (
           ""
         )}
-        {(first_name !== "" || is_editing) ? (
+        {(first_name || is_editing) ? (
           firstNameElement
         ) : (
           ""
         )}
-        {(last_name !== "" || is_editing) ? (
+        {(last_name || is_editing) ? (
           lastNameElement
         ) : (
           ""
         )}
         <h3>About Me</h3>
         {aboutMeElement}
-        {(github !== "" || is_editing) ? (
+        {(github || is_editing) ? (
           githubElement
         ) : (
           ""
         )}
-        {(linkedin !== "" || is_editing) ? (
+        {(linkedin || is_editing) ? (
           linkedinElement
         ) : (
           ""
