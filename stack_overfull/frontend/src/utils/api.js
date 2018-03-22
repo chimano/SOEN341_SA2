@@ -35,6 +35,22 @@ export function getApiJob(category) {
   });
 }
 
+//apply to job
+export function postApiJobApplication(job_id) {
+  return axios.post("/api/job/application/", {
+    job_id: job_id
+  });
+}
+
+//get list of applicants based on job_id
+export function getApiJobApplication(job_id) {
+  return axios.get("/api/job/application/", {
+    params: {
+      job_id: job_id
+    }
+  });
+}
+
 //get a list of jobs posted by a certain employer
 export function getApiUserNameJobs(username) {
   return axios.get("/api/user/name/" + username + "/jobs");
