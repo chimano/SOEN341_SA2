@@ -97,7 +97,7 @@ export class ProfilePage extends React.Component {
             reputation: response.data.profile.reputation,
             is_employer: response.data.profile.is_employer
           });
-          resolve(response.data.username);          
+          resolve(response.data.username);
         })
         .catch(error => console.log(error));
     });
@@ -165,7 +165,7 @@ export class ProfilePage extends React.Component {
           {is_employer ? (
             <div>
               <h3 style={{ paddingTop: "20px" }}> Job Posted</h3>
-              <JobList jobList={jobPostList} />
+              <JobList jobList={jobPostList} hasJobApplication hideApplyButton />
             </div>
           ) : (
             ""
