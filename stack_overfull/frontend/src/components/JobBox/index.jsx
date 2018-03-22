@@ -8,6 +8,15 @@ import {
 } from "../../utils/api";
 import { Divider, Button } from "antd";
 
+
+function humanize(str) {
+  var frags = str.split("_");
+  for (let i = 0; i < frags.length; i++) {
+    frags[i] = frags[i].charAt(0).toUpperCase() + frags[i].slice(1);
+  }
+  return frags.join(" ");
+}
+
 export class JobBox extends React.Component {
   constructor(props) {
     super(props);
@@ -78,7 +87,7 @@ export class JobBox extends React.Component {
             <p>{job_description}</p>
           </div>
           <div className="JobBox__generalinfo">
-            {job_category} <br />
+            {humanize(job_category)} <br />
             {job_type} <br />
             {job_location} <br />
             Position posted on {date}{" "}
