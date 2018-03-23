@@ -135,7 +135,7 @@ export class UserPage extends React.Component {
       <div className="body-wrapper grey-background">
         <div className="page-width">
           <div style={{ display: "flex" }}>
-            <div style={{minWidth:"30%", marginRight:"10px"}}>
+            <div style={{width:"70%", marginRight:"10px"}}>
               <UserInfo
                 username={username}
                 email={email}
