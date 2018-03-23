@@ -265,8 +265,8 @@ export class PostJobButton extends React.Component {
       .then(response => {
         console.log(response);
       })
-      .catch(error => {
-        console.log(error);
+      .catch(e => {
+        alert(e.response.data.error);
       });
   };
   saveFormRef = form => {
