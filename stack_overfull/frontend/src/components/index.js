@@ -21,4 +21,4 @@ export * from "./JobList";
 export * from "./HottestTagList";
 export * from "./UserInfo";
 export * from "./UserQuestionList";
-export * from "./ApplicantsPopoverButton";
+export * from "./ApplicantsPopupButton";

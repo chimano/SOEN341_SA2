@@ -7,7 +7,7 @@ import {
   getApiJobApplication
 } from "../../utils/api";
 import { Divider, Button } from "antd";
-import { ApplicantsPopoverButton } from "../index";
+import { ApplicantsPopupButton } from "../index";
 
 function humanize(str) {
   var frags = str.split("_");
@@ -87,7 +87,7 @@ export class JobBox extends React.Component {
           </div>
 
           {hasJobApplication ? (
-            <ApplicantsPopoverButton applicantList={this.state.applicantList} />
+            <ApplicantsPopupButton applicantList={this.state.applicantList} />
           ) : (
             ""
           )}
