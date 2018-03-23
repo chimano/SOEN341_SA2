@@ -46,6 +46,18 @@ export class UserPage extends React.Component {
     });
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    const username = this.props.match.params.username;
+
+    if ( prevProps.location !== this.props.location) {
+      console.log(prevProps.location)
+      this.getUserInfo(username).then(username => {
+        this.getQuestionsRelatedToUser(username);
+        this.getListOfJobsPostedByEmployer(username);
+      });
+    }
+  }
+
   getListOfJobsPostedByEmployer = username => {
     getApiUserNameJobs(username).then(response => {
       console.log("getApiUserNameJobs(username): ", response);
@@ -123,7 +135,7 @@ export class UserPage extends React.Component {
       <div className="body-wrapper grey-background">
         <div className="page-width">
           <div style={{ display: "flex" }}>
-            <div style={{minWidth:"15%", marginRight:"15px"}}>
+            <div style={{minWidth:"30%", marginRight:"10px"}}>
               <UserInfo
                 username={username}
                 email={email}

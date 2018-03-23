@@ -110,11 +110,11 @@ export class ProfilePage extends React.Component {
   };
 
   saveMyInfo = () => {
-    const { email, first_name, last_name, aboutMe } = this.state;
+    const { email, first_name, last_name, aboutMe, github, linkedin } = this.state;
 
     this.setState({ is_saving_myinfo: true });
 
-    postApiUserMe(email, first_name, last_name, aboutMe)
+    postApiUserMe(email, first_name, last_name, aboutMe, github, linkedin)
       .then(response => {
         console.log("response of postApiUserMe(): ", response);
         this.setState({ is_saving_myinfo: false });
@@ -148,7 +148,7 @@ export class ProfilePage extends React.Component {
       <div className="body-wrapper grey-background">
         <div className="page-width">
           <div style={{ display: "flex" }}>
-            <div style={{minWidth:"15%", marginRight:"15px"}}>
+            <div style={{width:"30%", marginRight:"10px"}}>
               <UserInfo
                 is_editing={is_editing}
                 onInputChange={this.onInputChange}
