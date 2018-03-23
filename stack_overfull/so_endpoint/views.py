@@ -882,8 +882,13 @@ class JobAppView(TemplateView):
             user = request.user
             if not user.is_authenticated:
                 return JsonResponse({'error': 'User is not authenticated'}, status=400)
+
+            if user.profile.is_employer:
+                return JsonResponse({'error': 'Employers cannot apply to jobs'},
+                                    status=400)
+
             job = Job.objects.get(job_id=job_id)
-            JobApp.objects.create(job_id=job, user_id=user)
+            JobApp.objects.get_or_create(job_id=job, user_id=user)
             return JsonResponse({'success': 'Application was successfully created'})
         except Job.DoesNotExist:
             return JsonResponse({'error': 'Job id is not valid'}, status=400)
