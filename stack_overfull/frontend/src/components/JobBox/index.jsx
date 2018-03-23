@@ -7,7 +7,7 @@ import {
   getApiJobApplication
 } from "../../utils/api";
 import { Divider, Button } from "antd";
-
+import { ApplicantsPopoverButton } from "../index";
 
 function humanize(str) {
   var frags = str.split("_");
@@ -68,13 +68,6 @@ export class JobBox extends React.Component {
 
     let date = formatDate(date_created);
 
-    let applicants = "";
-    if (hasJobApplication) {
-      applicants = this.state.applicantList.map((value, key) => (
-        <div key={key}>{value.user_id.username}</div>
-      ));
-    }
-
     return (
       <div>
         <div className="JobBox grey-border">
@@ -92,6 +85,13 @@ export class JobBox extends React.Component {
             {job_location} <br />
             Position posted on {date}{" "}
           </div>
+
+          {hasJobApplication ? (
+            <ApplicantsPopoverButton applicantList={this.state.applicantList} />
+          ) : (
+            ""
+          )}
+
           {hideApplyButton ? (
             ""
           ) : (
@@ -103,7 +103,6 @@ export class JobBox extends React.Component {
             </Button>
           )}
         </div>
-        {applicants}
       </div>
     );
   }
