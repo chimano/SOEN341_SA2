@@ -26,6 +26,9 @@ export class ProfilePage extends React.Component {
       last_name: "",
       aboutMe: "",
       reputation: "",
+      github: "",
+      linkedin: "",
+      last_login: "",
       downvoted_questions: [],
       upvoted_questions: [],
       questions_asked: [],
@@ -95,6 +98,9 @@ export class ProfilePage extends React.Component {
             last_name: response.data.last_name,
             aboutMe: response.data.profile.about_me,
             reputation: response.data.profile.reputation,
+            github: response.data.profile.github,
+            linkedin: response.data.profile.linkedin,
+            last_login: response.data.last_login,
             is_employer: response.data.profile.is_employer
           });
           resolve(response.data.username);
@@ -104,11 +110,11 @@ export class ProfilePage extends React.Component {
   };
 
   saveMyInfo = () => {
-    const { email, first_name, last_name, aboutMe } = this.state;
+    const { email, first_name, last_name, aboutMe, github, linkedin } = this.state;
 
     this.setState({ is_saving_myinfo: true });
 
-    postApiUserMe(email, first_name, last_name, aboutMe)
+    postApiUserMe(email, first_name, last_name, aboutMe, github, linkedin)
       .then(response => {
         console.log("response of postApiUserMe(): ", response);
         this.setState({ is_saving_myinfo: false });
@@ -125,6 +131,9 @@ export class ProfilePage extends React.Component {
       last_name,
       aboutMe,
       reputation,
+      github,
+      linkedin,
+      last_login,
       downvoted_questions,
       upvoted_questions,
       questions_asked,
@@ -139,7 +148,7 @@ export class ProfilePage extends React.Component {
       <div className="body-wrapper grey-background">
         <div className="page-width">
           <div style={{ display: "flex" }}>
-            <div style={{ width: "30%" }}>
+            <div style={{width:"30%", marginRight:"10px"}}>
               <UserInfo
                 is_editing={is_editing}
                 onInputChange={this.onInputChange}
@@ -151,6 +160,9 @@ export class ProfilePage extends React.Component {
                 last_name={last_name}
                 aboutMe={aboutMe}
                 reputation={reputation}
+                github={github}
+                linkedin={linkedin}
+                last_login={last_login}
               />
             </div>
             <div style={{ width: "70%", paddingLeft: "10px" }}>

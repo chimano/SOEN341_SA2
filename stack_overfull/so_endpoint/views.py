@@ -322,6 +322,12 @@ class UserMeView(TemplateView):
             if 'about_me' in json_body and json_body['about_me'] is not None:
                 user.profile.about_me = json_body['about_me']
 
+            if 'github' in json_body and json_body['github'] is not None:
+                user.profile.github = json_body['github']
+
+            if 'linkedin' in json_body and json_body['linkedin'] is not None:
+                user.profile.linkedin = json_body['linkedin']
+
             user.save()
             user.profile.save()
 
