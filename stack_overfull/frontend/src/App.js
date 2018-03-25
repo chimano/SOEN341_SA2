@@ -20,7 +20,8 @@ export default class App extends React.Component {
 
     this.state = {
       logged_in: false,
-      username: ""
+      username: "",
+      is_employer: false
     };
 
     this.handle_login();
@@ -31,7 +32,11 @@ export default class App extends React.Component {
       .then(response => {
         console.log("response of getApiUserMe: ", response);
         if (!response.data.error) {
-          this.setState({ logged_in: true, username: response.data.username });
+          this.setState({
+            logged_in: true,
+            username: response.data.username,
+            is_employer: response.data.profile.is_employer
+          });
         }
       })
       .catch(error => {
@@ -41,7 +46,7 @@ export default class App extends React.Component {
 
   handle_logout = () => {
     postApiUserLogout().catch(error => console.log(error));
-    this.setState({ logged_in: false, username: "" });
+    this.setState({ logged_in: false, username: "", is_employer: false });
   };
 
   verifyLogin = () => {
@@ -64,7 +69,6 @@ export default class App extends React.Component {
   };
 
   render() {
-
     return (
       <main className="App">
         <NavigationBar
@@ -110,7 +114,7 @@ export default class App extends React.Component {
               <CategoryListPage username={this.state.username} {...props} />
             )}
           />
-          
+
           <Route
             path="/tags/:tags"
             render={props => (
@@ -123,7 +127,9 @@ export default class App extends React.Component {
             )}
           />
 
-          <Route path="/careers" component={CareerPage} />
+          <Route path="/careers" render={props => (
+              <CareerPage is_employer={this.state.is_employer} {...props} />
+            )}/>
           <Route path="/user/:username" component={UserPage} />
         </Switch>
         <Footer />
