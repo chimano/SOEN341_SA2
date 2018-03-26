@@ -149,15 +149,12 @@ export class ProfilePage extends React.Component {
           break;
         case "5":
           this.setState({
-            currentTab: "downvotedquestions"
+            currentTab: "downvotedquestion"
           });
           break;        
       }
       resolve();
     })
-    // .then(() => {
-    //   this.getQuestionList();
-    // });
   };
 
   render() {
@@ -186,7 +183,7 @@ export class ProfilePage extends React.Component {
     let showTabPage;
     if(currentTab == "" || currentTab == "profile") {
       showTabPage = (
-        <div class="showTabPage_div" style={{width:"30%"}}>
+        <div className="showTabPage_div" style={{width:"70%"}}>
           <UserInfo
             is_editing={is_editing}
             onInputChange={this.onInputChange}
@@ -206,7 +203,7 @@ export class ProfilePage extends React.Component {
       );
     } else {
       showTabPage = (
-        <div class="showTabPage_div" style={{width:"90%"}}>
+        <div className="showTabPage_div" style={{width:"90%"}}>
           <UserQuestionList
             upvoted_questions={upvoted_questions}
             downvoted_questions={downvoted_questions}
@@ -218,7 +215,6 @@ export class ProfilePage extends React.Component {
       );
     }
 
-    console.log("THE CURRENT TAB IS " + currentTab);
     return (
       <div className="body-wrapper grey-background">
         <div className="page-width">
