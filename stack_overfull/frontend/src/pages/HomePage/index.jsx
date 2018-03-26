@@ -63,7 +63,7 @@ export class HomePage extends React.Component {
   createQuestion = question => {
     postApiQuestion(question)
       .then(() => this.getQuestionList())
-      .catch(error => console.log(error));
+      .catch(e => alert(e.response.data.error));
   };
 
   answerQuestion(answer, q_id) {

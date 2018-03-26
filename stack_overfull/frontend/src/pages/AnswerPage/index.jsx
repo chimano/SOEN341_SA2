@@ -98,12 +98,11 @@ export class AnswerPage extends React.Component {
           downvoted_answers_id: response.data.profile.downvoted_answers,
           upvoted_answers_id: response.data.profile.upvoted_answers,
           downvoted_questions_id: response.data.profile.downvoted_questions,
-          upvoted_questions_id:response.data.profile.upvoted_questions
+          upvoted_questions_id: response.data.profile.upvoted_questions
         });
       })
       .catch(error => console.log(error));
   };
-
 
   getQuestion = () => {
     const q_id = this.props.match.params.id;
@@ -117,7 +116,7 @@ export class AnswerPage extends React.Component {
           accepted_answer_id: response.data.accepted_answer_id,
           rejected_answers_ids: response.data.rejected_answers_ids,
           q_user: q_user,
-          q_user_id:q_user_id
+          q_user_id: q_user_id
         });
       })
       .catch(error => {
@@ -176,36 +175,50 @@ export class AnswerPage extends React.Component {
   };
 
   upvoteAnswer = id => {
-    voteAnswer("UP", id);
+    voteAnswer("UP", id)
+      .then(response => {
+        console.log(response);
+      })
+      .catch(e => alert(e.response.data.error));
   };
 
   downvoteAnswer = id => {
-    voteAnswer("DOWN", id);
+    voteAnswer("DOWN", id)
+      .then(response => {
+        console.log(response);
+      })
+      .catch(e => alert(e.response.data.error));
   };
 
   handleUpvoteQuestion = id => {
-    console.log("Q ID: "+id);
+    console.log("Q ID: " + id);
     this.upvoteQuestion(id);
     setTimeout(() => this.getQuestion(), 500);
     setTimeout(() => this.getUserVotes(), 500);
-  }
+  };
 
   handleDownvoteQuestion = id => {
-    console.log("Q ID: "+id);
+    console.log("Q ID: " + id);
     this.downvoteQuestion(id);
     setTimeout(() => this.getQuestion(), 500);
     setTimeout(() => this.getUserVotes(), 500);
-  }
+  };
 
   upvoteQuestion = id => {
     voteQuestion("UP", id)
-    .catch(error => console.log(error));
-  }
+      .then(response => {
+        console.log(response);
+      })
+      .catch(e => alert(e.response.data.error));
+  };
 
   downvoteQuestion = id => {
     voteQuestion("DOWN", id)
-    .catch(error => console.log(error));
-  }
+      .then(response => {
+        console.log(response);
+      })
+      .catch(e => alert(e.response.data.error));
+  };
 
   answerQuestion = (answer, q_id) => {
     postApiAnswer(answer, q_id);
@@ -226,25 +239,26 @@ export class AnswerPage extends React.Component {
   };
 
   render() {
-    const { 
-      question, 
-      answerList, 
+    const {
+      question,
+      answerList,
       q_user,
       downvoted_answers_id,
       upvoted_answers_id,
       downvoted_questions_id,
       upvoted_questions_id
-     } = this.state;
-    
+    } = this.state;
+
     const { logged_in, username } = this.props;
     const q_id = this.props.match.params.id;
 
     console.log("# OF ANSWERS: " + answerList.length);
-    console.log("Number of downvoted answers: "+downvoted_answers_id.length);
-    console.log("Number of upvoted answers: "+upvoted_answers_id.length);
-    console.log("Number of downvoted answers: "+downvoted_questions_id.length);
-    console.log("Number of upvoted answers: "+upvoted_questions_id.length);
-
+    console.log("Number of downvoted answers: " + downvoted_answers_id.length);
+    console.log("Number of upvoted answers: " + upvoted_answers_id.length);
+    console.log(
+      "Number of downvoted answers: " + downvoted_questions_id.length
+    );
+    console.log("Number of upvoted answers: " + upvoted_questions_id.length);
 
     let verified;
     if (logged_in && q_user === username) {
@@ -276,10 +290,9 @@ export class AnswerPage extends React.Component {
     let upvoted = false;
     let downvoted = false;
 
-    
     //add the accepted answer box first
     answerList.forEach((x, key) => {
-      console.log("!"+x.id);
+      console.log("!" + x.id);
       if (x.is_accepted) {
         acceptedAnswerKey = key;
         answerListBox.push(
@@ -312,7 +325,7 @@ export class AnswerPage extends React.Component {
             x={x}
             upvoted_array={this.state.upvoted_answers_id}
             downvoted_array={this.state.downvoted_answers_id}
-            />
+          />
         );
       }
     });
@@ -343,30 +356,30 @@ export class AnswerPage extends React.Component {
     return (
       <div className="body-wrapper">
         <div className="page-width">
-        <div className="AnswerPage__question-area">
-          <div className="AnswerPage__question-voting">
-          <VotingButtons 
-              handleDownvoteButton={this.handleDownvoteQuestion}
-              handleUpvoteButton={this.handleUpvoteQuestion}
-              id={question.id}
-              points={question.points}
-              upvoted_array={this.state.upvoted_questions_id}
-              downvoted_array={this.state.downvoted_questions_id}
-            />
-          </div>
-          <div className="AnswerPage__question-box grey-border">
-            <h1 className="AnswerPage__question-title">
-              {question.question_head}
-            </h1>
-            <div className="AnswerPage__tags">{questionTags}</div>
-            {questionBodyBox}
-            <Divider />
-            <div className="AnswerPage__question-creator">
-              Asked by <Link to={`/user/${q_user}`}>{q_user}</Link> on {questionDate}
+          <div className="AnswerPage__question-area">
+            <div className="AnswerPage__question-voting">
+              <VotingButtons
+                handleDownvoteButton={this.handleDownvoteQuestion}
+                handleUpvoteButton={this.handleUpvoteQuestion}
+                id={question.id}
+                points={question.points}
+                upvoted_array={this.state.upvoted_questions_id}
+                downvoted_array={this.state.downvoted_questions_id}
+              />
+            </div>
+            <div className="AnswerPage__question-box grey-border">
+              <h1 className="AnswerPage__question-title">
+                {question.question_head}
+              </h1>
+              <div className="AnswerPage__tags">{questionTags}</div>
+              {questionBodyBox}
+              <Divider />
+              <div className="AnswerPage__question-creator">
+                Asked by <Link to={`/user/${q_user}`}>{q_user}</Link> on{" "}
+                {questionDate}
+              </div>
             </div>
           </div>
-          </div>
-
 
           <div className="AnswerPage__seperator" />
           {numberOfAnswersTitle}

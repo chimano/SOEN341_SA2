@@ -53,8 +53,8 @@ class SignUpForm extends React.Component {
         );
         this.onUserRegisterResponse(response);
       })
-      .catch(error => {
-        console.log(error);
+      .catch(e => {
+        alert(e.response.data.error);
       });
   }
 

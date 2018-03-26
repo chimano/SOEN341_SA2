@@ -25,20 +25,15 @@ class SignInForm extends React.Component {
           response
         );
         const { handle_login, handle_close_button } = this.props;
-        // console.log(
-        //   "Received response from the server",
-        //   response.request.responseURL,
-        //   response
-        // );
         if (response.data.error) {
-          alert("Wrong username or password");
+          alert(response.data.error);
         } else {
           handle_login(response.data.username);
           handle_close_button();
         }
       })
-      .catch(error => {
-        console.log(error);
+      .catch(e => {
+        alert(e.response.data.error);
       });
   };
 
