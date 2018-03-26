@@ -12,7 +12,8 @@ import {
   QuestionList,
   UserInfo,
   UserQuestionList,
-  JobList
+  JobList,
+  ProfileTabs
 } from "../../components";
 import { Input, Button } from "antd";
 
@@ -36,7 +37,8 @@ export class ProfilePage extends React.Component {
       jobPostList: [],
       is_editing: false, // make user info fields editable
       is_saving_myinfo: false, // loading indicator for the edit button
-      is_employer: false
+      is_employer: false,
+      currentTab: ""
     };
   }
 
@@ -122,6 +124,42 @@ export class ProfilePage extends React.Component {
       .catch(error => console.log(error));
   };
 
+  handleTabsChange = key => {
+    new Promise(resolve => {
+      switch (key) {
+        case "1":
+          this.setState({
+            currentTab: "profile"
+          });
+          break;
+        case "2":
+          this.setState({
+            currentTab: "questionasked"
+          });
+          break;
+        case "3":
+          this.setState({
+            currentTab: "questionanswered"
+          });
+          break;
+        case "4":
+          this.setState({
+            currentTab: "upvotedquestion"
+          });
+          break;
+        case "5":
+          this.setState({
+            currentTab: "downvotedquestions"
+          });
+          break;        
+      }
+      resolve();
+    })
+    // .then(() => {
+    //   this.getQuestionList();
+    // });
+  };
+
   render() {
     console.log("my state", this.state);
     const {
@@ -141,13 +179,54 @@ export class ProfilePage extends React.Component {
       is_editing,
       is_saving_myinfo,
       is_employer,
+      currentTab,
       jobPostList
     } = this.state;
 
+    let showTabPage;
+    if(currentTab == "" || currentTab == "profile") {
+      showTabPage = (
+        <div class="showTabPage_div" style={{width:"30%"}}>
+          <UserInfo
+            is_editing={is_editing}
+            onInputChange={this.onInputChange}
+            onEditButtonClick={this.onEditButtonClick}
+            is_saving_myinfo={is_saving_myinfo}
+            username={username}
+            email={email}
+            first_name={first_name}
+            last_name={last_name}
+            aboutMe={aboutMe}
+            reputation={reputation}
+            github={github}
+            linkedin={linkedin}
+            last_login={last_login}
+          />
+        </div>
+      );
+    } else {
+      showTabPage = (
+        <div class="showTabPage_div" style={{width:"90%"}}>
+          <UserQuestionList
+            upvoted_questions={upvoted_questions}
+            downvoted_questions={downvoted_questions}
+            questions_asked={questions_asked}
+            questions_answered={questions_answered}
+            current_tab={currentTab}
+          />
+        </div>
+      );
+    }
+
+    console.log("THE CURRENT TAB IS " + currentTab);
     return (
       <div className="body-wrapper grey-background">
         <div className="page-width">
-          <div style={{ display: "flex" }}>
+        <ProfileTabs handleTabsChange={this.handleTabsChange} />
+          <div>
+            {showTabPage}
+          </div>
+          {/* <div style={{ display: "flex" }}>
             <div style={{width:"30%", marginRight:"10px"}}>
               <UserInfo
                 is_editing={is_editing}
@@ -173,7 +252,7 @@ export class ProfilePage extends React.Component {
                 questions_answered={questions_answered}
               />
             </div>
-          </div>
+          </div> */}
           {is_employer ? (
             <div>
               <h3 style={{ paddingTop: "20px" }}> Job Posted</h3>
