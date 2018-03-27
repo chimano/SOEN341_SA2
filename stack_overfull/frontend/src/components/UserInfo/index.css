@@ -1,11 +1,25 @@
 .UserInfo {
     padding-top: 10px;
+    padding: 15px;
+    background-color: rgb(255, 255, 255);
+    /* margin: 10px 0 20px 0; */
+    color: black;
+    border-radius: 10px;
 }
 
 .UserInfo h3 {
     padding-top: 20px;
+    text-align: left;
+    font-size: 1.5em;
+    text-decoration: underline;
 }
 
-.UserInfo button {
-    margin-top: 20px;
+.UserInfo_div button {
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+.UserInfo_div h2 {
+    text-align: center;
+    margin-top: 6%;
 }
