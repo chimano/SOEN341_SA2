@@ -1,3 +1,5 @@
+// @flow
+
 import React from "react";
 import "./App.css";
 import {
@@ -14,15 +16,20 @@ import { Route, Switch } from "react-router-dom";
 import { NavigationBar, Footer } from "./components";
 import { getApiUserMe, postApiUserLogout } from "./utils/api";
 
-export default class App extends React.Component {
-  constructor(props) {
-    super(props);
+type Props = {};
 
-    this.state = {
-      logged_in: false,
-      username: ""
-    };
+type State = {
+  logged_in: boolean,
+  username: string
+};
 
+export default class App extends React.Component<Props, State> {
+  state = {
+    logged_in: false,
+    username: ""
+  };
+
+  componentDidMount() {
     this.handle_login();
   }
 
@@ -44,7 +51,7 @@ export default class App extends React.Component {
     this.setState({ logged_in: false, username: "" });
   };
 
-  verifyLogin = () => {
+  verifyLogin = (): Promise<boolean> => {
     return new Promise((resolve, reject) => {
       getApiUserMe()
         .then(response => {
@@ -64,7 +71,6 @@ export default class App extends React.Component {
   };
 
   render() {
-
     return (
       <main className="App">
         <NavigationBar
@@ -110,7 +116,7 @@ export default class App extends React.Component {
               <CategoryListPage username={this.state.username} {...props} />
             )}
           />
-          
+
           <Route
             path="/tags/:tags"
             render={props => (

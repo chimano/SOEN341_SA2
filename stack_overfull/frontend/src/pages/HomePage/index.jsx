@@ -1,3 +1,5 @@
+// @flow
+
 import React from "react";
 import "./index.css";
 import { Pagination } from "antd";
@@ -15,20 +17,33 @@ import {
   postApiAnswer
 } from "../../utils/api";
 
-export class HomePage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showCreateQuestionBox: false,
-      questionList: [],
-      order: "desc",
-      currentFilters: [],
-      title: "All",
-      currentPage: 1,
-      totalQuestions: 0,
-      questionPerPage: 10
-    };
-  }
+type Props = {
+  username: string,
+  verifyLogin: () => {}
+};
+
+type State = {
+  showCreateQuestionBox: boolean,
+  questionList: Array<Object>,
+  order: string,
+  currentFilters: Array<string>,
+  title: string,
+  currentPage: number,
+  totalQuestions: number,
+  questionPerPage: number
+};
+
+export class HomePage extends React.Component<Props, State> {
+  state = {
+    showCreateQuestionBox: false,
+    questionList: [],
+    order: "desc",
+    currentFilters: [],
+    title: "All",
+    currentPage: 1,
+    totalQuestions: 0,
+    questionPerPage: 10
+  };
 
   componentDidMount = () => {
     this.getQuestionList();
@@ -60,13 +75,13 @@ export class HomePage extends React.Component {
       });
   };
 
-  createQuestion = question => {
+  createQuestion = (question: string) => {
     postApiQuestion(question)
       .then(() => this.getQuestionList())
       .catch(error => console.log(error));
   };
 
-  answerQuestion(answer, q_id) {
+  answerQuestion(answer: string, q_id: number) {
     postApiAnswer(answer, q_id).catch(error => console.log(error));
   }
 
@@ -89,7 +104,7 @@ export class HomePage extends React.Component {
     this.setState({ showCreateQuestionBox: false });
   };
 
-  handleTabsChange = key => {
+  handleTabsChange = (key: number) => {
     new Promise(resolve => {
       switch (key) {
         case "1":
@@ -114,7 +129,7 @@ export class HomePage extends React.Component {
     });
   };
 
-  handlePaginationButton = e => {
+  handlePaginationButton = (e: string) => {
     new Promise(resolve => {
       let page = parseInt(e);
       this.setState({
@@ -132,7 +147,7 @@ export class HomePage extends React.Component {
       questionList,
       currentPage,
       totalQuestions,
-      questionsPerPage
+      questionPerPage
     } = this.state;
     const { username } = this.props;
     console.log(this.state);
@@ -167,7 +182,7 @@ export class HomePage extends React.Component {
           <Pagination
             style={{ textAlign: "center", paddingBottom: "60px" }}
             defaultCurrent={1}
-            defaultPageSize={questionsPerPage}
+            defaultPageSize={questionPerPage}
             current={currentPage}
             total={totalQuestions}
             onChange={e => this.handlePaginationButton(e)}
