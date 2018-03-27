@@ -331,10 +331,13 @@ class JobViewTest(TestCase):
         Job.objects.all().delete()
 
 class QuestionViewTest(TestCase):
-    login_info = {
+    login_info = [{
         'username': 'testuser',
         'password': 'testpassword'
-    }
+    }, {
+        'username': 'testuser2',
+        'password': 'testpassword2'
+    }]
 
     @classmethod
     def setUpTestData(cls):
@@ -345,13 +348,17 @@ class QuestionViewTest(TestCase):
         tagged = Question.objects.create(id=2,question_head="Test Question Tags?", question_text="Test Tags Body?")
         tagged.tags.set([tag])
 
-        User.objects.create_user(username=cls.login_info['username'], password=cls.login_info['password'])
+        u1 = User.objects.create_user(username=cls.login_info[0]['username'], password=cls.login_info[0]['password'])
+        u2 = User.objects.create_user(username=cls.login_info[1]['username'], password=cls.login_info[1]['password'])
+        Question.objects.create(id=3,question_head="Test Question edit?", question_text="Test Body?", user_id=u2)
+        Question.objects.create(id=4,question_head="Test Question delete?", question_text="Test Body?", user_id=u2)
+
 
     def test_valid_question_post(self):
         #Sends a valid post request
         self.client.post(
             '/api/user/login/',
-            data=json.dumps(self.login_info),
+            data=json.dumps(self.login_info[0]),
             content_type='application/json'
         )
         json_payload = json.dumps({
@@ -387,7 +394,7 @@ class QuestionViewTest(TestCase):
         #Sends a post request with a 1 character question
         self.client.post(
             '/api/user/login/',
-            data=json.dumps(self.login_info),
+            data=json.dumps(self.login_info[0]),
             content_type='application/json'
         )
         json_payload = json.dumps({
@@ -408,7 +415,7 @@ class QuestionViewTest(TestCase):
         #Sends a valid post request
         self.client.post(
             '/api/user/login/',
-            data=json.dumps(self.login_info),
+            data=json.dumps(self.login_info[0]),
             content_type='application/json'
         )
         json_payload = json.dumps({
@@ -478,6 +485,95 @@ class QuestionViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue( len(question_list) == 1)
 
+    
+    def test_valid_question_edit(self):
+        #Sends a valid put request to edit question
+        self.client.post(
+            '/api/user/login/',
+            data=json.dumps(self.login_info[1]),
+            content_type='application/json'
+        )
+        json_payload = json.dumps({
+            "q_id": 3,
+            "question_head": "a",
+            "question_text": "Testing question body."
+        })
+
+        response = self.client.put(
+            '/api/question/',
+            data=json_payload,
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('id' in response.json())
+
+
+    def test_invalid_question_edit(self):
+        #Sends a put request to edit another user's question
+        self.client.post(
+            '/api/user/login/',
+            data=json.dumps(self.login_info[0]),
+            content_type='application/json'
+        )
+        json_payload = json.dumps({
+            "q_id": 3,
+            "question_head": "a",
+            "question_text": "Testing question body."
+        })
+
+        response = self.client.put(
+            '/api/question/',
+            data=json_payload,
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertTrue('error' in response.json())
+    
+
+    def test_valid_question_delete(self):
+        #Sends a valid put request to edit question
+        self.client.post(
+            '/api/user/login/',
+            data=json.dumps(self.login_info[1]),
+            content_type='application/json'
+        )
+        json_payload = json.dumps({
+            "q_id": 4
+        })
+
+        response = self.client.delete(
+            '/api/question/',
+            data=json_payload,
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('success' in response.json())
+
+
+    def test_invalid_question_delete(self):
+        #Sends a put request to edit another user's question
+        self.client.post(
+            '/api/user/login/',
+            data=json.dumps(self.login_info[0]),
+            content_type='application/json'
+        )
+        json_payload = json.dumps({
+            "q_id": 3
+        })
+
+        response = self.client.delete(
+            '/api/question/',
+            data=json_payload,
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertTrue('error' in response.json())
+
+
     @classmethod
     def tearDownClass(cls):
         Question.objects.all().delete()
@@ -486,23 +582,28 @@ class QuestionViewTest(TestCase):
 
 
 class AnswerViewTest(TestCase):
-    login_info = {
+    login_info = [{
         'username': 'testuser',
         'password': 'testpassword'
-    }
+        }, {
+        'username': 'testuser2',
+        'password': 'testpassword2'
+    }]
 
     @classmethod
     def setUpTestData(cls):
         #Sets up database for the testcases
-        Question.objects.create(id=1,question_head="Test Question?", question_text="Test Body?")
-        User.objects.create_user(username=cls.login_info['username'], password=cls.login_info['password'])
-
+        question = Question.objects.create(id=1,question_head="Test Question?", question_text="Test Body?")
+        u1 = User.objects.create_user(username=cls.login_info[0]['username'], password=cls.login_info[0]['password'])
+        u2 = User.objects.create_user(username=cls.login_info[1]['username'], password=cls.login_info[1]['password'])
+        Answer.objects.create(id=1,user_id=u2, answer_text="Edit answer test", question_id=question)
+        Answer.objects.create(id=2,user_id=u2, answer_text="Delete answer test", question_id=question)
 
     def test_valid_answer_post(self):
         #Sends a valid answer
         self.client.post(
             '/api/user/login/',
-            data=json.dumps(self.login_info),
+            data=json.dumps(self.login_info[0]),
             content_type='application/json'
         )
         json_payload = json.dumps({
@@ -523,7 +624,7 @@ class AnswerViewTest(TestCase):
         #Sends an answer with 1 character
         self.client.post(
             '/api/user/login/',
-            data=json.dumps(self.login_info),
+            data=json.dumps(self.login_info[0]),
             content_type='application/json'
         )
         json_payload = json.dumps({
@@ -559,7 +660,7 @@ class AnswerViewTest(TestCase):
         #Sends an answer for a non-existent question
         self.client.post(
             '/api/user/login/',
-            data=json.dumps(self.login_info),
+            data=json.dumps(self.login_info[0]),
             content_type='application/json'
         )
 
@@ -595,6 +696,92 @@ class AnswerViewTest(TestCase):
             'limit': 5
         }
         response = self.client.get('/api/answer/', data)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertTrue('error' in response.json())
+
+    
+    def test_valid_answer_edit(self):
+        #Sends a valid put request to edit question
+        self.client.post(
+            '/api/user/login/',
+            data=json.dumps(self.login_info[1]),
+            content_type='application/json'
+        )
+        json_payload = json.dumps({
+            "a_id": 1,
+            "answer_text": "Testing answer body."
+        })
+
+        response = self.client.put(
+            '/api/answer/',
+            data=json_payload,
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('id' in response.json())
+
+
+    def test_invalid_answer_edit(self):
+        #Sends a put request to edit another user's question
+        self.client.post(
+            '/api/user/login/',
+            data=json.dumps(self.login_info[0]),
+            content_type='application/json'
+        )
+        json_payload = json.dumps({
+            "a_id": 1,
+            "answer_text": "Testing answer edit."
+        })
+
+        response = self.client.put(
+            '/api/answer/',
+            data=json_payload,
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertTrue('error' in response.json())
+    
+
+    def test_valid_answer_delete(self):
+        #Sends a valid put request to edit question
+        self.client.post(
+            '/api/user/login/',
+            data=json.dumps(self.login_info[1]),
+            content_type='application/json'
+        )
+        json_payload = json.dumps({
+            "a_id": 2
+        })
+
+        response = self.client.delete(
+            '/api/answer/',
+            data=json_payload,
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('success' in response.json())
+
+
+    def test_invalid_question_delete(self):
+        #Sends a put request to edit another user's question
+        self.client.post(
+            '/api/user/login/',
+            data=json.dumps(self.login_info[0]),
+            content_type='application/json'
+        )
+        json_payload = json.dumps({
+            "a_id": 1
+        })
+
+        response = self.client.delete(
+            '/api/answer/',
+            data=json_payload,
+            content_type='application/json'
+        )
 
         self.assertEqual(response.status_code, 400)
         self.assertTrue('error' in response.json())
