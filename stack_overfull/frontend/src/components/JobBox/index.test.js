@@ -19,13 +19,13 @@ describe("<JobBox />", () => {
   beforeEach(() => {
     component = shallow(
       <JobBox
-        description={description}
-        id={id}
-        company={company}
-        position={position}
-        type={type}
-        location={location}
-        category={category}
+        job_description={description}
+        job_id={id}
+        job_company={company}
+        job_position={position}
+        job_type={type}
+        job_location={location}
+        job_category={category}
         date_created={date_created}
       />
     );

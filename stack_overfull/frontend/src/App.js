@@ -20,13 +20,15 @@ type Props = {};
 
 type State = {
   logged_in: boolean,
-  username: string
+  username: string,
+  is_employer: boolean
 };
 
 export default class App extends React.Component<Props, State> {
   state = {
     logged_in: false,
-    username: ""
+    username: "",
+    is_employer: false
   };
 
   componentDidMount() {
@@ -38,7 +40,11 @@ export default class App extends React.Component<Props, State> {
       .then(response => {
         console.log("response of getApiUserMe: ", response);
         if (!response.data.error) {
-          this.setState({ logged_in: true, username: response.data.username });
+          this.setState({
+            logged_in: true,
+            username: response.data.username,
+            is_employer: response.data.profile.is_employer
+          });
         }
       })
       .catch(error => {
@@ -48,7 +54,7 @@ export default class App extends React.Component<Props, State> {
 
   handle_logout = () => {
     postApiUserLogout().catch(error => console.log(error));
-    this.setState({ logged_in: false, username: "" });
+    this.setState({ logged_in: false, username: "", is_employer: false });
   };
 
   verifyLogin = (): Promise<boolean> => {
@@ -129,7 +135,12 @@ export default class App extends React.Component<Props, State> {
             )}
           />
 
-          <Route path="/careers" component={CareerPage} />
+          <Route
+            path="/careers"
+            render={props => (
+              <CareerPage is_employer={this.state.is_employer} {...props} />
+            )}
+          />
           <Route path="/user/:username" component={UserPage} />
         </Switch>
         <Footer />

@@ -25,6 +25,9 @@ export class UserPage extends React.Component {
       last_name: "",
       aboutMe: "",
       reputation: "",
+      github: "",
+      linkedin: "",
+      last_login: "",
       downvoted_questions: [],
       upvoted_questions: [],
       questions_asked: [],
@@ -41,6 +44,18 @@ export class UserPage extends React.Component {
       this.getQuestionsRelatedToUser(username);
       this.getListOfJobsPostedByEmployer(username);
     });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const username = this.props.match.params.username;
+
+    if ( prevProps.location !== this.props.location) {
+      console.log(prevProps.location)
+      this.getUserInfo(username).then(username => {
+        this.getQuestionsRelatedToUser(username);
+        this.getListOfJobsPostedByEmployer(username);
+      });
+    }
   }
 
   getListOfJobsPostedByEmployer = username => {
@@ -83,6 +98,9 @@ export class UserPage extends React.Component {
             first_name: response.data.first_name,
             last_name: response.data.last_name,
             reputation: response.data.profile.reputation,
+            github: response.data.profile.github,
+            linkedin: response.data.profile.linkedin,
+            last_login: response.data.last_login,
             downvoted_questions_id: response.data.profile.downvoted_questions,
             upvoted_questions_id: response.data.profile.upvoted_questions,
             is_employer: response.data.profile.is_employer
@@ -102,6 +120,9 @@ export class UserPage extends React.Component {
       first_name,
       last_name,
       reputation,
+      github,
+      linkedin,
+      last_login,
       downvoted_questions,
       upvoted_questions,
       questions_asked,
@@ -114,7 +135,7 @@ export class UserPage extends React.Component {
       <div className="body-wrapper grey-background">
         <div className="page-width">
           <div style={{ display: "flex" }}>
-            <div style={{ width: "30%" }}>
+            <div style={{width:"30%", marginRight:"10px"}}>
               <UserInfo
                 username={username}
                 email={email}
@@ -122,6 +143,9 @@ export class UserPage extends React.Component {
                 last_name={last_name}
                 aboutMe={aboutMe}
                 reputation={reputation}
+                github={github}
+                linkedin={linkedin}
+                last_login={last_login}
                 no_edit
               />
             </div>

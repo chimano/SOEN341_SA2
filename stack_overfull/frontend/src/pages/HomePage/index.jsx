@@ -78,7 +78,7 @@ export class HomePage extends React.Component<Props, State> {
   createQuestion = (question: string) => {
     postApiQuestion(question)
       .then(() => this.getQuestionList())
-      .catch(error => console.log(error));
+      .catch(e => alert(e.response.data.error));
   };
 
   answerQuestion(answer: string, q_id: number) {

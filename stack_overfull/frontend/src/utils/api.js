@@ -172,13 +172,17 @@ export function postApiUserMe(
   email = null,
   first_name = null,
   last_name = null,
-  about_me = null
+  about_me = null,
+  github = null,
+  linkedin = null
 ) {
   return axios.post("/api/user/me/", {
     email: email,
     first_name: first_name,
     last_name: last_name,
-    about_me: about_me
+    about_me: about_me,
+    github: github,
+    linkedin: linkedin
   });
 }
 

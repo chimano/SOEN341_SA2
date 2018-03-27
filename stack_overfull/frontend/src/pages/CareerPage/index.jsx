@@ -44,6 +44,7 @@ export class CareerPage extends React.Component {
 
   render() {
     const { jobList, title } = this.state;
+    const { is_employer } = this.props;
 
     return (
       <div className="body-wrapper">
@@ -52,9 +53,14 @@ export class CareerPage extends React.Component {
           <div className="CareerPage__list">
             <div className="CareerPage__title-button">
               <h2 className="CareerPage__title">{title}</h2>
-              <PostJobButton />
+              {is_employer ? <PostJobButton /> : ""}
             </div>
-            <JobList jobList={jobList} />
+
+            {is_employer ? (
+              <JobList jobList={jobList} hideApplyButton />
+            ) : (
+              <JobList jobList={jobList} />
+            )}
           </div>
         </div>
       </div>
