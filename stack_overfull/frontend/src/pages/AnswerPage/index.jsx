@@ -1,11 +1,9 @@
-import React from "react";
-import "./index.css";
-import { AnswerBox, TagList } from "../../components";
-import { formatDate } from "../../utils/api";
-import { Divider } from "antd";
-import { Link } from "react-router-dom";
-import { VotingButtons } from "../../components";
-
+// @flow
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Divider } from 'antd';
+import './index.css';
+import { AnswerBox, TagList, VotingButtons } from '../../components';
 import {
   getApiQuestionById,
   getApiAnswerById,
@@ -14,227 +12,183 @@ import {
   postApiAnswerIdAccept,
   postApiAnswerIdReject,
   voteAnswer,
-  voteQuestion
-} from "../../utils/api";
+  voteQuestion,
+  formatDate,
+} from '../../utils/api';
 
-export class AnswerPage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      question: {
-        id: null,
-        user_id: {
-          username: ""
-        },
-        question_head: "",
-        question_text: "",
-        accepted_answer_id: null,
-        rejected_answers_ids: [],
-        date_created: "",
-        points: null,
-        tags: []
-      },
-      answerList: [],
-      answer: "",
-      accepted_answer_id: "",
-      rejected_answers_ids: [],
-      verified: false,
-      q_user: "",
-      downvoted_answers_id: [],
-      upvoted_answers_id: [],
-      downvoted_questions_id: [],
-      upvoted_questions_id: []
-    };
-  }
+type Props = {
+  username: string,
+  logged_in: boolean,
+  match: Object
+}
+
+type State = {
+  question: Object,
+  answerList: Array<Object>,
+  answer: string,
+  questionCreator: string,
+  downvotedAnswersId: Array<number>,
+  upvotedAnswersId: Array<number>,
+  downvotedQuestionsId: Array<number>,
+  upvotedQuestionsId: Array<number>,
+}
+
+export default class AnswerPage extends React.Component<Props, State> {
+  state = {
+    question: {},
+    answerList: [],
+    answer: '',
+    questionCreator: '',
+    downvotedAnswersId: [],
+    upvotedAnswersId: [],
+    downvotedQuestionsId: [],
+    upvotedQuestionsId: [],
+  };
 
   componentWillMount = () => {
     this.getQuestion();
-    this.verifyUserAccess();
     this.getAnswerList();
     this.getUserVotes();
   };
 
   componentWillReceiveProps = () => {
-    console.log("received props");
     this.getAnswerList();
-    this.verifyUserAccess();
     this.getUserVotes();
-  };
-
-  verifyUserAccess = () => {
-    const { logged_in, username } = this.props;
-    const q_id = this.props.match.params.id;
-    if (logged_in) {
-      getApiQuestionById(q_id)
-        .then(response => {
-          console.log("response of getApiQuestionById(q_id): ", response);
-          let user = response.data.user_id.username;
-          if (user === username) {
-            this.setState({
-              verified: true
-            });
-          } else {
-            this.setState({
-              verified: false
-            });
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    } else {
-      this.setState({
-        verified: false
-      });
-    }
   };
 
   // For more responsive voting buttons
   getUserVotes = () => {
     getApiUserMe()
-      .then(response => {
-        console.log("response of getApiUserMe(): ", response);
+      .then((response) => {
+        const downvotedAnswers = response.data.profile.downvoted_answers;
+        const upvotedAnswers = response.data.profile.upvoted_answers;
+        const downvotedQuestions = response.data.profile.downvoted_questions;
+        const upvotedQuestions = response.data.profile.upvoted_questions;
         this.setState({
-          downvoted_answers_id: response.data.profile.downvoted_answers,
-          upvoted_answers_id: response.data.profile.upvoted_answers,
-          downvoted_questions_id: response.data.profile.downvoted_questions,
-          upvoted_questions_id: response.data.profile.upvoted_questions
+          downvotedAnswersId: downvotedAnswers,
+          upvotedAnswersId: upvotedAnswers,
+          downvotedQuestionsId: downvotedQuestions,
+          upvotedQuestionsId: upvotedQuestions,
         });
       })
       .catch(error => console.log(error));
   };
 
   getQuestion = () => {
-    const q_id = this.props.match.params.id;
-    getApiQuestionById(q_id)
-      .then(response => {
-        console.log("response of getApiQuestionById(q_id): ", response);
-        let q_user = response.data.user_id.username;
-        let q_user_id = response.data.user_id;
+    const { match } = this.props;
+    const questionId = match.params.id;
+    getApiQuestionById(questionId)
+      .then((response) => {
         this.setState({
           question: response.data,
-          accepted_answer_id: response.data.accepted_answer_id,
-          rejected_answers_ids: response.data.rejected_answers_ids,
-          q_user: q_user,
-          q_user_id: q_user_id
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   };
 
   getAnswerList = () => {
-    const q_id = this.props.match.params.id;
-    getApiAnswerById(q_id, "desc", 100)
-      .then(response => {
-        console.log(
-          'response of getApiAnswerById(q_id, "desc", 100): ',
-          response
-        );
+    const { match } = this.props;
+    const questionId = match.params.id;
+    getApiAnswerById(questionId, 'desc', 100)
+      .then((response) => {
         this.setState({
-          answerList: response.data.answer_list
+          answerList: response.data.answer_list,
         });
-      })
-      .catch(error => {
-        console.log(error);
       });
+    // .catch((error) => {
+    //   console.log(error);
+    // });
   };
 
-  handleReplyButton = q_id => {
+  handleReplyButton = (questionId: number) => {
     getApiUserMe()
-      .then(response => {
-        console.log("response of getApiUserMe(): ", response);
-        //make sure user is logged in before replying
+      .then((response) => {
         if (!response.data.error) {
-          console.log("ID IS : " + q_id);
-          this.answerQuestion(this.state.answer, q_id);
+          this.answerQuestion(this.state.answer, questionId);
           setTimeout(() => this.getAnswerList(), 500);
-          this.refs.answer_text.value = "";
+          this.refs.answer_text.value = '';
         } else {
-          alert("You need to be logged in to reply!");
+          alert('You need to be logged in to reply!');
         }
-      })
-      .catch(error => {
-        console.log(error);
       });
+    // .catch((error) => {
+    //   console.log(error);
+    // });
   };
 
-  handleUpvoteButton = id => {
-    console.log("ID IS: " + id);
-    this.upvoteAnswer(id);
+  handleUpvoteButton = (answerId:number) => {
+    this.upvoteAnswer(answerId);
     setTimeout(() => this.getAnswerList(), 500);
     setTimeout(() => this.getUserVotes(), 500);
   };
 
-  handleDownvoteButton = id => {
-    console.log("ID IS: " + id);
-    this.downvoteAnswer(id);
+  handleDownvoteButton = (answerId:number) => {
+    this.downvoteAnswer(answerId);
     setTimeout(() => this.getAnswerList(), 500);
     setTimeout(() => this.getUserVotes(), 500);
   };
 
-  upvoteAnswer = id => {
-    voteAnswer("UP", id)
-      .then(response => {
-        console.log(response);
-      })
-      .catch(e => alert(e.response.data.error));
+  upvoteAnswer = (answerId:number) => {
+    voteAnswer('UP', answerId);
+    // .then((response) => {
+    //   console.log(response);
+    // })
+    // .catch(e => alert(e.response.data.error));
   };
 
-  downvoteAnswer = id => {
-    voteAnswer("DOWN", id)
-      .then(response => {
-        console.log(response);
-      })
-      .catch(e => alert(e.response.data.error));
+  downvoteAnswer = (answerId:number) => {
+    voteAnswer('DOWN', answerId);
+    // .then((response) => {
+    //   console.log(response);
+    // })
+    // .catch(e => alert(e.response.data.error));
   };
 
-  handleUpvoteQuestion = id => {
-    console.log("Q ID: " + id);
-    this.upvoteQuestion(id);
+  handleUpvoteQuestion = (questionId: number) => {
+    this.upvoteQuestion(questionId);
     setTimeout(() => this.getQuestion(), 500);
     setTimeout(() => this.getUserVotes(), 500);
   };
 
-  handleDownvoteQuestion = id => {
-    console.log("Q ID: " + id);
-    this.downvoteQuestion(id);
+  handleDownvoteQuestion = (questionId: number) => {
+    this.downvoteQuestion(questionId);
     setTimeout(() => this.getQuestion(), 500);
     setTimeout(() => this.getUserVotes(), 500);
   };
 
-  upvoteQuestion = id => {
-    voteQuestion("UP", id)
-      .then(response => {
+  upvoteQuestion = (questionId: number) => {
+    voteQuestion('UP', questionId)
+      .then((response) => {
         console.log(response);
       })
       .catch(e => alert(e.response.data.error));
   };
 
-  downvoteQuestion = id => {
-    voteQuestion("DOWN", id)
-      .then(response => {
+  downvoteQuestion = (questionId: number) => {
+    voteQuestion('DOWN', questionId)
+      .then((response) => {
         console.log(response);
       })
       .catch(e => alert(e.response.data.error));
   };
 
-  answerQuestion = (answer, q_id) => {
-    postApiAnswer(answer, q_id);
+  answerQuestion = (answer:string, questionId:number) => {
+    postApiAnswer(answer, questionId);
   };
 
-  handleChange = event => {
+  handleChange = (event:Object) => {
     this.setState({ answer: event.target.value });
   };
 
-  handleAccept = id => {
-    postApiAnswerIdAccept(id);
+  handleAccept = (AnswerId:number) => {
+    postApiAnswerIdAccept(AnswerId);
     setTimeout(() => this.getAnswerList(), 500);
   };
 
-  handleReject = id => {
-    postApiAnswerIdReject(id);
+  handleReject = (AnswerId:number) => {
+    postApiAnswerIdReject(AnswerId);
     setTimeout(() => this.getAnswerList(), 500);
   };
 
@@ -242,26 +196,13 @@ export class AnswerPage extends React.Component {
     const {
       question,
       answerList,
-      q_user,
-      downvoted_answers_id,
-      upvoted_answers_id,
-      downvoted_questions_id,
-      upvoted_questions_id
+      questionCreator,
     } = this.state;
-
-    const { logged_in, username } = this.props;
-    const q_id = this.props.match.params.id;
-
-    console.log("# OF ANSWERS: " + answerList.length);
-    console.log("Number of downvoted answers: " + downvoted_answers_id.length);
-    console.log("Number of upvoted answers: " + upvoted_answers_id.length);
-    console.log(
-      "Number of downvoted answers: " + downvoted_questions_id.length
-    );
-    console.log("Number of upvoted answers: " + upvoted_questions_id.length);
+    const { match, logged_in, username } = this.props;
+    const questionId = match.params.id;
 
     let verified;
-    if (logged_in && q_user === username) {
+    if (logged_in && questionCreator === username) {
       verified = true;
     } else {
       verified = false;
@@ -274,7 +215,7 @@ export class AnswerPage extends React.Component {
           No answer yet... Be the first one to reply!
         </h2>
       );
-    } else if (answerList.length == 1) {
+    } else if (answerList.length === 1) {
       numberOfAnswersTitle = (
         <h2 className="numberOfAnswersText">{answerList.length} answer</h2>
       );
@@ -284,49 +225,41 @@ export class AnswerPage extends React.Component {
       );
     }
 
-    let answerListBox = [];
+    const answerListBox = [];
     let acceptedAnswerKey;
 
-    let upvoted = false;
-    let downvoted = false;
-
-    //add the accepted answer box first
+    // add the accepted answer box first
     answerList.forEach((x, key) => {
-      console.log("!" + x.id);
       if (x.is_accepted) {
         acceptedAnswerKey = key;
-        answerListBox.push(
-          <AnswerBox
-            key={key}
-            handleAccept={this.handleAccept}
-            handleReject={this.handleReject}
-            handleDownvoteButton={this.handleDownvoteButton}
-            handleUpvoteButton={this.handleUpvoteButton}
-            verified={verified}
-            x={x}
-            upvoted_array={this.state.upvoted_answers_id}
-            downvoted_array={this.state.downvoted_answers_id}
-          />
-        );
+        answerListBox.push(<AnswerBox
+          key={key}
+          handleAccept={this.handleAccept}
+          handleReject={this.handleReject}
+          handleDownvoteButton={this.handleDownvoteButton}
+          handleUpvoteButton={this.handleUpvoteButton}
+          verified={verified}
+          x={x}
+          upvoted_array={this.state.upvotedAnswersId}
+          downvoted_array={this.state.downvotedAnswersId}
+        />);
       }
     });
 
-    //add the rest of the answerbox
+    // add the rest of the answerbox
     answerList.forEach((x, key) => {
       if (key !== acceptedAnswerKey) {
-        answerListBox.push(
-          <AnswerBox
-            key={key}
-            handleAccept={this.handleAccept}
-            handleReject={this.handleReject}
-            handleDownvoteButton={this.handleDownvoteButton}
-            handleUpvoteButton={this.handleUpvoteButton}
-            verified={verified}
-            x={x}
-            upvoted_array={this.state.upvoted_answers_id}
-            downvoted_array={this.state.downvoted_answers_id}
-          />
-        );
+        answerListBox.push(<AnswerBox
+          key={key}
+          handleAccept={this.handleAccept}
+          handleReject={this.handleReject}
+          handleDownvoteButton={this.handleDownvoteButton}
+          handleUpvoteButton={this.handleUpvoteButton}
+          verified={verified}
+          x={x}
+          upvoted_array={this.state.upvotedAnswersId}
+          downvoted_array={this.state.downvotedAnswersId}
+        />);
       }
     });
 
@@ -338,19 +271,17 @@ export class AnswerPage extends React.Component {
         </div>
       );
     } else {
-      questionBodyBox = "";
+      questionBodyBox = '';
     }
 
-    let questionTags = "";
+    let questionTags = '';
     if (question.tags) {
       questionTags = <TagList tags={question.tags} />;
     }
 
-    let questionDate = "";
+    let questionDate = '';
     if (question.date_created) {
-      questionDate = formatDate(
-        question.date_created.replace("T", " at ").substring(0, 19)
-      );
+      questionDate = formatDate(question.date_created.replace('T', ' at ').substring(0, 19));
     }
 
     return (
@@ -363,8 +294,8 @@ export class AnswerPage extends React.Component {
                 handleUpvoteButton={this.handleUpvoteQuestion}
                 id={question.id}
                 points={question.points}
-                upvoted_array={this.state.upvoted_questions_id}
-                downvoted_array={this.state.downvoted_questions_id}
+                upvoted_array={this.state.upvotedQuestionsId}
+                downvoted_array={this.state.downvotedQuestionsId}
               />
             </div>
             <div className="AnswerPage__question-box grey-border">
@@ -375,7 +306,7 @@ export class AnswerPage extends React.Component {
               {questionBodyBox}
               <Divider />
               <div className="AnswerPage__question-creator">
-                Asked by <Link to={`/user/${q_user}`}>{q_user}</Link> on{" "}
+                Asked by <Link to={`/user/${questionCreator}`}>{questionCreator}</Link> on{' '}
                 {questionDate}
               </div>
             </div>
@@ -394,7 +325,7 @@ export class AnswerPage extends React.Component {
             />
             <button
               className="AnswerPage__reply-button button"
-              onClick={() => this.handleReplyButton(q_id)}
+              onClick={() => this.handleReplyButton(questionId)}
             >
               Reply
             </button>

@@ -1,76 +1,67 @@
-import React from "react";
+// @flow
+import React from 'react';
 import {
   getApiUserMe,
   postApiUserMe,
-  getApiQuestionById,
   getApiUserQuestionsAndAnsweredQuestions,
-  getApiUserNameInfo,
-  getApiUserNameJobs
-} from "../../utils/api";
-import "./index.css";
+  getApiUserNameJobs,
+} from '../../utils/api';
+import './index.css';
 import {
-  QuestionList,
   UserInfo,
   UserQuestionList,
-  JobList
-} from "../../components";
-import { Input, Button } from "antd";
+  JobList,
+} from '../../components';
 
-export class ProfilePage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: "",
-      email: "",
-      first_name: "",
-      last_name: "",
-      aboutMe: "",
-      reputation: "",
-      github: "",
-      linkedin: "",
-      last_login: "",
-      downvoted_questions: [],
-      upvoted_questions: [],
-      questions_asked: [],
-      questions_answered: [],
-      jobPostList: [],
-      is_editing: false, // make user info fields editable
-      is_saving_myinfo: false, // loading indicator for the edit button
-      is_employer: false
-    };
+type State = {
+  username: string,
+  email: string,
+  first_name: string,
+  last_name: string,
+  aboutMe: string,
+  reputation: string,
+  github: string,
+  linkedin: string,
+  last_login: string,
+  downvoted_questions: Array<Object>,
+  upvoted_questions: Array<Object>,
+  questions_asked: Array<Object>,
+  questions_answered: Array<Object>,
+  jobPostList: Array<Object>,
+  is_editing: boolean,
+  is_saving_myinfo: boolean,
+  is_employer: boolean,
+}
+
+export default class ProfilePage extends React.Component<{}, State> {
+  state = {
+    username: '',
+    email: '',
+    first_name: '',
+    last_name: '',
+    aboutMe: '',
+    reputation: '',
+    github: '',
+    linkedin: '',
+    last_login: '',
+    downvoted_questions: [],
+    upvoted_questions: [],
+    questions_asked: [],
+    questions_answered: [],
+    jobPostList: [],
+    is_editing: false, // make user info fields editable
+    is_saving_myinfo: false, // loading indicator for the edit button
+    is_employer: false,
   }
 
   componentDidMount() {
-    this.getMyInfo().then(username => {
+    this.getMyInfo().then((username) => {
       this.getQuestionsRelatedToUser(username);
       this.getListOfJobsPostedByEmployer(username);
     });
   }
 
-  getListOfJobsPostedByEmployer = username => {
-    getApiUserNameJobs(username).then(response => {
-      this.setState({
-        jobPostList: response.data.posted_positions
-      });
-    });
-  };
-
-  getQuestionsRelatedToUser = username => {
-    getApiUserQuestionsAndAnsweredQuestions(username)
-      .then(response => {
-        this.setState({
-          questions_asked: response.data.asked_questions,
-          questions_answered: response.data.answered_questions,
-          upvoted_questions: response.data.upvoted_questions,
-          downvoted_questions: response.data.downvoted_questions
-        });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
-
-  onInputChange = (field, event) => {
+  onInputChange = (field: any, event: any) => {
     this.setState({ [field]: event.target.value });
   };
 
@@ -86,44 +77,67 @@ export class ProfilePage extends React.Component {
     this.setState({ is_editing: !is_editing });
   };
 
-  getMyInfo = () => {
-    return new Promise(resolve => {
-      getApiUserMe()
-        .then(response => {
-          console.log("response of getApiUserMe(): ", response);
-          this.setState({
-            username: response.data.username,
-            email: response.data.email,
-            first_name: response.data.first_name,
-            last_name: response.data.last_name,
-            aboutMe: response.data.profile.about_me,
-            reputation: response.data.profile.reputation,
-            github: response.data.profile.github,
-            linkedin: response.data.profile.linkedin,
-            last_login: response.data.last_login,
-            is_employer: response.data.profile.is_employer
-          });
-          resolve(response.data.username);
-        })
-        .catch(error => console.log(error));
+  getQuestionsRelatedToUser = (username:string) => {
+    getApiUserQuestionsAndAnsweredQuestions(username)
+      .then((response) => {
+        this.setState({
+          questions_asked: response.data.asked_questions,
+          questions_answered: response.data.answered_questions,
+          upvoted_questions: response.data.upvoted_questions,
+          downvoted_questions: response.data.downvoted_questions,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  getListOfJobsPostedByEmployer = (username:string) => {
+    getApiUserNameJobs(username).then((response) => {
+      this.setState({
+        jobPostList: response.data.posted_positions,
+      });
     });
   };
 
+  getMyInfo = () => new Promise((resolve) => {
+    getApiUserMe()
+      .then((response) => {
+        console.log('response of getApiUserMe(): ', response);
+        this.setState({
+          username: response.data.username,
+          email: response.data.email,
+          first_name: response.data.first_name,
+          last_name: response.data.last_name,
+          aboutMe: response.data.profile.about_me,
+          reputation: response.data.profile.reputation,
+          github: response.data.profile.github,
+          linkedin: response.data.profile.linkedin,
+          last_login: response.data.last_login,
+          is_employer: response.data.profile.is_employer,
+        });
+        resolve(response.data.username);
+      })
+      .catch(error => console.log(error));
+  });
+
   saveMyInfo = () => {
-    const { email, first_name, last_name, aboutMe, github, linkedin } = this.state;
+    const {
+      email, first_name, last_name, aboutMe, github, linkedin,
+    } = this.state;
 
     this.setState({ is_saving_myinfo: true });
 
     postApiUserMe(email, first_name, last_name, aboutMe, github, linkedin)
-      .then(response => {
-        console.log("response of postApiUserMe(): ", response);
+      .then((response) => {
+        console.log('response of postApiUserMe(): ', response);
         this.setState({ is_saving_myinfo: false });
       })
       .catch(error => console.log(error));
   };
 
   render() {
-    console.log("my state", this.state);
+    console.log('my state', this.state);
     const {
       username,
       email,
@@ -141,14 +155,14 @@ export class ProfilePage extends React.Component {
       is_editing,
       is_saving_myinfo,
       is_employer,
-      jobPostList
+      jobPostList,
     } = this.state;
 
     return (
       <div className="body-wrapper grey-background">
         <div className="page-width">
-          <div style={{ display: "flex" }}>
-            <div style={{width:"30%", marginRight:"10px"}}>
+          <div style={{ display: 'flex' }}>
+            <div style={{ width: '30%', marginRight: '10px' }}>
               <UserInfo
                 is_editing={is_editing}
                 onInputChange={this.onInputChange}
@@ -165,7 +179,7 @@ export class ProfilePage extends React.Component {
                 last_login={last_login}
               />
             </div>
-            <div style={{ width: "70%", paddingLeft: "10px" }}>
+            <div style={{ width: '70%', paddingLeft: '10px' }}>
               <UserQuestionList
                 upvoted_questions={upvoted_questions}
                 downvoted_questions={downvoted_questions}
@@ -176,11 +190,11 @@ export class ProfilePage extends React.Component {
           </div>
           {is_employer ? (
             <div>
-              <h3 style={{ paddingTop: "20px" }}> Job Posted</h3>
+              <h3 style={{ paddingTop: '20px' }}> Job Posted</h3>
               <JobList jobList={jobPostList} hasJobApplication hideApplyButton />
             </div>
           ) : (
-            ""
+            ''
           )}
         </div>
       </div>

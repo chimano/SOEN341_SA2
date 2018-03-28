@@ -1,25 +1,13 @@
 // @flow
-
 import React from 'react';
-import './index.css';
 import { Pagination } from 'antd';
-import {
-  QuestionList,
-  QuestionEdit,
-  AskQuestionButton,
-  SearchFiltersBar,
-  FilterTabs,
-} from '../../components';
-import {
-  getApiSearch,
-  getApiQuestion,
-  postApiQuestion,
-  postApiAnswer,
-} from '../../utils/api';
+import './index.css';
+import { QuestionList, QuestionEdit, AskQuestionButton, FilterTabs } from '../../components';
+import { getApiSearch, postApiQuestion, postApiAnswer } from '../../utils/api';
 
 type Props = {
   username: string,
-  verifyLogin: () => {}
+  verifyLogin: () => {},
 };
 
 type State = {
@@ -30,10 +18,10 @@ type State = {
   title: string,
   currentPage: number,
   totalQuestions: number,
-  questionPerPage: number
+  questionPerPage: number,
 };
 
-export class HomePage extends React.Component<Props, State> {
+export default class HomePage extends React.Component<Props, State> {
   state = {
     showCreateQuestionBox: false,
     questionList: [],
@@ -51,19 +39,8 @@ export class HomePage extends React.Component<Props, State> {
 
   getQuestionList = () => {
     const { currentFilters, currentPage, questionPerPage } = this.state;
-    getApiSearch(
-      '',
-      'desc',
-      questionPerPage,
-      'date_created',
-      currentFilters,
-      currentPage,
-    )
+    getApiSearch('', 'desc', questionPerPage, 'date_created', currentFilters, currentPage)
       .then((response) => {
-        console.log(
-          'response of getApiSearch("", "desc", questionPerPage, "date_created", currentFilters, currentPage)',
-          response,
-        );
         this.setState({
           questionList: response.data.question_list,
           currentPage: response.data.page,
@@ -81,14 +58,14 @@ export class HomePage extends React.Component<Props, State> {
       .catch(e => alert(e.response.data.error));
   };
 
-  answerQuestion(answer: string, q_id: number) {
-    postApiAnswer(answer, q_id).catch(error => console.log(error));
-  }
+  answerQuestion = (answer: string, questionId: number) => {
+    postApiAnswer(answer, questionId).catch(error => console.log(error));
+  };
 
   handleAskQuestionButton = () => {
     const { verifyLogin } = this.props;
-    verifyLogin().then((logged_in) => {
-      if (logged_in) {
+    verifyLogin().then((isSignedIn) => {
+      if (isSignedIn) {
         this.openCreateQuestionBox();
       } else {
         alert('You need to Sign In to ask a question');
@@ -122,6 +99,10 @@ export class HomePage extends React.Component<Props, State> {
             currentFilters: ['notaccepted'],
           });
           break;
+        default:
+          this.setState({
+            currentFilters: [],
+          });
       }
       resolve();
     }).then(() => {
@@ -131,7 +112,7 @@ export class HomePage extends React.Component<Props, State> {
 
   handlePaginationButton = (e: string) => {
     new Promise((resolve) => {
-      const page = parseInt(e);
+      const page = parseInt(e, 10);
       this.setState({
         currentPage: page,
       });
@@ -171,14 +152,9 @@ export class HomePage extends React.Component<Props, State> {
           <FilterTabs handleTabsChange={this.handleTabsChange} />
           <div className="HomePage__question-list-title">
             <h3>QUESTIONS</h3>
-            <AskQuestionButton
-              handleAskQuestionButton={this.handleAskQuestionButton}
-            />
+            <AskQuestionButton handleAskQuestionButton={this.handleAskQuestionButton} />
           </div>
-          <QuestionList
-            questionList={questionList}
-            getQuestionList={this.getQuestionList}
-          />
+          <QuestionList questionList={questionList} getQuestionList={this.getQuestionList} />
           <Pagination
             style={{ textAlign: 'center', paddingBottom: '60px' }}
             defaultCurrent={1}
