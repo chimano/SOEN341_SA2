@@ -22,3 +22,4 @@ export { default as HottestTagList } from './HottestTagList';
 export { default as UserInfo } from './UserInfo';
 export { default as UserQuestionList } from './UserQuestionList';
 export { default as ApplicantsPopupButton } from './ApplicantsPopupButton';
+export * from './ProfileTabs';

@@ -96,7 +96,7 @@ class QuestionView(TemplateView):
             }
 
             return JsonResponse(response)
-
+            
         # Returns a single question
         try:
             question = Question.objects.get(id=q_id)
@@ -104,6 +104,62 @@ class QuestionView(TemplateView):
             return JsonResponse({'error': 'Question does not exist'}, status=400)
         serialized = QuestionSerializer(question).data
         return JsonResponse(serialized)
+
+
+    def put(self, request, *args, **kwargs):
+        """
+        This method is used in order to edit questions
+        """
+        # Extracts question info from request
+        try:
+            json_data = json.loads(request.body)
+            question_id = json_data['q_id']
+            question_head = json_data['question_head']
+            question_text = json_data['question_text']
+
+            question = Question.objects.get(id=question_id)
+
+            if request.user != question.user_id:
+                return JsonResponse({'error': 'This user cannot edit this question'},
+                                     status=400)
+
+            question.question_head = question_head
+            question.question_text = question_text
+            question.save()
+
+            return JsonResponse({'id': question.id})
+
+        except Question.DoesNotExist:
+            return JsonResponse({'error': 'Question does not exist'}, status=400)
+        except KeyError:
+            return JsonResponse({'error': 'There was an error parsing the request'}, status=400)
+
+
+    def delete(self, request, *args, **kwargs):
+        """
+        This method is used in order to delete questions
+        """
+        # Extracts question info from request
+        try:
+            json_data = json.loads(request.body)
+            question_id = json_data['q_id']
+
+
+            question = Question.objects.get(id=question_id)
+
+            if request.user != question.user_id:
+                return JsonResponse({'error': 'This user cannot delete this question'},
+                                     status=400)
+                                     
+            question.delete()
+
+            return JsonResponse({'success': 'Question has been deleted'})
+
+        except Question.DoesNotExist:
+            return JsonResponse({'error': 'Question does not exist'}, status=400)
+        except KeyError:
+            return JsonResponse({'error': 'There was an error parsing the request'}, status=400)
+
 
 
 class AnswerView(TemplateView):
@@ -169,7 +225,58 @@ class AnswerView(TemplateView):
             return JsonResponse({'answer_list': serialized})
         except KeyError:
             return JsonResponse({'error': 'There was an error parsing the request'}, status=400)
+    
 
+    def put(self, request, *args, **kwargs):
+        """
+        This method is used in order to edit answers
+        """
+        # Extracts question info from request
+        try:
+            json_data = json.loads(request.body)
+            answer_id = json_data['a_id']
+            answer_text = json_data['answer_text']
+
+            answer = Answer.objects.get(id=answer_id)
+
+            if request.user != answer.user_id:
+                return JsonResponse({'error': 'This user cannot edit this answer'},
+                                     status=400)
+
+            answer.answer_text = answer_text
+            answer.save()
+
+            return JsonResponse({'id': answer.id})
+
+        except Answer.DoesNotExist:
+            return JsonResponse({'error': 'Answer does not exist'}, status=400)
+        except KeyError:
+            return JsonResponse({'error': 'There was an error parsing the request'}, status=400)
+
+
+    def delete(self, request, *args, **kwargs):
+        """
+        This method is used in order to delete answers
+        """
+        # Extracts question info from request
+        try:
+            json_data = json.loads(request.body)
+            answer_id = json_data['a_id']
+
+            answer = Answer.objects.get(id=answer_id)
+
+            if request.user != answer.user_id:
+                return JsonResponse({'error': 'This user cannot delete this answer'},
+                                     status=400)
+
+            answer.delete()
+
+            return JsonResponse({'success': 'Answer has been deleted'})
+
+        except Answer.DoesNotExist:
+            return JsonResponse({'error': 'Answer does not exist'}, status=400)
+        except KeyError:
+            return JsonResponse({'error': 'There was an error parsing the request'}, status=400)
 # Accept or undo accept an answer
 
 
