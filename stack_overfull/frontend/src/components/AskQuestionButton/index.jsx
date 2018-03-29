@@ -1,17 +1,17 @@
-import React from "react";
+import React from 'react';
 
-export class AskQuestionButton extends React.Component {
-  render() {
-    const { handleAskQuestionButton } = this.props;
+type Props = {
+  handleAskQuestionButton: () => {},
+};
 
-    return (
-      <button
-        className="button"
-        type="button"
-        onClick={() => handleAskQuestionButton()}
-      >
-        Ask a question
-      </button>
-    );
-  }
-}
+const AskQuestionButton = (props: Props) => {
+  const { handleAskQuestionButton } = props;
+
+  return (
+    <button className="button" type="button" onClick={() => handleAskQuestionButton()}>
+      Ask a question
+    </button>
+  );
+};
+
+export default AskQuestionButton;

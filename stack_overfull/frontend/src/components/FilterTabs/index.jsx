@@ -1,13 +1,14 @@
-import React from "react";
-import { Tabs } from "antd";
+import React from 'react';
+import { Tabs } from 'antd';
+
 const TabPane = Tabs.TabPane;
 
-export class FilterTabs extends React.Component {
+export default class FilterTabs extends React.Component {
   render() {
     const { handleTabsChange, questionList, getQuestionList } = this.props;
     return (
       <Tabs
-        style={{ paddingTop: "10px" }}
+        style={{ paddingTop: '10px' }}
         defaultActiveKey="1"
         onChange={key => handleTabsChange(key)}
       >

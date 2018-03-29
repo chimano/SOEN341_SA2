@@ -1,9 +1,10 @@
-import React from "react";
-import "./index.css";
-import { Tabs } from "antd";
+import React from 'react';
+import './index.css';
+import { Tabs } from 'antd';
+
 const TabPane = Tabs.TabPane;
 
-export class SortingTabs extends React.Component {
+export default class SortingTabs extends React.Component {
   handleTab(key) {
     console.log(key);
   }

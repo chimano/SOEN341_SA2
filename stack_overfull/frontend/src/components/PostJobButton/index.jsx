@@ -231,7 +231,7 @@ const PostJobForm = Form.create()(props => {
   );
 });
 
-export class PostJobButton extends React.Component {
+export default class PostJobButton extends React.Component {
   state = {
     visible: false
   };

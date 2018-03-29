@@ -19,6 +19,7 @@ type State = {
   logged_in: boolean,
   username: string,
   is_employer: boolean,
+  user: Object,
 };
 
 export default class App extends React.Component<{}, State> {
@@ -26,6 +27,7 @@ export default class App extends React.Component<{}, State> {
     logged_in: false,
     username: '',
     is_employer: false,
+    user: {},
   };
 
   componentDidMount() {
@@ -33,20 +35,19 @@ export default class App extends React.Component<{}, State> {
   }
 
   checkIfUserIsLoggedIn = () => {
-    getApiUserMe()
-      .then((response) => {
-        console.log('response of getApiUserMe: ', response);
-        if (!response.data.error) {
-          this.setState({
-            logged_in: true,
-            username: response.data.username,
-            is_employer: response.data.profile.is_employer,
-          });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    getApiUserMe().then((response) => {
+      if (!response.data.error) {
+        this.setState({
+          logged_in: true,
+          user: response.data,
+          username: response.data.username,
+          is_employer: response.data.profile.is_employer,
+        });
+      }
+    });
+    // .catch((error) => {
+    //   console.log(error);
+    // });
   };
 
   handle_login = () => {
@@ -56,6 +57,7 @@ export default class App extends React.Component<{}, State> {
         if (!response.data.error) {
           this.setState({
             logged_in: true,
+            user: response.data,
             username: response.data.username,
             is_employer: response.data.profile.is_employer,
           });
@@ -147,9 +149,12 @@ export default class App extends React.Component<{}, State> {
           <Route
             path="/careers"
             render={props => <CareerPage is_employer={this.state.is_employer} {...props} />}
-          />{' '}
-          <Route path="/user/:username" component={UserPage} />{' '}
-        </Switch>{' '}
+          />
+          <Route
+            path="/user/:username"
+            render={props => <UserPage user={this.state.user} {...props} />}
+          />
+        </Switch>
         <Footer />
       </main>
     );

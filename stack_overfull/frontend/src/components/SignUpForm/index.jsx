@@ -217,5 +217,5 @@ class SignUpForm extends React.Component {
     );
   }
 }
-
-export const SignUpFormWindow = Form.create()(SignUpForm);
+const SignUpFormWindow = Form.create()(SignUpForm);
+export default SignUpFormWindow;

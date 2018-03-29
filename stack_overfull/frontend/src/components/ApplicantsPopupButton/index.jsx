@@ -1,24 +1,31 @@
-import React from "react";
-import { Modal, Button, Divider } from "antd";
-import { Link } from "react-router-dom";
+// @flow
+import React from 'react';
+import { Modal, Button, Divider } from 'antd';
+import { Link } from 'react-router-dom';
 
-export class ApplicantsPopupButton extends React.Component {
+type Props = {
+  applicantList: Array<Object>,
+};
+
+type State = {
+  visible: boolean,
+};
+
+export default class ApplicantsPopupButton extends React.Component<Props, State> {
   state = { visible: false };
   showModal = () => {
     this.setState({
-      visible: true
+      visible: true,
     });
   };
-  handleOk = e => {
-    console.log(e);
+  handleOk = () => {
     this.setState({
-      visible: false
+      visible: false,
     });
   };
-  handleCancel = e => {
-    console.log(e);
+  handleCancel = () => {
     this.setState({
-      visible: false
+      visible: false,
     });
   };
   render() {
@@ -37,9 +44,7 @@ export class ApplicantsPopupButton extends React.Component {
         >
           {applicantList.map((applicant, key) => (
             <div key={key}>
-              <Link to={`/user/${applicant.user_id.username}`}>
-                {applicant.user_id.username}
-              </Link>
+              <Link to={`/user/${applicant.user_id.username}`}>{applicant.user_id.username}</Link>
               <div>Reputation: {applicant.user_id.profile.reputation}</div>
               <div>LinkedIn: {applicant.user_id.profile.linkedin}</div>
               <div>Github: {applicant.user_id.profile.github}</div>

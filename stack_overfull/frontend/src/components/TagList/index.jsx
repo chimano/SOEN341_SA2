@@ -1,9 +1,9 @@
-import React from "react";
-import { Tag } from "antd";
-import { Link } from "react-router-dom";
-import "./index.css";
+import React from 'react';
+import { Tag } from 'antd';
+import { Link } from 'react-router-dom';
+import './index.css';
 
-export class TagList extends React.Component {
+export default class TagList extends React.Component {
   render() {
     const { tags } = this.props;
     return (

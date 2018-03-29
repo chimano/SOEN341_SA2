@@ -23,10 +23,10 @@ type State = {
   github: string,
   linkedin: string,
   last_login: string,
-  downvoted_questions: Array<Object>,
-  upvoted_questions: Array<Object>,
-  questions_asked: Array<Object>,
-  questions_answered: Array<Object>,
+  downvotedQuestions: Array<Object>,
+  upvotedQuestions: Array<Object>,
+  questionsAsked: Array<Object>,
+  questionsAnswered: Array<Object>,
   jobPostList: Array<Object>,
   is_editing: boolean,
   is_saving_myinfo: boolean,
@@ -44,10 +44,10 @@ export default class ProfilePage extends React.Component<{}, State> {
     github: '',
     linkedin: '',
     last_login: '',
-    downvoted_questions: [],
-    upvoted_questions: [],
-    questions_asked: [],
-    questions_answered: [],
+    downvotedQuestions: [],
+    upvotedQuestions: [],
+    questionsAsked: [],
+    questionsAnswered: [],
     jobPostList: [],
     is_editing: false, // make user info fields editable
     is_saving_myinfo: false, // loading indicator for the edit button
@@ -81,10 +81,10 @@ export default class ProfilePage extends React.Component<{}, State> {
     getApiUserQuestionsAndAnsweredQuestions(username)
       .then((response) => {
         this.setState({
-          questions_asked: response.data.asked_questions,
-          questions_answered: response.data.answered_questions,
-          upvoted_questions: response.data.upvoted_questions,
-          downvoted_questions: response.data.downvoted_questions,
+          questionsAsked: response.data.asked_questions,
+          questionsAnswered: response.data.answered_questions,
+          upvotedQuestions: response.data.upvoted_questions,
+          downvotedQuestions: response.data.downvoted_questions,
         });
       })
       .catch((error) => {
@@ -130,14 +130,12 @@ export default class ProfilePage extends React.Component<{}, State> {
 
     postApiUserMe(email, first_name, last_name, aboutMe, github, linkedin)
       .then((response) => {
-        console.log('response of postApiUserMe(): ', response);
         this.setState({ is_saving_myinfo: false });
       })
       .catch(error => console.log(error));
   };
 
   render() {
-    console.log('my state', this.state);
     const {
       username,
       email,
@@ -148,10 +146,10 @@ export default class ProfilePage extends React.Component<{}, State> {
       github,
       linkedin,
       last_login,
-      downvoted_questions,
-      upvoted_questions,
-      questions_asked,
-      questions_answered,
+      downvotedQuestions,
+      upvotedQuestions,
+      questionsAsked,
+      questionsAnswered,
       is_editing,
       is_saving_myinfo,
       is_employer,
@@ -181,10 +179,10 @@ export default class ProfilePage extends React.Component<{}, State> {
             </div>
             <div style={{ width: '70%', paddingLeft: '10px' }}>
               <UserQuestionList
-                upvoted_questions={upvoted_questions}
-                downvoted_questions={downvoted_questions}
-                questions_asked={questions_asked}
-                questions_answered={questions_answered}
+                upvotedQuestions={upvotedQuestions}
+                downvotedQuestions={downvotedQuestions}
+                questionsAsked={questionsAsked}
+                questionsAnswered={questionsAnswered}
               />
             </div>
           </div>

@@ -240,8 +240,8 @@ export default class AnswerPage extends React.Component<Props, State> {
           handleUpvoteButton={this.handleUpvoteButton}
           verified={verified}
           x={x}
-          upvoted_array={this.state.upvotedAnswersId}
-          downvoted_array={this.state.downvotedAnswersId}
+          upvotedArray={this.state.upvotedAnswersId}
+          downvotedArray={this.state.downvotedAnswersId}
         />);
       }
     });
@@ -257,8 +257,8 @@ export default class AnswerPage extends React.Component<Props, State> {
           handleUpvoteButton={this.handleUpvoteButton}
           verified={verified}
           x={x}
-          upvoted_array={this.state.upvotedAnswersId}
-          downvoted_array={this.state.downvotedAnswersId}
+          upvotedArray={this.state.upvotedAnswersId}
+          downvotedArray={this.state.downvotedAnswersId}
         />);
       }
     });
@@ -294,8 +294,8 @@ export default class AnswerPage extends React.Component<Props, State> {
                 handleUpvoteButton={this.handleUpvoteQuestion}
                 id={question.id}
                 points={question.points}
-                upvoted_array={this.state.upvotedQuestionsId}
-                downvoted_array={this.state.downvotedQuestionsId}
+                upvotedArray={this.state.upvotedQuestionsId}
+                downvotedArray={this.state.downvotedQuestionsId}
               />
             </div>
             <div className="AnswerPage__question-box grey-border">

@@ -1,45 +1,52 @@
-import React from "react";
-import swal from "sweetalert";
-import "./index.css";
-import { Button } from "antd";
+// @flow
+import React from 'react';
+import swal from 'sweetalert';
+import { Button } from 'antd';
+import './index.css';
 
-export class AcceptRejectButton extends React.Component {
+type Props = {
+  handleReject: number => {},
+  handleAccept: number => {},
+  answerId: number,
+};
+
+export default class AcceptRejectButton extends React.Component<Props, {}> {
   reject() {
-    const { handleReject, a_id } = this.props;
+    const { handleReject, answerId } = this.props;
     swal({
-      title: "Please confirm your decision",
-      text: "Are you sure that you wish to reject this answer?",
-      icon: "warning",
+      title: 'Please confirm your decision',
+      text: 'Are you sure that you wish to reject this answer?',
+      icon: 'warning',
       buttons: true,
-      dangerMode: true
-    }).then(willDelete => {
+      dangerMode: true,
+    }).then((willDelete) => {
       if (willDelete) {
-        swal("This answer has been rejected!", {
-          icon: "success"
+        swal('This answer has been rejected!', {
+          icon: 'success',
         });
-        handleReject(a_id);
+        handleReject(answerId);
       } else {
-        swal("Your changes have been discarded!");
+        swal('Your changes have been discarded!');
       }
     });
   }
 
   accept() {
-    const { handleAccept, a_id } = this.props;
+    const { handleAccept, answerId } = this.props;
     swal({
-      title: "Please confirm your decision",
-      text: "Are you sure that you wish to accept this answer?",
-      icon: "warning",
+      title: 'Please confirm your decision',
+      text: 'Are you sure that you wish to accept this answer?',
+      icon: 'warning',
       buttons: true,
-      dangerMode: true
-    }).then(willDelete => {
+      dangerMode: true,
+    }).then((willDelete) => {
       if (willDelete) {
-        swal("This answer has been accepted!", {
-          icon: "success"
+        swal('This answer has been accepted!', {
+          icon: 'success',
         });
-        handleAccept(a_id);
+        handleAccept(answerId);
       } else {
-        swal("Your changes have been discarded!");
+        swal('Your changes have been discarded!');
       }
     });
   }
@@ -54,12 +61,6 @@ export class AcceptRejectButton extends React.Component {
         <Button onClick={() => this.accept()} type="primary">
           Accept
         </Button>
-        {/* <button className="button" onClick={() => this.reject()}>
-          Reject
-        </button>
-        <button className="button" onClick={() => this.accept()}>
-          Accept
-        </button> */}
       </div>
     );
   }

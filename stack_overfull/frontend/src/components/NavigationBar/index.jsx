@@ -1,20 +1,16 @@
-import React from "react";
-import {
-  SearchBar,
-  SignInFormWindow,
-  SignUpFormWindow
-} from "../../components";
-import "./index.css";
-import { Link } from "react-router-dom";
-import { Icon } from "antd";
+import React from 'react';
+import { SearchBar, SignInFormWindow, SignUpFormWindow } from '../../components';
+import './index.css';
+import { Link } from 'react-router-dom';
+import { Icon } from 'antd';
 
-export class NavigationBar extends React.Component {
+export default class NavigationBar extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       open_signin: false,
-      open_signup: false
+      open_signup: false,
     };
   }
 
@@ -31,11 +27,7 @@ export class NavigationBar extends React.Component {
   };
 
   render() {
-    const {
-      handle_logout,
-      logged_in,
-      handle_login
-    } = this.props;
+    const { handle_logout, logged_in, handle_login } = this.props;
 
     const { open_signin, open_signup } = this.state;
 
@@ -59,14 +51,14 @@ export class NavigationBar extends React.Component {
         </div>
       );
     } else {
-      login_box = "";
+      login_box = '';
     }
 
     return (
       <div className="navbar-wrapper shadow">
         <div className="navbar page-width">
           <div className="navbar__title">
-            <Link to="/" style={{ color: "white" }}>
+            <Link to="/" style={{ color: 'white' }}>
               Stack Overfull
             </Link>
           </div>
@@ -77,33 +69,21 @@ export class NavigationBar extends React.Component {
             <div className="navbar__logged-in">
               <Link
                 to="/profile"
-                style={{ width: "50px", padding: "12px" }}
+                style={{ width: '50px', padding: '12px' }}
                 className="navbar__profile-button"
               >
-                <Icon
-                  type="user"
-                  style={{ fontSize: 20, color: "white", paddingBottom: "2px" }}
-                />
+                <Icon type="user" style={{ fontSize: 20, color: 'white', paddingBottom: '2px' }} />
               </Link>
-              <button
-                className="navbar__button"
-                onClick={() => handle_logout()}
-              >
+              <button className="navbar__button" onClick={() => handle_logout()}>
                 Log out
               </button>
             </div>
           ) : (
             <div className="navbar__auth">
-              <button
-                className="navbar__button"
-                onClick={() => this.handle_signin_button()}
-              >
+              <button className="navbar__button" onClick={() => this.handle_signin_button()}>
                 Sign In
               </button>
-              <button
-                className="navbar__button"
-                onClick={() => this.handle_signup_button()}
-              >
+              <button className="navbar__button" onClick={() => this.handle_signup_button()}>
                 Sign Up
               </button>
             </div>
@@ -113,15 +93,12 @@ export class NavigationBar extends React.Component {
           <div className="navbar__buttons">
             <Link
               to="/careers"
-              style={{ marginLeft: "-10%" }}
+              style={{ marginLeft: '-10%' }}
               className="navbar__button navbar__button--link"
             >
               Careers
             </Link>
-            <Link
-              to="/categories"
-              className="navbar__button navbar__button--link"
-            >
+            <Link to="/categories" className="navbar__button navbar__button--link">
               Questions
             </Link>
           </div>

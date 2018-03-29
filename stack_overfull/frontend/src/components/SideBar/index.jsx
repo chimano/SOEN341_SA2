@@ -142,7 +142,7 @@ const categories = [
   }
 ];
 
-export class SideBar extends React.Component {
+export default class SideBar extends React.Component {
   rootSubmenuKeys = ["0", "1", "2", "3", "4", "5"];
   state = {
     openKeys: ["3"]

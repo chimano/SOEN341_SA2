@@ -1,6 +1,6 @@
-import React from "react";
-import "./index.css";
-import { Select } from "antd";
+import React from 'react';
+import './index.css';
+import { Select } from 'antd';
 
 const Option = Select.Option;
 
@@ -9,14 +9,14 @@ const children = [];
   children.push();
 }
 
-export class QuestionEdit extends React.Component {
+export default class QuestionEdit extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      question_head: "",
-      question_text: "",
-      tags: []
+      question_head: '',
+      question_text: '',
+      tags: [],
     };
   }
 
@@ -30,7 +30,7 @@ export class QuestionEdit extends React.Component {
     this.setState({ [name]: event.target.value });
   };
 
-  handleTagsChange = tags => {
+  handleTagsChange = (tags) => {
     // Calling this.setState here breaks <Select /> component (?)
     // saving tags in 'this' instead
     this.setState({ tags: [...tags] });
@@ -42,10 +42,7 @@ export class QuestionEdit extends React.Component {
     return (
       <div className="QuestionEdit__floating-box">
         <div className="QuestionEdit__wrapper">
-          <div
-            className="QuestionEdit__close-button"
-            onClick={() => closeCreateQuestionBox()}
-          >
+          <div className="QuestionEdit__close-button" onClick={() => closeCreateQuestionBox()}>
             &#10005;
           </div>
 
@@ -56,12 +53,12 @@ export class QuestionEdit extends React.Component {
             <div className="QuestionEdit__title">Question Header:</div>
             <textarea
               className="QuestionEdit__text"
-              onChange={e => this.handleChange(e, "question_head")}
+              onChange={e => this.handleChange(e, 'question_head')}
             />
             <div className="QuestionEdit__title">Question Body (Optional):</div>
             <textarea
               className="QuestionEdit__text"
-              onChange={e => this.handleChange(e, "question_text")}
+              onChange={e => this.handleChange(e, 'question_text')}
             />
 
             <div className="QuestionEdit__title">Tags</div>
@@ -69,7 +66,7 @@ export class QuestionEdit extends React.Component {
             <div>
               <Select
                 mode="tags"
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 placeholder="Add tags"
                 onChange={tags => this.handleTagsChange(tags)}
               >
@@ -87,7 +84,7 @@ export class QuestionEdit extends React.Component {
           <button
             className="QuestionEdit__button button"
             onClick={() => this.handleSubmitQuestionButton()}
-            style={{ color: "#ffffff" }}
+            style={{ color: '#ffffff' }}
           >
             Submit question
           </button>

@@ -1,5 +1,4 @@
 // @flow
-
 import React from 'react';
 import qs from 'qs';
 import { QuestionList, SearchFiltersBar, SearchBar } from '../../components';
@@ -37,10 +36,6 @@ export default class SearchPage extends React.Component<Props, State> {
     }
   };
 
-  handleFiltersChange = (newFilters) => {
-    this.setState({ filters: [...newFilters] });
-  };
-
   getSearchQuestionList = () => {
     // get the query string from url (react includes '?' in the query string)
     const query_string = this.props.location.search;
@@ -61,6 +56,10 @@ export default class SearchPage extends React.Component<Props, State> {
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  handleFiltersChange = (newFilters: any) => {
+    this.setState({ filters: [...newFilters] });
   };
 
   render() {
