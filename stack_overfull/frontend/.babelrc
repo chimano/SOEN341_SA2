@@ -1,10 +1,5 @@
 {
-    "presets": [
-        "env",
-        "react"
-    ],
-    "plugins": [
-        "syntax-dynamic-import",
-        "transform-react-jsx"
-    ]
+  "presets": ["env", "react", "flow"],
+  "plugins": ["syntax-dynamic-import", "transform-react-jsx"],
+  "retainLines": true
 }

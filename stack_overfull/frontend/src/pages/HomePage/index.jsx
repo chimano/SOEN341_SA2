@@ -1,34 +1,49 @@
-import React from "react";
-import "./index.css";
-import { Pagination } from "antd";
+// @flow
+
+import React from 'react';
+import './index.css';
+import { Pagination } from 'antd';
 import {
   QuestionList,
   QuestionEdit,
   AskQuestionButton,
   SearchFiltersBar,
-  FilterTabs
-} from "../../components";
+  FilterTabs,
+} from '../../components';
 import {
   getApiSearch,
   getApiQuestion,
   postApiQuestion,
-  postApiAnswer
-} from "../../utils/api";
+  postApiAnswer,
+} from '../../utils/api';
 
-export class HomePage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showCreateQuestionBox: false,
-      questionList: [],
-      order: "desc",
-      currentFilters: [],
-      title: "All",
-      currentPage: 1,
-      totalQuestions: 0,
-      questionPerPage: 10
-    };
-  }
+type Props = {
+  username: string,
+  verifyLogin: () => {}
+};
+
+type State = {
+  showCreateQuestionBox: boolean,
+  questionList: Array<Object>,
+  order: string,
+  currentFilters: Array<string>,
+  title: string,
+  currentPage: number,
+  totalQuestions: number,
+  questionPerPage: number
+};
+
+export class HomePage extends React.Component<Props, State> {
+  state = {
+    showCreateQuestionBox: false,
+    questionList: [],
+    order: 'desc',
+    currentFilters: [],
+    title: 'All',
+    currentPage: 1,
+    totalQuestions: 0,
+    questionPerPage: 10,
+  };
 
   componentDidMount = () => {
     this.getQuestionList();
@@ -37,46 +52,46 @@ export class HomePage extends React.Component {
   getQuestionList = () => {
     const { currentFilters, currentPage, questionPerPage } = this.state;
     getApiSearch(
-      "",
-      "desc",
+      '',
+      'desc',
       questionPerPage,
-      "date_created",
+      'date_created',
       currentFilters,
-      currentPage
+      currentPage,
     )
-      .then(response => {
+      .then((response) => {
         console.log(
           'response of getApiSearch("", "desc", questionPerPage, "date_created", currentFilters, currentPage)',
-          response
+          response,
         );
         this.setState({
           questionList: response.data.question_list,
           currentPage: response.data.page,
-          totalQuestions: response.data.total_items
+          totalQuestions: response.data.total_items,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   };
 
-  createQuestion = question => {
+  createQuestion = (question: string) => {
     postApiQuestion(question)
       .then(() => this.getQuestionList())
       .catch(e => alert(e.response.data.error));
   };
 
-  answerQuestion(answer, q_id) {
+  answerQuestion(answer: string, q_id: number) {
     postApiAnswer(answer, q_id).catch(error => console.log(error));
   }
 
   handleAskQuestionButton = () => {
     const { verifyLogin } = this.props;
-    verifyLogin().then(logged_in => {
+    verifyLogin().then((logged_in) => {
       if (logged_in) {
         this.openCreateQuestionBox();
       } else {
-        alert("You need to Sign In to ask a question");
+        alert('You need to Sign In to ask a question');
       }
     });
   };
@@ -89,22 +104,22 @@ export class HomePage extends React.Component {
     this.setState({ showCreateQuestionBox: false });
   };
 
-  handleTabsChange = key => {
-    new Promise(resolve => {
+  handleTabsChange = (key: number) => {
+    new Promise((resolve) => {
       switch (key) {
-        case "1":
+        case '1':
           this.setState({
-            currentFilters: []
+            currentFilters: [],
           });
           break;
-        case "2":
+        case '2':
           this.setState({
-            currentFilters: ["notanswered"]
+            currentFilters: ['notanswered'],
           });
           break;
-        case "3":
+        case '3':
           this.setState({
-            currentFilters: ["notaccepted"]
+            currentFilters: ['notaccepted'],
           });
           break;
       }
@@ -114,11 +129,11 @@ export class HomePage extends React.Component {
     });
   };
 
-  handlePaginationButton = e => {
-    new Promise(resolve => {
-      let page = parseInt(e);
+  handlePaginationButton = (e: string) => {
+    new Promise((resolve) => {
+      const page = parseInt(e);
       this.setState({
-        currentPage: page
+        currentPage: page,
       });
       resolve();
     }).then(() => {
@@ -132,7 +147,7 @@ export class HomePage extends React.Component {
       questionList,
       currentPage,
       totalQuestions,
-      questionsPerPage
+      questionPerPage,
     } = this.state;
     const { username } = this.props;
     console.log(this.state);
@@ -147,7 +162,7 @@ export class HomePage extends React.Component {
         />
       );
     } else {
-      createQuestionBox = "";
+      createQuestionBox = '';
     }
 
     return (
@@ -165,9 +180,9 @@ export class HomePage extends React.Component {
             getQuestionList={this.getQuestionList}
           />
           <Pagination
-            style={{ textAlign: "center", paddingBottom: "60px" }}
+            style={{ textAlign: 'center', paddingBottom: '60px' }}
             defaultCurrent={1}
-            defaultPageSize={questionsPerPage}
+            defaultPageSize={questionPerPage}
             current={currentPage}
             total={totalQuestions}
             onChange={e => this.handlePaginationButton(e)}

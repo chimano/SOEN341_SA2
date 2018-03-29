@@ -1,5 +1,7 @@
-import React from "react";
-import "./App.css";
+// @flow
+
+import React from 'react';
+import './App.css';
 import {
   HomePage,
   AnswerPage,
@@ -8,65 +10,84 @@ import {
   ProfilePage,
   CategoryListPage,
   TagPage,
-  UserPage
-} from "./pages";
-import { Route, Switch } from "react-router-dom";
-import { NavigationBar, Footer } from "./components";
-import { getApiUserMe, postApiUserLogout } from "./utils/api";
+  UserPage,
+} from './pages';
+import { Route, Switch } from 'react-router-dom';
+import { NavigationBar, Footer } from './components';
+import { getApiUserMe, postApiUserLogout } from './utils/api';
 
-export default class App extends React.Component {
-  constructor(props) {
-    super(props);
+type State = {
+  logged_in: boolean,
+  username: string,
+  is_employer: boolean
+};
 
-    this.state = {
-      logged_in: false,
-      username: "",
-      is_employer: false
-    };
+export default class App extends React.Component<State> {
+  state = {
+    logged_in: false,
+    username: '',
+    is_employer: false,
+  };
 
+  componentDidMount() {
     this.handle_login();
   }
 
-  handle_login = () => {
+  checkIfUserIsLoggedIn = () => {
     getApiUserMe()
-      .then(response => {
-        console.log("response of getApiUserMe: ", response);
+      .then((response) => {
+        console.log('response of getApiUserMe: ', response);
         if (!response.data.error) {
           this.setState({
             logged_in: true,
             username: response.data.username,
-            is_employer: response.data.profile.is_employer
+            is_employer: response.data.profile.is_employer,
           });
         }
       })
-      .catch(error => {
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  handle_login = () => {
+    getApiUserMe()
+      .then((response) => {
+        console.log('response of getApiUserMe: ', response);
+        if (!response.data.error) {
+          this.setState({
+            logged_in: true,
+            username: response.data.username,
+            is_employer: response.data.profile.is_employer,
+          });
+        }
+      })
+      .catch((error) => {
         console.log(error);
       });
   };
 
   handle_logout = () => {
     postApiUserLogout().catch(error => console.log(error));
-    this.setState({ logged_in: false, username: "", is_employer: false });
+    this.setState({ logged_in: false, username: '', is_employer: false });
   };
 
-  verifyLogin = () => {
-    return new Promise((resolve, reject) => {
-      getApiUserMe()
-        .then(response => {
-          console.log("response of getApiUserMe: ", response);
-          if (!response.data.error) {
-            this.setState({
-              logged_in: true,
-              username: response.data.username
-            });
-          } else {
-            this.setState({ logged_in: false, username: "" });
-          }
-          resolve(this.state.logged_in);
-        })
-        .catch(error => console.log(error));
-    });
-  };
+  verifyLogin = (): Promise<boolean> => new Promise((resolve, reject) => {
+    getApiUserMe()
+      .then((response) => {
+        console.log('response of getApiUserMe: ', response);
+        if (!response.data.error) {
+          this.setState({
+            logged_in: true,
+            username: response.data.username,
+          });
+        } else {
+          this.setState({ logged_in: false, username: '' });
+        }
+        resolve(this.state.logged_in);
+      })
+      .catch(error => console.log(error));
+  });
 
   render() {
     return (
@@ -127,9 +148,12 @@ export default class App extends React.Component {
             )}
           />
 
-          <Route path="/careers" render={props => (
+          <Route
+            path="/careers"
+            render={props => (
               <CareerPage is_employer={this.state.is_employer} {...props} />
-            )}/>
+            )}
+          />
           <Route path="/user/:username" component={UserPage} />
         </Switch>
         <Footer />
