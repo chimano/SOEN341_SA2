@@ -3,6 +3,7 @@ import "./index.css";
 import { QuestionBox } from "../QuestionBox";
 import { AcceptRejectButton, VotingButtons } from "../../components";
 import { Link } from "react-router-dom";
+import { Icon } from "antd";
 
 import {
   formatDate,
@@ -22,7 +23,8 @@ export class AnswerBox extends React.Component {
       verified,
       x,
       upvoted_array,
-      downvoted_array
+      downvoted_array,
+      handleDeleteAnswer
     } = this.props;
 
     console.log("verified: ", verified);
@@ -34,6 +36,19 @@ export class AnswerBox extends React.Component {
       answerBox_class = "AnswerBox--red";
     } else {
       answerBox_class = "AnswerBox--blue";
+    }
+
+    let deleteButtons;
+    if (verified) {
+      deleteButtons = (
+        <button className="AnswerBox__delete" onClick= {() => handleDeleteAnswer(x.id)} type="primary">
+          <Icon type="delete" />
+        </button>
+      );
+    } else {
+      deleteButtons = (
+        <div></div>
+      );
     }
 
     console.log("UOVOTED: "+upvoted_array);
@@ -70,7 +85,13 @@ export class AnswerBox extends React.Component {
               )}
             </div>
             <div className="AnswerBox__username">
+
               Answered by&nbsp;<Link to={`/user/${x.user_id.username}`}>{x.user_id.username}</Link>&nbsp;on {date}
+              
+              &nbsp;
+              
+              {deleteButtons}
+
             </div>
           </div>
         </div>

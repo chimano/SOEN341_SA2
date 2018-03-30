@@ -17,7 +17,8 @@ import {
   postApiAnswerIdReject,
   voteAnswer,
   voteQuestion,
-  deleteQuestion
+  deleteQuestion,
+  deleteAnswer
 } from "../../utils/api";
 
 export class AnswerPage extends React.Component {
@@ -250,6 +251,30 @@ export class AnswerPage extends React.Component {
     });
   }
 
+  handleDeleteAnswer = (a_id) => {
+    swal({
+      title: "Delete this answer",
+      text:"Are you sure that you wish to delete this answer?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true
+    }).then(willDelete => {
+      if (willDelete) {
+        swal("This answer has been deleted!", {
+        icon: "success"
+      });
+      deleteAnswer(a_id)
+      .then(response => {
+        console.log(response);
+      })
+      .catch(e => alert(e.response.data.error));
+      setTimeout(() => this.getAnswerList(), 500);
+    } else {
+      swal("Your changes have been discarded.");
+    }
+    });
+  }
+
   handleChange = event => {
     this.setState({ answer: event.target.value });
   };
@@ -293,6 +318,19 @@ export class AnswerPage extends React.Component {
       verified = false;
     }
 
+    let deleteButtons;
+    if (verified) {
+      deleteButtons = (
+        <button className="AnswerPage__question-delete" onClick={ () => this.handleDeleteQuestion(question.id)} type="primary">
+            <Icon type="delete" />
+        </button>
+      );
+    } else {
+      deleteButtons = (
+        <div></div>
+      );
+    }
+
     let numberOfAnswersTitle;
     if (answerList.length < 1) {
       numberOfAnswersTitle = (
@@ -332,6 +370,7 @@ export class AnswerPage extends React.Component {
             x={x}
             upvoted_array={this.state.upvoted_answers_id}
             downvoted_array={this.state.downvoted_answers_id}
+            handleDeleteAnswer={this.handleDeleteAnswer}
           />
         );
       }
@@ -351,6 +390,7 @@ export class AnswerPage extends React.Component {
             x={x}
             upvoted_array={this.state.upvoted_answers_id}
             downvoted_array={this.state.downvoted_answers_id}
+            handleDeleteAnswer={this.handleDeleteAnswer}
           />
         );
       }
@@ -401,15 +441,13 @@ export class AnswerPage extends React.Component {
               {questionBodyBox}
               <Divider />
               <div className="AnswerPage__question-creator">
-                
-                
-                <button className="AnswerPage__question-delete" onClick={ () => this.handleDeleteQuestion(question.id)} type="primary">
-                <Icon type="delete" />
-                </button>
-
 
                 Asked by <Link to={`/user/${q_user}`}>{q_user}</Link> on{" "}
-                {questionDate}
+
+                {questionDate}&nbsp;
+
+                {deleteButtons}
+
               </div>
             </div>
           </div>

@@ -260,12 +260,24 @@ export function putQuestion(q_id, question_head, question_text) {
 
 //delete a question from the database
 export function deleteQuestion(q_id) {
-  return axios.delete("/api/question/");
+  return axios.delete("/api/question/", 
+  { 
+    data: 
+    { 
+      q_id: q_id 
+    } 
+  });
 }
 
 //delete an answer in the database
 export function deleteAnswer(a_id) {
-  return axios.delete("/api/answer/");
+  return axios.delete("/api/answer/", 
+  {
+    data:
+    { 
+      a_id: a_id 
+    }
+  });
 }
 
 //Accept answer
