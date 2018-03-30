@@ -302,6 +302,7 @@ export class AnswerPage extends React.Component {
 
     const { logged_in, username } = this.props;
     const q_id = this.props.match.params.id;
+    console.log("USERNAME .: "+ username);
 
     console.log("# OF ANSWERS: " + answerList.length);
     console.log("Number of downvoted answers: " + downvoted_answers_id.length);
@@ -371,6 +372,7 @@ export class AnswerPage extends React.Component {
             upvoted_array={this.state.upvoted_answers_id}
             downvoted_array={this.state.downvoted_answers_id}
             handleDeleteAnswer={this.handleDeleteAnswer}
+            username={this.props.username}
           />
         );
       }
@@ -391,6 +393,7 @@ export class AnswerPage extends React.Component {
             upvoted_array={this.state.upvoted_answers_id}
             downvoted_array={this.state.downvoted_answers_id}
             handleDeleteAnswer={this.handleDeleteAnswer}
+            username={this.props.username}
           />
         );
       }

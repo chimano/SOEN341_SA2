@@ -24,7 +24,8 @@ export class AnswerBox extends React.Component {
       x,
       upvoted_array,
       downvoted_array,
-      handleDeleteAnswer
+      handleDeleteAnswer,
+      username
     } = this.props;
 
     console.log("verified: ", verified);
@@ -38,8 +39,10 @@ export class AnswerBox extends React.Component {
       answerBox_class = "AnswerBox--blue";
     }
 
+    console.log("username: " + username);
+
     let deleteButtons;
-    if (verified) {
+    if (username === x.user_id.username) {
       deleteButtons = (
         <button className="AnswerBox__delete" onClick= {() => handleDeleteAnswer(x.id)} type="primary">
           <Icon type="delete" />
