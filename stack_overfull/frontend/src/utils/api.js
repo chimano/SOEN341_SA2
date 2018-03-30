@@ -241,6 +241,33 @@ export function postApiUserRegister(username, password, email, is_employer) {
   });
 }
 
+//edit an answer in the database
+export function putAnswer(answer_text, a_id) {
+  return axios.put("/api/answer/", {
+    answer_text: answer_text,
+    a_id: a_id
+  });
+}
+
+//edit a question in the database
+export function putQuestion(q_id, question_head, question_text) {
+  return axios.put("/api/question/", {
+    q_id: q_id,
+    question_head: question_head,
+    question_text: question_text
+  });
+}
+
+//delete a question from the database
+export function deleteQuestion(q_id) {
+  return axios.delete("/api/question/");
+}
+
+//delete an answer in the database
+export function deleteAnswer(a_id) {
+  return axios.delete("/api/answer/");
+}
+
 //Accept answer
 export function postApiAnswerIdAccept(id) {
   return axios.post("/api/answer/" + id + "/accept/");

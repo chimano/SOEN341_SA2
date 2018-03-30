@@ -5,6 +5,8 @@ import { formatDate } from "../../utils/api";
 import { Divider } from "antd";
 import { Link } from "react-router-dom";
 import { VotingButtons } from "../../components";
+import { Icon } from "antd";
+import swal from "sweetalert";
 
 import {
   getApiQuestionById,
@@ -14,7 +16,8 @@ import {
   postApiAnswerIdAccept,
   postApiAnswerIdReject,
   voteAnswer,
-  voteQuestion
+  voteQuestion,
+  deleteQuestion
 } from "../../utils/api";
 
 export class AnswerPage extends React.Component {
@@ -224,6 +227,29 @@ export class AnswerPage extends React.Component {
     postApiAnswer(answer, q_id);
   };
 
+  handleDeleteQuestion = (q_id) => {
+    swal({
+      title: "Delete this question",
+      text:"Are you sure that you wish to delete this question?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true
+    }).then(willDelete => {
+      if (willDelete) {
+        swal("This question has been deleted!", {
+        icon: "success"
+      });
+      deleteQuestion(q_id)
+      .then(response => {
+        console.log(response);
+      })
+      .catch(e => alert(e.response.data.error));
+    } else {
+      swal("Your changes have been discarded.");
+    }
+    });
+  }
+
   handleChange = event => {
     this.setState({ answer: event.target.value });
   };
@@ -375,6 +401,13 @@ export class AnswerPage extends React.Component {
               {questionBodyBox}
               <Divider />
               <div className="AnswerPage__question-creator">
+                
+                
+                <button className="AnswerPage__question-delete" onClick={ () => this.handleDeleteQuestion(question.id)} type="primary">
+                <Icon type="delete" />
+                </button>
+
+
                 Asked by <Link to={`/user/${q_user}`}>{q_user}</Link> on{" "}
                 {questionDate}
               </div>

@@ -16,10 +16,10 @@
     outline: none;
     border-radius: 10px;
 }
-
+/*
 .button:hover {
     background: rgb(31, 145, 221);
-}
+}*/
 
 .page-width {
     max-width: 1060px;
