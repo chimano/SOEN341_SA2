@@ -13,7 +13,7 @@ function humanize(str) {
 }
 
 type Props = {
-  is_employer: boolean,
+  isEmployer: boolean,
 };
 
 type State = {
@@ -49,7 +49,7 @@ export default class CareerPage extends React.Component<Props, State> {
 
   render() {
     const { jobList, title } = this.state;
-    const { is_employer } = this.props;
+    const { isEmployer } = this.props;
 
     return (
       <div className="body-wrapper">
@@ -58,10 +58,10 @@ export default class CareerPage extends React.Component<Props, State> {
           <div className="CareerPage__list">
             <div className="CareerPage__title-button">
               <h2 className="CareerPage__title">{title}</h2>
-              {is_employer ? <PostJobButton /> : ''}
+              {isEmployer ? <PostJobButton /> : ''}
             </div>
 
-            {is_employer ? (
+            {isEmployer ? (
               <JobList jobList={jobList} hideApplyButton />
             ) : (
               <JobList jobList={jobList} />

@@ -1,5 +1,5 @@
 import React from "react";
-import { AnswerPage } from "./index.jsx";
+import { AnswerPage } from "../../pages";
 import { configure, shallow, mount, render } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 

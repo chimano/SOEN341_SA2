@@ -1,195 +1,199 @@
-import React from "react";
-import "./index.css";
-import { Menu, Icon } from "antd";
-const SubMenu = Menu.SubMenu;
+import React from 'react';
+import { Menu, Icon } from 'antd';
+import './index.css';
+
+const { SubMenu } = Menu;
 
 const categories = [
   {
-    value: "arts",
-    label: "Arts",
+    value: 'arts',
+    label: 'Arts',
     children: [
       {
-        value: "photography",
-        label: "Photography"
+        value: 'photography',
+        label: 'Photography',
       },
       {
-        value: "architechture",
-        label: "Architechture"
+        value: 'architechture',
+        label: 'Architechture',
       },
       {
-        value: "music",
-        label: "Music"
+        value: 'music',
+        label: 'Music',
       },
       {
-        value: "theatre",
-        label: "Theatre"
-      }
-    ]
+        value: 'theatre',
+        label: 'Theatre',
+      },
+    ],
   },
   {
-    value: "administration",
-    label: "Administration",
+    value: 'administration',
+    label: 'Administration',
     children: [
       {
-        value: "receptionist",
-        label: "Receptionist"
+        value: 'receptionist',
+        label: 'Receptionist',
       },
       {
-        value: "coordinator",
-        label: "Coordinator"
+        value: 'coordinator',
+        label: 'Coordinator',
       },
       {
-        value: "payroll administrator",
-        label: "Payroll Administrator"
-      }
-    ]
+        value: 'payroll administrator',
+        label: 'Payroll Administrator',
+      },
+    ],
   },
   {
-    value: "commerce",
-    label: "Commerce",
+    value: 'commerce',
+    label: 'Commerce',
     children: [
       {
-        value: "sales Representative",
-        label: "Sales Representative"
+        value: 'sales Representative',
+        label: 'Sales Representative',
       },
       {
-        value: "accountant",
-        label: "Accountant"
+        value: 'accountant',
+        label: 'Accountant',
       },
       {
-        value: "marketing",
-        label: "Marketing"
-      }
-    ]
+        value: 'marketing',
+        label: 'Marketing',
+      },
+    ],
   },
   {
-    value: "engineering",
-    label: "Engineering",
+    value: 'engineering',
+    label: 'Engineering',
     children: [
       {
-        value: "computer_science",
-        label: "Computer Science"
+        value: 'computer_science',
+        label: 'Computer Science',
       },
       {
-        value: "software_engineering",
-        label: "Software Engineering"
+        value: 'software_engineering',
+        label: 'Software Engineering',
       },
       {
-        value: "mechanical_engineering",
-        label: "Mechanical Engineering"
+        value: 'mechanical_engineering',
+        label: 'Mechanical Engineering',
       },
       {
-        value: "electrical_engineering",
-        label: "Electrical Engineering"
+        value: 'electrical_engineering',
+        label: 'Electrical Engineering',
       },
       {
-        value: "industrial_engineering",
-        label: "Industrial Engineering"
-      }
-    ]
+        value: 'industrial_engineering',
+        label: 'Industrial Engineering',
+      },
+    ],
   },
   {
-    value: "education",
-    label: "Education",
+    value: 'education',
+    label: 'Education',
     children: [
       {
-        value: "tutor",
-        label: "Tutor"
+        value: 'tutor',
+        label: 'Tutor',
       },
       {
-        value: "elementary_school_teacher",
-        label: "Elementary School Teacher"
+        value: 'elementary_school_teacher',
+        label: 'Elementary School Teacher',
       },
       {
-        value: "highschool_teacher",
-        label: "Highschool Teacher"
+        value: 'highschool_teacher',
+        label: 'Highschool Teacher',
       },
       {
-        value: "cegep_teacher",
-        label: "Cegep Teacher"
+        value: 'cegep_teacher',
+        label: 'Cegep Teacher',
       },
       {
-        value: "university_teacher",
-        label: "University Teacher"
-      }
-    ]
+        value: 'university_teacher',
+        label: 'University Teacher',
+      },
+    ],
   },
   {
-    value: "science",
-    label: "Science",
+    value: 'science',
+    label: 'Science',
     children: [
       {
-        value: "biology",
-        label: "Biology"
+        value: 'biology',
+        label: 'Biology',
       },
       {
-        value: "chemistry",
-        label: "Chemistry"
+        value: 'chemistry',
+        label: 'Chemistry',
       },
       {
-        value: "physics",
-        label: "Physics"
+        value: 'physics',
+        label: 'Physics',
       },
       {
-        value: "sociology",
-        label: "Sociology"
+        value: 'sociology',
+        label: 'Sociology',
       },
       {
-        value: "geoscience",
-        label: "Geoscience"
-      }
-    ]
-  }
+        value: 'geoscience',
+        label: 'Geoscience',
+      },
+    ],
+  },
 ];
 
-export default class SideBar extends React.Component {
-  rootSubmenuKeys = ["0", "1", "2", "3", "4", "5"];
+const rootSubmenuKeys = ['0', '1', '2', '3', '4', '5'];
+
+type Props = {
+  getJobList: () => {},
+}
+
+type State = {
+  openKeys: Array<string>
+}
+
+export default class SideBar extends React.Component<Props, State> {
   state = {
-    openKeys: ["3"]
+    openKeys: ['3'],
   };
 
-  handleClick = e => {
-    const { getJobList } = this.props;
-    console.log("click ", e);
-    getJobList(e.key);
-  };
-
-  onOpenChange = openKeys => {
-    console.log(openKeys);
-    const latestOpenKey = openKeys.find(
-      key => this.state.openKeys.indexOf(key) === -1
-    );
-    if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
+  onOpenChange = (openKeys) => {
+    const latestOpenKey = openKeys.find(key => this.state.openKeys.indexOf(key) === -1);
+    if (rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
       this.setState({ openKeys });
     } else {
       this.setState({
-        openKeys: latestOpenKey ? [latestOpenKey] : []
+        openKeys: latestOpenKey ? [latestOpenKey] : [],
       });
     }
   };
 
+  handleClick = (e) => {
+    const { getJobList } = this.props;
+    getJobList(e.key);
+  };
+
   render() {
-    let list = [];
+    const list = [];
     categories.forEach((value, key) => {
-      list.push(
-        <SubMenu
-          key={key}
-          title={
-            <span>
-              <Icon type="setting" />
-              <span>{value.label}</span>
-            </span>
+      list.push(<SubMenu
+        key={key}
+        title={
+          <span>
+            <Icon type="setting" />
+            <span>{value.label}</span>
+          </span>
           }
-        >
-          {value.children.map((v, key) => (
-            <Menu.Item style={{ cursor: "default" }} key={v.value}>
-              <span style={{ color: { value: "blue", important: "true" } }}>
-                {v.label}
-              </span>
-            </Menu.Item>
+      >
+        {value.children.map((v, key) => (
+          <Menu.Item style={{ cursor: 'default' }} key={v.value}>
+            <span style={{ color: { value: 'blue', important: 'true' } }}>
+              {v.label}
+            </span>
+          </Menu.Item>
           ))}
-        </SubMenu>
-      );
+      </SubMenu>);
     });
 
     return (
@@ -201,11 +205,10 @@ export default class SideBar extends React.Component {
           onClick={this.handleClick}
           style={{
             width: 256,
-            marginLeft: "-15px",
-            border: "solid 1px #ececec"
+            marginLeft: '-15px',
+            border: 'solid 1px #ececec',
           }}
-          defaultSelectedKeys={["computer_science"]}
-          mode="inline"
+          defaultSelectedKeys={['computer_science']}
         >
           {list}
         </Menu>

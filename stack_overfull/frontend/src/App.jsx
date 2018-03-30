@@ -16,32 +16,32 @@ import { NavigationBar, Footer } from './components';
 import { getApiUserMe, postApiUserLogout } from './utils/api';
 
 type State = {
-  logged_in: boolean,
+  loggedIn: boolean,
   username: string,
-  is_employer: boolean,
+  isEmployer: boolean,
   user: Object,
 };
 
 export default class App extends React.Component<{}, State> {
   state = {
-    logged_in: false,
+    loggedIn: false,
     username: '',
-    is_employer: false,
+    isEmployer: false,
     user: {},
   };
 
   componentDidMount() {
-    this.handle_login();
+    this.handleLogin();
   }
 
   checkIfUserIsLoggedIn = () => {
     getApiUserMe().then((response) => {
       if (!response.data.error) {
         this.setState({
-          logged_in: true,
+          loggedIn: true,
           user: response.data,
           username: response.data.username,
-          is_employer: response.data.profile.is_employer,
+          isEmployer: response.data.profile.isEmployer,
         });
       }
     });
@@ -50,16 +50,16 @@ export default class App extends React.Component<{}, State> {
     // });
   };
 
-  handle_login = () => {
+  handleLogin = () => {
     getApiUserMe()
       .then((response) => {
         console.log('response of getApiUserMe: ', response);
         if (!response.data.error) {
           this.setState({
-            logged_in: true,
+            loggedIn: true,
             user: response.data,
             username: response.data.username,
-            is_employer: response.data.profile.is_employer,
+            isEmployer: response.data.profile.isEmployer,
           });
         }
       })
@@ -68,12 +68,12 @@ export default class App extends React.Component<{}, State> {
       });
   };
 
-  handle_logout = () => {
+  handleLogout = () => {
     postApiUserLogout().catch(error => console.log(error));
     this.setState({
-      logged_in: false,
+      loggedIn: false,
       username: '',
-      is_employer: false,
+      isEmployer: false,
     });
   };
 
@@ -84,16 +84,16 @@ export default class App extends React.Component<{}, State> {
           console.log('response of getApiUserMe: ', response);
           if (!response.data.error) {
             this.setState({
-              logged_in: true,
+              loggedIn: true,
               username: response.data.username,
             });
           } else {
             this.setState({
-              logged_in: false,
+              loggedIn: false,
               username: '',
             });
           }
-          resolve(this.state.logged_in);
+          resolve(this.state.loggedIn);
         })
         .catch((error) => {
           reject(error);
@@ -105,9 +105,9 @@ export default class App extends React.Component<{}, State> {
     return (
       <main className="App">
         <NavigationBar
-          handle_logout={this.handle_logout}
-          handle_login={this.handle_login}
-          logged_in={this.state.logged_in}
+          handleLogout={this.handleLogout}
+          handleLogin={this.handleLogin}
+          loggedIn={this.state.loggedIn}
           username={this.state.username}
         />{' '}
         <Switch>
@@ -123,8 +123,7 @@ export default class App extends React.Component<{}, State> {
             render={props => (
               <AnswerPage
                 username={this.state.username}
-                verifyLogin={this.verifyLogin}
-                logged_in={this.state.logged_in}
+                loggedIn={this.state.loggedIn}
                 {...props}
               />
             )}
@@ -135,20 +134,10 @@ export default class App extends React.Component<{}, State> {
             render={props => <SearchPage username={this.state.username} {...props} />}
           />
           <Route path="/categories" render={props => <CategoryListPage {...props} />} />
-          <Route
-            path="/tags/:tags"
-            render={props => (
-              <TagPage
-                username={this.state.username}
-                verifyLogin={this.verifyLogin}
-                logged_in={this.state.logged_in}
-                {...props}
-              />
-            )}
-          />
+          <Route path="/tags/:tags" component={TagPage} />
           <Route
             path="/careers"
-            render={props => <CareerPage is_employer={this.state.is_employer} {...props} />}
+            render={props => <CareerPage isEmployer={this.state.isEmployer} {...props} />}
           />
           <Route
             path="/user/:username"

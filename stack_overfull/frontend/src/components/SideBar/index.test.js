@@ -1,5 +1,5 @@
 import React from "react";
-import { SideBar } from "./index.jsx";
+import { SideBar } from "../../components";
 import { configure, shallow, mount, render } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 

@@ -5,12 +5,19 @@ import { postApiUserLogin } from '../../utils/api';
 
 const FormItem = Form.Item;
 
-class SignInForm extends React.Component {
+type Props = {
+  form: Object,
+  handleLogin: () => {},
+  handleCloseButton: () => {},
+}
+
+type State = {}
+
+class SignInForm extends React.Component<Props, State> {
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
         this.doUserLoginRequest(values.userName, values.password);
       }
     });
@@ -19,13 +26,12 @@ class SignInForm extends React.Component {
   doUserLoginRequest = (username, password) => {
     postApiUserLogin(username, password)
       .then((response) => {
-        console.log('response of postApiUserLogin(username, password): ', response);
-        const { handle_login, handle_close_button } = this.props;
+        const { handleLogin, handleCloseButton } = this.props;
         if (response.data.error) {
           alert(response.data.error);
         } else {
-          handle_login(response.data.username);
-          handle_close_button();
+          handleLogin(response.data.username);
+          handleCloseButton();
         }
       })
       .catch((e) => {
@@ -35,11 +41,11 @@ class SignInForm extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { handle_close_button } = this.props;
+    const { handleCloseButton } = this.props;
 
     return (
       <Form onSubmit={this.handleSubmit} className="SignInForm">
-        <div className="SignInForm__close-button" onClick={() => handle_close_button()}>
+        <div className="SignInForm__close-button" onClick={() => handleCloseButton()} onKeyPress={() => handleCloseButton()} role="button" tabIndex={0}>
           &#10005;
         </div>
         <h3>Sign In</h3>
@@ -66,13 +72,9 @@ class SignInForm extends React.Component {
             valuePropName: 'checked',
             initialValue: true,
           })(<Checkbox>Remember me</Checkbox>)}
-          <a className="SignInForm__forgot-link" href="">
-            Forgot password
-          </a>
           <Button type="primary" htmlType="submit" className="SignInForm__submit-button">
             Sign In
           </Button>
-          Or <a>register now!</a>
         </FormItem>
       </Form>
     );

@@ -13,7 +13,6 @@ export { default as VotingButtons } from './VotingButtons';
 export { default as SideBar } from './SideBar';
 export { default as SearchFiltersBar } from './SearchFiltersBar';
 export { default as TagList } from './TagList';
-export { default as SortingTabs } from './SortingTabs';
 export { default as FilterTabs } from './FilterTabs';
 export { default as PostJobButton } from './PostJobButton';
 export { default as JobBox } from './JobBox';

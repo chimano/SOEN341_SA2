@@ -15,14 +15,14 @@ const JobList = (props: Props) => {
   const jobListBox = jobList.map((job, key) => (
     <JobBox
       key={key}
-      job_id={job.job_id}
-      job_company={job.company}
-      job_position={job.position}
-      job_location={job.location}
-      job_type={job.job_type}
-      job_category={job.category}
-      job_description={job.description}
-      date_created={job.date_posted.replace('T', ' at ').substring(0, 19)}
+      jobId={job.job_id}
+      jobCompany={job.company}
+      jobPosition={job.position}
+      jobLocation={job.location}
+      jobType={job.job_type}
+      jobCategory={job.category}
+      jobDescription={job.description}
+      dateCreated={job.date_posted.replace('T', ' at ').substring(0, 19)}
       hasJobApplication={hasJobApplication}
       hideApplyButton={hideApplyButton}
     />

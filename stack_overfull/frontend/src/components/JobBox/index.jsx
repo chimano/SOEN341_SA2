@@ -13,21 +13,35 @@ function humanize(str) {
   return frags.join(' ');
 }
 
-export default class JobBox extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      applicantList: [],
-    };
-  }
+type Props = {
+  jobId: number,
+  jobCompany: string,
+  jobPosition: string,
+  jobLocation: string,
+  jobType: string,
+  jobCategory: string,
+  jobDescription: string,
+  dateCreated: string,
+  hasJobApplication: () => {},
+  hideApplyButton: boolean,
+};
+
+type State = {
+  applicantList: Array<Object>,
+};
+
+export default class JobBox extends React.Component<Props, State> {
+  state = {
+    applicantList: [],
+  };
 
   componentDidMount() {
-    const { job_id } = this.props;
-    this.getListOfApplicantsForJob(job_id);
+    const { jobId } = this.props;
+    this.getListOfApplicantsForJob(jobId);
   }
 
-  getListOfApplicantsForJob = (job_id) => {
-    getApiJobApplication(job_id)
+  getListOfApplicantsForJob = (jobId: number) => {
+    getApiJobApplication(jobId)
       .then((response) => {
         this.setState({
           applicantList: response.data.application_list,
@@ -38,8 +52,8 @@ export default class JobBox extends React.Component {
       });
   };
 
-  handleApplyButton = (job_id) => {
-    postApiJobApplication(job_id)
+  handleApplyButton = (jobId: number) => {
+    postApiJobApplication(jobId)
       .then((response) => {
         alert(response.data.success);
       })
@@ -48,33 +62,33 @@ export default class JobBox extends React.Component {
 
   render() {
     const {
-      job_id,
-      job_company,
-      job_position,
-      job_location,
-      job_type,
-      job_category,
-      job_description,
-      date_created,
+      jobId,
+      jobCompany,
+      jobPosition,
+      jobLocation,
+      jobType,
+      jobCategory,
+      jobDescription,
+      dateCreated,
       hasJobApplication,
       hideApplyButton,
     } = this.props;
 
-    const date = formatDate(date_created);
+    const date = formatDate(dateCreated);
 
     return (
       <div>
         <div className="JobBox grey-border">
-          <div className="JobBox__position">{job_position}</div>
-          <div className="JobBox__company">Position posted by {job_company}</div>
+          <div className="JobBox__position">{jobPosition}</div>
+          <div className="JobBox__company">Position posted by {jobCompany}</div>
           <Divider />
           <div className="JobBox__description">
-            <p>{job_description}</p>
+            <p>{jobDescription}</p>
           </div>
           <div className="JobBox__generalinfo">
-            {humanize(job_category)} <br />
-            {job_type} <br />
-            {job_location} <br />
+            {humanize(jobCategory)} <br />
+            {jobType} <br />
+            {jobLocation} <br />
             Position posted on {date}{' '}
           </div>
 
@@ -87,7 +101,7 @@ export default class JobBox extends React.Component {
           {hideApplyButton ? (
             ''
           ) : (
-            <Button type="primary" onClick={() => this.handleApplyButton(job_id)}>
+            <Button type="primary" onClick={() => this.handleApplyButton(jobId)}>
               Apply
             </Button>
           )}

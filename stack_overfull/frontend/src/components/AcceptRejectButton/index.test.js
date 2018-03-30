@@ -1,5 +1,5 @@
 import React from "react";
-import { AcceptRejectButton } from "./index.jsx";
+import { AcceptRejectButton } from "../../components";
 import { configure, shallow, mount, render } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 

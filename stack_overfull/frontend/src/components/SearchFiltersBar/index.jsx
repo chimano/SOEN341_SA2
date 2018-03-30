@@ -2,7 +2,7 @@ import React from 'react';
 import { Tag } from 'antd';
 // import "./index.css";
 
-const CheckableTag = Tag.CheckableTag;
+const { CheckableTag } = Tag;
 
 /* All filters supported by backend
   'head', 'text', 'username', 'tags','answered', 'notanswered', 'accepted', 'notaccepted'
@@ -14,14 +14,19 @@ const filterNames = ['head', 'text', 'username', 'tags', 'answered', 'accepted']
 // Names for filters that are displayed for users
 const filterDisplayNames = ['Header', 'Text', 'Usernames', 'Tags', 'Answered', 'Accepted'];
 
-export default class SearchFiltersBar extends React.Component {
-  constructor(props) {
-    super(props);
+type Props = {
+  defaultFilters: Array<string>,
+  onFiltersChange: () => {},
+};
 
-    this.state = {
-      selectedFilters: [],
-    };
+type State = { selectedFilters: Array<string> };
 
+export default class SearchFiltersBar extends React.Component<Props, State> {
+  state = {
+    selectedFilters: [],
+  };
+
+  componentDidMount() {
     if (this.props.defaultFilters) this.state.selectedFilters = [...this.props.defaultFilters];
   }
 
@@ -30,8 +35,6 @@ export default class SearchFiltersBar extends React.Component {
     const nextSelectedFilters = checked
       ? [...selectedFilters, filterName]
       : selectedFilters.filter(item => item !== filterName);
-
-    console.log('Selected Filters ', nextSelectedFilters);
 
     // if present execute onFiltersChange callback
     if (this.props.onFiltersChange) this.props.onFiltersChange(nextSelectedFilters);

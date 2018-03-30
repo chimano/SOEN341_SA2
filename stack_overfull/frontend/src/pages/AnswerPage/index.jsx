@@ -18,7 +18,7 @@ import {
 
 type Props = {
   username: string,
-  logged_in: boolean,
+  loggedIn: boolean,
   match: Object
 }
 
@@ -198,11 +198,11 @@ export default class AnswerPage extends React.Component<Props, State> {
       answerList,
       questionCreator,
     } = this.state;
-    const { match, logged_in, username } = this.props;
+    const { match, loggedIn, username } = this.props;
     const questionId = match.params.id;
 
     let verified;
-    if (logged_in && questionCreator === username) {
+    if (loggedIn && questionCreator === username) {
       verified = true;
     } else {
       verified = false;

@@ -1,57 +1,57 @@
 import React from 'react';
-import { SearchBar, SignInFormWindow, SignUpFormWindow } from '../../components';
-import './index.css';
 import { Link } from 'react-router-dom';
 import { Icon } from 'antd';
+import { SearchBar, SignInFormWindow, SignUpFormWindow } from '../../components';
+import './index.css';
 
-export default class NavigationBar extends React.Component {
-  constructor(props) {
-    super(props);
+type Props = {
+  handleLogout: () => {},
+  loggedIn: boolean,
+  handleLogin: () => {},
+};
 
-    this.state = {
-      open_signin: false,
-      open_signup: false,
-    };
-  }
+type State = {
+  openSignin: boolean,
+  openSignup: boolean,
+};
 
-  handle_signup_button = () => {
-    this.setState({ open_signup: true, open_signin: false });
+export default class NavigationBar extends React.Component<Props, State> {
+  state = {
+    openSignin: false,
+    openSignup: false,
   };
 
-  handle_signin_button = () => {
-    this.setState({ open_signin: true, open_signup: false });
+  handleSignupButton = () => {
+    this.setState({ openSignup: true, openSignin: false });
   };
 
-  handle_close_button = () => {
-    this.setState({ open_signin: false, open_signup: false });
+  handleSigninButton = () => {
+    this.setState({ openSignin: true, openSignup: false });
+  };
+
+  handleCloseButton = () => {
+    this.setState({ openSignin: false, openSignup: false });
   };
 
   render() {
-    const { handle_logout, logged_in, handle_login } = this.props;
+    const { handleLogout, loggedIn, handleLogin } = this.props;
+    const { openSignin, openSignup } = this.state;
 
-    const { open_signin, open_signup } = this.state;
-
-    let login_box;
-    if (open_signin === true) {
-      login_box = (
+    let loginBox;
+    if (openSignin === true) {
+      loginBox = (
         <div className="login-wrap">
-          <SignInFormWindow
-            handle_close_button={this.handle_close_button}
-            handle_login={handle_login}
-          />
+          <SignInFormWindow handleCloseButton={this.handleCloseButton} handleLogin={handleLogin} />
         </div>
       );
-    } else if (open_signup === true) {
-      login_box = (
+    } else if (openSignup === true) {
+      loginBox = (
         <div className="login-wrap">
-          <SignUpFormWindow
-            handle_close_button={this.handle_close_button}
-            handle_login={handle_login}
-          />
+          <SignUpFormWindow handleCloseButton={this.handleCloseButton} handleLogin={handleLogin} />
         </div>
       );
     } else {
-      login_box = '';
+      loginBox = '';
     }
 
     return (
@@ -65,7 +65,7 @@ export default class NavigationBar extends React.Component {
           <div className="navbar__search">
             <SearchBar />
           </div>
-          {logged_in ? (
+          {loggedIn ? (
             <div className="navbar__logged-in">
               <Link
                 to="/profile"
@@ -74,16 +74,16 @@ export default class NavigationBar extends React.Component {
               >
                 <Icon type="user" style={{ fontSize: 20, color: 'white', paddingBottom: '2px' }} />
               </Link>
-              <button className="navbar__button" onClick={() => handle_logout()}>
+              <button className="navbar__button" onClick={() => handleLogout()}>
                 Log out
               </button>
             </div>
           ) : (
             <div className="navbar__auth">
-              <button className="navbar__button" onClick={() => this.handle_signin_button()}>
+              <button className="navbar__button" onClick={() => this.handleSigninButton()}>
                 Sign In
               </button>
-              <button className="navbar__button" onClick={() => this.handle_signup_button()}>
+              <button className="navbar__button" onClick={() => this.handleSignupButton()}>
                 Sign Up
               </button>
             </div>
@@ -103,7 +103,7 @@ export default class NavigationBar extends React.Component {
             </Link>
           </div>
         </div>
-        {login_box}
+        {loginBox}
       </div>
     );
   }

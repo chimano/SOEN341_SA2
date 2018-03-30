@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Divider } from 'antd';
@@ -58,8 +59,8 @@ const AnswerBox = (props: Props) => {
           <div className="AnswerBox__button-area">
             {verified ? (
               <AcceptRejectButton
-                handleAccept={() => handleAccept(x.id)}
-                handleReject={() => handleReject(x.id)}
+                handleAccept={handleAccept}
+                handleReject={handleReject}
                 accepted={x.is_accepted}
                 rejected={x.is_rejected}
                 a_id={x.id}

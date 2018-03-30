@@ -1,24 +1,26 @@
 import React from 'react';
-import './index.css';
 import { Select } from 'antd';
+import './index.css';
 
-const Option = Select.Option;
+const { Option } = Select;
 
-const children = [];
-{
-  children.push();
-}
+type Props = {
+  createQuestion: () => {},
+  closeCreateQuestionBox: () => {},
+};
 
-export default class QuestionEdit extends React.Component {
-  constructor(props) {
-    super(props);
+type State = {
+  question_head: string,
+  question_text: string,
+  tags: Array<string>,
+};
 
-    this.state = {
-      question_head: '',
-      question_text: '',
-      tags: [],
-    };
-  }
+export default class QuestionEdit extends React.Component<Props, State> {
+  state = {
+    question_head: '',
+    question_text: '',
+    tags: [],
+  };
 
   handleSubmitQuestionButton = () => {
     const { createQuestion, closeCreateQuestionBox } = this.props;
@@ -37,17 +39,22 @@ export default class QuestionEdit extends React.Component {
   };
 
   render() {
-    const { user, closeCreateQuestionBox } = this.props;
+    const { closeCreateQuestionBox } = this.props;
 
     return (
       <div className="QuestionEdit__floating-box">
         <div className="QuestionEdit__wrapper">
-          <div className="QuestionEdit__close-button" onClick={() => closeCreateQuestionBox()}>
+          <div
+            className="QuestionEdit__close-button"
+            role="button"
+            tabIndex={0}
+            onClick={() => closeCreateQuestionBox()}
+            onKeyPress={() => closeCreateQuestionBox()}
+          >
             &#10005;
           </div>
 
           <div className="QuestionEdit">
-            <a className="QuestionEdit__user">{user}</a>
             <div className="QuestionEdit__lines" />
             <h3>Ask a question to the community</h3>
             <div className="QuestionEdit__title">Question Header:</div>
@@ -70,7 +77,6 @@ export default class QuestionEdit extends React.Component {
                 placeholder="Add tags"
                 onChange={tags => this.handleTagsChange(tags)}
               >
-                {children}
                 <Option value="business">business</Option>
                 <Option value="cooking">cooking</Option>
                 <Option value="entertainment">entertainment</Option>

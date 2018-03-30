@@ -7,7 +7,7 @@ type Props = {
   downvotedQuestions: Array<Object>,
   questionsAsked: Array<Object>,
   questionsAnswered: Array<Object>,
-  current_tab: string,
+  currentTab: string,
 };
 
 const UserQuestionList = (props: Props) => {
@@ -16,24 +16,22 @@ const UserQuestionList = (props: Props) => {
     downvotedQuestions,
     questionsAsked,
     questionsAnswered,
-    current_tab,
+    currentTab,
   } = props;
-
-  console.log(props);
 
   let title;
   let showQuestions;
   // title = (<h3> Questions </h3>);
-  if (current_tab == 'questionasked') {
+  if (currentTab == 'questionasked') {
     title = <h3>Questions Asked</h3>;
     showQuestions = <QuestionList questionList={questionsAsked} />;
-  } else if (current_tab == 'questionanswered') {
+  } else if (currentTab == 'questionanswered') {
     title = <h3>Questions Answered</h3>;
     showQuestions = <QuestionList questionList={questionsAnswered} />;
-  } else if (current_tab == 'upvotedquestion') {
+  } else if (currentTab == 'upvotedquestion') {
     title = <h3>Upvoted Questions</h3>;
     showQuestions = <QuestionList questionList={upvotedQuestions} />;
-  } else if (current_tab == 'downvotedquestion') {
+  } else if (currentTab == 'downvotedquestion') {
     title = <h3>Downvoted Question</h3>;
     showQuestions = <QuestionList questionList={downvotedQuestions} />;
   }

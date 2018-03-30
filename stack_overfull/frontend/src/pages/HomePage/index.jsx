@@ -131,7 +131,6 @@ export default class HomePage extends React.Component<Props, State> {
       questionPerPage,
     } = this.state;
     const { username } = this.props;
-    console.log(this.state);
 
     let createQuestionBox;
     if (showCreateQuestionBox) {
