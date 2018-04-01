@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import './index.css';
-import { getApiJob } from '../../utils/api';
+import { getApiJob, postApiJob } from '../../utils/api';
 import { SideBar, PostJobButton, JobList } from '../../components';
 
 function humanize(str) {
@@ -14,6 +14,7 @@ function humanize(str) {
 
 type Props = {
   isEmployer: boolean,
+  loggedIn: boolean,
 };
 
 type State = {
@@ -47,9 +48,20 @@ export default class CareerPage extends React.Component<Props, State> {
     // });
   };
 
+  createJob = (
+    position: string,
+    type: string,
+    category: string,
+    company: string,
+    location: string,
+    description: string,
+  ) => {
+    postApiJob(position, type, category, company, location, description);
+  };
+
   render() {
     const { jobList, title } = this.state;
-    const { isEmployer } = this.props;
+    const { isEmployer, loggedIn } = this.props;
 
     return (
       <div className="body-wrapper">
@@ -58,10 +70,10 @@ export default class CareerPage extends React.Component<Props, State> {
           <div className="CareerPage__list">
             <div className="CareerPage__title-button">
               <h2 className="CareerPage__title">{title}</h2>
-              {isEmployer ? <PostJobButton /> : ''}
+              {isEmployer ? <PostJobButton createJob={this.createJob} /> : ''}
             </div>
 
-            {isEmployer ? (
+            {isEmployer || !loggedIn ? (
               <JobList jobList={jobList} hideApplyButton />
             ) : (
               <JobList jobList={jobList} />

@@ -4,7 +4,7 @@ import { Tag } from 'antd';
 import { Link } from 'react-router-dom';
 import './index.css';
 import { QuestionList } from '../../components';
-import { getApiQuestion, getApiTags, getApiTagInfo } from '../../utils/api';
+import { getApiQuestion } from '../../utils/api';
 
 type Props = {
   location: Object,

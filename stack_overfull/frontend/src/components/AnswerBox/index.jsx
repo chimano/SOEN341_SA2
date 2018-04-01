@@ -30,9 +30,9 @@ const AnswerBox = (props: Props) => {
   } = props;
 
   let answerBoxClass;
-  if (x.is_accepted) {
+  if (x.isAccepted) {
     answerBoxClass = 'AnswerBox--green';
-  } else if (x.is_rejected) {
+  } else if (x.isRejected) {
     answerBoxClass = 'AnswerBox--red';
   } else {
     answerBoxClass = 'AnswerBox--blue';
@@ -61,8 +61,8 @@ const AnswerBox = (props: Props) => {
               <AcceptRejectButton
                 handleAccept={handleAccept}
                 handleReject={handleReject}
-                accepted={x.is_accepted}
-                rejected={x.is_rejected}
+                accepted={x.isAccepted}
+                rejected={x.isRejected}
                 a_id={x.id}
               />
             ) : (

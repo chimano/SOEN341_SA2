@@ -41,7 +41,7 @@ export default class App extends React.Component<{}, State> {
           loggedIn: true,
           user: response.data,
           username: response.data.username,
-          isEmployer: response.data.profile.isEmployer,
+          isEmployer: response.data.profile.is_employer,
         });
       }
     });
@@ -59,7 +59,7 @@ export default class App extends React.Component<{}, State> {
             loggedIn: true,
             user: response.data,
             username: response.data.username,
-            isEmployer: response.data.profile.isEmployer,
+            isEmployer: response.data.profile.is_employer,
           });
         }
       })
@@ -74,32 +74,9 @@ export default class App extends React.Component<{}, State> {
       loggedIn: false,
       username: '',
       isEmployer: false,
+      user: {},
     });
   };
-
-  verifyLogin = (): Promise<boolean> =>
-    new Promise((resolve, reject) => {
-      getApiUserMe()
-        .then((response) => {
-          console.log('response of getApiUserMe: ', response);
-          if (!response.data.error) {
-            this.setState({
-              loggedIn: true,
-              username: response.data.username,
-            });
-          } else {
-            this.setState({
-              loggedIn: false,
-              username: '',
-            });
-          }
-          resolve(this.state.loggedIn);
-        })
-        .catch((error) => {
-          reject(error);
-          console.log(error);
-        });
-    });
 
   render() {
     return (
@@ -109,15 +86,15 @@ export default class App extends React.Component<{}, State> {
           handleLogin={this.handleLogin}
           loggedIn={this.state.loggedIn}
           username={this.state.username}
-        />{' '}
+        />
         <Switch>
           <Route
             exact
             path="/"
             render={props => (
-              <HomePage username={this.state.username} verifyLogin={this.verifyLogin} {...props} />
+              <HomePage username={this.state.username} loggedIn={this.state.loggedIn} {...props} />
             )}
-          />{' '}
+          />
           <Route
             path="/question/:id"
             render={props => (
@@ -127,22 +104,22 @@ export default class App extends React.Component<{}, State> {
                 {...props}
               />
             )}
-          />{' '}
-          <Route path="/profile" component={ProfilePage} />{' '}
-          <Route
-            path="/search/"
-            render={props => <SearchPage username={this.state.username} {...props} />}
           />
-          <Route path="/categories" render={props => <CategoryListPage {...props} />} />
+          <Route path="/profile" component={ProfilePage} />
+          <Route path="/search/" component={SearchPage} />
+          <Route path="/categories" component={CategoryListPage} />
           <Route path="/tags/:tags" component={TagPage} />
           <Route
             path="/careers"
-            render={props => <CareerPage isEmployer={this.state.isEmployer} {...props} />}
+            render={props => (
+              <CareerPage
+                isEmployer={this.state.isEmployer}
+                loggedIn={this.state.loggedIn}
+                {...props}
+              />
+            )}
           />
-          <Route
-            path="/user/:username"
-            render={props => <UserPage user={this.state.user} {...props} />}
-          />
+          <Route path="/user/:username" component={UserPage} />
         </Switch>
         <Footer />
       </main>

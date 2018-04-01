@@ -6,7 +6,6 @@ import {
   getApiUserQuestionsAndAnsweredQuestions,
   getApiUserNameJobs,
 } from '../../utils/api';
-import { Input, Button } from 'antd';
 import './index.css';
 import {
   UserInfo,
@@ -18,21 +17,21 @@ import {
 type State = {
   username: string,
   email: string,
-  first_name: string,
-  last_name: string,
+  firstName: string,
+  lastName: string,
   aboutMe: string,
   reputation: string,
   github: string,
   linkedin: string,
-  last_login: string,
+  lastLogin: string,
   downvotedQuestions: Array<Object>,
   upvotedQuestions: Array<Object>,
   questionsAsked: Array<Object>,
   questionsAnswered: Array<Object>,
   jobPostList: Array<Object>,
-  is_editing: boolean,
-  is_saving_myinfo: boolean,
-  is_employer: boolean,
+  isEditing: boolean,
+  isSavingMyInfo: boolean,
+  isEmployer: boolean,
   currentTab: string,
 }
 
@@ -40,21 +39,21 @@ export default class ProfilePage extends React.Component<{}, State> {
   state = {
     username: '',
     email: '',
-    first_name: '',
-    last_name: '',
+    firstName: '',
+    lastName: '',
     aboutMe: '',
     reputation: '',
     github: '',
     linkedin: '',
-    last_login: '',
+    lastLogin: '',
     downvotedQuestions: [],
     upvotedQuestions: [],
     questionsAsked: [],
     questionsAnswered: [],
     jobPostList: [],
-    is_editing: false, // make user info fields editable
-    is_saving_myinfo: false, // loading indicator for the edit button
-    is_employer: false,
+    isEditing: false, // make user info fields editable
+    isSavingMyInfo: false, // loading indicator for the edit button
+    isEmployer: false,
     currentTab: '',
   }
 
@@ -70,15 +69,15 @@ export default class ProfilePage extends React.Component<{}, State> {
   };
 
   onEditButtonClick = () => {
-    const { is_editing } = this.state;
+    const { isEditing } = this.state;
 
     // save the info if the user was editing it
-    if (is_editing) {
+    if (isEditing) {
       this.saveMyInfo();
     }
 
     // toggle the button between Save and Edit
-    this.setState({ is_editing: !is_editing });
+    this.setState({ isEditing: !isEditing });
   };
 
   getQuestionsRelatedToUser = (username:string) => {
@@ -104,21 +103,20 @@ export default class ProfilePage extends React.Component<{}, State> {
     });
   };
 
-  getMyInfo = () => new Promise((resolve) => {
+  getMyInfo = ():Promise<string> => new Promise((resolve) => {
     getApiUserMe()
       .then((response) => {
-        console.log('response of getApiUserMe(): ', response);
         this.setState({
           username: response.data.username,
           email: response.data.email,
-          first_name: response.data.first_name,
-          last_name: response.data.last_name,
+          firstName: response.data.first_name,
+          lastName: response.data.last_name,
           aboutMe: response.data.profile.about_me,
           reputation: response.data.profile.reputation,
           github: response.data.profile.github,
           linkedin: response.data.profile.linkedin,
-          last_login: response.data.last_login,
-          is_employer: response.data.profile.is_employer,
+          lastLogin: response.data.last_login,
+          isEmployer: response.data.profile.is_employer,
         });
         resolve(response.data.username);
       })
@@ -127,19 +125,20 @@ export default class ProfilePage extends React.Component<{}, State> {
 
   saveMyInfo = () => {
     const {
-      email, first_name, last_name, aboutMe, github, linkedin,
+      email, firstName, lastName, aboutMe, github, linkedin,
     } = this.state;
 
-    this.setState({ is_saving_myinfo: true });
+    this.setState({ isSavingMyInfo: true });
 
-    postApiUserMe(email, first_name, last_name, aboutMe, github, linkedin)
-      .then((response) => {
-        this.setState({ is_saving_myinfo: false });
+    postApiUserMe(email, firstName, lastName, aboutMe, github, linkedin)
+      .then(() => {
+        this.setState({ isSavingMyInfo: false });
       })
       .catch(error => console.log(error));
   };
 
-  handleTabsChange = (key) => {
+  handleTabsChange = (key:number) => {
+    /* eslint-disable no-new */
     new Promise((resolve) => {
       switch (key) {
         case '1':
@@ -167,6 +166,10 @@ export default class ProfilePage extends React.Component<{}, State> {
             currentTab: 'downvotedquestion',
           });
           break;
+        default:
+          this.setState({
+            currentTab: 'profile',
+          });
       }
       resolve();
     });
@@ -176,42 +179,42 @@ export default class ProfilePage extends React.Component<{}, State> {
     const {
       username,
       email,
-      first_name,
-      last_name,
+      firstName,
+      lastName,
       aboutMe,
       reputation,
       github,
       linkedin,
-      last_login,
+      lastLogin,
       downvotedQuestions,
       upvotedQuestions,
       questionsAsked,
       questionsAnswered,
-      is_editing,
-      is_saving_myinfo,
-      is_employer,
+      isEditing,
+      isSavingMyInfo,
+      isEmployer,
       currentTab,
       jobPostList,
     } = this.state;
 
     let showTabPage;
-    if (currentTab == '' || currentTab == 'profile') {
+    if (currentTab === '' || currentTab === 'profile') {
       showTabPage = (
         <div className="showTabPage_div" style={{ width: '70%' }}>
           <UserInfo
-            is_editing={is_editing}
+            isEditing={isEditing}
             onInputChange={this.onInputChange}
             onEditButtonClick={this.onEditButtonClick}
-            is_saving_myinfo={is_saving_myinfo}
+            isSavingMyInfo={isSavingMyInfo}
             username={username}
             email={email}
-            first_name={first_name}
-            last_name={last_name}
+            firstName={firstName}
+            lastName={lastName}
             aboutMe={aboutMe}
             reputation={reputation}
             github={github}
             linkedin={linkedin}
-            last_login={last_login}
+            lastLogin={lastLogin}
           />
         </div>
       );
@@ -223,7 +226,7 @@ export default class ProfilePage extends React.Component<{}, State> {
             downvotedQuestions={downvotedQuestions}
             questionsAsked={questionsAsked}
             questionsAnswered={questionsAnswered}
-            current_tab={currentTab}
+            currentTab={currentTab}
           />
         </div>
       );
@@ -236,34 +239,7 @@ export default class ProfilePage extends React.Component<{}, State> {
           <div>
             {showTabPage}
           </div>
-          {/* <div style={{ display: "flex" }}>
-            <div style={{width:"30%", marginRight:"10px"}}>
-              <UserInfo
-                is_editing={is_editing}
-                onInputChange={this.onInputChange}
-                onEditButtonClick={this.onEditButtonClick}
-                is_saving_myinfo={is_saving_myinfo}
-                username={username}
-                email={email}
-                first_name={first_name}
-                last_name={last_name}
-                aboutMe={aboutMe}
-                reputation={reputation}
-                github={github}
-                linkedin={linkedin}
-                last_login={last_login}
-              />
-            </div>
-            <div style={{ width: '70%', paddingLeft: '10px' }}>
-              <UserQuestionList
-                upvotedQuestions={upvotedQuestions}
-                downvotedQuestions={downvotedQuestions}
-                questionsAsked={questionsAsked}
-                questionsAnswered={questionsAnswered}
-              />
-            </div>
-          </div> */}
-          {is_employer ? (
+          {isEmployer ? (
             <div>
               <h3 style={{ paddingTop: '20px' }}> Job Posted</h3>
               <JobList jobList={jobPostList} hasJobApplication hideApplyButton />

@@ -26,7 +26,6 @@ type State = {
   question: Object,
   answerList: Array<Object>,
   answer: string,
-  questionCreator: string,
   downvotedAnswersId: Array<number>,
   upvotedAnswersId: Array<number>,
   downvotedQuestionsId: Array<number>,
@@ -38,7 +37,6 @@ export default class AnswerPage extends React.Component<Props, State> {
     question: {},
     answerList: [],
     answer: '',
-    questionCreator: '',
     downvotedAnswersId: [],
     upvotedAnswersId: [],
     downvotedQuestionsId: [],
@@ -79,6 +77,7 @@ export default class AnswerPage extends React.Component<Props, State> {
     const questionId = match.params.id;
     getApiQuestionById(questionId)
       .then((response) => {
+        console.log(response);
         this.setState({
           question: response.data,
         });
@@ -196,10 +195,14 @@ export default class AnswerPage extends React.Component<Props, State> {
     const {
       question,
       answerList,
-      questionCreator,
     } = this.state;
     const { match, loggedIn, username } = this.props;
     const questionId = match.params.id;
+
+    let questionCreator;
+    if (question.user_id) {
+      questionCreator = question.user_id.username;
+    }
 
     let verified;
     if (loggedIn && questionCreator === username) {

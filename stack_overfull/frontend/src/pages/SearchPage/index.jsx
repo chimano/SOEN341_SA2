@@ -38,17 +38,15 @@ export default class SearchPage extends React.Component<Props, State> {
 
   getSearchQuestionList = () => {
     // get the query string from url (react includes '?' in the query string)
-    const query_string = this.props.location.search;
+    const queryString = this.props.location.search;
 
     // get the 'q' url parameter from the current url ie /search/?q=<search text>
-    const query_parsed = qs.parse(query_string, { ignoreQueryPrefix: true });
-    const q = query_parsed.q;
+    const queryParsed = qs.parse(queryString, { ignoreQueryPrefix: true });
+    const { q } = queryParsed;
 
-    console.log("Fetching new questionList. Search query('q=') ", q);
     // do api call
     getApiSearch(q, 'desc', 36, 'date_created', this.state.filters)
       .then((response) => {
-        console.log('response of getApiSearch(q, "desc", 36, "date_created"): ', response);
         this.setState({
           questionList: response.data.question_list,
         });

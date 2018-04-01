@@ -7,15 +7,13 @@ import { getApiSearch, postApiQuestion, postApiAnswer } from '../../utils/api';
 
 type Props = {
   username: string,
-  verifyLogin: () => {},
+  loggedIn: boolean,
 };
 
 type State = {
   showCreateQuestionBox: boolean,
   questionList: Array<Object>,
-  order: string,
   currentFilters: Array<string>,
-  title: string,
   currentPage: number,
   totalQuestions: number,
   questionPerPage: number,
@@ -25,9 +23,7 @@ export default class HomePage extends React.Component<Props, State> {
   state = {
     showCreateQuestionBox: false,
     questionList: [],
-    order: 'desc',
     currentFilters: [],
-    title: 'All',
     currentPage: 1,
     totalQuestions: 0,
     questionPerPage: 10,
@@ -63,14 +59,12 @@ export default class HomePage extends React.Component<Props, State> {
   };
 
   handleAskQuestionButton = () => {
-    const { verifyLogin } = this.props;
-    verifyLogin().then((isSignedIn) => {
-      if (isSignedIn) {
-        this.openCreateQuestionBox();
-      } else {
-        alert('You need to Sign In to ask a question');
-      }
-    });
+    const { loggedIn } = this.props;
+    if (loggedIn) {
+      this.openCreateQuestionBox();
+    } else {
+      alert('You need to Sign In to ask a question');
+    }
   };
 
   openCreateQuestionBox = () => {

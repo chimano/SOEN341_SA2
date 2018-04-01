@@ -1,9 +1,10 @@
 import React from 'react';
-import { Button, Modal, Form, Input, Select, Cascader, Option } from 'antd';
+import { Button, Modal, Form, Input, Select, Cascader } from 'antd';
 import { postApiJob } from '../../utils/api';
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
+const { Option } = Select;
 
 const categories = [
   {
@@ -187,7 +188,7 @@ const PostJobForm = Form.create()((props) => {
             <Option value="Contract">Contract</Option>
             <Option value="Temporary">Temporary</Option>
             <Option value="Trainee">Trainee</Option>
-          </Select>)}
+             </Select>)}
         </FormItem>
 
         {/* Select categories */}
@@ -232,7 +233,16 @@ const PostJobForm = Form.create()((props) => {
   );
 });
 
-export default class PostJobButton extends React.Component {
+
+type Props = {
+  createJob: () => {}
+}
+
+type State = {
+  visible: boolean
+}
+
+export default class PostJobButton extends React.Component<Props, State> {
   state = {
     visible: false,
   };
@@ -248,27 +258,21 @@ export default class PostJobButton extends React.Component {
       if (err) {
         return;
       }
-      console.log('Received values of form: ', values);
       this.createJob(values);
       form.resetFields();
       this.setState({ visible: false });
     });
   };
   createJob = (values) => {
-    postApiJob(
+    const { createJob } = this.props;
+    createJob(
       values.position,
       values.type,
       values.category[1],
       values.company,
       values.location,
       values.description,
-    )
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((e) => {
-        alert(e.response.data.error);
-      });
+    );
   };
   saveFormRef = (form) => {
     this.form = form;

@@ -1,9 +1,10 @@
 import React from 'react';
-import { Form, Input, Tooltip, Icon, Checkbox, Button, Select, Option } from 'antd';
+import { Form, Input, Tooltip, Icon, Button, Select } from 'antd';
 import './index.css';
 import { postApiUserRegister } from '../../utils/api';
 
 const FormItem = Form.Item;
+const { Option } = Select;
 
 type Props = {
   handleCloseButton: () => {},
@@ -49,7 +50,7 @@ class SignUpForm extends React.Component<Props, State> {
     }
   };
   checkConfirm = (rule, value, callback) => {
-    const form = this.props.form;
+    const { form } = this.props;
     if (value && this.state.confirmDirty) {
       form.validateFields(['confirm'], { force: true });
     }
@@ -191,9 +192,9 @@ class SignUpForm extends React.Component<Props, State> {
               { required: true, message: 'Please select your answer.' },
             ],
           })(<Select>
-              <Option value={0} >No</Option>
-              <Option value={1} >Yes</Option>
-            </Select>)}
+            <Option value={0} >No</Option>
+            <Option value={1} >Yes</Option>
+          </Select>)}
         </FormItem>
 
         <FormItem {...tailFormItemLayout}>
