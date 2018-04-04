@@ -5,6 +5,8 @@ import { formatDate } from "../../utils/api";
 import { Divider } from "antd";
 import { Link } from "react-router-dom";
 import { VotingButtons } from "../../components";
+import { Icon } from "antd";
+import swal from "sweetalert";
 
 import {
   getApiQuestionById,
@@ -14,7 +16,9 @@ import {
   postApiAnswerIdAccept,
   postApiAnswerIdReject,
   voteAnswer,
-  voteQuestion
+  voteQuestion,
+  deleteQuestion,
+  deleteAnswer
 } from "../../utils/api";
 
 export class AnswerPage extends React.Component {
@@ -224,6 +228,53 @@ export class AnswerPage extends React.Component {
     postApiAnswer(answer, q_id);
   };
 
+  handleDeleteQuestion = (q_id) => {
+    swal({
+      title: "Delete this question",
+      text:"Are you sure that you wish to delete this question?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true
+    }).then(willDelete => {
+      if (willDelete) {
+        swal("This question has been deleted!", {
+        icon: "success"
+      });
+      deleteQuestion(q_id)
+      .then(response => {
+        console.log(response);
+      })
+      .catch(e => alert(e.response.data.error));
+    } else {
+      swal("Your changes have been discarded.");
+    }
+    });
+  }
+
+  handleDeleteAnswer = (a_id) => {
+    swal({
+      title: "Delete this answer",
+      text:"Are you sure that you wish to delete this answer?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true
+    }).then(willDelete => {
+      if (willDelete) {
+        swal("This answer has been deleted!", {
+        icon: "success"
+      });
+      deleteAnswer(a_id)
+      .then(response => {
+        console.log(response);
+      })
+      .catch(e => alert(e.response.data.error));
+      setTimeout(() => this.getAnswerList(), 500);
+    } else {
+      swal("Your changes have been discarded.");
+    }
+    });
+  }
+
   handleChange = event => {
     this.setState({ answer: event.target.value });
   };
@@ -251,6 +302,7 @@ export class AnswerPage extends React.Component {
 
     const { logged_in, username } = this.props;
     const q_id = this.props.match.params.id;
+    console.log("USERNAME .: "+ username);
 
     console.log("# OF ANSWERS: " + answerList.length);
     console.log("Number of downvoted answers: " + downvoted_answers_id.length);
@@ -265,6 +317,19 @@ export class AnswerPage extends React.Component {
       verified = true;
     } else {
       verified = false;
+    }
+
+    let deleteButtons;
+    if (verified) {
+      deleteButtons = (
+        <button className="AnswerPage__question-delete" onClick={ () => this.handleDeleteQuestion(question.id)} type="primary">
+            <Icon type="delete" />
+        </button>
+      );
+    } else {
+      deleteButtons = (
+        <div></div>
+      );
     }
 
     let numberOfAnswersTitle;
@@ -306,6 +371,8 @@ export class AnswerPage extends React.Component {
             x={x}
             upvoted_array={this.state.upvoted_answers_id}
             downvoted_array={this.state.downvoted_answers_id}
+            handleDeleteAnswer={this.handleDeleteAnswer}
+            username={this.props.username}
           />
         );
       }
@@ -325,6 +392,8 @@ export class AnswerPage extends React.Component {
             x={x}
             upvoted_array={this.state.upvoted_answers_id}
             downvoted_array={this.state.downvoted_answers_id}
+            handleDeleteAnswer={this.handleDeleteAnswer}
+            username={this.props.username}
           />
         );
       }
@@ -375,8 +444,13 @@ export class AnswerPage extends React.Component {
               {questionBodyBox}
               <Divider />
               <div className="AnswerPage__question-creator">
+
                 Asked by <Link to={`/user/${q_user}`}>{q_user}</Link> on{" "}
-                {questionDate}
+
+                {questionDate}&nbsp;
+
+                {deleteButtons}
+
               </div>
             </div>
           </div>
