@@ -1,9 +1,10 @@
 // @flow
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Divider } from 'antd';
+import { Divider, Icon } from 'antd';
 import './index.css';
 import { AnswerBox, TagList, VotingButtons } from '../../components';
+import swal from "sweetalert";
 import {
   getApiQuestionById,
   getApiAnswerById,
@@ -177,6 +178,53 @@ export default class AnswerPage extends React.Component<Props, State> {
     postApiAnswer(answer, questionId);
   };
 
+  handleDeleteQuestion = (q_id) => {
+    swal({
+      title: "Delete this question",
+      text:"Are you sure that you wish to delete this question?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true
+    }).then(willDelete => {
+      if (willDelete) {
+        swal("This question has been deleted!", {
+        icon: "success"
+      });
+      deleteQuestion(q_id)
+      .then(response => {
+        console.log(response);
+      })
+      .catch(e => alert(e.response.data.error));
+    } else {
+      swal("Your changes have been discarded.");
+    }
+    });
+  }
+
+  handleDeleteAnswer = (a_id) => {
+    swal({
+      title: "Delete this answer",
+      text:"Are you sure that you wish to delete this answer?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true
+    }).then(willDelete => {
+      if (willDelete) {
+        swal("This answer has been deleted!", {
+        icon: "success"
+      });
+      deleteAnswer(a_id)
+      .then(response => {
+        console.log(response);
+      })
+      .catch(e => alert(e.response.data.error));
+      setTimeout(() => this.getAnswerList(), 500);
+    } else {
+      swal("Your changes have been discarded.");
+    }
+    });
+  }
+
   handleChange = (event:Object) => {
     this.setState({ answer: event.target.value });
   };
@@ -204,11 +252,25 @@ export default class AnswerPage extends React.Component<Props, State> {
       questionCreator = question.user_id.username;
     }
 
+
     let verified;
     if (loggedIn && questionCreator === username) {
       verified = true;
     } else {
       verified = false;
+    }
+
+    let deleteButtons;
+    if (verified) {
+      deleteButtons = (
+        <button className="AnswerPage__question-delete" onClick={ () => this.handleDeleteQuestion(question.id)} type="primary">
+            <Icon type="delete" />
+        </button>
+      );
+    } else {
+      deleteButtons = (
+        <div></div>
+      );
     }
 
     let numberOfAnswersTitle;
@@ -235,34 +297,42 @@ export default class AnswerPage extends React.Component<Props, State> {
     answerList.forEach((x, key) => {
       if (x.is_accepted) {
         acceptedAnswerKey = key;
-        answerListBox.push(<AnswerBox
-          key={key}
-          handleAccept={this.handleAccept}
-          handleReject={this.handleReject}
-          handleDownvoteButton={this.handleDownvoteButton}
-          handleUpvoteButton={this.handleUpvoteButton}
-          verified={verified}
-          x={x}
-          upvotedArray={this.state.upvotedAnswersId}
-          downvotedArray={this.state.downvotedAnswersId}
-        />);
+        answerListBox.push(
+          <AnswerBox
+            key={key}
+            handleAccept={this.handleAccept}
+            handleReject={this.handleReject}
+            handleDownvoteButton={this.handleDownvoteButton}
+            handleUpvoteButton={this.handleUpvoteButton}
+            verified={verified}
+            x={x}
+            upvoted_array={this.state.upvoted_answers_id}
+            downvoted_array={this.state.downvoted_answers_id}
+            handleDeleteAnswer={this.handleDeleteAnswer}
+            username={this.props.username}
+          />
+        );
       }
     });
 
     // add the rest of the answerbox
     answerList.forEach((x, key) => {
       if (key !== acceptedAnswerKey) {
-        answerListBox.push(<AnswerBox
-          key={key}
-          handleAccept={this.handleAccept}
-          handleReject={this.handleReject}
-          handleDownvoteButton={this.handleDownvoteButton}
-          handleUpvoteButton={this.handleUpvoteButton}
-          verified={verified}
-          x={x}
-          upvotedArray={this.state.upvotedAnswersId}
-          downvotedArray={this.state.downvotedAnswersId}
-        />);
+        answerListBox.push(
+          <AnswerBox
+            key={key}
+            handleAccept={this.handleAccept}
+            handleReject={this.handleReject}
+            handleDownvoteButton={this.handleDownvoteButton}
+            handleUpvoteButton={this.handleUpvoteButton}
+            verified={verified}
+            x={x}
+            upvoted_array={this.state.upvoted_answers_id}
+            downvoted_array={this.state.downvoted_answers_id}
+            handleDeleteAnswer={this.handleDeleteAnswer}
+            username={this.props.username}
+          />
+        );
       }
     });
 
@@ -309,8 +379,12 @@ export default class AnswerPage extends React.Component<Props, State> {
               {questionBodyBox}
               <Divider />
               <div className="AnswerPage__question-creator">
-                Asked by <Link to={`/user/${questionCreator}`}>{questionCreator}</Link> on{' '}
-                {questionDate}
+                Asked by <Link to={`/user/${q_user}`}>{q_user}</Link> on{" "}
+
+                {questionDate}&nbsp;
+
+                {deleteButtons}
+
               </div>
             </div>
           </div>

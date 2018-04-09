@@ -76,3 +76,8 @@
     margin-top: 3%;
     margin-right: 1%;
 }
+
+.AnswerPage__question-delete {
+    border:none;
+    outline:none;
+}

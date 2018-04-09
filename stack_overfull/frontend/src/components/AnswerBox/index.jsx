@@ -5,6 +5,9 @@ import { Divider } from 'antd';
 import './index.css';
 import { AcceptRejectButton, VotingButtons } from '../../components';
 import { formatDate } from '../../utils/api';
+import { QuestionBox } from "../QuestionBox";
+import { Icon } from "antd";
+
 
 type Props = {
   handleAccept: () => {},
@@ -38,6 +41,19 @@ const AnswerBox = (props: Props) => {
     answerBoxClass = 'AnswerBox--blue';
   }
 
+        let deleteButtons;
+    if (username === x.user_id.username) {
+      deleteButtons = (
+        <button className="AnswerBox__delete" onClick= {() => handleDeleteAnswer(x.id)} type="primary">
+          <Icon type="delete" />
+        </button>
+      );
+    } else {
+      deleteButtons = (
+        <div></div>
+      );
+    }
+        
   const date = formatDate(x.date_created.replace('T', ' at ').substring(0, 19));
 
   return (
@@ -69,9 +85,30 @@ const AnswerBox = (props: Props) => {
               ''
             )}
           </div>
-          <div className="AnswerBox__username">
-            Answered by&nbsp;<Link to={`/user/${x.user_id.username}`}>{x.user_id.username}</Link>&nbsp;on{' '}
-            {date}
+          <Divider />
+          <div className="AnswerBox__row">
+            <div className="AnswerBox__button-area">
+              {verified ? (
+                <AcceptRejectButton
+                  handleAccept={() => handleAccept(x.id)}
+                  handleReject={() => handleReject(x.id)}
+                  accepted={x.is_accepted}
+                  rejected={x.is_rejected}
+                  a_id={x.id}
+                />
+              ) : (
+                ""
+              )}
+            </div>
+            <div className="AnswerBox__username">
+
+              Answered by&nbsp;<Link to={`/user/${x.user_id.username}`}>{x.user_id.username}</Link>&nbsp;on {date}
+              
+              &nbsp;
+              
+              {deleteButtons}
+
+            </div>
           </div>
         </div>
       </div>
