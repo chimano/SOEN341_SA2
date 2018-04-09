@@ -1,5 +1,5 @@
 from django.contrib import admin
-from so_endpoint.models import *
+from so_endpoint.models import (Question, Answer, Profile, Tag, Job)
 
 # Register your models here.
 admin.site.register(Question)
