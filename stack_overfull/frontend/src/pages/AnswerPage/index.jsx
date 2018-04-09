@@ -15,6 +15,8 @@ import {
   voteAnswer,
   voteQuestion,
   formatDate,
+  deleteQuestion,
+  deleteAnswer,
 } from '../../utils/api';
 
 type Props = {
@@ -178,7 +180,7 @@ export default class AnswerPage extends React.Component<Props, State> {
     postApiAnswer(answer, questionId);
   };
 
-  handleDeleteQuestion = (q_id) => {
+  handleDeleteQuestion = (questionId) => {
     swal({
       title: "Delete this question",
       text:"Are you sure that you wish to delete this question?",
@@ -190,7 +192,7 @@ export default class AnswerPage extends React.Component<Props, State> {
         swal("This question has been deleted!", {
         icon: "success"
       });
-      deleteQuestion(q_id)
+      deleteQuestion(questionId)
       .then(response => {
         console.log(response);
       })
@@ -201,7 +203,7 @@ export default class AnswerPage extends React.Component<Props, State> {
     });
   }
 
-  handleDeleteAnswer = (a_id) => {
+  handleDeleteAnswer = (answerId) => {
     swal({
       title: "Delete this answer",
       text:"Are you sure that you wish to delete this answer?",
@@ -213,7 +215,7 @@ export default class AnswerPage extends React.Component<Props, State> {
         swal("This answer has been deleted!", {
         icon: "success"
       });
-      deleteAnswer(a_id)
+      deleteAnswer(answerId)
       .then(response => {
         console.log(response);
       })
@@ -306,8 +308,8 @@ export default class AnswerPage extends React.Component<Props, State> {
             handleUpvoteButton={this.handleUpvoteButton}
             verified={verified}
             x={x}
-            upvoted_array={this.state.upvoted_answers_id}
-            downvoted_array={this.state.downvoted_answers_id}
+            upvotedArray={this.state.upvotedAnswersId}
+            downvotedArray={this.state.downvotedAnswersId}
             handleDeleteAnswer={this.handleDeleteAnswer}
             username={this.props.username}
           />
@@ -327,8 +329,8 @@ export default class AnswerPage extends React.Component<Props, State> {
             handleUpvoteButton={this.handleUpvoteButton}
             verified={verified}
             x={x}
-            upvoted_array={this.state.upvoted_answers_id}
-            downvoted_array={this.state.downvoted_answers_id}
+            upvotedArray={this.state.upvotedAnswersId}
+            downvotedArray={this.state.downvotedAnswersId}
             handleDeleteAnswer={this.handleDeleteAnswer}
             username={this.props.username}
           />
@@ -379,7 +381,7 @@ export default class AnswerPage extends React.Component<Props, State> {
               {questionBodyBox}
               <Divider />
               <div className="AnswerPage__question-creator">
-                Asked by <Link to={`/user/${q_user}`}>{q_user}</Link> on{" "}
+                Asked by <Link to={`/user/${questionCreator}`}>{questionCreator}</Link> on{" "}
 
                 {questionDate}&nbsp;
 

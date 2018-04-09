@@ -5,19 +5,20 @@ import { Divider } from 'antd';
 import './index.css';
 import { AcceptRejectButton, VotingButtons } from '../../components';
 import { formatDate } from '../../utils/api';
-import { QuestionBox } from "../QuestionBox";
-import { Icon } from "antd";
-
+import { QuestionBox } from '../QuestionBox';
+import { Icon } from 'antd';
 
 type Props = {
   handleAccept: () => {},
   handleReject: () => {},
   handleDownvoteButton: () => {},
   handleUpvoteButton: () => {},
+  handleDeleteAnswer: () => {},
   verified: boolean,
   x: Object,
   upvotedArray: Array<Object>,
   downvotedArray: Array<Object>,
+  username: string,
 };
 
 const AnswerBox = (props: Props) => {
@@ -26,10 +27,12 @@ const AnswerBox = (props: Props) => {
     handleReject,
     handleDownvoteButton,
     handleUpvoteButton,
+    handleDeleteAnswer,
     verified,
     x,
     upvotedArray,
     downvotedArray,
+    username,
   } = props;
 
   let answerBoxClass;
@@ -41,19 +44,17 @@ const AnswerBox = (props: Props) => {
     answerBoxClass = 'AnswerBox--blue';
   }
 
-        let deleteButtons;
-    if (username === x.user_id.username) {
-      deleteButtons = (
-        <button className="AnswerBox__delete" onClick= {() => handleDeleteAnswer(x.id)} type="primary">
-          <Icon type="delete" />
-        </button>
-      );
-    } else {
-      deleteButtons = (
-        <div></div>
-      );
-    }
-        
+  let deleteButtons;
+  if (username === x.user_id.username) {
+    deleteButtons = (
+      <button className="AnswerBox__delete" onClick={() => handleDeleteAnswer(x.id)} type="primary">
+        <Icon type="delete" />
+      </button>
+    );
+  } else {
+    deleteButtons = <div />;
+  }
+
   const date = formatDate(x.date_created.replace('T', ' at ').substring(0, 19));
 
   return (
@@ -72,20 +73,6 @@ const AnswerBox = (props: Props) => {
         </div>
         <Divider />
         <div className="AnswerBox__row">
-          <div className="AnswerBox__button-area">
-            {verified ? (
-              <AcceptRejectButton
-                handleAccept={handleAccept}
-                handleReject={handleReject}
-                accepted={x.isAccepted}
-                rejected={x.isRejected}
-                answerId={x.id}
-              />
-            ) : (
-              ''
-            )}
-          </div>
-          <Divider />
           <div className="AnswerBox__row">
             <div className="AnswerBox__button-area">
               {verified ? (
@@ -97,17 +84,14 @@ const AnswerBox = (props: Props) => {
                   a_id={x.id}
                 />
               ) : (
-                ""
+                ''
               )}
             </div>
             <div className="AnswerBox__username">
-
-              Answered by&nbsp;<Link to={`/user/${x.user_id.username}`}>{x.user_id.username}</Link>&nbsp;on {date}
-              
+              Answered by&nbsp;<Link to={`/user/${x.user_id.username}`}>{x.user_id.username}</Link>&nbsp;on{' '}
+              {date}
               &nbsp;
-              
               {deleteButtons}
-
             </div>
           </div>
         </div>
