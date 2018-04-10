@@ -17,6 +17,7 @@ type Props = {
   linkedin: string,
   lastLogin: string,
   isEditable: boolean,
+  currentUsername: string,
 };
 
 const UserInfo = (props: Props) => {
@@ -35,6 +36,7 @@ const UserInfo = (props: Props) => {
     linkedin,
     lastLogin,
     isEditable,
+    currentUsername,
   } = props;
 
   let divContent;
@@ -132,7 +134,6 @@ const UserInfo = (props: Props) => {
       </div>
     );
     const hoursSinceLastLogin = (Date.now() - Date.parse(lastLogin)) / 3600000;
-
     divContent = (
       <div>
         <h2> {username}'s profile </h2>
@@ -161,7 +162,7 @@ const UserInfo = (props: Props) => {
             <div>{reputation} points</div>
           </div>
         </div>
-        {editButtonElement}
+        {currentUsername === username && editButtonElement}
       </div>
     );
   } else {
