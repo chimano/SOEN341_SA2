@@ -279,8 +279,7 @@ class AnswerAcceptView(TemplateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def post(self, request, answer_id, undo=False):
-
+    def post(self, request, answer_id):
         try:
             answer = Answer.objects.get(pk=answer_id)
             to_question = answer.question_id
@@ -295,6 +294,7 @@ class AnswerAcceptView(TemplateView):
         if to_question.user_id != request.user:
             return JsonResponse({'error': 'User is not the author of the question'}, status=400)
 
+        undo = True if to_question.accepted_answer_id == answer else False
         # if question.accepted_answer_id is not None and undo is False:
         #    return JSONResponse({'error': 'An answer to the question is alreay accepted'})
 
@@ -315,7 +315,7 @@ class AnswerRejectView(TemplateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def post(self, request, answer_id, undo=False):
+    def post(self, request, answer_id):
 
         try:
             answer = Answer.objects.get(pk=answer_id)
@@ -330,6 +330,8 @@ class AnswerRejectView(TemplateView):
 
         if to_question.user_id != request.user:
             return JsonResponse({'error': 'User is not the author of the question'}, status=400)
+
+        undo = True if answer in to_question.rejected_answers_ids.all() else False
 
         if not undo:
             to_question.rejected_answers_ids.add(answer)
