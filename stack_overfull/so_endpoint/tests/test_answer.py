@@ -477,7 +477,7 @@ class AnswerAcceptRejectViewTest(TestCase):
         self.assertEqual(1, response.json()['accepted_answer_id'])
 
         response = self.client.post(
-            '/api/answer/1/accept/undo/',
+            '/api/answer/1/accept/',
         )
 
         self.assertEqual(response.status_code, 200)
@@ -505,14 +505,14 @@ class AnswerAcceptRejectViewTest(TestCase):
         self.assertTrue(2 in response.json()['rejected_answers_ids'])
 
         response = self.client.post(
-            '/api/answer/2/reject/undo/',
+            '/api/answer/2/reject/',
         )
         self.assertEqual(response.status_code, 200)
         self.assertTrue(1 in response.json()['rejected_answers_ids'])
         self.assertTrue(2 not in response.json()['rejected_answers_ids'])
 
         response = self.client.post(
-            '/api/answer/1/reject/undo/',
+            '/api/answer/1/reject/',
         )
         self.assertEqual(response.status_code, 200)
         self.assertTrue(1 not in response.json()['rejected_answers_ids'])
@@ -533,7 +533,7 @@ class AnswerAcceptRejectViewTest(TestCase):
         self.assertEqual(response.status_code, 400)
 
         response = self.client.post(
-            '/api/answer/1/accept/undo/',
+            '/api/answer/1/accept/',
         )
         self.assertEqual(response.status_code, 400)
 
@@ -546,7 +546,7 @@ class AnswerAcceptRejectViewTest(TestCase):
         self.assertEqual(response.status_code, 400)
 
         response = self.client.post(
-            '/api/answer/1/accept/undo/',
+            '/api/answer/1/accept/',
         )
         self.assertEqual(response.status_code, 400)
 
@@ -565,7 +565,7 @@ class AnswerAcceptRejectViewTest(TestCase):
         self.assertEqual(response.status_code, 400)
 
         response = self.client.post(
-            '/api/answer/1/reject/undo/',
+            '/api/answer/1/reject/',
         )
         self.assertEqual(response.status_code, 400)
 
@@ -578,7 +578,7 @@ class AnswerAcceptRejectViewTest(TestCase):
         self.assertEqual(response.status_code, 400)
 
         response = self.client.post(
-            '/api/answer/1/reject/undo/',
+            '/api/answer/1/reject/',
         )
         self.assertEqual(response.status_code, 400)
 

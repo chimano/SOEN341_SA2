@@ -8,20 +8,24 @@ type Props = {
   handleReject: number => {},
   handleAccept: number => {},
   answerId: number,
+  accepted: boolean,
+  rejected: boolean,
 };
 
 export default class AcceptRejectButton extends React.Component<Props, {}> {
   reject() {
-    const { handleReject, answerId } = this.props;
+    const { handleReject, answerId, rejected } = this.props;
+    const textEnding = rejected ? "undo this answer's rejection?" : 'reject this answer?';
+    const responseEnding = rejected ? 'is no longer rejected' : 'has been rejected!';
     swal({
       title: 'Please confirm your decision',
-      text: 'Are you sure that you wish to reject this answer?',
+      text: `Are you sure that you wish to ${textEnding}`,
       icon: 'warning',
       buttons: true,
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        swal('This answer has been rejected!', {
+        swal(`This answer ${responseEnding}`, {
           icon: 'success',
         });
         handleReject(answerId);
@@ -32,16 +36,18 @@ export default class AcceptRejectButton extends React.Component<Props, {}> {
   }
 
   accept() {
-    const { handleAccept, answerId } = this.props;
+    const { handleAccept, answerId, accepted } = this.props;
+    const textEnding = accepted ? "undo this answer's acceptance?" : 'accept this answer?';
+    const responseEnding = accepted ? 'is no longer accepted' : 'has been accepted!';
     swal({
       title: 'Please confirm your decision',
-      text: 'Are you sure that you wish to accept this answer?',
+      text: `Are you sure that you wish to ${textEnding}`,
       icon: 'warning',
       buttons: true,
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        swal('This answer has been accepted!', {
+        swal(`This answer ${responseEnding}`, {
           icon: 'success',
         });
         handleAccept(answerId);
@@ -52,14 +58,15 @@ export default class AcceptRejectButton extends React.Component<Props, {}> {
   }
 
   render() {
+    const { accepted, rejected } = this.props;
     return (
       <div className="AcceptRejectButton">
         <Button onClick={() => this.reject()} type="primary">
-          Reject
+          {rejected ? <b>Undo Reject</b> : <b>Reject</b>}
         </Button>
         <div>&nbsp;</div>
         <Button onClick={() => this.accept()} type="primary">
-          Accept
+          {accepted ? <b>Undo Accept</b> : <b>Accept</b>}
         </Button>
       </div>
     );
