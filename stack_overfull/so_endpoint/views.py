@@ -17,8 +17,7 @@ from so_endpoint.serializers import (QuestionSerializer, AnswerSerializer,
                                      AccountSerializerPrivate, AccountSerializerPublic,
                                      TagViewSerializer, JobSerializer, JobAppSerializer)
 
-from so_endpoint.models import Question, Answer, Profile, Tag, Job, JobApp
-
+from so_endpoint.models import Question, Answer, Tag, Job, JobApp
 
 
 # Create your views here.
@@ -53,7 +52,7 @@ class QuestionView(TemplateView):
                                 question_text=question_text, user_id=user)
 
             question.save()
-            #question should exist in db since question.tags is required
+            # question should exist in db since question.tags is required
             add_tags_to_question(question, question_tags)
             question.save()
 
@@ -76,7 +75,7 @@ class QuestionView(TemplateView):
 
         if q_id is None:
             # If q_id is not set then it returns a list of questions
-            page = 1  if page is None else int(page)
+            page = 1 if page is None else int(page)
             limit = 10 if limit is None else int(limit)
             order = "desc" if order is None else order
             modifier = '-' if order == 'desc' else ''
@@ -96,7 +95,7 @@ class QuestionView(TemplateView):
             }
 
             return JsonResponse(response)
-            
+
         # Returns a single question
         try:
             question = Question.objects.get(id=q_id)
@@ -104,7 +103,6 @@ class QuestionView(TemplateView):
             return JsonResponse({'error': 'Question does not exist'}, status=400)
         serialized = QuestionSerializer(question).data
         return JsonResponse(serialized)
-
 
     def put(self, request, *args, **kwargs):
         """
@@ -121,7 +119,7 @@ class QuestionView(TemplateView):
 
             if request.user != question.user_id:
                 return JsonResponse({'error': 'This user cannot edit this question'},
-                                     status=400)
+                                    status=400)
 
             question.question_head = question_head
             question.question_text = question_text
@@ -134,7 +132,6 @@ class QuestionView(TemplateView):
         except KeyError:
             return JsonResponse({'error': 'There was an error parsing the request'}, status=400)
 
-
     def delete(self, request, *args, **kwargs):
         """
         This method is used in order to delete questions
@@ -144,13 +141,12 @@ class QuestionView(TemplateView):
             json_data = json.loads(request.body)
             question_id = json_data['q_id']
 
-
             question = Question.objects.get(id=question_id)
 
             if request.user != question.user_id:
                 return JsonResponse({'error': 'This user cannot delete this question'},
-                                     status=400)
-                                     
+                                    status=400)
+
             question.delete()
 
             return JsonResponse({'success': 'Question has been deleted'})
@@ -159,7 +155,6 @@ class QuestionView(TemplateView):
             return JsonResponse({'error': 'Question does not exist'}, status=400)
         except KeyError:
             return JsonResponse({'error': 'There was an error parsing the request'}, status=400)
-
 
 
 class AnswerView(TemplateView):
@@ -195,7 +190,8 @@ class AnswerView(TemplateView):
             # Checks to see if answer has valid length
             if len(answer) <= 1:
                 return JsonResponse({'error': 'Answer length is invalid'}, status=400)
-            answer_db = Answer(question_id=question, answer_text=answer, user_id=user)
+            answer_db = Answer(question_id=question,
+                               answer_text=answer, user_id=user)
             answer_db.save()
 
             return JsonResponse({'id': answer_db.id})
@@ -225,7 +221,6 @@ class AnswerView(TemplateView):
             return JsonResponse({'answer_list': serialized})
         except KeyError:
             return JsonResponse({'error': 'There was an error parsing the request'}, status=400)
-    
 
     def put(self, request, *args, **kwargs):
         """
@@ -241,7 +236,7 @@ class AnswerView(TemplateView):
 
             if request.user != answer.user_id:
                 return JsonResponse({'error': 'This user cannot edit this answer'},
-                                     status=400)
+                                    status=400)
 
             answer.answer_text = answer_text
             answer.save()
@@ -252,7 +247,6 @@ class AnswerView(TemplateView):
             return JsonResponse({'error': 'Answer does not exist'}, status=400)
         except KeyError:
             return JsonResponse({'error': 'There was an error parsing the request'}, status=400)
-
 
     def delete(self, request, *args, **kwargs):
         """
@@ -267,7 +261,7 @@ class AnswerView(TemplateView):
 
             if request.user != answer.user_id:
                 return JsonResponse({'error': 'This user cannot delete this answer'},
-                                     status=400)
+                                    status=400)
 
             answer.delete()
 
@@ -364,6 +358,8 @@ class UserNameView(TemplateView):
             return JsonResponse({'error': 'User does not exist'}, status=400)
 
 # Return the list of users in the database
+
+
 class UserView(TemplateView):
 
     @method_decorator(csrf_exempt)
@@ -781,7 +777,7 @@ class SearchView(TemplateView):
                 answers_count=Count('answer')
             ).filter(answers_count__gt=0)
 
-            #Get a new answered_set without the answers_count annotation
+            # Get a new answered_set without the answers_count annotation
             answered_set = Question.objects.filter(pk__in=answered_set)
 
             # find accepted questions set
@@ -792,14 +788,18 @@ class SearchView(TemplateView):
             matching_questions = matching_questions.distinct()  # remove duplicates
 
             if 'answered' in filters:
-                matching_questions = matching_questions.intersection(answered_set)
+                matching_questions = matching_questions.intersection(
+                    answered_set)
             elif 'notanswered' in filters:
-                matching_questions = matching_questions.difference(answered_set)
+                matching_questions = matching_questions.difference(
+                    answered_set)
 
             if 'accepted' in filters:
-                matching_questions = matching_questions.intersection(accepted_set)
+                matching_questions = matching_questions.intersection(
+                    accepted_set)
             elif 'notaccepted' in filters:
-                matching_questions = matching_questions.difference(accepted_set)
+                matching_questions = matching_questions.difference(
+                    accepted_set)
 
             matching_questions = matching_questions.order_by(
                 modifier+sorted_by)
@@ -820,6 +820,7 @@ class SearchView(TemplateView):
             # either TypeError or ValueError from query params
             print(repr(error))
             return JsonResponse({'error': repr(error)}, status=400)
+
 
 class TagView(TemplateView):
     """
@@ -863,6 +864,7 @@ class TagView(TemplateView):
             # either TypeError or ValueError from query params
             print(repr(error))
             return JsonResponse({'error': repr(error)}, status=400)
+
 
 class TagViewName(TemplateView):
     """
@@ -942,13 +944,13 @@ class JobView(TemplateView):
                           description=description,
                           posted_by=request.user)
                 job.save()
-                return JsonResponse({'success':'You have successfully added a job to the database'})
+                return JsonResponse({'success': 'You have successfully added a job to the database'})
 
-            return JsonResponse({'error':'This account is not an employer'}, status=400)
+            return JsonResponse({'error': 'This account is not an employer'}, status=400)
         except KeyError:
-            return JsonResponse({'error':'There was an error parsing the request'}, status=400)
+            return JsonResponse({'error': 'There was an error parsing the request'}, status=400)
         except AttributeError:
-            return JsonResponse({'error':'User is not logged in'}, status=400)
+            return JsonResponse({'error': 'User is not logged in'}, status=400)
         except ValueError:
             return JsonResponse({'error': 'One or more inputs are invalid'},
                                 status=400)
@@ -977,7 +979,8 @@ class JobAppView(TemplateView):
 
             applications = JobApp.objects.filter(job_id=job)
             # get list of job that are in the requested category
-            serialized_applications = JobAppSerializer(applications, many=True).data
+            serialized_applications = JobAppSerializer(
+                applications, many=True).data
 
             return JsonResponse({'application_list': serialized_applications})
         except Job.DoesNotExist:
@@ -1005,8 +1008,6 @@ class JobAppView(TemplateView):
             return JsonResponse({'success': 'Application was successfully created'})
         except Job.DoesNotExist:
             return JsonResponse({'error': 'Job id is not valid'}, status=400)
-
-
 
 
 class ProfileQuestionView(TemplateView):
@@ -1056,6 +1057,7 @@ def paginate(query_set, page_size, page):
 
     return query_set[first_index:last_index]
 
+
 class ProfileJobView(TemplateView):
     """
     This view handles the /api/user/name/<username>/jobs/
@@ -1083,7 +1085,7 @@ def add_tags_to_question(question, tags_list):
     if not tags_list:
         return question
 
-    #strip spaces and convert to lowercase
+    # strip spaces and convert to lowercase
     tags_list = [tag.strip().lower() for tag in tags_list]
 
     for tag_text in tags_list:
@@ -1102,7 +1104,7 @@ def filter_questions_by_tags(question_set, tags_list):
     if not tags_list:
         return question_set
 
-    #strip spaces and convert to lowercase
+    # strip spaces and convert to lowercase
     tags_list = [tag.strip().lower() for tag in tags_list]
 
     return question_set.filter(tags__in=tags_list)

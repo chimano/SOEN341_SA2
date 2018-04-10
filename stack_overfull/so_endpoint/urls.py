@@ -13,15 +13,13 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path, include, re_path
-from django.views.generic import TemplateView
+from django.urls import re_path
 from so_endpoint.views import (QuestionView, QuestionVoteView, AnswerView,
-                              AnswerVoteView, AnswerAcceptView, AnswerRejectView,
-                              UserLoginView, UserRegisterView, UserLogoutView,
-                              UserView, UserMeView, UserNameView, ProfileQuestionView,
-                              SearchView, TagView, TagViewName, JobView,
-                              JobAppView, ProfileJobView)
+                               AnswerVoteView, AnswerAcceptView, AnswerRejectView,
+                               UserLoginView, UserRegisterView, UserLogoutView,
+                               UserView, UserMeView, UserNameView, ProfileQuestionView,
+                               SearchView, TagView, TagViewName, JobView,
+                               JobAppView, ProfileJobView)
 
 urlpatterns = [
     re_path(r'^question/$', QuestionView.as_view()),
@@ -29,10 +27,14 @@ urlpatterns = [
     re_path(r'^answer/$', AnswerView.as_view()),
     re_path(r'^answer/vote/$', AnswerVoteView.as_view()),
 
-    re_path(r'^answer/(?P<answer_id>\d+)/accept/$', AnswerAcceptView.as_view() ),
-    re_path(r'^answer/(?P<answer_id>\d+)/accept/undo/$', AnswerAcceptView.as_view(), {'undo':True} ),
-    re_path(r'^answer/(?P<answer_id>\d+)/reject/$', AnswerRejectView.as_view() ),
-    re_path(r'^answer/(?P<answer_id>\d+)/reject/undo/$', AnswerRejectView.as_view(), {'undo':True} ),
+    re_path(r'^answer/(?P<answer_id>\d+)/accept/$',
+            AnswerAcceptView.as_view()),
+    re_path(r'^answer/(?P<answer_id>\d+)/accept/undo/$',
+            AnswerAcceptView.as_view(), {'undo': True}),
+    re_path(r'^answer/(?P<answer_id>\d+)/reject/$',
+            AnswerRejectView.as_view()),
+    re_path(r'^answer/(?P<answer_id>\d+)/reject/undo/$',
+            AnswerRejectView.as_view(), {'undo': True}),
 
     re_path(r'^user/register/$', UserRegisterView.as_view()),
     re_path(r'^user/login/$', UserLoginView.as_view()),
@@ -42,9 +44,12 @@ urlpatterns = [
 
     # Get a specific user by username ex. api/user/name/TestUser/
     # Usernames may contain alphanumeric, _, @, +, . and - characters.
-    re_path(r'^user/name/(?P<username>[\w_@\+\.\-]+)/$', UserNameView.as_view()),
-    re_path(r'^user/name/(?P<username>[\w_@\+\.\-]+)/questions/$', ProfileQuestionView.as_view()),
-    re_path(r'^user/name/(?P<username>[\w_@\+\.\-]+)/jobs/$', ProfileJobView.as_view()),
+    re_path(
+        r'^user/name/(?P<username>[\w_@\+\.\-]+)/$', UserNameView.as_view()),
+    re_path(
+        r'^user/name/(?P<username>[\w_@\+\.\-]+)/questions/$', ProfileQuestionView.as_view()),
+    re_path(
+        r'^user/name/(?P<username>[\w_@\+\.\-]+)/jobs/$', ProfileJobView.as_view()),
     re_path(r'^search/$', SearchView.as_view()),
     re_path(r'^tag/$', TagView.as_view()),
     re_path(r'^tag/name/(?P<tagname>\w+)/$', TagViewName.as_view()),
