@@ -1,5 +1,5 @@
 import React from "react";
-import { QuestionEdit } from "./index.jsx";
+import { QuestionEdit } from "../../components";
 import { configure, shallow, mount, render } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 

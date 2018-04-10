@@ -1,74 +1,55 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { Tag } from "antd";
-import "./index.css";
-import {
-  QuestionList,
-  HottestTagList,
-} from "../../components";
-import {
-  getApiTags,
-} from "../../utils/api";
-import qs from "qs";
+// @flow
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Tag } from 'antd';
+import './index.css';
+import { HottestTagList } from '../../components';
+import { getApiTags } from '../../utils/api';
 
+type State = {
+  mostUsedTagsList: Array<string>,
+  categoryList: Array<string>,
+};
 
-export class CategoryListPage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      questionList: [],
-      order: "desc",
-      title: "All",
-      filters: [""],
-      tagInfo: {},
-      mostUsedTagsList: [],
+export default class CategoryListPage extends React.Component<{}, State> {
+  state = {
+    mostUsedTagsList: [],
 
-      categoryList: [
-        "business",
-        "cooking",
-        "entertainment",
-        "fashion",
-        "programming",
-        "social",
-        "technology"
-      ],
-    };
-  }
+    categoryList: [
+      'business',
+      'cooking',
+      'entertainment',
+      'fashion',
+      'programming',
+      'social',
+      'technology',
+    ],
+  };
 
   componentWillMount = () => {
     this.getMostUsedTagsList();
   };
 
   getMostUsedTagsList = () => {
-
-    getApiTags("desc", "10", "question_count")
-      .then(response => {
-        console.log(
-          'response of getApiTags("desc", 10, "question_count")',
-          response
-        );
-
-        let mostUsedTagsList = []
-        //collect tag names from the api response
-        response.data.tag_list.forEach(tagInfo => {
-            mostUsedTagsList.push(tagInfo.tag_text)
-        })
-
-        this.setState({
-          mostUsedTagsList: mostUsedTagsList
-        });
-      })
-      .catch(error => {
-        console.log(error);
+    getApiTags('desc', '10', 'question_count').then((response) => {
+      const mostUsedTagsList = [];
+      // collect tag names from the api response
+      response.data.tag_list.forEach((tagInfo) => {
+        mostUsedTagsList.push(tagInfo.tag_text);
       });
+      this.setState({
+        mostUsedTagsList,
+      });
+    });
+    // .catch((error) => {
+    //   console.log(error);
+    // });
   };
 
   render() {
-    console.log("CategoryListPage state: ", this.state);
+    const { categoryList, mostUsedTagsList } = this.state;
 
-    const { categoryList, filters, tagname = this.props.match.params.tags, mostUsedTagsList} = this.state;
-
-    let hottestTags = "";
+    let hottestTags = '';
     if (mostUsedTagsList) {
       hottestTags = <HottestTagList hotTags={mostUsedTagsList} />;
     }
@@ -77,12 +58,10 @@ export class CategoryListPage extends React.Component {
       <header>
         <nav>
           <div>
-            <h1 className="CategoryListPage__welcomeTitle1">
-             QUESTION CATEGORIES AND TAGS
-            </h1>
-          
+            <h1 className="CategoryListPage__welcomeTitle1">QUESTION CATEGORIES AND TAGS</h1>
+
             <h3 className="CategoryListPage__welcomeTitle2">
-            <br />
+              <br />
               MAIN CATEGORIES
             </h3>
           </div>
@@ -91,7 +70,7 @@ export class CategoryListPage extends React.Component {
             <ul className="CategoryListPage__bubbles">
               {categoryList.map((category, key) => (
                 <li key={key}>
-                  <Tag key={key} color="#108ee9">
+                  <Tag color="#108ee9">
                     <Link to={`/tags/${category}`}>{category}</Link>
                   </Tag>
                 </li>
@@ -99,18 +78,16 @@ export class CategoryListPage extends React.Component {
             </ul>
           </div>
 
-            <h3 className="CategoryListPage__welcomeTitle2">
+          <h3 className="CategoryListPage__welcomeTitle2">
             <br />
-              HOTTEST TAGS
-            </h3>
+            HOTTEST TAGS
+          </h3>
 
           <div className="CategoryListPage__categoryBox">
-            <ul className="CategoryListPage__bubbles">
-            {hottestTags}
-            </ul>
+            <ul className="CategoryListPage__bubbles">{hottestTags}</ul>
           </div>
-   
-        <br />
+
+          <br />
         </nav>
       </header>
     );

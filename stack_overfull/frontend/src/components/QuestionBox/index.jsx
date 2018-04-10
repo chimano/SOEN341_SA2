@@ -1,42 +1,41 @@
-import React from "react";
-import "./index.css";
-import { Link } from "react-router-dom";
-import { VotingButtons, TagList } from "../../components";
-import { formatDate } from "../../utils/api";
-import { Divider } from "antd";
+// @flow
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Divider } from 'antd';
+import './index.css';
+import { TagList } from '../../components';
+import { formatDate } from '../../utils/api';
 
-export class QuestionBox extends React.Component {
-  handleChange = event => {
-    this.setState({ answer: event.target.value });
-  };
+type Props = {
+  dateCreated: string,
+  questionHead: string,
+  username: string,
+  questionId: number,
+  tags: Array<string>,
+};
 
-  render() {
-    const {
-      date_created,
-      question_head,
-      username,
-      q_id,
-      showButtons,
-      tags
-    } = this.props;
+const QuestionBox = (props: Props) => {
+  const {
+    dateCreated, questionHead, username, questionId, tags,
+  } = props;
 
-    let date = formatDate(date_created);
+  const date = formatDate(dateCreated);
 
-    return (
-      <div className="QuestionBox grey-border">
-        <div style={{ display: "flex" }}>
-          <Link to={`/question/${q_id}`} className="QuestionBox__text">
-            {question_head}
-          </Link>
-        </div>
-        <Divider />
-        <div style={{ display: "flex" }}>
-          <TagList tags={tags} />
-          <div className="QuestionBox__user">
-            Asked by <Link to={`/user/${username}`}>{username}</Link> on {date}{" "}
-          </div>
+  return (
+    <div className="QuestionBox grey-border">
+      <div style={{ display: 'flex' }}>
+        <Link to={`/question/${questionId}`} className="QuestionBox__text">
+          {questionHead}
+        </Link>
+      </div>
+      <Divider />
+      <div style={{ display: 'flex' }}>
+        <TagList tags={tags} />
+        <div className="QuestionBox__user">
+          Asked by <Link to={`/user/${username}`}>{username}</Link> on {date}{' '}
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
+export default QuestionBox;

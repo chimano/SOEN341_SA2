@@ -1,215 +1,232 @@
-import React from "react";
+// @flow
+import React from 'react';
 import {
   getApiUserMe,
   postApiUserMe,
-  getApiQuestionById,
   getApiUserQuestionsAndAnsweredQuestions,
-  getApiUserNameInfo,
-  getApiUserNameJobs
-} from "../../utils/api";
-import "./index.css";
+  getApiUserNameJobs,
+} from '../../utils/api';
+import './index.css';
 import {
-  QuestionList,
   UserInfo,
   UserQuestionList,
   JobList,
-  ProfileTabs
-} from "../../components";
-import { Input, Button } from "antd";
+  ProfileTabs,
+} from '../../components';
 
-export class ProfilePage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: "",
-      email: "",
-      first_name: "",
-      last_name: "",
-      aboutMe: "",
-      reputation: "",
-      github: "",
-      linkedin: "",
-      last_login: "",
-      downvoted_questions: [],
-      upvoted_questions: [],
-      questions_asked: [],
-      questions_answered: [],
-      jobPostList: [],
-      is_editing: false, // make user info fields editable
-      is_saving_myinfo: false, // loading indicator for the edit button
-      is_employer: false,
-      currentTab: ""
-    };
+type State = {
+  username: string,
+  email: string,
+  firstName: string,
+  lastName: string,
+  aboutMe: string,
+  reputation: string,
+  github: string,
+  linkedin: string,
+  lastLogin: string,
+  downvotedQuestions: Array<Object>,
+  upvotedQuestions: Array<Object>,
+  questionsAsked: Array<Object>,
+  questionsAnswered: Array<Object>,
+  jobPostList: Array<Object>,
+  isEditing: boolean,
+  isSavingMyInfo: boolean,
+  isEmployer: boolean,
+  currentTab: string,
+}
+
+export default class ProfilePage extends React.Component<{}, State> {
+  state = {
+    username: '',
+    email: '',
+    firstName: '',
+    lastName: '',
+    aboutMe: '',
+    reputation: '',
+    github: '',
+    linkedin: '',
+    lastLogin: '',
+    downvotedQuestions: [],
+    upvotedQuestions: [],
+    questionsAsked: [],
+    questionsAnswered: [],
+    jobPostList: [],
+    isEditing: false, // make user info fields editable
+    isSavingMyInfo: false, // loading indicator for the edit button
+    isEmployer: false,
+    currentTab: '',
   }
 
   componentDidMount() {
-    this.getMyInfo().then(username => {
+    this.getMyInfo().then((username) => {
       this.getQuestionsRelatedToUser(username);
       this.getListOfJobsPostedByEmployer(username);
     });
   }
 
-  getListOfJobsPostedByEmployer = username => {
-    getApiUserNameJobs(username).then(response => {
-      this.setState({
-        jobPostList: response.data.posted_positions
-      });
-    });
-  };
-
-  getQuestionsRelatedToUser = username => {
-    getApiUserQuestionsAndAnsweredQuestions(username)
-      .then(response => {
-        this.setState({
-          questions_asked: response.data.asked_questions,
-          questions_answered: response.data.answered_questions,
-          upvoted_questions: response.data.upvoted_questions,
-          downvoted_questions: response.data.downvoted_questions
-        });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
-
-  onInputChange = (field, event) => {
+  onInputChange = (field: any, event: any) => {
     this.setState({ [field]: event.target.value });
   };
 
   onEditButtonClick = () => {
-    const { is_editing } = this.state;
+    const { isEditing } = this.state;
 
     // save the info if the user was editing it
-    if (is_editing) {
+    if (isEditing) {
       this.saveMyInfo();
     }
 
     // toggle the button between Save and Edit
-    this.setState({ is_editing: !is_editing });
+    this.setState({ isEditing: !isEditing });
   };
 
-  getMyInfo = () => {
-    return new Promise(resolve => {
-      getApiUserMe()
-        .then(response => {
-          console.log("response of getApiUserMe(): ", response);
-          this.setState({
-            username: response.data.username,
-            email: response.data.email,
-            first_name: response.data.first_name,
-            last_name: response.data.last_name,
-            aboutMe: response.data.profile.about_me,
-            reputation: response.data.profile.reputation,
-            github: response.data.profile.github,
-            linkedin: response.data.profile.linkedin,
-            last_login: response.data.last_login,
-            is_employer: response.data.profile.is_employer
-          });
-          resolve(response.data.username);
-        })
-        .catch(error => console.log(error));
+  getQuestionsRelatedToUser = (username:string) => {
+    getApiUserQuestionsAndAnsweredQuestions(username)
+      .then((response) => {
+        this.setState({
+          questionsAsked: response.data.asked_questions,
+          questionsAnswered: response.data.answered_questions,
+          upvotedQuestions: response.data.upvoted_questions,
+          downvotedQuestions: response.data.downvoted_questions,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  getListOfJobsPostedByEmployer = (username:string) => {
+    getApiUserNameJobs(username).then((response) => {
+      this.setState({
+        jobPostList: response.data.posted_positions,
+      });
     });
   };
 
+  getMyInfo = ():Promise<string> => new Promise((resolve) => {
+    getApiUserMe()
+      .then((response) => {
+        this.setState({
+          username: response.data.username,
+          email: response.data.email,
+          firstName: response.data.first_name,
+          lastName: response.data.last_name,
+          aboutMe: response.data.profile.about_me,
+          reputation: response.data.profile.reputation,
+          github: response.data.profile.github,
+          linkedin: response.data.profile.linkedin,
+          lastLogin: response.data.last_login,
+          isEmployer: response.data.profile.is_employer,
+        });
+        resolve(response.data.username);
+      })
+      .catch(error => console.log(error));
+  });
+
   saveMyInfo = () => {
-    const { email, first_name, last_name, aboutMe, github, linkedin } = this.state;
+    const {
+      email, firstName, lastName, aboutMe, github, linkedin,
+    } = this.state;
 
-    this.setState({ is_saving_myinfo: true });
+    this.setState({ isSavingMyInfo: true });
 
-    postApiUserMe(email, first_name, last_name, aboutMe, github, linkedin)
-      .then(response => {
-        console.log("response of postApiUserMe(): ", response);
-        this.setState({ is_saving_myinfo: false });
+    postApiUserMe(email, firstName, lastName, aboutMe, github, linkedin)
+      .then(() => {
+        this.setState({ isSavingMyInfo: false });
       })
       .catch(error => console.log(error));
   };
 
-  handleTabsChange = key => {
-    new Promise(resolve => {
+  handleTabsChange = (key:number) => {
+    /* eslint-disable no-new */
+    new Promise((resolve) => {
       switch (key) {
-        case "1":
+        case '1':
           this.setState({
-            currentTab: "profile"
+            currentTab: 'profile',
           });
           break;
-        case "2":
+        case '2':
           this.setState({
-            currentTab: "questionasked"
+            currentTab: 'questionasked',
           });
           break;
-        case "3":
+        case '3':
           this.setState({
-            currentTab: "questionanswered"
+            currentTab: 'questionanswered',
           });
           break;
-        case "4":
+        case '4':
           this.setState({
-            currentTab: "upvotedquestion"
+            currentTab: 'upvotedquestion',
           });
           break;
-        case "5":
+        case '5':
           this.setState({
-            currentTab: "downvotedquestion"
+            currentTab: 'downvotedquestion',
           });
-          break;        
+          break;
+        default:
+          this.setState({
+            currentTab: 'profile',
+          });
       }
       resolve();
-    })
+    });
   };
 
   render() {
-    console.log("my state", this.state);
     const {
       username,
       email,
-      first_name,
-      last_name,
+      firstName,
+      lastName,
       aboutMe,
       reputation,
       github,
       linkedin,
-      last_login,
-      downvoted_questions,
-      upvoted_questions,
-      questions_asked,
-      questions_answered,
-      is_editing,
-      is_saving_myinfo,
-      is_employer,
+      lastLogin,
+      downvotedQuestions,
+      upvotedQuestions,
+      questionsAsked,
+      questionsAnswered,
+      isEditing,
+      isSavingMyInfo,
+      isEmployer,
       currentTab,
-      jobPostList
+      jobPostList,
     } = this.state;
 
     let showTabPage;
-    if(currentTab == "" || currentTab == "profile") {
+    if (currentTab === '' || currentTab === 'profile') {
       showTabPage = (
-        <div className="showTabPage_div" style={{width:"70%"}}>
+        <div className="showTabPage_div" style={{ width: '70%' }}>
           <UserInfo
-            is_editing={is_editing}
+            isEditing={isEditing}
             onInputChange={this.onInputChange}
             onEditButtonClick={this.onEditButtonClick}
-            is_saving_myinfo={is_saving_myinfo}
+            isSavingMyInfo={isSavingMyInfo}
             username={username}
             email={email}
-            first_name={first_name}
-            last_name={last_name}
+            firstName={firstName}
+            lastName={lastName}
             aboutMe={aboutMe}
             reputation={reputation}
             github={github}
             linkedin={linkedin}
-            last_login={last_login}
+            lastLogin={lastLogin}
           />
         </div>
       );
     } else {
       showTabPage = (
-        <div className="showTabPage_div" style={{width:"90%"}}>
+        <div className="showTabPage_div" style={{ width: '90%' }}>
           <UserQuestionList
-            upvoted_questions={upvoted_questions}
-            downvoted_questions={downvoted_questions}
-            questions_asked={questions_asked}
-            questions_answered={questions_answered}
-            current_tab={currentTab}
+            upvotedQuestions={upvotedQuestions}
+            downvotedQuestions={downvotedQuestions}
+            questionsAsked={questionsAsked}
+            questionsAnswered={questionsAnswered}
+            currentTab={currentTab}
           />
         </div>
       );
@@ -218,44 +235,17 @@ export class ProfilePage extends React.Component {
     return (
       <div className="body-wrapper grey-background">
         <div className="page-width">
-        <ProfileTabs handleTabsChange={this.handleTabsChange} />
+          <ProfileTabs handleTabsChange={this.handleTabsChange} />
           <div>
             {showTabPage}
           </div>
-          {/* <div style={{ display: "flex" }}>
-            <div style={{width:"30%", marginRight:"10px"}}>
-              <UserInfo
-                is_editing={is_editing}
-                onInputChange={this.onInputChange}
-                onEditButtonClick={this.onEditButtonClick}
-                is_saving_myinfo={is_saving_myinfo}
-                username={username}
-                email={email}
-                first_name={first_name}
-                last_name={last_name}
-                aboutMe={aboutMe}
-                reputation={reputation}
-                github={github}
-                linkedin={linkedin}
-                last_login={last_login}
-              />
-            </div>
-            <div style={{ width: "70%", paddingLeft: "10px" }}>
-              <UserQuestionList
-                upvoted_questions={upvoted_questions}
-                downvoted_questions={downvoted_questions}
-                questions_asked={questions_asked}
-                questions_answered={questions_answered}
-              />
-            </div>
-          </div> */}
-          {is_employer ? (
+          {isEmployer ? (
             <div>
-              <h3 style={{ paddingTop: "20px" }}> Job Posted</h3>
+              <h3 style={{ paddingTop: '20px' }}> Job Posted</h3>
               <JobList jobList={jobPostList} hasJobApplication hideApplyButton />
             </div>
           ) : (
-            ""
+            ''
           )}
         </div>
       </div>

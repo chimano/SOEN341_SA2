@@ -1,5 +1,5 @@
 import React from "react";
-import { JobList } from "./index.jsx";
+import { JobList } from "../../components";
 import { configure, shallow, mount, render } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 

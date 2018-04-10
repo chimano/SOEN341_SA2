@@ -1,46 +1,61 @@
-import React from "react";
+// @flow
+import React from 'react';
 import {
-  getApiQuestionById,
   getApiUserQuestionsAndAnsweredQuestions,
   getApiUserNameInfo,
-  getApiJob,
-  getApiUserNameJobs
-} from "../../utils/api";
-import "./index.css";
-import {
-  QuestionList,
-  UserInfo,
-  JobBox,
-  UserQuestionList,
-  JobList
-} from "../../components";
+  getApiUserNameJobs,
+} from '../../utils/api';
+import './index.css';
+import { UserInfo, UserQuestionList, JobList } from '../../components';
 
-export class UserPage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: "",
-      email: "",
-      first_name: "",
-      last_name: "",
-      aboutMe: "",
-      reputation: "",
-      github: "",
-      linkedin: "",
-      last_login: "",
-      downvoted_questions: [],
-      upvoted_questions: [],
-      questions_asked: [],
-      questions_answered: [],
-      jobPostList: [],
-      is_employer: false
-      // doRender: false
-    };
-  }
+type Props = {
+  match: Object,
+  user: Object,
+  location: Object,
+};
+
+type State = {
+  user: Object,
+  username: string,
+  email: string,
+  firstName: string,
+  lastName: string,
+  aboutMe: string,
+  reputation: string,
+  github: string,
+  linkedin: string,
+  lastLogin: string,
+  downvotedQuestions: Array<Object>,
+  upvotedQuestions: Array<Object>,
+  questionsAsked: Array<Object>,
+  questionsAnswered: Array<Object>,
+  jobPostList: Array<Object>,
+  isEmployer: boolean,
+};
+
+export default class UserPage extends React.Component<Props, State> {
+  state = {
+    user: {},
+    username: '',
+    email: '',
+    firstName: '',
+    lastName: '',
+    aboutMe: '',
+    reputation: '',
+    github: '',
+    linkedin: '',
+    lastLogin: '',
+    downvotedQuestions: [],
+    upvotedQuestions: [],
+    questionsAsked: [],
+    questionsAnswered: [],
+    jobPostList: [],
+    isEmployer: false,
+  };
 
   componentDidMount() {
-    const username = this.props.match.params.username;
-    this.getUserInfo(username).then(username => {
+    const { username } = this.props.match.params;
+    this.getUserInfo(username).then(() => {
       this.getQuestionsRelatedToUser(username);
       this.getListOfJobsPostedByEmployer(username);
     });
@@ -48,124 +63,110 @@ export class UserPage extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     const username = this.props.match.params.username;
-
-    if ( prevProps.location !== this.props.location) {
-      console.log(prevProps.location)
-      this.getUserInfo(username).then(username => {
+    if (prevProps.location !== this.props.location) {
+      console.log(prevProps.location);
+      this.getUserInfo(username).then(() => {
         this.getQuestionsRelatedToUser(username);
         this.getListOfJobsPostedByEmployer(username);
       });
     }
   }
 
-  getListOfJobsPostedByEmployer = username => {
-    getApiUserNameJobs(username).then(response => {
-      console.log("getApiUserNameJobs(username): ", response);
+  getListOfJobsPostedByEmployer = (username: string) => {
+    getApiUserNameJobs(username).then((response) => {
       this.setState({
-        jobPostList: response.data.posted_positions
+        jobPostList: response.data.posted_positions,
       });
     });
   };
 
-  getQuestionsRelatedToUser = username => {
-    getApiUserQuestionsAndAnsweredQuestions(username).then(response => {
-      console.log(
-        "getApiUserQuestionsAndAnsweredQuestions(this.state.username)",
-        response
-      );
+  getQuestionsRelatedToUser = (username: string) => {
+    getApiUserQuestionsAndAnsweredQuestions(username).then((response) => {
       this.setState({
-        questions_asked: response.data.asked_questions,
-        questions_answered: response.data.answered_questions,
-        upvoted_questions: response.data.upvoted_questions,
-        downvoted_questions: response.data.downvoted_questions
+        questionsAsked: response.data.asked_questions,
+        questionsAnswered: response.data.answered_questions,
+        upvotedQuestions: response.data.upvotedQuestions,
+        downvotedQuestions: response.data.downvotedQuestions,
       });
     });
   };
 
-  getJobRelatedToUser = () => {
-    const username = this.props.match.params.username;
-  };
-
-  getUserInfo = username => {
-    return new Promise(resolve => {
-      getApiUserNameInfo(username)
-        .then(response => {
-          console.log("response of getApiUserNameInfo(username): ", response);
-          this.setState({
-            username: response.data.username,
-            email: response.data.email,
-            aboutMe: response.data.profile.about_me,
-            first_name: response.data.first_name,
-            last_name: response.data.last_name,
-            reputation: response.data.profile.reputation,
-            github: response.data.profile.github,
-            linkedin: response.data.profile.linkedin,
-            last_login: response.data.last_login,
-            downvoted_questions_id: response.data.profile.downvoted_questions,
-            upvoted_questions_id: response.data.profile.upvoted_questions,
-            is_employer: response.data.profile.is_employer
-          });
-          resolve(response.data.username);
-        })
-        .catch(error => console.log(error));
+  getUserInfo = (username: string): Promise<void> =>
+    new Promise((resolve) => {
+      getApiUserNameInfo(username).then((response) => {
+        this.setState({
+          user: response.data,
+          username: response.data.username,
+          email: response.data.email,
+          aboutMe: response.data.profile.about_me,
+          firstName: response.data.firstName,
+          lastName: response.data.lastName,
+          reputation: response.data.profile.reputation,
+          github: response.data.profile.github,
+          linkedin: response.data.profile.linkedin,
+          lastLogin: response.data.lastLogin,
+          isEmployer: response.data.profile.isEmployer,
+        });
+        resolve();
+      });
+      // .catch(error => console.log(error));
     });
-  };
 
   render() {
-    console.log(this.state);
     const {
+      user,
       username,
       email,
       aboutMe,
-      first_name,
-      last_name,
+      firstName,
+      lastName,
       reputation,
       github,
       linkedin,
-      last_login,
-      downvoted_questions,
-      upvoted_questions,
-      questions_asked,
-      questions_answered,
+      lastLogin,
+      downvotedQuestions,
+      upvotedQuestions,
+      questionsAsked,
+      questionsAnswered,
       jobPostList,
-      is_employer
+      isEmployer,
     } = this.state;
 
     return (
       <div className="body-wrapper grey-background">
         <div className="page-width">
-          <div style={{ display: "flex" }}>
-            <div style={{width:"30%", marginRight:"10px"}}>
+          <div style={{ display: 'flex' }}>
+            <div style={{ width: '30%', marginRight: '10px' }}>
               <UserInfo
                 username={username}
                 email={email}
-                first_name={first_name}
-                last_name={last_name}
+                firstName={firstName}
+                lastName={lastName}
                 aboutMe={aboutMe}
                 reputation={reputation}
                 github={github}
                 linkedin={linkedin}
-                last_login={last_login}
+                lastLogin={lastLogin}
                 no_edit
               />
             </div>
 
-            <div style={{ width: "70%", paddingLeft: "10px" }}>
+            <div style={{ width: '70%', paddingLeft: '10px' }}>
               <UserQuestionList
-                upvoted_questions={upvoted_questions}
-                downvoted_questions={downvoted_questions}
-                questions_asked={questions_asked}
-                questions_answered={questions_answered}
+                upvotedQuestions={upvotedQuestions}
+                downvotedQuestions={downvotedQuestions}
+                questionsAsked={questionsAsked}
+                questionsAnswered={questionsAnswered}
               />
             </div>
           </div>
-          {is_employer ? (
+          {isEmployer ? (
             <div>
-              <h3 style={{ paddingTop: "20px" }}> Job Posted</h3>
+              <h3 style={{ paddingTop: '20px' }}> Job Posted</h3>
               <JobList jobList={jobPostList} />
             </div>
           ) : (
-            ""
+            ''
           )}
         </div>
       </div>

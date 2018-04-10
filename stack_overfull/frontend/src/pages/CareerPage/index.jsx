@@ -1,52 +1,67 @@
 // @flow
-
-import React from "react";
-import "./index.css";
-import { getApiJob, postApiJob } from "../../utils/api";
-import { SideBar, PostJobButton, JobList } from "../../components";
-import { Card } from "antd";
+import React from 'react';
+import './index.css';
+import { getApiJob, postApiJob } from '../../utils/api';
+import { SideBar, PostJobButton, JobList } from '../../components';
 
 function humanize(str) {
-  var frags = str.split("_");
-  for (let i = 0; i < frags.length; i++) {
+  const frags = str.split('_');
+  for (let i = 0; i < frags.length; i += 1) {
     frags[i] = frags[i].charAt(0).toUpperCase() + frags[i].slice(1);
   }
-  return frags.join(" ");
+  return frags.join(' ');
 }
 
-export class CareerPage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      jobList: [],
-      category: "computer_science",
-      title: "Computer Science"
-    };
-  }
+type Props = {
+  isEmployer: boolean,
+  loggedIn: boolean,
+};
+
+type State = {
+  jobList: Array<Object>,
+  category: string,
+  title: string,
+};
+
+export default class CareerPage extends React.Component<Props, State> {
+  state = {
+    jobList: [],
+    category: 'computer_science',
+    title: 'Computer Science',
+  };
 
   componentDidMount = () => {
     const { category } = this.state;
     this.getJobList(category);
   };
 
-  getJobList = category => {
-    getApiJob(category)
-      .then(response => {
-        console.log("response of getApiJob(category)", response);
-        let categoryName = humanize(category);
-        this.setState({
-          jobList: response.data.job_list,
-          title: categoryName
-        });
-      })
-      .catch(error => {
-        console.log(error);
+  getJobList = (category: string) => {
+    getApiJob(category).then((response) => {
+      const categoryName = humanize(category);
+      this.setState({
+        jobList: response.data.job_list,
+        title: categoryName,
       });
+    });
+    // .catch((error) => {
+    //   console.log(error);
+    // });
+  };
+
+  createJob = (
+    position: string,
+    type: string,
+    category: string,
+    company: string,
+    location: string,
+    description: string,
+  ) => {
+    postApiJob(position, type, category, company, location, description);
   };
 
   render() {
     const { jobList, title } = this.state;
-    const { is_employer } = this.props;
+    const { isEmployer, loggedIn } = this.props;
 
     return (
       <div className="body-wrapper">
@@ -55,10 +70,10 @@ export class CareerPage extends React.Component {
           <div className="CareerPage__list">
             <div className="CareerPage__title-button">
               <h2 className="CareerPage__title">{title}</h2>
-              {is_employer ? <PostJobButton /> : ""}
+              {isEmployer ? <PostJobButton createJob={this.createJob} /> : ''}
             </div>
 
-            {is_employer ? (
+            {isEmployer || !loggedIn ? (
               <JobList jobList={jobList} hideApplyButton />
             ) : (
               <JobList jobList={jobList} />

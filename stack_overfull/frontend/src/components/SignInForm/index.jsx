@@ -1,17 +1,23 @@
-import React from "react";
-import { Form, Icon, Input, Button, Checkbox } from "antd";
-import "./index.css";
-import { postApiUserLogin } from "../../utils/api";
+import React from 'react';
+import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import './index.css';
+import { postApiUserLogin } from '../../utils/api';
 
 const FormItem = Form.Item;
 
-class SignInForm extends React.Component {
-  
-  handleSubmit = e => {
+type Props = {
+  form: Object,
+  handleLogin: () => {},
+  handleCloseButton: () => {},
+}
+
+type State = {}
+
+class SignInForm extends React.Component<Props, State> {
+  handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log("Received values of form: ", values);
         this.doUserLoginRequest(values.userName, values.password);
       }
     });
@@ -19,79 +25,61 @@ class SignInForm extends React.Component {
 
   doUserLoginRequest = (username, password) => {
     postApiUserLogin(username, password)
-      .then(response => {
-        console.log(
-          "response of postApiUserLogin(username, password): ",
-          response
-        );
-        const { handle_login, handle_close_button } = this.props;
+      .then((response) => {
+        const { handleLogin, handleCloseButton } = this.props;
         if (response.data.error) {
           alert(response.data.error);
         } else {
-          handle_login(response.data.username);
-          handle_close_button();
+          handleLogin(response.data.username);
+          handleCloseButton();
         }
       })
-      .catch(e => {
+      .catch((e) => {
         alert(e.response.data.error);
       });
   };
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { handle_close_button } = this.props;
+    const { handleCloseButton } = this.props;
 
     return (
       <Form onSubmit={this.handleSubmit} className="SignInForm">
-        <div
-          className="SignInForm__close-button"
-          onClick={() => handle_close_button()}
-        >
+        <div className="SignInForm__close-button" onClick={() => handleCloseButton()} onKeyPress={() => handleCloseButton()} role="button" tabIndex={0}>
           &#10005;
         </div>
         <h3>Sign In</h3>
         <FormItem>
-          {getFieldDecorator("userName", {
-            rules: [{ required: true, message: "Please input your username!" }]
-          })(
-            <Input
-              prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
-              placeholder="Username"
-              required
-            />
-          )}
+          {getFieldDecorator('userName', {
+            rules: [{ required: true, message: 'Please input your username!' }],
+          })(<Input
+            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+            placeholder="Username"
+            required
+          />)}
         </FormItem>
         <FormItem>
-          {getFieldDecorator("password", {
-            rules: [{ required: true, message: "Please input your Password!" }]
-          })(
-            <Input
-              prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
-              type="password"
-              placeholder="Password"
-            />
-          )}
+          {getFieldDecorator('password', {
+            rules: [{ required: true, message: 'Please input your Password!' }],
+          })(<Input
+            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+            type="password"
+            placeholder="Password"
+          />)}
         </FormItem>
         <FormItem>
-          {getFieldDecorator("remember", {
-            valuePropName: "checked",
-            initialValue: true
+          {getFieldDecorator('remember', {
+            valuePropName: 'checked',
+            initialValue: true,
           })(<Checkbox>Remember me</Checkbox>)}
-          <a className="SignInForm__forgot-link" href="">
-            Forgot password
-          </a>
-          <Button
-            type="primary"
-            htmlType="submit"
-            className="SignInForm__submit-button"
-          >
+          <Button type="primary" htmlType="submit" className="SignInForm__submit-button">
             Sign In
           </Button>
-          Or <a>register now!</a>
         </FormItem>
       </Form>
     );
   }
 }
 
-export const SignInFormWindow = Form.create()(SignInForm);
+const SignInFormWindow = Form.create()(SignInForm);
+export default SignInFormWindow;

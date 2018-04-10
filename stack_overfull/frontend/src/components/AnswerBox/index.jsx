@@ -1,78 +1,78 @@
-import React from "react";
-import "./index.css";
-import { QuestionBox } from "../QuestionBox";
-import { AcceptRejectButton, VotingButtons } from "../../components";
-import { Link } from "react-router-dom";
-import { Icon } from "antd";
+// @flow
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Divider } from 'antd';
+import './index.css';
+import { AcceptRejectButton, VotingButtons } from '../../components';
+import { formatDate } from '../../utils/api';
+import { QuestionBox } from '../QuestionBox';
+import { Icon } from 'antd';
 
-import {
-  formatDate,
-  getApiUserMe
-} from "../../utils/api";
+type Props = {
+  handleAccept: () => {},
+  handleReject: () => {},
+  handleDownvoteButton: () => {},
+  handleUpvoteButton: () => {},
+  handleDeleteAnswer: () => {},
+  verified: boolean,
+  x: Object,
+  upvotedArray: Array<Object>,
+  downvotedArray: Array<Object>,
+  username: string,
+};
 
-import { Divider } from "antd";
+const AnswerBox = (props: Props) => {
+  const {
+    handleAccept,
+    handleReject,
+    handleDownvoteButton,
+    handleUpvoteButton,
+    handleDeleteAnswer,
+    verified,
+    x,
+    upvotedArray,
+    downvotedArray,
+    username,
+  } = props;
 
-export class AnswerBox extends React.Component {
-  
-  render() {
-    const {
-      handleAccept,
-      handleReject,
-      handleDownvoteButton,
-      handleUpvoteButton,
-      verified,
-      x,
-      upvoted_array,
-      downvoted_array,
-      handleDeleteAnswer,
-      username
-    } = this.props;
+  let answerBoxClass;
+  if (x.is_accepted) {
+    answerBoxClass = 'AnswerBox--green';
+  } else if (x.is_rejected) {
+    answerBoxClass = 'AnswerBox--red';
+  } else {
+    answerBoxClass = 'AnswerBox--blue';
+  }
 
-    console.log("verified: ", verified);
+  let deleteButtons;
+  if (username === x.user_id.username) {
+    deleteButtons = (
+      <button className="AnswerBox__delete" onClick={() => handleDeleteAnswer(x.id)} type="primary">
+        <Icon type="delete" />
+      </button>
+    );
+  } else {
+    deleteButtons = <div />;
+  }
 
-    let answerBox_class;
-    if (x.is_accepted) {
-      answerBox_class = "AnswerBox--green";
-    } else if (x.is_rejected) {
-      answerBox_class = "AnswerBox--red";
-    } else {
-      answerBox_class = "AnswerBox--blue";
-    }
+  const date = formatDate(x.date_created.replace('T', ' at ').substring(0, 19));
 
-    console.log("username: " + username);
-
-    let deleteButtons;
-    if (username === x.user_id.username) {
-      deleteButtons = (
-        <button className="AnswerBox__delete" onClick= {() => handleDeleteAnswer(x.id)} type="primary">
-          <Icon type="delete" />
-        </button>
-      );
-    } else {
-      deleteButtons = (
-        <div></div>
-      );
-    }
-
-    console.log("UOVOTED: "+upvoted_array);
-    console.log("DOWNVOTED: "+downvoted_array);
-    let date = formatDate(x.date_created.replace("T", " at ").substring(0, 19));
-
-    return (
-      <div className="AnswerBox__wrapper">
-        <VotingButtons
-              handleDownvoteButton={handleDownvoteButton}
-              handleUpvoteButton={handleUpvoteButton}
-              id={x.id}
-              points={x.points}
-              upvoted_array={upvoted_array}
-              downvoted_array={downvoted_array}
-            />
-        <div className={`AnswerBox ${answerBox_class}`}>
-          <div className="AnswerBox__row">
-            <div className="AnswerBox__answer">{x.answer_text}</div>
-          </div>
-          <Divider />
+  return (
+    <div className="AnswerBox__wrapper">
+      <VotingButtons
+        handleDownvoteButton={handleDownvoteButton}
+        handleUpvoteButton={handleUpvoteButton}
+        id={x.id}
+        points={x.points}
+        upvotedArray={upvotedArray}
+        downvotedArray={downvotedArray}
+      />
+      <div className={`AnswerBox ${answerBoxClass}`}>
+        <div className="AnswerBox__row">
+          <div className="AnswerBox__answer">{x.answer_text}</div>
+        </div>
+        <Divider />
+        <div className="AnswerBox__row">
           <div className="AnswerBox__row">
             <div className="AnswerBox__button-area">
               {verified ? (
@@ -84,21 +84,20 @@ export class AnswerBox extends React.Component {
                   a_id={x.id}
                 />
               ) : (
-                ""
+                ''
               )}
             </div>
             <div className="AnswerBox__username">
-
-              Answered by&nbsp;<Link to={`/user/${x.user_id.username}`}>{x.user_id.username}</Link>&nbsp;on {date}
-              
+              Answered by&nbsp;<Link to={`/user/${x.user_id.username}`}>{x.user_id.username}</Link>&nbsp;on{' '}
+              {date}
               &nbsp;
-              
               {deleteButtons}
-
             </div>
           </div>
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
+
+export default AnswerBox;

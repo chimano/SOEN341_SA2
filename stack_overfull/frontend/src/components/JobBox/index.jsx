@@ -1,52 +1,60 @@
-import React from "react";
-import "./index.css";
-import { Link } from "react-router-dom";
-import {
-  formatDate,
-  postApiJobApplication,
-  getApiJobApplication
-} from "../../utils/api";
-import { Divider, Button } from "antd";
-import { ApplicantsPopupButton } from "../index";
+// @flow
+import React from 'react';
+import { Divider, Button } from 'antd';
+import './index.css';
+import { formatDate, postApiJobApplication, getApiJobApplication } from '../../utils/api';
+import { ApplicantsPopupButton } from '../../components';
 
 function humanize(str) {
-  var frags = str.split("_");
-  for (let i = 0; i < frags.length; i++) {
+  const frags = str.split('_');
+  for (let i = 0; i < frags.length; i += 1) {
     frags[i] = frags[i].charAt(0).toUpperCase() + frags[i].slice(1);
   }
-  return frags.join(" ");
+  return frags.join(' ');
 }
 
-export class JobBox extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      applicantList: []
-    };
-  }
+type Props = {
+  jobId: number,
+  jobCompany: string,
+  jobPosition: string,
+  jobLocation: string,
+  jobType: string,
+  jobCategory: string,
+  jobDescription: string,
+  dateCreated: string,
+  hasJobApplication: () => {},
+  hideApplyButton: boolean,
+};
+
+type State = {
+  applicantList: Array<Object>,
+};
+
+export default class JobBox extends React.Component<Props, State> {
+  state = {
+    applicantList: [],
+  };
 
   componentDidMount() {
-    const { job_id } = this.props;
-    this.getListOfApplicantsForJob(job_id);
+    const { jobId } = this.props;
+    this.getListOfApplicantsForJob(jobId);
   }
 
-  getListOfApplicantsForJob = job_id => {
-    getApiJobApplication(job_id)
-      .then(response => {
-        console.log(response);
+  getListOfApplicantsForJob = (jobId: number) => {
+    getApiJobApplication(jobId)
+      .then((response) => {
         this.setState({
-          applicantList: response.data.application_list
+          applicantList: response.data.application_list,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   };
 
-  handleApplyButton = job_id => {
-    postApiJobApplication(job_id)
-      .then(response => {
-        console.log(response);
+  handleApplyButton = (jobId: number) => {
+    postApiJobApplication(jobId)
+      .then((response) => {
         alert(response.data.success);
       })
       .catch(error => console.log(error));
@@ -54,51 +62,46 @@ export class JobBox extends React.Component {
 
   render() {
     const {
-      job_id,
-      job_company,
-      job_position,
-      job_location,
-      job_type,
-      job_category,
-      job_description,
-      date_created,
+      jobId,
+      jobCompany,
+      jobPosition,
+      jobLocation,
+      jobType,
+      jobCategory,
+      jobDescription,
+      dateCreated,
       hasJobApplication,
-      hideApplyButton
+      hideApplyButton,
     } = this.props;
 
-    let date = formatDate(date_created);
+    const date = formatDate(dateCreated);
 
     return (
       <div>
         <div className="JobBox grey-border">
-          <div className="JobBox__position">{job_position}</div>
-          <div className="JobBox__company">
-            Position posted by {job_company}
-          </div>
+          <div className="JobBox__position">{jobPosition}</div>
+          <div className="JobBox__company">Position posted by {jobCompany}</div>
           <Divider />
           <div className="JobBox__description">
-            <p>{job_description}</p>
+            <p>{jobDescription}</p>
           </div>
           <div className="JobBox__generalinfo">
-            {humanize(job_category)} <br />
-            {job_type} <br />
-            {job_location} <br />
-            Position posted on {date}{" "}
+            {humanize(jobCategory)} <br />
+            {jobType} <br />
+            {jobLocation} <br />
+            Position posted on {date}{' '}
           </div>
 
           {hasJobApplication ? (
             <ApplicantsPopupButton applicantList={this.state.applicantList} />
           ) : (
-            ""
+            ''
           )}
 
           {hideApplyButton ? (
-            ""
+            ''
           ) : (
-            <Button
-              type="primary"
-              onClick={() => this.handleApplyButton(job_id)}
-            >
+            <Button type="primary" onClick={() => this.handleApplyButton(jobId)}>
               Apply
             </Button>
           )}

@@ -1,5 +1,5 @@
 import React from "react";
-import { QuestionList } from "./index.jsx";
+import { QuestionList } from "../../components";
 import { configure, shallow, mount, render } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 

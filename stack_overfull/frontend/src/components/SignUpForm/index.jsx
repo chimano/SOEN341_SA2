@@ -1,111 +1,116 @@
-import React from "react";
-import "./index.css";
-import { Form, Input, Tooltip, Icon, Checkbox, Button, Select } from "antd";
-import { postApiUserRegister } from "../../utils/api";
+import React from 'react';
+import { Form, Input, Tooltip, Icon, Button, Select } from 'antd';
+import './index.css';
+import { postApiUserRegister } from '../../utils/api';
 
 const FormItem = Form.Item;
+const { Option } = Select;
 
-class SignUpForm extends React.Component {
+type Props = {
+  handleCloseButton: () => {},
+  handleLogin: () => {},
+  form : Object,
+}
+
+type State = {
+  confirmDirty: boolean,
+}
+
+class SignUpForm extends React.Component<Props, State> {
   state = {
     confirmDirty: false,
-    autoCompleteResult: []
   };
-  handleSubmit = e => {
-    e.preventDefault();
-    this.props.form.validateFieldsAndScroll((err, values) => {
-      if (!err) {
-        console.log("Received values of form: ", values);
-        this.doUserRegisterRequest(
-          values.username,
-          values.password,
-          values.email,
-          values.is_employer
-        );
-      }
-    });
-  };
-  handleConfirmBlur = e => {
-    const value = e.target.value;
-    this.setState({ confirmDirty: this.state.confirmDirty || !!value });
-  };
-  checkPassword = (rule, value, callback) => {
-    const form = this.props.form;
-    if (value && value !== form.getFieldValue("password")) {
-      callback("Two passwords that you enter is inconsistent!");
-    } else {
-      callback();
-    }
-  };
-  checkConfirm = (rule, value, callback) => {
-    const form = this.props.form;
-    if (value && this.state.confirmDirty) {
-      form.validateFields(["confirm"], { force: true });
-    }
-    callback();
-  };
-
-  doUserRegisterRequest(username, password, email, is_employer) {
-    postApiUserRegister(username, password, email, is_employer)
-      .then(response => {
-        console.log(
-          "response for postApiUserRegister(username, password, email): ",
-          response
-        );
-        this.onUserRegisterResponse(response);
-      })
-      .catch(e => {
-        alert(e.response.data.error);
-      });
-  }
 
   onUserRegisterResponse(response) {
-    const { handle_close_button, handle_login } = this.props;
-    console.log(
-      "Received response from the server",
-      response.request.responseURL,
-      response
-    );
-    console.log("Received user info", response.data);
+    const { handleCloseButton, handleLogin } = this.props;
     if (!response.data.error) {
-      handle_close_button();
-      handle_login(response.data.username);
+      handleCloseButton();
+      handleLogin(response.data.username);
     } else {
       alert(response.data.error);
     }
   }
 
+  doUserRegisterRequest(username, password, email, isEmployer) {
+    postApiUserRegister(username, password, email, isEmployer)
+      .then((response) => {
+        this.onUserRegisterResponse(response);
+      })
+      .catch((e) => {
+        alert(e.response.data.error);
+      });
+  }
+
+  checkPassword = (rule, value, callback) => {
+    const { form } = this.props;
+    if (value && value !== form.getFieldValue('password')) {
+      callback('Two passwords that you enter is inconsistent!');
+    } else {
+      callback();
+    }
+  };
+  checkConfirm = (rule, value, callback) => {
+    const { form } = this.props;
+    if (value && this.state.confirmDirty) {
+      form.validateFields(['confirm'], { force: true });
+    }
+    callback();
+  };
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values);
+        this.doUserRegisterRequest(
+          values.username,
+          values.password,
+          values.email,
+          values.isEmployer,
+        );
+      }
+    });
+  };
+  handleConfirmBlur = (e) => {
+    const { value } = e.target;
+    this.setState({ confirmDirty: this.state.confirmDirty || !!value });
+  };
+
   render() {
-    const { handle_close_button } = this.props;
+    const { handleCloseButton } = this.props;
     const { getFieldDecorator } = this.props.form;
 
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
-        sm: { span: 8 }
+        sm: { span: 8 },
       },
       wrapperCol: {
         xs: { span: 24 },
-        sm: { span: 16 }
-      }
+        sm: { span: 16 },
+      },
     };
     const tailFormItemLayout = {
       wrapperCol: {
         xs: {
           span: 24,
-          offset: 0
+          offset: 0,
         },
         sm: {
           span: 16,
-          offset: 8
-        }
-      }
+          offset: 8,
+        },
+      },
     };
 
     return (
       <Form onSubmit={this.handleSubmit} className="SignUpForm">
         <div
           className="SignUpForm__close-button"
-          onClick={() => handle_close_button()}
+          onClick={() => handleCloseButton()}
+          onKeyPress={() => handleCloseButton()}
+          role="button"
+          tabIndex={0}
         >
           &#10005;
         </div>
@@ -124,84 +129,72 @@ class SignUpForm extends React.Component {
             </span>
           }
         >
-          {getFieldDecorator("username", {
+          {getFieldDecorator('username', {
             rules: [
               {
                 required: true,
-                message: "Please input your nickname!",
-                whitespace: true
-              }
-            ]
+                message: 'Please input your nickname!',
+                whitespace: true,
+              },
+            ],
           })(<Input />)}
         </FormItem>
 
         {/* Email */}
         <FormItem {...formItemLayout} label="E-mail">
-          {getFieldDecorator("email", {
+          {getFieldDecorator('email', {
             rules: [
               {
-                type: "email",
-                message: "The input is not valid E-mail!"
+                type: 'email',
+                message: 'The input is not valid E-mail!',
               },
               {
                 required: true,
-                message: "Please input your E-mail!"
-              }
-            ]
+                message: 'Please input your E-mail!',
+              },
+            ],
           })(<Input />)}
         </FormItem>
 
         {/* Password */}
         <FormItem {...formItemLayout} label="Password">
-          {getFieldDecorator("password", {
+          {getFieldDecorator('password', {
             rules: [
               {
                 required: true,
-                message: "Please input your password!"
+                message: 'Please input your password!',
               },
               {
-                validator: this.checkConfirm
-              }
-            ]
+                validator: this.checkConfirm,
+              },
+            ],
           })(<Input type="password" />)}
         </FormItem>
 
         {/* Confirm password */}
         <FormItem {...formItemLayout} label="Confirm Password">
-          {getFieldDecorator("confirm", {
+          {getFieldDecorator('confirm', {
             rules: [
               {
                 required: true,
-                message: "Please confirm your password!"
+                message: 'Please confirm your password!',
               },
               {
-                validator: this.checkPassword
-              }
-            ]
+                validator: this.checkPassword,
+              },
+            ],
           })(<Input type="password" onBlur={this.handleConfirmBlur} />)}
         </FormItem>
         {/* Account Type */}
         <FormItem {...formItemLayout} label="Are you an employer?">
-          {getFieldDecorator("is_employer", {
+          {getFieldDecorator('isEmployer', {
             rules: [
-              { required: true, message: "Please select your answer." }
-            ]
-          })(
-            <Select>
-                <Option value={0} >No</Option>
-                <Option value={1} >Yes</Option>
-            </Select>
-            )}
-        </FormItem>
-
-        <FormItem {...tailFormItemLayout}>
-          {getFieldDecorator("agreement", {
-            valuePropName: "checked"
-          })(
-            <Checkbox>
-              I have read the <a href="">agreement</a>
-            </Checkbox>
-          )}
+              { required: true, message: 'Please select your answer.' },
+            ],
+          })(<Select>
+            <Option value={0} >No</Option>
+            <Option value={1} >Yes</Option>
+          </Select>)}
         </FormItem>
 
         <FormItem {...tailFormItemLayout}>
@@ -217,5 +210,5 @@ class SignUpForm extends React.Component {
     );
   }
 }
-
-export const SignUpFormWindow = Form.create()(SignUpForm);
+const SignUpFormWindow = Form.create()(SignUpForm);
+export default SignUpFormWindow;

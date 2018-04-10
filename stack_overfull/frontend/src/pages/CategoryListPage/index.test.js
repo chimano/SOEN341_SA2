@@ -1,5 +1,5 @@
 import React from "react";
-import { CategoryListPage } from "./index.jsx";
+import { CategoryListPage } from "../../pages";
 import { configure, shallow, mount, render } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 

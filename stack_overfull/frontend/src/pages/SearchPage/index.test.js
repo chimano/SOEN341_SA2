@@ -1,5 +1,5 @@
 import React from "react";
-import { SearchPage } from "./index.jsx";
+import { SearchPage } from "../../pages";
 import { configure, shallow, mount, render } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 

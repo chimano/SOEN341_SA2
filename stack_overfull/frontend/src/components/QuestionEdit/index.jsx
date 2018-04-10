@@ -1,24 +1,26 @@
-import React from "react";
-import "./index.css";
-import { Select } from "antd";
+import React from 'react';
+import { Select } from 'antd';
+import './index.css';
 
-const Option = Select.Option;
+const { Option } = Select;
 
-const children = [];
-{
-  children.push();
-}
+type Props = {
+  createQuestion: () => {},
+  closeCreateQuestionBox: () => {},
+};
 
-export class QuestionEdit extends React.Component {
-  constructor(props) {
-    super(props);
+type State = {
+  question_head: string,
+  question_text: string,
+  tags: Array<string>,
+};
 
-    this.state = {
-      question_head: "",
-      question_text: "",
-      tags: []
-    };
-  }
+export default class QuestionEdit extends React.Component<Props, State> {
+  state = {
+    question_head: '',
+    question_text: '',
+    tags: [],
+  };
 
   handleSubmitQuestionButton = () => {
     const { createQuestion, closeCreateQuestionBox } = this.props;
@@ -30,38 +32,40 @@ export class QuestionEdit extends React.Component {
     this.setState({ [name]: event.target.value });
   };
 
-  handleTagsChange = tags => {
+  handleTagsChange = (tags) => {
     // Calling this.setState here breaks <Select /> component (?)
     // saving tags in 'this' instead
     this.setState({ tags: [...tags] });
   };
 
   render() {
-    const { user, closeCreateQuestionBox } = this.props;
+    const { closeCreateQuestionBox } = this.props;
 
     return (
       <div className="QuestionEdit__floating-box">
         <div className="QuestionEdit__wrapper">
           <div
             className="QuestionEdit__close-button"
+            role="button"
+            tabIndex={0}
             onClick={() => closeCreateQuestionBox()}
+            onKeyPress={() => closeCreateQuestionBox()}
           >
             &#10005;
           </div>
 
           <div className="QuestionEdit">
-            <a className="QuestionEdit__user">{user}</a>
             <div className="QuestionEdit__lines" />
             <h3>Ask a question to the community</h3>
             <div className="QuestionEdit__title">Question Header:</div>
             <textarea
               className="QuestionEdit__text"
-              onChange={e => this.handleChange(e, "question_head")}
+              onChange={e => this.handleChange(e, 'question_head')}
             />
             <div className="QuestionEdit__title">Question Body (Optional):</div>
             <textarea
               className="QuestionEdit__text"
-              onChange={e => this.handleChange(e, "question_text")}
+              onChange={e => this.handleChange(e, 'question_text')}
             />
 
             <div className="QuestionEdit__title">Tags</div>
@@ -69,11 +73,10 @@ export class QuestionEdit extends React.Component {
             <div>
               <Select
                 mode="tags"
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 placeholder="Add tags"
                 onChange={tags => this.handleTagsChange(tags)}
               >
-                {children}
                 <Option value="business">business</Option>
                 <Option value="cooking">cooking</Option>
                 <Option value="entertainment">entertainment</Option>
@@ -87,7 +90,7 @@ export class QuestionEdit extends React.Component {
           <button
             className="QuestionEdit__button button"
             onClick={() => this.handleSubmitQuestionButton()}
-            style={{ color: "#ffffff" }}
+            style={{ color: '#ffffff' }}
           >
             Submit question
           </button>

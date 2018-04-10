@@ -1,5 +1,5 @@
 import React from "react";
-import { CareerPage } from "./index.jsx";
+import { CareerPage } from "../../pages";
 import { configure, shallow, mount, render } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 
