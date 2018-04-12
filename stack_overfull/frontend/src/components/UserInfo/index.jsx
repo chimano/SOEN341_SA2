@@ -40,11 +40,12 @@ const UserInfo = (props: Props) => {
   } = props;
 
   let divContent;
+  console.log(isEditable);
+  console.log(username);
+
   if (username !== '') {
     let editButtonElement;
     if (isEditable) {
-      editButtonElement = '';
-    } else {
       editButtonElement = (
         <div style={{ textAlign: 'right' }}>
           <Button type="primary" size="small" onClick={onEditButtonClick} loading={isSavingMyInfo}>
@@ -52,6 +53,8 @@ const UserInfo = (props: Props) => {
           </Button>
         </div>
       );
+    } else {
+      editButtonElement = '';
     }
 
     const emailElement = isEditing ? (

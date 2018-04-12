@@ -114,7 +114,10 @@ export default class App extends React.Component<{}, State> {
               />
             )}
           />
-          <Route path="/profile" component={ProfilePage} />
+          <Route
+            path="/profile"
+            render={props => <ProfilePage currentUsername={this.state.username} {...props} />}
+          />
           <Route path="/search/" component={SearchPage} />
           <Route path="/categories" component={CategoryListPage} />
           <Route path="/tags/:tags" component={TagPage} />
@@ -128,7 +131,7 @@ export default class App extends React.Component<{}, State> {
               />
             )}
           />
-          <Route path="/user/:username" component={UserPage} cuurrentUser={this.state.username} />
+          <Route path="/user/:username" component={UserPage} currentUser={this.state.username} />
         </Switch>
         <Footer />
       </main>
