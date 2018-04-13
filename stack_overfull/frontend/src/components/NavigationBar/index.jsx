@@ -7,7 +7,6 @@ import {
   SignUpFormWindow
 } from "../../components";
 import "./index.css";
-import logo from "../../images/logo.png";
 
 type Props = {
   handleLogout: () => {},
@@ -62,13 +61,13 @@ export default class NavigationBar extends React.Component<Props, State> {
         </div>
       );
     } else {
-      loginBox = "";
+      loginBox = '';
     }
 
     return (
       <div className="navbar-wrapper shadow">
         <div className="navbar page-width">
-          <img src={logo} width="40" />
+          <img src={'/static/logo.png'} width="40" />
           <div className="navbar__title">
             <Link to="/">BlinQ</Link>
           </div>
