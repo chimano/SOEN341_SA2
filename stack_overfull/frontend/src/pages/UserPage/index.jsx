@@ -12,6 +12,7 @@ type Props = {
   match: Object,
   user: Object,
   location: Object,
+  currentUsername: string,
 };
 
 type State = {
@@ -131,7 +132,7 @@ export default class UserPage extends React.Component<Props, State> {
       jobPostList,
       isEmployer,
     } = this.state;
-
+    const { currentUsername } = this.props;
     return (
       <div className="body-wrapper grey-background">
         <div className="page-width">
@@ -147,6 +148,7 @@ export default class UserPage extends React.Component<Props, State> {
                 github={github}
                 linkedin={linkedin}
                 lastLogin={lastLogin}
+                currentUsername={currentUsername}
                 no_edit
               />
             </div>

@@ -9,9 +9,9 @@ type Props = {
   form: Object,
   handleLogin: () => {},
   handleCloseButton: () => {},
-}
+};
 
-type State = {}
+type State = {};
 
 class SignInForm extends React.Component<Props, State> {
   handleSubmit = (e) => {
@@ -45,7 +45,13 @@ class SignInForm extends React.Component<Props, State> {
 
     return (
       <Form onSubmit={this.handleSubmit} className="SignInForm">
-        <div className="SignInForm__close-button" onClick={() => handleCloseButton()} onKeyPress={() => handleCloseButton()} role="button" tabIndex={0}>
+        <div
+          className="SignInForm__close-button"
+          onClick={() => handleCloseButton()}
+          onKeyPress={() => handleCloseButton()}
+          role="button"
+          tabIndex={0}
+        >
           &#10005;
         </div>
         <h3>Sign In</h3>
@@ -68,10 +74,6 @@ class SignInForm extends React.Component<Props, State> {
           />)}
         </FormItem>
         <FormItem>
-          {getFieldDecorator('remember', {
-            valuePropName: 'checked',
-            initialValue: true,
-          })(<Checkbox>Remember me</Checkbox>)}
           <Button type="primary" htmlType="submit" className="SignInForm__submit-button">
             Sign In
           </Button>

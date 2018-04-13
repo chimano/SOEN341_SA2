@@ -35,16 +35,25 @@ export default class App extends React.Component<{}, State> {
   }
 
   checkIfUserIsLoggedIn = () => {
-    getApiUserMe().then((response) => {
-      if (!response.data.error) {
+    getApiUserMe()
+      .then((response) => {
+        if (!response.data.error) {
+          this.setState({
+            loggedIn: true,
+            user: response.data,
+            username: response.data.username,
+            isEmployer: response.data.profile.is_employer,
+          });
+        }
+      })
+      .catch((error) => {
         this.setState({
-          loggedIn: true,
-          user: response.data,
-          username: response.data.username,
-          isEmployer: response.data.profile.is_employer,
+          loggedIn: false,
+          username: '',
+          isEmployer: false,
+          user: {},
         });
-      }
-    });
+      });
     // .catch((error) => {
     //   console.log(error);
     // });
@@ -119,7 +128,7 @@ export default class App extends React.Component<{}, State> {
               />
             )}
           />
-          <Route path="/user/:username" component={UserPage} />
+          <Route path="/user/:username" component={UserPage} cuurrentUser={this.state.username} />
         </Switch>
         <Footer />
       </main>

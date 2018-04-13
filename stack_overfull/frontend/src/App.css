@@ -1,20 +1,20 @@
 .float-button {
-    float: right;
-    background-color: #49a4fa;
-    border-radius: 8px;
-    text-align: center;
-    cursor: pointer;
-    color: white;
-    outline: none;
+  float: right;
+  background-color: #49a4fa;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  color: white;
+  outline: none;
 }
 
 .button {
-    background-color: #49a4fa;
-    text-align: center;
-    cursor: pointer;
-    color: white;
-    outline: none;
-    border-radius: 10px;
+  background-color: #49a4fa;
+  text-align: center;
+  cursor: pointer;
+  color: white;
+  outline: none;
+  border-radius: 10px;
 }
 /*
 .button:hover {
@@ -22,51 +22,52 @@
 }*/
 
 .page-width {
-    max-width: 1060px;
-    margin: auto;
-    padding: 0 10px;
+  max-width: 1060px;
+  margin: auto;
+  padding: 0 10px;
 }
 
 .body-wrapper {
-    min-height: calc(100vh - 87px - 128.19px);
+  min-height: calc(100vh - 87px - 128.19px);
+  padding-bottom: 20px;
 }
 
 .grey-background {
-    background-color: rgb(241, 241, 241);
+  background-color: rgb(241, 241, 241);
 }
 
 .App {
-    background: #fafafa;
+  background: #fafafa;
 }
 
 .ant-divider-horizontal {
-    margin: 15px 0;
+  margin: 15px 0;
 }
 
 .login-wrap {
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-align: center;
-    align-items: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.7);
-    z-index: 2;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 2;
 }
 
 .shadow {
-    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
 }
 
 .grey-border {
-    border: 1px solid rgb(236, 236, 236);
+  border: 1px solid rgb(236, 236, 236);
 }
 
 .light-shadow {
-    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.12) 0px 1px 3px
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.12) 0px 1px 3px;
 }
