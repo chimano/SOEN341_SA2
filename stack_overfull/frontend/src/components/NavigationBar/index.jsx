@@ -22,7 +22,7 @@ type State = {
 export default class NavigationBar extends React.Component<Props, State> {
   state = {
     openSignin: false,
-    openSignup: false
+    openSignup: false,
   };
 
   handleSignupButton = () => {
