@@ -1,9 +1,9 @@
-import React from 'react';
-import { QuestionBox } from '../../components';
-import './index.css';
+import React from "react";
+import { QuestionBox } from "../../components";
+import "./index.css";
 
 type Props = {
-  questionList: Array<Object>,
+  questionList: Array<Object>
 };
 
 const QuestionList = (props: Props) => {
@@ -14,7 +14,9 @@ const QuestionList = (props: Props) => {
         {questionList.map((question, key) => (
           <QuestionBox
             key={key}
-            dateCreated={question.date_created.replace('T', ' at ').substring(0, 19)}
+            dateCreated={question.date_created
+              .replace("T", " at ")
+              .substring(0, 19)}
             questionHead={question.question_head}
             questionId={question.id}
             username={question.user_id.username}

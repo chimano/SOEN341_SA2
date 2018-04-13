@@ -1,24 +1,29 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Icon } from 'antd';
-import { SearchBar, SignInFormWindow, SignUpFormWindow } from '../../components';
-import './index.css';
+import React from "react";
+import { Link } from "react-router-dom";
+import { Icon } from "antd";
+import {
+  SearchBar,
+  SignInFormWindow,
+  SignUpFormWindow
+} from "../../components";
+import "./index.css";
+import logo from "../../images/logo.png";
 
 type Props = {
   handleLogout: () => {},
   loggedIn: boolean,
-  handleLogin: () => {},
+  handleLogin: () => {}
 };
 
 type State = {
   openSignin: boolean,
-  openSignup: boolean,
+  openSignup: boolean
 };
 
 export default class NavigationBar extends React.Component<Props, State> {
   state = {
     openSignin: false,
-    openSignup: false,
+    openSignup: false
   };
 
   handleSignupButton = () => {
@@ -41,26 +46,31 @@ export default class NavigationBar extends React.Component<Props, State> {
     if (openSignin === true) {
       loginBox = (
         <div className="login-wrap">
-          <SignInFormWindow handleCloseButton={this.handleCloseButton} handleLogin={handleLogin} />
+          <SignInFormWindow
+            handleCloseButton={this.handleCloseButton}
+            handleLogin={handleLogin}
+          />
         </div>
       );
     } else if (openSignup === true) {
       loginBox = (
         <div className="login-wrap">
-          <SignUpFormWindow handleCloseButton={this.handleCloseButton} handleLogin={handleLogin} />
+          <SignUpFormWindow
+            handleCloseButton={this.handleCloseButton}
+            handleLogin={handleLogin}
+          />
         </div>
       );
     } else {
-      loginBox = '';
+      loginBox = "";
     }
 
     return (
       <div className="navbar-wrapper shadow">
         <div className="navbar page-width">
+          <img src={logo} width="40" />
           <div className="navbar__title">
-            <Link to="/" style={{ color: 'white' }}>
-              Stack Overfull
-            </Link>
+            <Link to="/">BlinQ</Link>
           </div>
           <div className="navbar__search">
             <SearchBar />
@@ -69,10 +79,13 @@ export default class NavigationBar extends React.Component<Props, State> {
             <div className="navbar__logged-in">
               <Link
                 to="/profile"
-                style={{ width: '50px', padding: '12px' }}
+                style={{ width: "50px", padding: "12px" }}
                 className="navbar__profile-button"
               >
-                <Icon type="user" style={{ fontSize: 20, color: 'white', paddingBottom: '2px' }} />
+                <Icon
+                  type="user"
+                  style={{ fontSize: 20, color: "blue", paddingBottom: "2px" }}
+                />
               </Link>
               <button className="navbar__button" onClick={() => handleLogout()}>
                 Log out
@@ -80,10 +93,16 @@ export default class NavigationBar extends React.Component<Props, State> {
             </div>
           ) : (
             <div className="navbar__auth">
-              <button className="navbar__button" onClick={() => this.handleSigninButton()}>
+              <button
+                className="navbar__button"
+                onClick={() => this.handleSigninButton()}
+              >
                 Sign In
               </button>
-              <button className="navbar__button" onClick={() => this.handleSignupButton()}>
+              <button
+                className="navbar__button"
+                onClick={() => this.handleSignupButton()}
+              >
                 Sign Up
               </button>
             </div>
@@ -93,12 +112,15 @@ export default class NavigationBar extends React.Component<Props, State> {
           <div className="navbar__buttons">
             <Link
               to="/careers"
-              style={{ marginLeft: '-10%' }}
+              style={{ marginLeft: "-10%" }}
               className="navbar__button navbar__button--link"
             >
               Careers
             </Link>
-            <Link to="/categories" className="navbar__button navbar__button--link">
+            <Link
+              to="/categories"
+              className="navbar__button navbar__button--link"
+            >
               Questions
             </Link>
           </div>

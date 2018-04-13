@@ -1,12 +1,12 @@
 // @flow
-import React from 'react';
-import { JobBox } from '../../components';
-import './index.css';
+import React from "react";
+import { JobBox } from "../../components";
+import "./index.css";
 
 type Props = {
   jobList: Array<Object>,
   hasJobApplication: boolean,
-  hideApplyButton: boolean,
+  hideApplyButton: boolean
 };
 
 const JobList = (props: Props) => {
@@ -22,7 +22,7 @@ const JobList = (props: Props) => {
       jobType={job.job_type}
       jobCategory={job.category}
       jobDescription={job.description}
-      dateCreated={job.date_posted.replace('T', ' at ').substring(0, 19)}
+      dateCreated={job.date_posted.replace("T", " at ").substring(0, 19)}
       hasJobApplication={hasJobApplication}
       hideApplyButton={hideApplyButton}
     />
