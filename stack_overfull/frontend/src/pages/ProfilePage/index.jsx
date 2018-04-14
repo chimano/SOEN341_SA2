@@ -14,6 +14,10 @@ import {
   ProfileTabs,
 } from '../../components';
 
+type Props = {
+  currentUsername: string,
+}
+
 type State = {
   username: string,
   email: string,
@@ -35,7 +39,7 @@ type State = {
   currentTab: string,
 }
 
-export default class ProfilePage extends React.Component<{}, State> {
+export default class ProfilePage extends React.Component<Props, State> {
   state = {
     username: '',
     email: '',
@@ -197,6 +201,8 @@ export default class ProfilePage extends React.Component<{}, State> {
       jobPostList,
     } = this.state;
 
+    const { currentUsername } = this.props;
+
     let showTabPage;
     if (currentTab === '' || currentTab === 'profile') {
       showTabPage = (
@@ -215,6 +221,8 @@ export default class ProfilePage extends React.Component<{}, State> {
             github={github}
             linkedin={linkedin}
             lastLogin={lastLogin}
+            currentUsername={currentUsername}
+            isEditable
           />
         </div>
       );
