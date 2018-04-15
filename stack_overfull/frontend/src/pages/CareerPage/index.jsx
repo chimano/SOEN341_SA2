@@ -43,9 +43,6 @@ export default class CareerPage extends React.Component<Props, State> {
         title: categoryName,
       });
     });
-    // .catch((error) => {
-    //   console.log(error);
-    // });
   };
 
   createJob = (

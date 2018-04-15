@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { Divider, Button } from 'antd';
+import { Divider, Button, message } from 'antd';
 import './index.css';
 import { formatDate, postApiJobApplication, getApiJobApplication } from '../../utils/api';
 import { ApplicantsPopupButton } from '../../components';
@@ -36,8 +36,10 @@ export default class JobBox extends React.Component<Props, State> {
   };
 
   componentDidMount() {
-    const { jobId } = this.props;
-    this.getListOfApplicantsForJob(jobId);
+    const { jobId, hasJobApplication } = this.props;
+    if (hasJobApplication) {
+      this.getListOfApplicantsForJob(jobId);
+    }
   }
 
   getListOfApplicantsForJob = (jobId: number) => {
@@ -46,18 +48,14 @@ export default class JobBox extends React.Component<Props, State> {
         this.setState({
           applicantList: response.data.application_list,
         });
-      })
-      .catch((error) => {
-        console.log(error);
       });
   };
 
   handleApplyButton = (jobId: number) => {
     postApiJobApplication(jobId)
       .then((response) => {
-        alert(response.data.success);
-      })
-      .catch(error => console.log(error));
+        message.success(response.data.success);
+      });
   };
 
   render() {
@@ -89,7 +87,7 @@ export default class JobBox extends React.Component<Props, State> {
             {humanize(jobCategory)} <br />
             {jobType} <br />
             {jobLocation} <br />
-            Position posted on {date}{' '}
+            Position posted on {date}
           </div>
 
           {hasJobApplication ? (

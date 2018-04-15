@@ -34,7 +34,8 @@
     "flow stop": "flow stop",
     "flow status": "flow status",
     "flow coverage": "flow coverage",
-    "flow": "flow"
+    "flow": "flow",
+    "eslint": "eslint --ext .jsx src/"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

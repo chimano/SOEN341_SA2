@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import { Form, Icon, Input, Button, message } from 'antd';
 import './index.css';
 import { postApiUserLogin } from '../../utils/api';
 
@@ -28,14 +28,15 @@ class SignInForm extends React.Component<Props, State> {
       .then((response) => {
         const { handleLogin, handleCloseButton } = this.props;
         if (response.data.error) {
-          alert(response.data.error);
+          message.error(response.data.error);
         } else {
+          message.success('Successfully signed in');
           handleLogin(response.data.username);
           handleCloseButton();
         }
       })
       .catch((e) => {
-        alert(e.response.data.error);
+        message.error(e.response.data.error);
       });
   };
 
