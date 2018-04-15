@@ -188,7 +188,7 @@ class AnswerView(TemplateView):
                 return JsonResponse({'error': 'Question does not exist'}, status=400)
 
             # Checks to see if answer has valid length
-            if len(answer) <= 1:
+            if len(answer) <= 1 or len(answer) > 1000:
                 return JsonResponse({'error': 'Answer length is invalid'}, status=400)
             answer_db = Answer(question_id=question,
                                answer_text=answer, user_id=user)
