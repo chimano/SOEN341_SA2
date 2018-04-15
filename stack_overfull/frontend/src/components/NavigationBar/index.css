@@ -1,92 +1,85 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto+Condensed");
-
 .navbar {
-  display: flex;
-  width: 100%;
+    display: flex;
 }
 
 .navbar-wrapper {
-  background-color: #ffffff;
+    background-color: #ffffff;
 }
 
 .navbar__title {
-  min-width: 150px;
-  font-size: 18px;
-  color: #1582bf;
-  margin: auto;
+    min-width: 150px;
+    font-size: 18px;
+    color: #1582bf;
+    margin: auto;
 }
 
 .navbar__logo {
-  margin-left: auto;
-  margin-right: auto;
+    width: 30%;
+}
+
+.navbar__logo a {
+    margin: auto;
+    display: flex;
+    width: fit-content;
 }
 
 .navbar__search {
-  width: 100%;
-  padding: 7px;
-  z-index: 0;
+    width: 50%;
+    padding: 25px 0px;
+    z-index: 0;
+    min-width: 300px;
+    margin: auto;
+    max-width: 700px;
 }
 
 .navbar__button {
-  min-width: 80px;
-  border: none;
-  font-family: "Roboto Condensed", sans-serif;
-  font-size: 18px;
-  background-color: white;
-  color: #1582bf;
-  cursor: pointer;
-  outline: none;
-  height: 40px;
-  margin: auto;
-}
-
-.navbar__button--link {
-  text-align: center;
-  padding: 8px 0;
+    min-width: 80px;
+    border: none;
+    font-family: "Roboto Condensed", sans-serif;
+    font-size: 18px;
+    background-color: white;
+    color: #1582bf;
+    cursor: pointer;
+    outline: none;
+    height: 40px;
+    margin: auto;
+    text-align: center;
+    padding: 8px 10px;
+    text-decoration: none;
 }
 
 .navbar__button:hover {
-  background-color: #0074d9;
-}
-
-.navbar__profile-button:hover {
-  background-color: #0074d9;
+    border-bottom: solid 3px #1582bf;
+    color: #1582bf;
 }
 
 .navbar__auth {
-  display: flex;
+    display: flex;
 }
 
 .navbar__welcome {
-  margin: auto;
+    margin: auto;
 }
 
 .navbar__logged-in {
-  color: white;
-  text-align: center;
-  display: flex;
+    text-align: center;
+    display: flex;
 }
 
 .navbar__buttons {
-  display: flex;
+    display: flex;
+    width: 35%;
 }
 
-navbar__secondrow {
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.22);
-  padding: 8px 0;
-  width: 40%;
+.navbar__secondrow {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.22);
+    padding: 8px 0;
+    width: 40%;
 }
 
 .ant-btn-primary {
-  left: -420px;
-  background-color: #2d9cdb;
-  font-family: "Roboto Condensed", sans-serif;
-  font-size: 14px;
-}
-
-.ant-input {
-  position: absolute;
-  left: 29%;
-  margin: -16px;
-  width: 40%;
+    background-color: #2d9cdb;
+    font-family: "Roboto Condensed", sans-serif;
+    font-size: 14px;
 }
