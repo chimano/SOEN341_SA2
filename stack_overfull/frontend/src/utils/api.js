@@ -36,17 +36,17 @@ export function getApiJob(category) {
 }
 
 // apply to job
-export function postApiJobApplication(jobId) {
+export function postApiJobApplication(job_id) {
   return axios.post('/api/job/application/', {
-    jobId,
+    job_id,
   });
 }
 
 // get list of applicants based on job_id
-export function getApiJobApplication(jobId) {
+export function getApiJobApplication(job_id) {
   return axios.get('/api/job/application/', {
     params: {
-      jobId,
+      job_id,
     },
   });
 }
@@ -57,10 +57,10 @@ export function getApiUserNameJobs(username) {
 }
 
 // post a job
-export function postApiJob(position, jobType, category, company, location, description) {
+export function postApiJob(position, job_type, category, company, location, description) {
   return axios.post('/api/job/', {
     position,
-    jobType,
+    job_type,
     category,
     company,
     location,
@@ -188,25 +188,25 @@ export function postApiQuestion(question) {
 }
 
 // post answer
-export function postApiAnswer(answer, questionId) {
-  return axios.post('/api/answer/', { answer, questionId });
+export function postApiAnswer(answer, q_id) {
+  return axios.post('/api/answer/', { answer, q_id });
 }
 
 // vote on answer, return updated value of points
 // vote_type either "UP" or "DOWN"
-export function voteAnswer(voteType, answerID) {
+export function voteAnswer(vote_type, a_id) {
   return axios.post('/api/answer/vote/', {
-    voteType,
-    answerID,
+    vote_type,
+    a_id,
   });
 }
 
 // vote on question, return updated value of points
 // vote_type either "UP" or "DOWN"
-export function voteQuestion(voteType, questionId) {
+export function voteQuestion(vote_type, q_id) {
   return axios.post('/api/question/vote/', {
-    voteType,
-    questionId,
+    vote_type,
+    q_id,
   });
 }
 
@@ -224,46 +224,46 @@ export function postApiUserLogout() {
 }
 
 // register user
-export function postApiUserRegister(username, password, email, isEmployer) {
+export function postApiUserRegister(username, password, email, is_employer) {
   return axios.post('/api/user/register/', {
     username,
     password,
     email,
-    isEmployer,
+    is_employer,
   });
 }
 
 // edit an answer in the database
-export function putAnswer(answerText, answerId) {
+export function putAnswer(answer_text, q_id) {
   return axios.put('/api/answer/', {
-    answerText,
-    answerId,
+    answer_text,
+    q_id,
   });
 }
 
 // edit a question in the database
-export function putQuestion(questionId, questionHead, questionText) {
+export function putQuestion(q_id, question_head, question_text) {
   return axios.put('/api/question/', {
-    questionId,
-    questionHead,
-    questionText,
+    q_id,
+    question_head,
+    question_text,
   });
 }
 
 // delete a question from the database
-export function deleteQuestion(questionId) {
+export function deleteQuestion(q_id) {
   return axios.delete('/api/question/', {
     data: {
-      questionId,
+      q_id,
     },
   });
 }
 
 // delete an answer in the database
-export function deleteAnswer(answerId) {
+export function deleteAnswer(a_id) {
   return axios.delete('/api/answer/', {
     data: {
-      answerId,
+      a_id,
     },
   });
 }
