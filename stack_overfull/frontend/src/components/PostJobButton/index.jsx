@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button, Modal, Form, Input, Select, Cascader } from 'antd';
-import { postApiJob } from '../../utils/api';
 
 const FormItem = Form.Item;
 const { TextArea } = Input;

@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import { message } from 'antd';
 import { Route, Switch } from 'react-router-dom';
 import './App.css';
 import {
@@ -19,7 +20,6 @@ type State = {
   loggedIn: boolean,
   username: string,
   isEmployer: boolean,
-  user: Object,
 };
 
 export default class App extends React.Component<{}, State> {
@@ -27,7 +27,6 @@ export default class App extends React.Component<{}, State> {
     loggedIn: false,
     username: '',
     isEmployer: false,
-    user: {},
   };
 
   componentDidMount() {
@@ -40,50 +39,39 @@ export default class App extends React.Component<{}, State> {
         if (!response.data.error) {
           this.setState({
             loggedIn: true,
-            user: response.data,
             username: response.data.username,
             isEmployer: response.data.profile.is_employer,
           });
         }
       })
-      .catch((error) => {
+      .catch(() => {
         this.setState({
           loggedIn: false,
           username: '',
           isEmployer: false,
-          user: {},
         });
       });
-    // .catch((error) => {
-    //   console.log(error);
-    // });
   };
 
   handleLogin = () => {
     getApiUserMe()
       .then((response) => {
-        console.log('response of getApiUserMe: ', response);
         if (!response.data.error) {
           this.setState({
             loggedIn: true,
-            user: response.data,
             username: response.data.username,
             isEmployer: response.data.profile.is_employer,
           });
         }
-      })
-      .catch((error) => {
-        console.log(error);
       });
   };
 
   handleLogout = () => {
-    postApiUserLogout().catch(error => console.log(error));
+    postApiUserLogout().then(() => { message.success('Signed out'); });
     this.setState({
       loggedIn: false,
       username: '',
       isEmployer: false,
-      user: {},
     });
   };
 
