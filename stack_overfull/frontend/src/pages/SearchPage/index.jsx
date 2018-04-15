@@ -24,7 +24,7 @@ export default class SearchPage extends React.Component<Props, State> {
     this.getSearchQuestionList();
   };
 
-  componentDidUpdate = (prevProps: any, prevState: any) => {
+  componentDidUpdate = (prevProps: Object, prevState: Object) => {
     // check if the current url has changed
     if (prevProps.location.search !== this.props.location.search) {
       this.getSearchQuestionList();
@@ -45,12 +45,11 @@ export default class SearchPage extends React.Component<Props, State> {
     const { q } = queryParsed;
 
     // do api call
-    getApiSearch(q, 'desc', 36, 'date_created', this.state.filters)
-      .then((response) => {
-        this.setState({
-          questionList: response.data.question_list,
-        });
+    getApiSearch(q, 'desc', 36, 'date_created', this.state.filters).then((response) => {
+      this.setState({
+        questionList: response.data.question_list,
       });
+    });
   };
 
   handleFiltersChange = (newFilters: any) => {

@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import { Select } from 'antd';
 import './index.css';

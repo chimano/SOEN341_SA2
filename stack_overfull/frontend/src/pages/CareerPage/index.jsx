@@ -4,7 +4,7 @@ import './index.css';
 import { getApiJob, postApiJob } from '../../utils/api';
 import { SideBar, PostJobButton, JobList } from '../../components';
 
-function humanize(str) {
+function humanize(str: string) {
   const frags = str.split('_');
   for (let i = 0; i < frags.length; i += 1) {
     frags[i] = frags[i].charAt(0).toUpperCase() + frags[i].slice(1);

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"/><link rel="stylesheet" href="../../../../assets/semantic.min.css"/><link rel="stylesheet" href="../../../../assets/codemirror.css"/><link rel="stylesheet" href="../../../../assets/flow-highlight-source.css"/><link rel="stylesheet" href="../../../../assets/flow-coverage-report.css"/><link rel="stylesheet" href="../../../../assets/codemirror-simplescrollbars-addon.css"/><script src="../../../../assets/jquery-3.1.0.min.js"></script><script src="../../../../assets/semantic.min.js"></script><script src="../../../../assets/semantic-tablesort.js"></script><script src="../../../../assets/codemirror.js"></script><script src="../../../../assets/codemirror-javascript-mode.js"></script><script src="../../../../assets/codemirror-annotatescrollbar-addon.js"></script><script src="../../../../assets/codemirror-simplescrollbars-addon.js"></script><script src="../../../../assets/flow-highlight-source.js"></script><script src="../../../../assets/index.js"></script><style>
+.ui .CodeMirror {
+  border: 1px solid rgba(34,36,38,.15);
+  height: auto;
+}
+</style></head><body><div class="ui grid container"><div class="row"><div class="twelve wide column"><h2 class="ui header"><a href="../../../../index.html" id="link-to-summary">Flow Coverage Report</a></h2></div></div><div class="row"><table class="ui small celled unstackable table"><thead><tr><th class="sorted ascending">Filename</th><th>Annotation</th><th>Percent</th><th>Total</th><th>Covered</th><th>Uncovered</th></tr></thead><tbody><tr class="negative"><td class="">src/pages/HomePage/index.jsx</td><td> @flow </td><td class=""><span>82 %</span></td><td> 188 </td><td> 155 </td><td> 33 </td></tr></tbody></table></div><div class="row ui one column centered grid"><div class="column" style="text-align:left;"><div class="row"><div class="ui form"><div class="fields"><div class="sixteen wide inline field"><select class="ui search dropdown uncovered-locations"><option value="">Uncovered Locations</option><option value="38">Start: 38,5 - End: 38,16</option><option value="38">Start: 38,5 - End: 38,90</option><option value="38">Start: 38,5 - End: 45,8</option><option value="38">Start: 38,5 - End: 48,8</option><option value="39">Start: 39,14 - End: 39,21</option><option value="41">Start: 41,25 - End: 41,32</option><option value="41">Start: 41,25 - End: 41,37</option><option value="41">Start: 41,25 - End: 41,51</option><option value="42">Start: 42,24 - End: 42,31</option><option value="42">Start: 42,24 - End: 42,36</option><option value="42">Start: 42,24 - End: 42,41</option><option value="43">Start: 43,27 - End: 43,34</option><option value="43">Start: 43,27 - End: 43,39</option><option value="43">Start: 43,27 - End: 43,51</option><option value="46">Start: 46,15 - End: 46,19</option><option value="47">Start: 47,21 - End: 47,25</option><option value="52">Start: 52,5 - End: 52,19</option><option value="52">Start: 52,5 - End: 52,29</option><option value="52">Start: 52,5 - End: 56,8</option><option value="52">Start: 52,5 - End: 57,55</option><option value="54">Start: 54,9 - End: 54,15</option><option value="54">Start: 54,9 - End: 54,56</option><option value="57">Start: 57,14 - End: 57,14</option><option value="57">Start: 57,19 - End: 57,25</option><option value="57">Start: 57,19 - End: 57,54</option><option value="57">Start: 57,33 - End: 57,33</option><option value="57">Start: 57,33 - End: 57,42</option><option value="57">Start: 57,33 - End: 57,47</option><option value="57">Start: 57,33 - End: 57,53</option><option value="65">Start: 65,7 - End: 65,13</option><option value="65">Start: 65,7 - End: 65,60</option><option value="156">Start: 156,23 - End: 156,23</option><option value="156">Start: 156,56 - End: 156,56</option></select></div><div class="four wide inline field"><select class="ui search dropdown syntax-highlighting"><option value="es">ES6/ES7</option><option value="js">JavaScript</option><option value="no">None</option></select></div></div></div></div><textarea readonly="" id="file-content">// @flow
+import React from &#x27;react&#x27;;
+import { Pagination, message } from &#x27;antd&#x27;;
+import &#x27;./index.css&#x27;;
+import { QuestionList, QuestionEdit, AskQuestionButton, FilterTabs } from &#x27;../../components&#x27;;
+import { getApiSearch, postApiQuestion } from &#x27;../../utils/api&#x27;;
+
+type Props = {
+  username: string,
+  loggedIn: boolean,
+};
+
+type State = {
+  showCreateQuestionBox: boolean,
+  questionList: Array&lt;Object&gt;,
+  currentFilters: Array&lt;string&gt;,
+  currentPage: number,
+  totalQuestions: number,
+  questionPerPage: number,
+};
+
+export default class HomePage extends React.Component&lt;Props, State&gt; {
+  state = {
+    showCreateQuestionBox: false,
+    questionList: [],
+    currentFilters: [],
+    currentPage: 1,
+    totalQuestions: 0,
+    questionPerPage: 10,
+  };
+
+  componentDidMount = () =&gt; {
+    this.getQuestionList();
+  };
+
+  getQuestionList = () =&gt; {
+    const { currentFilters, currentPage, questionPerPage } = this.state;
+    getApiSearch(&#x27;&#x27;, &#x27;desc&#x27;, questionPerPage, &#x27;date_created&#x27;, currentFilters, currentPage)
+      .then((response) =&gt; {
+        this.setState({
+          questionList: response.data.question_list,
+          currentPage: response.data.page,
+          totalQuestions: response.data.total_items,
+        });
+      })
+      .catch((error) =&gt; {
+        console.log(error);
+      });
+  };
+
+  createQuestion = (question: string) =&gt; {
+    postApiQuestion(question)
+      .then(() =&gt; {
+        message.success(&#x27;Question successfully created&#x27;);
+        this.getQuestionList();
+      })
+      .catch(e =&gt; message.error(e.response.data.error));
+  };
+
+  handleAskQuestionButton = () =&gt; {
+    const { loggedIn } = this.props;
+    if (loggedIn) {
+      this.openCreateQuestionBox();
+    } else {
+      message.error(&#x27;You need to Sign In to ask a question&#x27;);
+    }
+  };
+
+  openCreateQuestionBox = () =&gt; {
+    this.setState({ showCreateQuestionBox: true });
+  };
+
+  closeCreateQuestionBox = () =&gt; {
+    this.setState({ showCreateQuestionBox: false });
+  };
+
+  handleTabsChange = (key: number) =&gt; {
+    new Promise((resolve) =&gt; {
+      switch (key) {
+        case &#x27;1&#x27;:
+          this.setState({
+            currentFilters: [],
+          });
+          break;
+        case &#x27;2&#x27;:
+          this.setState({
+            currentFilters: [&#x27;notanswered&#x27;],
+          });
+          break;
+        case &#x27;3&#x27;:
+          this.setState({
+            currentFilters: [&#x27;notaccepted&#x27;],
+          });
+          break;
+        default:
+          this.setState({
+            currentFilters: [],
+          });
+      }
+      resolve();
+    }).then(() =&gt; {
+      this.getQuestionList();
+    });
+  };
+
+  handlePaginationButton = (e: string) =&gt; {
+    new Promise((resolve) =&gt; {
+      const page = parseInt(e, 10);
+      this.setState({
+        currentPage: page,
+      });
+      resolve();
+    }).then(() =&gt; {
+      this.getQuestionList();
+    });
+  };
+
+  render() {
+    const {
+      showCreateQuestionBox,
+      questionList,
+      currentPage,
+      totalQuestions,
+      questionPerPage,
+    } = this.state;
+    const { username } = this.props;
+
+    let createQuestionBox;
+    if (showCreateQuestionBox) {
+      createQuestionBox = (
+        &lt;QuestionEdit
+          user={username}
+          createQuestion={this.createQuestion}
+          closeCreateQuestionBox={this.closeCreateQuestionBox}
+        /&gt;
+      );
+    } else {
+      createQuestionBox = &#x27;&#x27;;
+    }
+
+    return (
+      &lt;div className=&quot;body-wrapper&quot;&gt;
+        &lt;div className=&quot;HomePage page-width&quot;&gt;
+          &lt;FilterTabs handleTabsChange={this.handleTabsChange} /&gt;
+          &lt;div className=&quot;HomePage__question-list-title&quot;&gt;
+            &lt;h3&gt;QUESTIONS&lt;/h3&gt;
+            &lt;AskQuestionButton handleAskQuestionButton={this.handleAskQuestionButton} /&gt;
+          &lt;/div&gt;
+          &lt;QuestionList questionList={questionList} getQuestionList={this.getQuestionList} /&gt;
+          &lt;Pagination
+            style={{ textAlign: &#x27;center&#x27;, paddingBottom: &#x27;60px&#x27; }}
+            defaultCurrent={1}
+            defaultPageSize={questionPerPage}
+            current={currentPage}
+            total={totalQuestions}
+            onChange={e =&gt; this.handlePaginationButton(e)}
+          /&gt;
+        &lt;/div&gt;
+        {createQuestionBox}
+      &lt;/div&gt;
+    );
+  }
+}
+</textarea></div></div><div class="row centered"><footer>Flow Coverage Report generated by<a href="https://flowtype.org"> flow </a>and<a href="https://github.com/rpl/flow-coverage-report"> flow-coverage-report </a>at Sun Apr 15 2018 17:40:48 GMT-0400 (EDT)</footer></div></div><pre id="file-coverage-data" style="display:none;">{&quot;expressions&quot;:{&quot;covered_count&quot;:155,&quot;uncovered_count&quot;:33,&quot;uncovered_locs&quot;:[{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/HomePage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:38,&quot;column&quot;:5,&quot;offset&quot;:920},&quot;end&quot;:{&quot;line&quot;:38,&quot;column&quot;:16,&quot;offset&quot;:932}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/HomePage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:38,&quot;column&quot;:5,&quot;offset&quot;:920},&quot;end&quot;:{&quot;line&quot;:38,&quot;column&quot;:90,&quot;offset&quot;:1006}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/HomePage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:38,&quot;column&quot;:5,&quot;offset&quot;:920},&quot;end&quot;:{&quot;line&quot;:45,&quot;column&quot;:8,&quot;offset&quot;:1228}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/HomePage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:38,&quot;column&quot;:5,&quot;offset&quot;:920},&quot;end&quot;:{&quot;line&quot;:48,&quot;column&quot;:8,&quot;offset&quot;:1291}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/HomePage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:39,&quot;column&quot;:14,&quot;offset&quot;:1020},&quot;end&quot;:{&quot;line&quot;:39,&quot;column&quot;:21,&quot;offset&quot;:1028}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/HomePage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:41,&quot;column&quot;:25,&quot;offset&quot;:1083},&quot;end&quot;:{&quot;line&quot;:41,&quot;column&quot;:32,&quot;offset&quot;:1091}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/HomePage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:41,&quot;column&quot;:25,&quot;offset&quot;:1083},&quot;end&quot;:{&quot;line&quot;:41,&quot;column&quot;:37,&quot;offset&quot;:1096}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/HomePage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:41,&quot;column&quot;:25,&quot;offset&quot;:1083},&quot;end&quot;:{&quot;line&quot;:41,&quot;column&quot;:51,&quot;offset&quot;:1110}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/HomePage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:42,&quot;column&quot;:24,&quot;offset&quot;:1135},&quot;end&quot;:{&quot;line&quot;:42,&quot;column&quot;:31,&quot;offset&quot;:1143}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/HomePage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:42,&quot;column&quot;:24,&quot;offset&quot;:1135},&quot;end&quot;:{&quot;line&quot;:42,&quot;column&quot;:36,&quot;offset&quot;:1148}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/HomePage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:42,&quot;column&quot;:24,&quot;offset&quot;:1135},&quot;end&quot;:{&quot;line&quot;:42,&quot;column&quot;:41,&quot;offset&quot;:1153}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/HomePage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:43,&quot;column&quot;:27,&quot;offset&quot;:1181},&quot;end&quot;:{&quot;line&quot;:43,&quot;column&quot;:34,&quot;offset&quot;:1189}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/HomePage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:43,&quot;column&quot;:27,&quot;offset&quot;:1181},&quot;end&quot;:{&quot;line&quot;:43,&quot;column&quot;:39,&quot;offset&quot;:1194}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/HomePage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:43,&quot;column&quot;:27,&quot;offset&quot;:1181},&quot;end&quot;:{&quot;line&quot;:43,&quot;column&quot;:51,&quot;offset&quot;:1206}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/HomePage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:46,&quot;column&quot;:15,&quot;offset&quot;:1243},&quot;end&quot;:{&quot;line&quot;:46,&quot;column&quot;:19,&quot;offset&quot;:1248}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/HomePage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:47,&quot;column&quot;:21,&quot;offset&quot;:1275},&quot;end&quot;:{&quot;line&quot;:47,&quot;column&quot;:25,&quot;offset&quot;:1280}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/HomePage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:52,&quot;column&quot;:5,&quot;offset&quot;:1346},&quot;end&quot;:{&quot;line&quot;:52,&quot;column&quot;:19,&quot;offset&quot;:1361}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/HomePage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:52,&quot;column&quot;:5,&quot;offset&quot;:1346},&quot;end&quot;:{&quot;line&quot;:52,&quot;column&quot;:29,&quot;offset&quot;:1371}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/HomePage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:52,&quot;column&quot;:5,&quot;offset&quot;:1346},&quot;end&quot;:{&quot;line&quot;:56,&quot;column&quot;:8,&quot;offset&quot;:1490}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/HomePage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:52,&quot;column&quot;:5,&quot;offset&quot;:1346},&quot;end&quot;:{&quot;line&quot;:57,&quot;column&quot;:55,&quot;offset&quot;:1546}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/HomePage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:54,&quot;column&quot;:9,&quot;offset&quot;:1400},&quot;end&quot;:{&quot;line&quot;:54,&quot;column&quot;:15,&quot;offset&quot;:1407}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/HomePage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:54,&quot;column&quot;:9,&quot;offset&quot;:1400},&quot;end&quot;:{&quot;line&quot;:54,&quot;column&quot;:56,&quot;offset&quot;:1448}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/HomePage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:57,&quot;column&quot;:14,&quot;offset&quot;:1504},&quot;end&quot;:{&quot;line&quot;:57,&quot;column&quot;:14,&quot;offset&quot;:1505}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/HomePage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:57,&quot;column&quot;:19,&quot;offset&quot;:1509},&quot;end&quot;:{&quot;line&quot;:57,&quot;column&quot;:25,&quot;offset&quot;:1516}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/HomePage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:57,&quot;column&quot;:19,&quot;offset&quot;:1509},&quot;end&quot;:{&quot;line&quot;:57,&quot;column&quot;:54,&quot;offset&quot;:1545}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/HomePage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:57,&quot;column&quot;:33,&quot;offset&quot;:1523},&quot;end&quot;:{&quot;line&quot;:57,&quot;column&quot;:33,&quot;offset&quot;:1524}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/HomePage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:57,&quot;column&quot;:33,&quot;offset&quot;:1523},&quot;end&quot;:{&quot;line&quot;:57,&quot;column&quot;:42,&quot;offset&quot;:1533}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/HomePage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:57,&quot;column&quot;:33,&quot;offset&quot;:1523},&quot;end&quot;:{&quot;line&quot;:57,&quot;column&quot;:47,&quot;offset&quot;:1538}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/HomePage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:57,&quot;column&quot;:33,&quot;offset&quot;:1523},&quot;end&quot;:{&quot;line&quot;:57,&quot;column&quot;:53,&quot;offset&quot;:1544}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/HomePage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:65,&quot;column&quot;:7,&quot;offset&quot;:1702},&quot;end&quot;:{&quot;line&quot;:65,&quot;column&quot;:13,&quot;offset&quot;:1709}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/HomePage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:65,&quot;column&quot;:7,&quot;offset&quot;:1702},&quot;end&quot;:{&quot;line&quot;:65,&quot;column&quot;:60,&quot;offset&quot;:1756}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/HomePage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:156,&quot;column&quot;:23,&quot;offset&quot;:4044},&quot;end&quot;:{&quot;line&quot;:156,&quot;column&quot;:23,&quot;offset&quot;:4045}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/HomePage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:156,&quot;column&quot;:56,&quot;offset&quot;:4077},&quot;end&quot;:{&quot;line&quot;:156,&quot;column&quot;:56,&quot;offset&quot;:4078}}]},&quot;filename&quot;:&quot;src/pages/HomePage/index.jsx&quot;,&quot;annotation&quot;:&quot;flow&quot;,&quot;percent&quot;:82}</pre></body></html>

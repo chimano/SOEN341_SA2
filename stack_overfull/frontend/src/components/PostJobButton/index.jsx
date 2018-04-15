@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import { Button, Modal, Form, Input, Select, Cascader } from 'antd';
 
@@ -234,7 +235,7 @@ const PostJobForm = Form.create()((props) => {
 
 
 type Props = {
-  createJob: () => {}
+  createJob: (string, string, string, string, string, string) => {}
 }
 
 type State = {
@@ -257,12 +258,12 @@ export default class PostJobButton extends React.Component<Props, State> {
       if (err) {
         return;
       }
-      this.createJob(values);
+      this.createNewJob(values);
       form.resetFields();
       this.setState({ visible: false });
     });
   };
-  createJob = (values) => {
+  createNewJob = (values:Object) => {
     const { createJob } = this.props;
     createJob(
       values.position,
@@ -273,7 +274,7 @@ export default class PostJobButton extends React.Component<Props, State> {
       values.description,
     );
   };
-  saveFormRef = (form) => {
+  saveFormRef = (form: Object) => {
     this.form = form;
   };
   render() {

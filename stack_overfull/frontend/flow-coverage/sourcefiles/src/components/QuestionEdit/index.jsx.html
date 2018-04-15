@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"/><link rel="stylesheet" href="../../../../assets/semantic.min.css"/><link rel="stylesheet" href="../../../../assets/codemirror.css"/><link rel="stylesheet" href="../../../../assets/flow-highlight-source.css"/><link rel="stylesheet" href="../../../../assets/flow-coverage-report.css"/><link rel="stylesheet" href="../../../../assets/codemirror-simplescrollbars-addon.css"/><script src="../../../../assets/jquery-3.1.0.min.js"></script><script src="../../../../assets/semantic.min.js"></script><script src="../../../../assets/semantic-tablesort.js"></script><script src="../../../../assets/codemirror.js"></script><script src="../../../../assets/codemirror-javascript-mode.js"></script><script src="../../../../assets/codemirror-annotatescrollbar-addon.js"></script><script src="../../../../assets/codemirror-simplescrollbars-addon.js"></script><script src="../../../../assets/flow-highlight-source.js"></script><script src="../../../../assets/index.js"></script><style>
+.ui .CodeMirror {
+  border: 1px solid rgba(34,36,38,.15);
+  height: auto;
+}
+</style></head><body><div class="ui grid container"><div class="row"><div class="twelve wide column"><h2 class="ui header"><a href="../../../../index.html" id="link-to-summary">Flow Coverage Report</a></h2></div></div><div class="row"><table class="ui small celled unstackable table"><thead><tr><th class="sorted ascending">Filename</th><th>Annotation</th><th>Percent</th><th>Total</th><th>Covered</th><th>Uncovered</th></tr></thead><tbody><tr class="negative"><td class="">src/components/QuestionEdit/index.jsx</td><td> @flow </td><td class=""><span>78 %</span></td><td> 74 </td><td> 58 </td><td> 16 </td></tr></tbody></table></div><div class="row ui one column centered grid"><div class="column" style="text-align:left;"><div class="row"><div class="ui form"><div class="fields"><div class="sixteen wide inline field"><select class="ui search dropdown uncovered-locations"><option value="">Uncovered Locations</option><option value="6">Start: 6,9 - End: 6,14</option><option value="6">Start: 6,20 - End: 6,25</option><option value="32">Start: 32,19 - End: 32,23</option><option value="32">Start: 32,26 - End: 32,29</option><option value="33">Start: 33,29 - End: 33,33</option><option value="33">Start: 33,29 - End: 33,40</option><option value="33">Start: 33,29 - End: 33,46</option><option value="36">Start: 36,23 - End: 36,26</option><option value="39">Start: 39,27 - End: 39,35</option><option value="39">Start: 39,31 - End: 39,34</option><option value="64">Start: 64,25 - End: 64,25</option><option value="64">Start: 64,48 - End: 64,48</option><option value="69">Start: 69,25 - End: 69,25</option><option value="69">Start: 69,48 - End: 69,48</option><option value="79">Start: 79,27 - End: 79,30</option><option value="79">Start: 79,57 - End: 79,60</option></select></div><div class="four wide inline field"><select class="ui search dropdown syntax-highlighting"><option value="es">ES6/ES7</option><option value="js">JavaScript</option><option value="no">None</option></select></div></div></div></div><textarea readonly="" id="file-content">// @flow
+import React from &#x27;react&#x27;;
+import { Select } from &#x27;antd&#x27;;
+import &#x27;./index.css&#x27;;
+
+const { Option } = Select;
+
+type Props = {
+  createQuestion: () =&gt; {},
+  closeCreateQuestionBox: () =&gt; {},
+};
+
+type State = {
+  question_head: string,
+  question_text: string,
+  tags: Array&lt;string&gt;,
+};
+
+export default class QuestionEdit extends React.Component&lt;Props, State&gt; {
+  state = {
+    question_head: &#x27;&#x27;,
+    question_text: &#x27;&#x27;,
+    tags: [],
+  };
+
+  handleSubmitQuestionButton = () =&gt; {
+    const { createQuestion, closeCreateQuestionBox } = this.props;
+    createQuestion(this.state);
+    closeCreateQuestionBox();
+  };
+
+  handleChange = (event, name) =&gt; {
+    this.setState({ [name]: event.target.value });
+  };
+
+  handleTagsChange = (tags) =&gt; {
+    // Calling this.setState here breaks &lt;Select /&gt; component (?)
+    // saving tags in &#x27;this&#x27; instead
+    this.setState({ tags: [...tags] });
+  };
+
+  render() {
+    const { closeCreateQuestionBox } = this.props;
+
+    return (
+      &lt;div className=&quot;QuestionEdit__floating-box&quot;&gt;
+        &lt;div className=&quot;QuestionEdit__wrapper&quot;&gt;
+          &lt;div
+            className=&quot;QuestionEdit__close-button&quot;
+            role=&quot;button&quot;
+            tabIndex={0}
+            onClick={() =&gt; closeCreateQuestionBox()}
+            onKeyPress={() =&gt; closeCreateQuestionBox()}
+          &gt;
+            &amp;#10005;
+          &lt;/div&gt;
+
+          &lt;div className=&quot;QuestionEdit&quot;&gt;
+            &lt;div className=&quot;QuestionEdit__lines&quot; /&gt;
+            &lt;h3&gt;Ask a question to the community&lt;/h3&gt;
+            &lt;div className=&quot;QuestionEdit__title&quot;&gt;Question Header:&lt;/div&gt;
+            &lt;textarea
+              className=&quot;QuestionEdit__text&quot;
+              onChange={e =&gt; this.handleChange(e, &#x27;question_head&#x27;)}
+            /&gt;
+            &lt;div className=&quot;QuestionEdit__title&quot;&gt;Question Body (Optional):&lt;/div&gt;
+            &lt;textarea
+              className=&quot;QuestionEdit__text&quot;
+              onChange={e =&gt; this.handleChange(e, &#x27;question_text&#x27;)}
+            /&gt;
+
+            &lt;div className=&quot;QuestionEdit__title&quot;&gt;Tags&lt;/div&gt;
+            &lt;br /&gt;
+            &lt;div&gt;
+              &lt;Select
+                mode=&quot;tags&quot;
+                style={{ width: &#x27;100%&#x27; }}
+                placeholder=&quot;Add tags&quot;
+                onChange={tags =&gt; this.handleTagsChange(tags)}
+              &gt;
+                &lt;Option value=&quot;business&quot;&gt;business&lt;/Option&gt;
+                &lt;Option value=&quot;cooking&quot;&gt;cooking&lt;/Option&gt;
+                &lt;Option value=&quot;entertainment&quot;&gt;entertainment&lt;/Option&gt;
+                &lt;Option value=&quot;fashion&quot;&gt;fashion&lt;/Option&gt;
+                &lt;Option value=&quot;programming&quot;&gt;programming&lt;/Option&gt;
+                &lt;Option value=&quot;social&quot;&gt;social&lt;/Option&gt;
+                &lt;Option value=&quot;technology&quot;&gt;technology&lt;/Option&gt;
+              &lt;/Select&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;button
+            className=&quot;QuestionEdit__button button&quot;
+            onClick={() =&gt; this.handleSubmitQuestionButton()}
+            style={{ color: &#x27;#ffffff&#x27; }}
+          &gt;
+            Submit question
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+</textarea></div></div><div class="row centered"><footer>Flow Coverage Report generated by<a href="https://flowtype.org"> flow </a>and<a href="https://github.com/rpl/flow-coverage-report"> flow-coverage-report </a>at Sun Apr 15 2018 17:40:48 GMT-0400 (EDT)</footer></div></div><pre id="file-coverage-data" style="display:none;">{&quot;expressions&quot;:{&quot;covered_count&quot;:58,&quot;uncovered_count&quot;:16,&quot;uncovered_locs&quot;:[{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/QuestionEdit/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:6,&quot;column&quot;:9,&quot;offset&quot;:98},&quot;end&quot;:{&quot;line&quot;:6,&quot;column&quot;:14,&quot;offset&quot;:104}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/QuestionEdit/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:6,&quot;column&quot;:20,&quot;offset&quot;:109},&quot;end&quot;:{&quot;line&quot;:6,&quot;column&quot;:25,&quot;offset&quot;:115}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/QuestionEdit/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:32,&quot;column&quot;:19,&quot;offset&quot;:637},&quot;end&quot;:{&quot;line&quot;:32,&quot;column&quot;:23,&quot;offset&quot;:642}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/QuestionEdit/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:32,&quot;column&quot;:26,&quot;offset&quot;:644},&quot;end&quot;:{&quot;line&quot;:32,&quot;column&quot;:29,&quot;offset&quot;:648}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/QuestionEdit/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:33,&quot;column&quot;:29,&quot;offset&quot;:683},&quot;end&quot;:{&quot;line&quot;:33,&quot;column&quot;:33,&quot;offset&quot;:688}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/QuestionEdit/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:33,&quot;column&quot;:29,&quot;offset&quot;:683},&quot;end&quot;:{&quot;line&quot;:33,&quot;column&quot;:40,&quot;offset&quot;:695}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/QuestionEdit/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:33,&quot;column&quot;:29,&quot;offset&quot;:683},&quot;end&quot;:{&quot;line&quot;:33,&quot;column&quot;:46,&quot;offset&quot;:701}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/QuestionEdit/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:36,&quot;column&quot;:23,&quot;offset&quot;:734},&quot;end&quot;:{&quot;line&quot;:36,&quot;column&quot;:26,&quot;offset&quot;:738}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/QuestionEdit/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:39,&quot;column&quot;:27,&quot;offset&quot;:874},&quot;end&quot;:{&quot;line&quot;:39,&quot;column&quot;:35,&quot;offset&quot;:883}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/QuestionEdit/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:39,&quot;column&quot;:31,&quot;offset&quot;:878},&quot;end&quot;:{&quot;line&quot;:39,&quot;column&quot;:34,&quot;offset&quot;:882}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/QuestionEdit/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:64,&quot;column&quot;:25,&quot;offset&quot;:1657},&quot;end&quot;:{&quot;line&quot;:64,&quot;column&quot;:25,&quot;offset&quot;:1658}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/QuestionEdit/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:64,&quot;column&quot;:48,&quot;offset&quot;:1680},&quot;end&quot;:{&quot;line&quot;:64,&quot;column&quot;:48,&quot;offset&quot;:1681}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/QuestionEdit/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:69,&quot;column&quot;:25,&quot;offset&quot;:1888},&quot;end&quot;:{&quot;line&quot;:69,&quot;column&quot;:25,&quot;offset&quot;:1889}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/QuestionEdit/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:69,&quot;column&quot;:48,&quot;offset&quot;:1911},&quot;end&quot;:{&quot;line&quot;:69,&quot;column&quot;:48,&quot;offset&quot;:1912}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/QuestionEdit/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:79,&quot;column&quot;:27,&quot;offset&quot;:2202},&quot;end&quot;:{&quot;line&quot;:79,&quot;column&quot;:30,&quot;offset&quot;:2206}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/QuestionEdit/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:79,&quot;column&quot;:57,&quot;offset&quot;:2232},&quot;end&quot;:{&quot;line&quot;:79,&quot;column&quot;:60,&quot;offset&quot;:2236}}]},&quot;filename&quot;:&quot;src/components/QuestionEdit/index.jsx&quot;,&quot;annotation&quot;:&quot;flow&quot;,&quot;percent&quot;:78}</pre></body></html>

@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import { Tag } from 'antd';
 // import "./index.css";
@@ -16,7 +17,7 @@ const filterDisplayNames = ['Header', 'Text', 'Usernames', 'Tags', 'Answered', '
 
 type Props = {
   defaultFilters: Array<string>,
-  onFiltersChange: () => {},
+  onFiltersChange: (string) => {},
 };
 
 type State = { selectedFilters: Array<string> };
@@ -30,7 +31,7 @@ export default class SearchFiltersBar extends React.Component<Props, State> {
     if (this.props.defaultFilters) this.state.selectedFilters = [...this.props.defaultFilters];
   }
 
-  handleChange(filterName, checked) {
+  handleChange(filterName:string, checked:string) {
     const { selectedFilters } = this.state;
     const nextSelectedFilters = checked
       ? [...selectedFilters, filterName]

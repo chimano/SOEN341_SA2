@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"/><link rel="stylesheet" href="../../../../assets/semantic.min.css"/><link rel="stylesheet" href="../../../../assets/codemirror.css"/><link rel="stylesheet" href="../../../../assets/flow-highlight-source.css"/><link rel="stylesheet" href="../../../../assets/flow-coverage-report.css"/><link rel="stylesheet" href="../../../../assets/codemirror-simplescrollbars-addon.css"/><script src="../../../../assets/jquery-3.1.0.min.js"></script><script src="../../../../assets/semantic.min.js"></script><script src="../../../../assets/semantic-tablesort.js"></script><script src="../../../../assets/codemirror.js"></script><script src="../../../../assets/codemirror-javascript-mode.js"></script><script src="../../../../assets/codemirror-annotatescrollbar-addon.js"></script><script src="../../../../assets/codemirror-simplescrollbars-addon.js"></script><script src="../../../../assets/flow-highlight-source.js"></script><script src="../../../../assets/index.js"></script><style>
+.ui .CodeMirror {
+  border: 1px solid rgba(34,36,38,.15);
+  height: auto;
+}
+</style></head><body><div class="ui grid container"><div class="row"><div class="twelve wide column"><h2 class="ui header"><a href="../../../../index.html" id="link-to-summary">Flow Coverage Report</a></h2></div></div><div class="row"><table class="ui small celled unstackable table"><thead><tr><th class="sorted ascending">Filename</th><th>Annotation</th><th>Percent</th><th>Total</th><th>Covered</th><th>Uncovered</th></tr></thead><tbody><tr class="positive"><td class="">src/components/NavigationBar/index.jsx</td><td> @flow </td><td class=""><span>100 %</span></td><td> 78 </td><td> 78 </td><td> 0 </td></tr></tbody></table></div><div class="row ui one column centered grid"><div class="column" style="text-align:left;"><div class="row"><div class="ui form"><div class="fields"><div class="sixteen wide inline field"><select class="ui search dropdown uncovered-locations"><option value="">Uncovered Locations</option></select></div><div class="four wide inline field"><select class="ui search dropdown syntax-highlighting"><option value="es">ES6/ES7</option><option value="js">JavaScript</option><option value="no">None</option></select></div></div></div></div><textarea readonly="" id="file-content">// @flow
+import React from &#x27;react&#x27;;
+import { Link } from &#x27;react-router-dom&#x27;;
+import { Icon } from &#x27;antd&#x27;;
+import { SearchBar, SignInFormWindow, SignUpFormWindow } from &#x27;../../components&#x27;;
+import &#x27;./index.css&#x27;;
+
+type Props = {
+  handleLogout: () =&gt; {},
+  loggedIn: boolean,
+  handleLogin: () =&gt; {},
+};
+
+type State = {
+  openSignin: boolean,
+  openSignup: boolean,
+};
+
+export default class NavigationBar extends React.Component&lt;Props, State&gt; {
+  state = {
+    openSignin: false,
+    openSignup: false,
+  };
+
+  handleSignupButton = () =&gt; {
+    this.setState({ openSignup: true, openSignin: false });
+  };
+
+  handleSigninButton = () =&gt; {
+    this.setState({ openSignin: true, openSignup: false });
+  };
+
+  handleCloseButton = () =&gt; {
+    this.setState({ openSignin: false, openSignup: false });
+  };
+
+  render() {
+    const { handleLogout, loggedIn, handleLogin } = this.props;
+    const { openSignin, openSignup } = this.state;
+
+    let loginBox;
+    if (openSignin === true) {
+      loginBox = (
+        &lt;div className=&quot;login-wrap&quot;&gt;
+          &lt;SignInFormWindow handleCloseButton={this.handleCloseButton} handleLogin={handleLogin} /&gt;
+        &lt;/div&gt;
+      );
+    } else if (openSignup === true) {
+      loginBox = (
+        &lt;div className=&quot;login-wrap&quot;&gt;
+          &lt;SignUpFormWindow handleCloseButton={this.handleCloseButton} handleLogin={handleLogin} /&gt;
+        &lt;/div&gt;
+      );
+    } else {
+      loginBox = &#x27;&#x27;;
+    }
+
+    return (
+      &lt;div className=&quot;navbar-wrapper shadow&quot;&gt;
+        &lt;div className=&quot;navbar page-width&quot;&gt;
+          &lt;div className=&quot;navbar__title&quot;&gt;
+            &lt;Link to=&quot;/&quot; style={{ color: &#x27;white&#x27; }}&gt;
+              Stack Overfull
+            &lt;/Link&gt;
+          &lt;/div&gt;
+          &lt;div className=&quot;navbar__search&quot;&gt;
+            &lt;SearchBar /&gt;
+          &lt;/div&gt;
+          {loggedIn ? (
+            &lt;div className=&quot;navbar__logged-in&quot;&gt;
+              &lt;Link
+                to=&quot;/profile&quot;
+                style={{ width: &#x27;50px&#x27;, padding: &#x27;12px&#x27; }}
+                className=&quot;navbar__profile-button&quot;
+              &gt;
+                &lt;Icon type=&quot;user&quot; style={{ fontSize: 20, color: &#x27;white&#x27;, paddingBottom: &#x27;2px&#x27; }} /&gt;
+              &lt;/Link&gt;
+              &lt;button className=&quot;navbar__button&quot; onClick={() =&gt; handleLogout()}&gt;
+                Log out
+              &lt;/button&gt;
+            &lt;/div&gt;
+          ) : (
+            &lt;div className=&quot;navbar__auth&quot;&gt;
+              &lt;button className=&quot;navbar__button&quot; onClick={() =&gt; this.handleSigninButton()}&gt;
+                Sign In
+              &lt;/button&gt;
+              &lt;button className=&quot;navbar__button&quot; onClick={() =&gt; this.handleSignupButton()}&gt;
+                Sign Up
+              &lt;/button&gt;
+            &lt;/div&gt;
+          )}
+        &lt;/div&gt;
+        &lt;div className=&quot;navbar page-width navbar__secondrow&quot;&gt;
+          &lt;div className=&quot;navbar__buttons&quot;&gt;
+            &lt;Link
+              to=&quot;/careers&quot;
+              style={{ marginLeft: &#x27;-10%&#x27; }}
+              className=&quot;navbar__button navbar__button--link&quot;
+            &gt;
+              Careers
+            &lt;/Link&gt;
+            &lt;Link to=&quot;/categories&quot; className=&quot;navbar__button navbar__button--link&quot;&gt;
+              Questions
+            &lt;/Link&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        {loginBox}
+      &lt;/div&gt;
+    );
+  }
+}
+</textarea></div></div><div class="row centered"><footer>Flow Coverage Report generated by<a href="https://flowtype.org"> flow </a>and<a href="https://github.com/rpl/flow-coverage-report"> flow-coverage-report </a>at Sun Apr 15 2018 17:40:48 GMT-0400 (EDT)</footer></div></div><pre id="file-coverage-data" style="display:none;">{&quot;expressions&quot;:{&quot;covered_count&quot;:78,&quot;uncovered_count&quot;:0,&quot;uncovered_locs&quot;:[]},&quot;filename&quot;:&quot;src/components/NavigationBar/index.jsx&quot;,&quot;annotation&quot;:&quot;flow&quot;,&quot;percent&quot;:100}</pre></body></html>

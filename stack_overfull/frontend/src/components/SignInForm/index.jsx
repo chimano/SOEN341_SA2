@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import { Form, Icon, Input, Button, message } from 'antd';
 import './index.css';
@@ -7,7 +8,7 @@ const FormItem = Form.Item;
 
 type Props = {
   form: Object,
-  handleLogin: () => {},
+  handleLogin: (string) => {},
   handleCloseButton: () => {},
 };
 

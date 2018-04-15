@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import { Form, Input, Tooltip, Icon, Button, Select, message } from 'antd';
 import './index.css';
@@ -8,7 +9,7 @@ const { Option } = Select;
 
 type Props = {
   handleCloseButton: () => {},
-  handleLogin: () => {},
+  handleLogin: (string) => {},
   form: Object,
 };
 

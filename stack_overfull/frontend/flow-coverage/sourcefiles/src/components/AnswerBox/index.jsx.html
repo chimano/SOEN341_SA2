@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"/><link rel="stylesheet" href="../../../../assets/semantic.min.css"/><link rel="stylesheet" href="../../../../assets/codemirror.css"/><link rel="stylesheet" href="../../../../assets/flow-highlight-source.css"/><link rel="stylesheet" href="../../../../assets/flow-coverage-report.css"/><link rel="stylesheet" href="../../../../assets/codemirror-simplescrollbars-addon.css"/><script src="../../../../assets/jquery-3.1.0.min.js"></script><script src="../../../../assets/semantic.min.js"></script><script src="../../../../assets/semantic-tablesort.js"></script><script src="../../../../assets/codemirror.js"></script><script src="../../../../assets/codemirror-javascript-mode.js"></script><script src="../../../../assets/codemirror-annotatescrollbar-addon.js"></script><script src="../../../../assets/codemirror-simplescrollbars-addon.js"></script><script src="../../../../assets/flow-highlight-source.js"></script><script src="../../../../assets/index.js"></script><style>
+.ui .CodeMirror {
+  border: 1px solid rgba(34,36,38,.15);
+  height: auto;
+}
+</style></head><body><div class="ui grid container"><div class="row"><div class="twelve wide column"><h2 class="ui header"><a href="../../../../index.html" id="link-to-summary">Flow Coverage Report</a></h2></div></div><div class="row"><table class="ui small celled unstackable table"><thead><tr><th class="sorted ascending">Filename</th><th>Annotation</th><th>Percent</th><th>Total</th><th>Covered</th><th>Uncovered</th></tr></thead><tbody><tr class="negative"><td class="">src/components/AnswerBox/index.jsx</td><td> @flow </td><td class=""><span>74 %</span></td><td> 95 </td><td> 71 </td><td> 24 </td></tr></tbody></table></div><div class="row ui one column centered grid"><div class="column" style="text-align:left;"><div class="row"><div class="ui form"><div class="fields"><div class="sixteen wide inline field"><select class="ui search dropdown uncovered-locations"><option value="">Uncovered Locations</option><option value="37">Start: 37,7 - End: 37,19</option><option value="39">Start: 39,14 - End: 39,26</option><option value="46">Start: 46,20 - End: 46,28</option><option value="46">Start: 46,20 - End: 46,37</option><option value="48">Start: 48,79 - End: 48,82</option><option value="56">Start: 56,9 - End: 56,12</option><option value="56">Start: 56,16 - End: 56,25</option><option value="56">Start: 56,16 - End: 56,79</option><option value="56">Start: 56,27 - End: 56,40</option><option value="56">Start: 56,27 - End: 56,61</option><option value="56">Start: 56,27 - End: 56,78</option><option value="63">Start: 63,13 - End: 63,16</option><option value="64">Start: 64,17 - End: 64,24</option><option value="70">Start: 70,47 - End: 70,59</option><option value="78">Start: 78,52 - End: 78,55</option><option value="79">Start: 79,52 - End: 79,55</option><option value="80">Start: 80,29 - End: 80,41</option><option value="81">Start: 81,29 - End: 81,41</option><option value="82">Start: 82,25 - End: 82,28</option><option value="89">Start: 89,51 - End: 89,59</option><option value="89">Start: 89,51 - End: 89,68</option><option value="89">Start: 89,74 - End: 89,82</option><option value="89">Start: 89,74 - End: 89,91</option><option value="90">Start: 90,16 - End: 90,19</option></select></div><div class="four wide inline field"><select class="ui search dropdown syntax-highlighting"><option value="es">ES6/ES7</option><option value="js">JavaScript</option><option value="no">None</option></select></div></div></div></div><textarea readonly="" id="file-content">// @flow
+import React from &#x27;react&#x27;;
+import { Link } from &#x27;react-router-dom&#x27;;
+import { Divider, Icon } from &#x27;antd&#x27;;
+import &#x27;./index.css&#x27;;
+import { AcceptRejectButton, VotingButtons } from &#x27;../../components&#x27;;
+import { formatDate } from &#x27;../../utils/api&#x27;;
+
+type Props = {
+  handleAccept: number =&gt; {},
+  handleReject: number =&gt; {},
+  handleDownvoteButton: () =&gt; {},
+  handleUpvoteButton: () =&gt; {},
+  handleDeleteAnswer: number =&gt; {},
+  verified: boolean,
+  x: Object,
+  upvotedArray: Array&lt;Object&gt;,
+  downvotedArray: Array&lt;Object&gt;,
+  username: string,
+};
+
+const AnswerBox = (props: Props) =&gt; {
+  const {
+    handleAccept,
+    handleReject,
+    handleDownvoteButton,
+    handleUpvoteButton,
+    handleDeleteAnswer,
+    verified,
+    x,
+    upvotedArray,
+    downvotedArray,
+    username,
+  } = props;
+
+  let answerBoxClass;
+  if (x.is_accepted) {
+    answerBoxClass = &#x27;AnswerBox--green&#x27;;
+  } else if (x.is_rejected) {
+    answerBoxClass = &#x27;AnswerBox--red&#x27;;
+  } else {
+    answerBoxClass = &#x27;AnswerBox--blue&#x27;;
+  }
+
+  let deleteButtons;
+  if (username === x.user_id.username) {
+    deleteButtons = (
+      &lt;button className=&quot;AnswerBox__delete&quot; onClick={() =&gt; handleDeleteAnswer(x.id)} type=&quot;primary&quot;&gt;
+        &lt;Icon type=&quot;delete&quot; /&gt;
+      &lt;/button&gt;
+    );
+  } else {
+    deleteButtons = &lt;div /&gt;;
+  }
+
+  const date = formatDate(x.date_created.replace(&#x27;T&#x27;, &#x27; at &#x27;).substring(0, 19));
+
+  return (
+    &lt;div className=&quot;AnswerBox__wrapper&quot;&gt;
+      &lt;VotingButtons
+        handleDownvoteButton={handleDownvoteButton}
+        handleUpvoteButton={handleUpvoteButton}
+        id={x.id}
+        points={x.points}
+        upvotedArray={upvotedArray}
+        downvotedArray={downvotedArray}
+      /&gt;
+      &lt;div className={`AnswerBox ${answerBoxClass}`}&gt;
+        &lt;div className=&quot;AnswerBox__row&quot;&gt;
+          &lt;div className=&quot;AnswerBox__answer&quot;&gt;{x.answer_text}&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;Divider /&gt;
+        &lt;div className=&quot;AnswerBox__row&quot;&gt;
+          &lt;div className=&quot;AnswerBox__row&quot;&gt;
+            &lt;div className=&quot;AnswerBox__button-area&quot;&gt;
+              {verified ? (
+                &lt;AcceptRejectButton
+                  handleAccept={() =&gt; handleAccept(x.id)}
+                  handleReject={() =&gt; handleReject(x.id)}
+                  accepted={x.is_accepted}
+                  rejected={x.is_rejected}
+                  a_id={x.id}
+                /&gt;
+              ) : (
+                &#x27;&#x27;
+              )}
+            &lt;/div&gt;
+            &lt;div className=&quot;AnswerBox__username&quot;&gt;
+              Answered by&amp;nbsp;&lt;Link to={`/user/${x.user_id.username}`}&gt;{x.user_id.username}&lt;/Link&gt;&amp;nbsp;on{&#x27; &#x27;}
+              {date}
+              &amp;nbsp;
+              {deleteButtons}
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+};
+
+export default AnswerBox;
+</textarea></div></div><div class="row centered"><footer>Flow Coverage Report generated by<a href="https://flowtype.org"> flow </a>and<a href="https://github.com/rpl/flow-coverage-report"> flow-coverage-report </a>at Sun Apr 15 2018 17:40:48 GMT-0400 (EDT)</footer></div></div><pre id="file-coverage-data" style="display:none;">{&quot;expressions&quot;:{&quot;covered_count&quot;:71,&quot;uncovered_count&quot;:24,&quot;uncovered_locs&quot;:[{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AnswerBox/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:37,&quot;column&quot;:7,&quot;offset&quot;:826},&quot;end&quot;:{&quot;line&quot;:37,&quot;column&quot;:19,&quot;offset&quot;:839}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AnswerBox/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:39,&quot;column&quot;:14,&quot;offset&quot;:897},&quot;end&quot;:{&quot;line&quot;:39,&quot;column&quot;:26,&quot;offset&quot;:910}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AnswerBox/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:46,&quot;column&quot;:20,&quot;offset&quot;:1049},&quot;end&quot;:{&quot;line&quot;:46,&quot;column&quot;:28,&quot;offset&quot;:1058}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AnswerBox/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:46,&quot;column&quot;:20,&quot;offset&quot;:1049},&quot;end&quot;:{&quot;line&quot;:46,&quot;column&quot;:37,&quot;offset&quot;:1067}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AnswerBox/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:48,&quot;column&quot;:79,&quot;offset&quot;:1171},&quot;end&quot;:{&quot;line&quot;:48,&quot;column&quot;:82,&quot;offset&quot;:1175}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AnswerBox/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:56,&quot;column&quot;:9,&quot;offset&quot;:1301},&quot;end&quot;:{&quot;line&quot;:56,&quot;column&quot;:12,&quot;offset&quot;:1305}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AnswerBox/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:56,&quot;column&quot;:16,&quot;offset&quot;:1308},&quot;end&quot;:{&quot;line&quot;:56,&quot;column&quot;:25,&quot;offset&quot;:1318}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AnswerBox/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:56,&quot;column&quot;:16,&quot;offset&quot;:1308},&quot;end&quot;:{&quot;line&quot;:56,&quot;column&quot;:79,&quot;offset&quot;:1372}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AnswerBox/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:56,&quot;column&quot;:27,&quot;offset&quot;:1319},&quot;end&quot;:{&quot;line&quot;:56,&quot;column&quot;:40,&quot;offset&quot;:1333}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AnswerBox/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:56,&quot;column&quot;:27,&quot;offset&quot;:1319},&quot;end&quot;:{&quot;line&quot;:56,&quot;column&quot;:61,&quot;offset&quot;:1354}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AnswerBox/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:56,&quot;column&quot;:27,&quot;offset&quot;:1319},&quot;end&quot;:{&quot;line&quot;:56,&quot;column&quot;:78,&quot;offset&quot;:1371}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AnswerBox/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:63,&quot;column&quot;:13,&quot;offset&quot;:1560},&quot;end&quot;:{&quot;line&quot;:63,&quot;column&quot;:16,&quot;offset&quot;:1564}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AnswerBox/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:64,&quot;column&quot;:17,&quot;offset&quot;:1582},&quot;end&quot;:{&quot;line&quot;:64,&quot;column&quot;:24,&quot;offset&quot;:1590}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AnswerBox/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:70,&quot;column&quot;:47,&quot;offset&quot;:1818},&quot;end&quot;:{&quot;line&quot;:70,&quot;column&quot;:59,&quot;offset&quot;:1831}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AnswerBox/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:78,&quot;column&quot;:52,&quot;offset&quot;:2126},&quot;end&quot;:{&quot;line&quot;:78,&quot;column&quot;:55,&quot;offset&quot;:2130}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AnswerBox/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:79,&quot;column&quot;:52,&quot;offset&quot;:2184},&quot;end&quot;:{&quot;line&quot;:79,&quot;column&quot;:55,&quot;offset&quot;:2188}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AnswerBox/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:80,&quot;column&quot;:29,&quot;offset&quot;:2219},&quot;end&quot;:{&quot;line&quot;:80,&quot;column&quot;:41,&quot;offset&quot;:2232}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AnswerBox/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:81,&quot;column&quot;:29,&quot;offset&quot;:2262},&quot;end&quot;:{&quot;line&quot;:81,&quot;column&quot;:41,&quot;offset&quot;:2275}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AnswerBox/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:82,&quot;column&quot;:25,&quot;offset&quot;:2301},&quot;end&quot;:{&quot;line&quot;:82,&quot;column&quot;:28,&quot;offset&quot;:2305}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AnswerBox/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:89,&quot;column&quot;:51,&quot;offset&quot;:2501},&quot;end&quot;:{&quot;line&quot;:89,&quot;column&quot;:59,&quot;offset&quot;:2510}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AnswerBox/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:89,&quot;column&quot;:51,&quot;offset&quot;:2501},&quot;end&quot;:{&quot;line&quot;:89,&quot;column&quot;:68,&quot;offset&quot;:2519}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AnswerBox/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:89,&quot;column&quot;:74,&quot;offset&quot;:2524},&quot;end&quot;:{&quot;line&quot;:89,&quot;column&quot;:82,&quot;offset&quot;:2533}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AnswerBox/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:89,&quot;column&quot;:74,&quot;offset&quot;:2524},&quot;end&quot;:{&quot;line&quot;:89,&quot;column&quot;:91,&quot;offset&quot;:2542}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AnswerBox/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:90,&quot;column&quot;:16,&quot;offset&quot;:2579},&quot;end&quot;:{&quot;line&quot;:90,&quot;column&quot;:19,&quot;offset&quot;:2583}}]},&quot;filename&quot;:&quot;src/components/AnswerBox/index.jsx&quot;,&quot;annotation&quot;:&quot;flow&quot;,&quot;percent&quot;:74}</pre></body></html>

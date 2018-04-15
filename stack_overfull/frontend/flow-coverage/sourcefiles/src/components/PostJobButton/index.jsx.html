@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"/><link rel="stylesheet" href="../../../../assets/semantic.min.css"/><link rel="stylesheet" href="../../../../assets/codemirror.css"/><link rel="stylesheet" href="../../../../assets/flow-highlight-source.css"/><link rel="stylesheet" href="../../../../assets/flow-coverage-report.css"/><link rel="stylesheet" href="../../../../assets/codemirror-simplescrollbars-addon.css"/><script src="../../../../assets/jquery-3.1.0.min.js"></script><script src="../../../../assets/semantic.min.js"></script><script src="../../../../assets/semantic-tablesort.js"></script><script src="../../../../assets/codemirror.js"></script><script src="../../../../assets/codemirror-javascript-mode.js"></script><script src="../../../../assets/codemirror-annotatescrollbar-addon.js"></script><script src="../../../../assets/codemirror-simplescrollbars-addon.js"></script><script src="../../../../assets/flow-highlight-source.js"></script><script src="../../../../assets/index.js"></script><style>
+.ui .CodeMirror {
+  border: 1px solid rgba(34,36,38,.15);
+  height: auto;
+}
+</style></head><body><div class="ui grid container"><div class="row"><div class="twelve wide column"><h2 class="ui header"><a href="../../../../index.html" id="link-to-summary">Flow Coverage Report</a></h2></div></div><div class="row"><table class="ui small celled unstackable table"><thead><tr><th class="sorted ascending">Filename</th><th>Annotation</th><th>Percent</th><th>Total</th><th>Covered</th><th>Uncovered</th></tr></thead><tbody><tr class="negative"><td class="">src/components/PostJobButton/index.jsx</td><td> @flow </td><td class=""><span>79 %</span></td><td> 269 </td><td> 213 </td><td> 56 </td></tr></tbody></table></div><div class="row ui one column centered grid"><div class="column" style="text-align:left;"><div class="row"><div class="ui form"><div class="fields"><div class="sixteen wide inline field"><select class="ui search dropdown uncovered-locations"><option value="">Uncovered Locations</option><option value="5">Start: 5,7 - End: 5,14</option><option value="5">Start: 5,18 - End: 5,21</option><option value="5">Start: 5,18 - End: 5,26</option><option value="6">Start: 6,9 - End: 6,16</option><option value="6">Start: 6,22 - End: 6,26</option><option value="7">Start: 7,9 - End: 7,14</option><option value="7">Start: 7,20 - End: 7,25</option><option value="148">Start: 148,7 - End: 148,17</option><option value="148">Start: 148,21 - End: 148,24</option><option value="148">Start: 148,21 - End: 148,33</option><option value="148">Start: 148,21 - End: 234,2</option><option value="148">Start: 148,36 - End: 148,40</option><option value="150">Start: 150,5 - End: 150,11</option><option value="150">Start: 150,14 - End: 150,21</option><option value="150">Start: 150,24 - End: 150,31</option><option value="150">Start: 150,34 - End: 150,37</option><option value="151">Start: 151,7 - End: 151,11</option><option value="152">Start: 152,11 - End: 152,27</option><option value="152">Start: 152,33 - End: 152,36</option><option value="159">Start: 159,16 - End: 159,22</option><option value="162">Start: 162,17 - End: 162,24</option><option value="163">Start: 163,13 - End: 163,20</option><option value="168">Start: 168,12 - End: 168,28</option><option value="168">Start: 168,12 - End: 175,12</option><option value="168">Start: 168,12 - End: 175,23</option><option value="180">Start: 180,12 - End: 180,28</option><option value="180">Start: 180,12 - End: 184,12</option><option value="180">Start: 180,12 - End: 191,23</option><option value="196">Start: 196,12 - End: 196,28</option><option value="196">Start: 196,12 - End: 204,12</option><option value="196">Start: 196,12 - End: 204,47</option><option value="209">Start: 209,12 - End: 209,28</option><option value="209">Start: 209,12 - End: 213,12</option><option value="209">Start: 209,12 - End: 213,23</option><option value="218">Start: 218,12 - End: 218,28</option><option value="218">Start: 218,12 - End: 220,12</option><option value="218">Start: 218,12 - End: 220,23</option><option value="225">Start: 225,12 - End: 225,28</option><option value="225">Start: 225,12 - End: 229,12</option><option value="225">Start: 225,12 - End: 229,35</option><option value="256">Start: 256,13 - End: 256,16</option><option value="257">Start: 257,5 - End: 257,8</option><option value="257">Start: 257,5 - End: 264,6</option><option value="257">Start: 257,26 - End: 257,28</option><option value="257">Start: 257,31 - End: 257,36</option><option value="258">Start: 258,11 - End: 258,13</option><option value="261">Start: 261,25 - End: 261,30</option><option value="262">Start: 262,7 - End: 262,10</option><option value="262">Start: 262,7 - End: 262,24</option><option value="269">Start: 269,7 - End: 269,21</option><option value="270">Start: 270,7 - End: 270,17</option><option value="271">Start: 271,7 - End: 271,21</option><option value="271">Start: 271,7 - End: 271,24</option><option value="272">Start: 272,7 - End: 272,20</option><option value="273">Start: 273,7 - End: 273,21</option><option value="274">Start: 274,7 - End: 274,24</option></select></div><div class="four wide inline field"><select class="ui search dropdown syntax-highlighting"><option value="es">ES6/ES7</option><option value="js">JavaScript</option><option value="no">None</option></select></div></div></div></div><textarea readonly="" id="file-content">// @flow
+import React from &#x27;react&#x27;;
+import { Button, Modal, Form, Input, Select, Cascader } from &#x27;antd&#x27;;
+
+const FormItem = Form.Item;
+const { TextArea } = Input;
+const { Option } = Select;
+
+const categories = [
+  {
+    value: &#x27;arts&#x27;,
+    label: &#x27;Arts&#x27;,
+    children: [
+      {
+        value: &#x27;photography&#x27;,
+        label: &#x27;Photography&#x27;,
+      },
+      {
+        value: &#x27;architechture&#x27;,
+        label: &#x27;Architechture&#x27;,
+      },
+      {
+        value: &#x27;music&#x27;,
+        label: &#x27;Music&#x27;,
+      },
+      {
+        value: &#x27;theatre&#x27;,
+        label: &#x27;Theatre&#x27;,
+      },
+    ],
+  },
+  {
+    value: &#x27;administration&#x27;,
+    label: &#x27;Administration&#x27;,
+    children: [
+      {
+        value: &#x27;receptionist&#x27;,
+        label: &#x27;Receptionist&#x27;,
+      },
+      {
+        value: &#x27;coordinator&#x27;,
+        label: &#x27;Coordinator&#x27;,
+      },
+      {
+        value: &#x27;payroll administrator&#x27;,
+        label: &#x27;Payroll Administrator&#x27;,
+      },
+    ],
+  },
+  {
+    value: &#x27;commerce&#x27;,
+    label: &#x27;Commerce&#x27;,
+    children: [
+      {
+        value: &#x27;sales Representative&#x27;,
+        label: &#x27;Sales Representative&#x27;,
+      },
+      {
+        value: &#x27;accountant&#x27;,
+        label: &#x27;Accountant&#x27;,
+      },
+      {
+        value: &#x27;marketing&#x27;,
+        label: &#x27;Marketing&#x27;,
+      },
+    ],
+  },
+  {
+    value: &#x27;engineering&#x27;,
+    label: &#x27;Engineering&#x27;,
+    children: [
+      {
+        value: &#x27;computer_science&#x27;,
+        label: &#x27;Computer Science&#x27;,
+      },
+      {
+        value: &#x27;software_engineering&#x27;,
+        label: &#x27;Software Engineering&#x27;,
+      },
+      {
+        value: &#x27;mechanical_engineering&#x27;,
+        label: &#x27;Mechanical Engineering&#x27;,
+      },
+      {
+        value: &#x27;electrical_engineering&#x27;,
+        label: &#x27;Electrical Engineering&#x27;,
+      },
+      {
+        value: &#x27;industrial_engineering&#x27;,
+        label: &#x27;Industrial Engineering&#x27;,
+      },
+    ],
+  },
+  {
+    value: &#x27;education&#x27;,
+    label: &#x27;Education&#x27;,
+    children: [
+      {
+        value: &#x27;tutor&#x27;,
+        label: &#x27;Tutor&#x27;,
+      },
+      {
+        value: &#x27;elementary_school_teacher&#x27;,
+        label: &#x27;Elementary School Teacher&#x27;,
+      },
+      {
+        value: &#x27;highschool_teacher&#x27;,
+        label: &#x27;Highschool Teacher&#x27;,
+      },
+      {
+        value: &#x27;cegep_teacher&#x27;,
+        label: &#x27;Cegep Teacher&#x27;,
+      },
+      {
+        value: &#x27;university_teacher&#x27;,
+        label: &#x27;University Teacher&#x27;,
+      },
+    ],
+  },
+  {
+    value: &#x27;science&#x27;,
+    label: &#x27;Science&#x27;,
+    children: [
+      {
+        value: &#x27;biology&#x27;,
+        label: &#x27;Biology&#x27;,
+      },
+      {
+        value: &#x27;chemistry&#x27;,
+        label: &#x27;Chemistry&#x27;,
+      },
+      {
+        value: &#x27;physics&#x27;,
+        label: &#x27;Physics&#x27;,
+      },
+      {
+        value: &#x27;sociology&#x27;,
+        label: &#x27;Sociology&#x27;,
+      },
+      {
+        value: &#x27;geoscience&#x27;,
+        label: &#x27;Geoscience&#x27;,
+      },
+    ],
+  },
+];
+
+const PostJobForm = Form.create()((props) =&gt; {
+  const {
+    visible, onCancel, onCreate, form,
+  } = props;
+  const { getFieldDecorator } = form;
+  const formItemLayout = {
+    labelCol: { span: 6 },
+    wrapperCol: { span: 14 },
+  };
+  return (
+    &lt;Modal
+      visible={visible}
+      title=&quot;Create a new job&quot;
+      okText=&quot;Create&quot;
+      onCancel={onCancel}
+      onOk={onCreate}
+    &gt;
+      &lt;Form layout=&quot;vertical&quot;&gt;
+        {/* position of job */}
+        &lt;FormItem label=&quot;Position&quot;&gt;
+          {getFieldDecorator(&#x27;position&#x27;, {
+            rules: [
+              {
+                required: true,
+                message: &#x27;Please input the position of the job!&#x27;,
+              },
+            ],
+          })(&lt;Input /&gt;)}
+        &lt;/FormItem&gt;
+
+        {/* Select type of job ex: full time */}
+        &lt;FormItem {...formItemLayout} label=&quot;Select Type&quot; hasFeedback&gt;
+          {getFieldDecorator(&#x27;type&#x27;, {
+            rules: [
+              { required: true, message: &#x27;Please select the type of the job!&#x27; },
+            ],
+          })(&lt;Select placeholder=&quot;Please select type&quot;&gt;
+            &lt;Option value=&quot;Full-time&quot;&gt;Full-time&lt;/Option&gt;
+            &lt;Option value=&quot;Part-time&quot;&gt;Part-time&lt;/Option&gt;
+            &lt;Option value=&quot;Internship&quot;&gt;Internship&lt;/Option&gt;
+            &lt;Option value=&quot;Contract&quot;&gt;Contract&lt;/Option&gt;
+            &lt;Option value=&quot;Temporary&quot;&gt;Temporary&lt;/Option&gt;
+            &lt;Option value=&quot;Trainee&quot;&gt;Trainee&lt;/Option&gt;
+             &lt;/Select&gt;)}
+        &lt;/FormItem&gt;
+
+        {/* Select categories */}
+        &lt;FormItem {...formItemLayout} label=&quot;Category&quot;&gt;
+          {getFieldDecorator(&#x27;category&#x27;, {
+            rules: [
+              {
+                type: &#x27;array&#x27;,
+                required: true,
+                message: &#x27;Please select your Job category!&#x27;,
+              },
+            ],
+          })(&lt;Cascader options={categories} /&gt;)}
+        &lt;/FormItem&gt;
+
+        {/* Company */}
+        &lt;FormItem label=&quot;Company&quot;&gt;
+          {getFieldDecorator(&#x27;company&#x27;, {
+            rules: [
+              { required: true, message: &#x27;Please input your company name!&#x27; },
+            ],
+          })(&lt;Input /&gt;)}
+        &lt;/FormItem&gt;
+
+        {/* Location */}
+        &lt;FormItem label=&quot;Location&quot;&gt;
+          {getFieldDecorator(&#x27;location&#x27;, {
+            rules: [{ required: true, message: &#x27;Please input your location!&#x27; }],
+          })(&lt;Input /&gt;)}
+        &lt;/FormItem&gt;
+
+        {/* Description */}
+        &lt;FormItem label=&quot;Description&quot;&gt;
+          {getFieldDecorator(&#x27;description&#x27;, {
+            rules: [
+              { required: true, message: &#x27;Please input the description!&#x27; },
+            ],
+          })(&lt;TextArea rows={4} /&gt;)}
+        &lt;/FormItem&gt;
+      &lt;/Form&gt;
+    &lt;/Modal&gt;
+  );
+});
+
+
+type Props = {
+  createJob: (string, string, string, string, string, string) =&gt; {}
+}
+
+type State = {
+  visible: boolean
+}
+
+export default class PostJobButton extends React.Component&lt;Props, State&gt; {
+  state = {
+    visible: false,
+  };
+  showModal = () =&gt; {
+    this.setState({ visible: true });
+  };
+  handleCancel = () =&gt; {
+    this.setState({ visible: false });
+  };
+  handleCreate = () =&gt; {
+    const { form } = this;
+    form.validateFields((err, values) =&gt; {
+      if (err) {
+        return;
+      }
+      this.createNewJob(values);
+      form.resetFields();
+      this.setState({ visible: false });
+    });
+  };
+  createNewJob = (values:Object) =&gt; {
+    const { createJob } = this.props;
+    createJob(
+      values.position,
+      values.type,
+      values.category[1],
+      values.company,
+      values.location,
+      values.description,
+    );
+  };
+  saveFormRef = (form: Object) =&gt; {
+    this.form = form;
+  };
+  render() {
+    return (
+      &lt;div&gt;
+        &lt;Button type=&quot;primary&quot; onClick={this.showModal}&gt;
+          New Job
+        &lt;/Button&gt;
+        &lt;PostJobForm
+          ref={this.saveFormRef}
+          visible={this.state.visible}
+          onCancel={this.handleCancel}
+          onCreate={this.handleCreate}
+        /&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+</textarea></div></div><div class="row centered"><footer>Flow Coverage Report generated by<a href="https://flowtype.org"> flow </a>and<a href="https://github.com/rpl/flow-coverage-report"> flow-coverage-report </a>at Sun Apr 15 2018 17:40:48 GMT-0400 (EDT)</footer></div></div><pre id="file-coverage-data" style="display:none;">{&quot;expressions&quot;:{&quot;covered_count&quot;:213,&quot;uncovered_count&quot;:56,&quot;uncovered_locs&quot;:[{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:5,&quot;column&quot;:7,&quot;offset&quot;:112},&quot;end&quot;:{&quot;line&quot;:5,&quot;column&quot;:14,&quot;offset&quot;:120}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:5,&quot;column&quot;:18,&quot;offset&quot;:123},&quot;end&quot;:{&quot;line&quot;:5,&quot;column&quot;:21,&quot;offset&quot;:127}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:5,&quot;column&quot;:18,&quot;offset&quot;:123},&quot;end&quot;:{&quot;line&quot;:5,&quot;column&quot;:26,&quot;offset&quot;:132}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:6,&quot;column&quot;:9,&quot;offset&quot;:142},&quot;end&quot;:{&quot;line&quot;:6,&quot;column&quot;:16,&quot;offset&quot;:150}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:6,&quot;column&quot;:22,&quot;offset&quot;:155},&quot;end&quot;:{&quot;line&quot;:6,&quot;column&quot;:26,&quot;offset&quot;:160}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:7,&quot;column&quot;:9,&quot;offset&quot;:170},&quot;end&quot;:{&quot;line&quot;:7,&quot;column&quot;:14,&quot;offset&quot;:176}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:7,&quot;column&quot;:20,&quot;offset&quot;:181},&quot;end&quot;:{&quot;line&quot;:7,&quot;column&quot;:25,&quot;offset&quot;:187}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:148,&quot;column&quot;:7,&quot;offset&quot;:2758},&quot;end&quot;:{&quot;line&quot;:148,&quot;column&quot;:17,&quot;offset&quot;:2769}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:148,&quot;column&quot;:21,&quot;offset&quot;:2772},&quot;end&quot;:{&quot;line&quot;:148,&quot;column&quot;:24,&quot;offset&quot;:2776}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:148,&quot;column&quot;:21,&quot;offset&quot;:2772},&quot;end&quot;:{&quot;line&quot;:148,&quot;column&quot;:33,&quot;offset&quot;:2785}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:148,&quot;column&quot;:21,&quot;offset&quot;:2772},&quot;end&quot;:{&quot;line&quot;:234,&quot;column&quot;:2,&quot;offset&quot;:5415}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:148,&quot;column&quot;:36,&quot;offset&quot;:2787},&quot;end&quot;:{&quot;line&quot;:148,&quot;column&quot;:40,&quot;offset&quot;:2792}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:150,&quot;column&quot;:5,&quot;offset&quot;:2813},&quot;end&quot;:{&quot;line&quot;:150,&quot;column&quot;:11,&quot;offset&quot;:2820}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:150,&quot;column&quot;:14,&quot;offset&quot;:2822},&quot;end&quot;:{&quot;line&quot;:150,&quot;column&quot;:21,&quot;offset&quot;:2830}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:150,&quot;column&quot;:24,&quot;offset&quot;:2832},&quot;end&quot;:{&quot;line&quot;:150,&quot;column&quot;:31,&quot;offset&quot;:2840}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:150,&quot;column&quot;:34,&quot;offset&quot;:2842},&quot;end&quot;:{&quot;line&quot;:150,&quot;column&quot;:37,&quot;offset&quot;:2846}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:151,&quot;column&quot;:7,&quot;offset&quot;:2854},&quot;end&quot;:{&quot;line&quot;:151,&quot;column&quot;:11,&quot;offset&quot;:2859}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:152,&quot;column&quot;:11,&quot;offset&quot;:2871},&quot;end&quot;:{&quot;line&quot;:152,&quot;column&quot;:27,&quot;offset&quot;:2888}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:152,&quot;column&quot;:33,&quot;offset&quot;:2893},&quot;end&quot;:{&quot;line&quot;:152,&quot;column&quot;:36,&quot;offset&quot;:2897}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:159,&quot;column&quot;:16,&quot;offset&quot;:3025},&quot;end&quot;:{&quot;line&quot;:159,&quot;column&quot;:22,&quot;offset&quot;:3032}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:162,&quot;column&quot;:17,&quot;offset&quot;:3103},&quot;end&quot;:{&quot;line&quot;:162,&quot;column&quot;:24,&quot;offset&quot;:3111}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:163,&quot;column&quot;:13,&quot;offset&quot;:3125},&quot;end&quot;:{&quot;line&quot;:163,&quot;column&quot;:20,&quot;offset&quot;:3133}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:168,&quot;column&quot;:12,&quot;offset&quot;:3251},&quot;end&quot;:{&quot;line&quot;:168,&quot;column&quot;:28,&quot;offset&quot;:3268}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:168,&quot;column&quot;:12,&quot;offset&quot;:3251},&quot;end&quot;:{&quot;line&quot;:175,&quot;column&quot;:12,&quot;offset&quot;:3462}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:168,&quot;column&quot;:12,&quot;offset&quot;:3251},&quot;end&quot;:{&quot;line&quot;:175,&quot;column&quot;:23,&quot;offset&quot;:3473}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:180,&quot;column&quot;:12,&quot;offset&quot;:3627},&quot;end&quot;:{&quot;line&quot;:180,&quot;column&quot;:28,&quot;offset&quot;:3644}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:180,&quot;column&quot;:12,&quot;offset&quot;:3627},&quot;end&quot;:{&quot;line&quot;:184,&quot;column&quot;:12,&quot;offset&quot;:3784}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:180,&quot;column&quot;:12,&quot;offset&quot;:3627},&quot;end&quot;:{&quot;line&quot;:191,&quot;column&quot;:23,&quot;offset&quot;:4188}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:196,&quot;column&quot;:12,&quot;offset&quot;:4312},&quot;end&quot;:{&quot;line&quot;:196,&quot;column&quot;:28,&quot;offset&quot;:4329}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:196,&quot;column&quot;:12,&quot;offset&quot;:4312},&quot;end&quot;:{&quot;line&quot;:204,&quot;column&quot;:12,&quot;offset&quot;:4549}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:196,&quot;column&quot;:12,&quot;offset&quot;:4312},&quot;end&quot;:{&quot;line&quot;:204,&quot;column&quot;:47,&quot;offset&quot;:4584}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:209,&quot;column&quot;:12,&quot;offset&quot;:4677},&quot;end&quot;:{&quot;line&quot;:209,&quot;column&quot;:28,&quot;offset&quot;:4694}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:209,&quot;column&quot;:12,&quot;offset&quot;:4677},&quot;end&quot;:{&quot;line&quot;:213,&quot;column&quot;:12,&quot;offset&quot;:4834}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:209,&quot;column&quot;:12,&quot;offset&quot;:4677},&quot;end&quot;:{&quot;line&quot;:213,&quot;column&quot;:23,&quot;offset&quot;:4845}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:218,&quot;column&quot;:12,&quot;offset&quot;:4940},&quot;end&quot;:{&quot;line&quot;:218,&quot;column&quot;:28,&quot;offset&quot;:4957}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:218,&quot;column&quot;:12,&quot;offset&quot;:4940},&quot;end&quot;:{&quot;line&quot;:220,&quot;column&quot;:12,&quot;offset&quot;:5065}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:218,&quot;column&quot;:12,&quot;offset&quot;:4940},&quot;end&quot;:{&quot;line&quot;:220,&quot;column&quot;:23,&quot;offset&quot;:5076}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:225,&quot;column&quot;:12,&quot;offset&quot;:5177},&quot;end&quot;:{&quot;line&quot;:225,&quot;column&quot;:28,&quot;offset&quot;:5194}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:225,&quot;column&quot;:12,&quot;offset&quot;:5177},&quot;end&quot;:{&quot;line&quot;:229,&quot;column&quot;:12,&quot;offset&quot;:5336}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:225,&quot;column&quot;:12,&quot;offset&quot;:5177},&quot;end&quot;:{&quot;line&quot;:229,&quot;column&quot;:35,&quot;offset&quot;:5359}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:256,&quot;column&quot;:13,&quot;offset&quot;:5825},&quot;end&quot;:{&quot;line&quot;:256,&quot;column&quot;:16,&quot;offset&quot;:5829}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:257,&quot;column&quot;:5,&quot;offset&quot;:5844},&quot;end&quot;:{&quot;line&quot;:257,&quot;column&quot;:8,&quot;offset&quot;:5848}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:257,&quot;column&quot;:5,&quot;offset&quot;:5844},&quot;end&quot;:{&quot;line&quot;:264,&quot;column&quot;:6,&quot;offset&quot;:6030}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:257,&quot;column&quot;:26,&quot;offset&quot;:5865},&quot;end&quot;:{&quot;line&quot;:257,&quot;column&quot;:28,&quot;offset&quot;:5868}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:257,&quot;column&quot;:31,&quot;offset&quot;:5870},&quot;end&quot;:{&quot;line&quot;:257,&quot;column&quot;:36,&quot;offset&quot;:5876}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:258,&quot;column&quot;:11,&quot;offset&quot;:5893},&quot;end&quot;:{&quot;line&quot;:258,&quot;column&quot;:13,&quot;offset&quot;:5896}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:261,&quot;column&quot;:25,&quot;offset&quot;:5948},&quot;end&quot;:{&quot;line&quot;:261,&quot;column&quot;:30,&quot;offset&quot;:5954}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:262,&quot;column&quot;:7,&quot;offset&quot;:5963},&quot;end&quot;:{&quot;line&quot;:262,&quot;column&quot;:10,&quot;offset&quot;:5967}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:262,&quot;column&quot;:7,&quot;offset&quot;:5963},&quot;end&quot;:{&quot;line&quot;:262,&quot;column&quot;:24,&quot;offset&quot;:5981}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:269,&quot;column&quot;:7,&quot;offset&quot;:6134},&quot;end&quot;:{&quot;line&quot;:269,&quot;column&quot;:21,&quot;offset&quot;:6149}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:270,&quot;column&quot;:7,&quot;offset&quot;:6157},&quot;end&quot;:{&quot;line&quot;:270,&quot;column&quot;:17,&quot;offset&quot;:6168}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:271,&quot;column&quot;:7,&quot;offset&quot;:6176},&quot;end&quot;:{&quot;line&quot;:271,&quot;column&quot;:21,&quot;offset&quot;:6191}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:271,&quot;column&quot;:7,&quot;offset&quot;:6176},&quot;end&quot;:{&quot;line&quot;:271,&quot;column&quot;:24,&quot;offset&quot;:6194}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:272,&quot;column&quot;:7,&quot;offset&quot;:6202},&quot;end&quot;:{&quot;line&quot;:272,&quot;column&quot;:20,&quot;offset&quot;:6216}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:273,&quot;column&quot;:7,&quot;offset&quot;:6224},&quot;end&quot;:{&quot;line&quot;:273,&quot;column&quot;:21,&quot;offset&quot;:6239}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/PostJobButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:274,&quot;column&quot;:7,&quot;offset&quot;:6247},&quot;end&quot;:{&quot;line&quot;:274,&quot;column&quot;:24,&quot;offset&quot;:6265}}]},&quot;filename&quot;:&quot;src/components/PostJobButton/index.jsx&quot;,&quot;annotation&quot;:&quot;flow&quot;,&quot;percent&quot;:79}</pre></body></html>

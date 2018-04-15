@@ -35,7 +35,8 @@
     "flow status": "flow status",
     "flow coverage": "flow coverage",
     "flow": "flow",
-    "eslint": "eslint --ext .jsx src/"
+    "eslint": "eslint --ext .jsx src/",
+    "flow-coverage": "flow-coverage-report"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
@@ -62,5 +63,11 @@
     "prettier-eslint": "^8.8.1",
     "sw-precache-webpack-plugin": "^0.11.4",
     "webpack-cli": "^2.0.9"
+  },
+  "flow-coverage-report": {
+    "includeGlob": ["src/**/*.jsx"],
+    "excludeGlob": ["src/bundles/**", "src/registerServiceWorker.js"],
+    "type": ["text", "html", "json"],
+    "threshold": 80
   }
 }

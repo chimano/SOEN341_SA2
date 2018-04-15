@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"/><link rel="stylesheet" href="../../../../assets/semantic.min.css"/><link rel="stylesheet" href="../../../../assets/codemirror.css"/><link rel="stylesheet" href="../../../../assets/flow-highlight-source.css"/><link rel="stylesheet" href="../../../../assets/flow-coverage-report.css"/><link rel="stylesheet" href="../../../../assets/codemirror-simplescrollbars-addon.css"/><script src="../../../../assets/jquery-3.1.0.min.js"></script><script src="../../../../assets/semantic.min.js"></script><script src="../../../../assets/semantic-tablesort.js"></script><script src="../../../../assets/codemirror.js"></script><script src="../../../../assets/codemirror-javascript-mode.js"></script><script src="../../../../assets/codemirror-annotatescrollbar-addon.js"></script><script src="../../../../assets/codemirror-simplescrollbars-addon.js"></script><script src="../../../../assets/flow-highlight-source.js"></script><script src="../../../../assets/index.js"></script><style>
+.ui .CodeMirror {
+  border: 1px solid rgba(34,36,38,.15);
+  height: auto;
+}
+</style></head><body><div class="ui grid container"><div class="row"><div class="twelve wide column"><h2 class="ui header"><a href="../../../../index.html" id="link-to-summary">Flow Coverage Report</a></h2></div></div><div class="row"><table class="ui small celled unstackable table"><thead><tr><th class="sorted ascending">Filename</th><th>Annotation</th><th>Percent</th><th>Total</th><th>Covered</th><th>Uncovered</th></tr></thead><tbody><tr class="negative"><td class="">src/components/AcceptRejectButton/index.jsx</td><td> @flow </td><td class=""><span>82 %</span></td><td> 103 </td><td> 85 </td><td> 18 </td></tr></tbody></table></div><div class="row ui one column centered grid"><div class="column" style="text-align:left;"><div class="row"><div class="ui form"><div class="fields"><div class="sixteen wide inline field"><select class="ui search dropdown uncovered-locations"><option value="">Uncovered Locations</option><option value="20">Start: 20,5 - End: 20,8</option><option value="20">Start: 20,5 - End: 26,6</option><option value="20">Start: 20,5 - End: 35,6</option><option value="26">Start: 26,14 - End: 26,23</option><option value="27">Start: 27,11 - End: 27,20</option><option value="28">Start: 28,9 - End: 28,12</option><option value="28">Start: 28,9 - End: 30,10</option><option value="33">Start: 33,9 - End: 33,12</option><option value="33">Start: 33,9 - End: 33,49</option><option value="42">Start: 42,5 - End: 42,8</option><option value="42">Start: 42,5 - End: 48,6</option><option value="42">Start: 42,5 - End: 57,6</option><option value="48">Start: 48,14 - End: 48,23</option><option value="49">Start: 49,11 - End: 49,20</option><option value="50">Start: 50,9 - End: 50,12</option><option value="50">Start: 50,9 - End: 52,10</option><option value="55">Start: 55,9 - End: 55,12</option><option value="55">Start: 55,9 - End: 55,49</option></select></div><div class="four wide inline field"><select class="ui search dropdown syntax-highlighting"><option value="es">ES6/ES7</option><option value="js">JavaScript</option><option value="no">None</option></select></div></div></div></div><textarea readonly="" id="file-content">// @flow
+import React from &#x27;react&#x27;;
+import swal from &#x27;sweetalert&#x27;;
+import { Button } from &#x27;antd&#x27;;
+import &#x27;./index.css&#x27;;
+
+type Props = {
+  handleReject: number =&gt; {},
+  handleAccept: number =&gt; {},
+  answerId: number,
+  accepted: boolean,
+  rejected: boolean,
+};
+
+export default class AcceptRejectButton extends React.Component&lt;Props, {}&gt; {
+  reject() {
+    const { handleReject, answerId, rejected } = this.props;
+    const textEnding = rejected ? &quot;undo this answer&#x27;s rejection?&quot; : &#x27;reject this answer?&#x27;;
+    const responseEnding = rejected ? &#x27;is no longer rejected&#x27; : &#x27;has been rejected!&#x27;;
+    swal({
+      title: &#x27;Please confirm your decision&#x27;,
+      text: `Are you sure that you wish to ${textEnding}`,
+      icon: &#x27;warning&#x27;,
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) =&gt; {
+      if (willDelete) {
+        swal(`This answer ${responseEnding}`, {
+          icon: &#x27;success&#x27;,
+        });
+        handleReject(answerId);
+      } else {
+        swal(&#x27;Your changes have been discarded!&#x27;);
+      }
+    });
+  }
+
+  accept() {
+    const { handleAccept, answerId, accepted } = this.props;
+    const textEnding = accepted ? &quot;undo this answer&#x27;s acceptance?&quot; : &#x27;accept this answer?&#x27;;
+    const responseEnding = accepted ? &#x27;is no longer accepted&#x27; : &#x27;has been accepted!&#x27;;
+    swal({
+      title: &#x27;Please confirm your decision&#x27;,
+      text: `Are you sure that you wish to ${textEnding}`,
+      icon: &#x27;warning&#x27;,
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) =&gt; {
+      if (willDelete) {
+        swal(`This answer ${responseEnding}`, {
+          icon: &#x27;success&#x27;,
+        });
+        handleAccept(answerId);
+      } else {
+        swal(&#x27;Your changes have been discarded!&#x27;);
+      }
+    });
+  }
+
+  render() {
+    const { accepted, rejected } = this.props;
+    return (
+      &lt;div className=&quot;AcceptRejectButton&quot;&gt;
+        &lt;Button onClick={() =&gt; this.reject()} type=&quot;primary&quot;&gt;
+          {rejected ? &lt;b&gt;Undo Reject&lt;/b&gt; : &lt;b&gt;Reject&lt;/b&gt;}
+        &lt;/Button&gt;
+        &lt;div&gt;&amp;nbsp;&lt;/div&gt;
+        &lt;Button onClick={() =&gt; this.accept()} type=&quot;primary&quot;&gt;
+          {accepted ? &lt;b&gt;Undo Accept&lt;/b&gt; : &lt;b&gt;Accept&lt;/b&gt;}
+        &lt;/Button&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+</textarea></div></div><div class="row centered"><footer>Flow Coverage Report generated by<a href="https://flowtype.org"> flow </a>and<a href="https://github.com/rpl/flow-coverage-report"> flow-coverage-report </a>at Sun Apr 15 2018 17:40:48 GMT-0400 (EDT)</footer></div></div><pre id="file-coverage-data" style="display:none;">{&quot;expressions&quot;:{&quot;covered_count&quot;:85,&quot;uncovered_count&quot;:18,&quot;uncovered_locs&quot;:[{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AcceptRejectButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:20,&quot;column&quot;:5,&quot;offset&quot;:594},&quot;end&quot;:{&quot;line&quot;:20,&quot;column&quot;:8,&quot;offset&quot;:598}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AcceptRejectButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:20,&quot;column&quot;:5,&quot;offset&quot;:594},&quot;end&quot;:{&quot;line&quot;:26,&quot;column&quot;:6,&quot;offset&quot;:779}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AcceptRejectButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:20,&quot;column&quot;:5,&quot;offset&quot;:594},&quot;end&quot;:{&quot;line&quot;:35,&quot;column&quot;:6,&quot;offset&quot;:1026}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AcceptRejectButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:26,&quot;column&quot;:14,&quot;offset&quot;:786},&quot;end&quot;:{&quot;line&quot;:26,&quot;column&quot;:23,&quot;offset&quot;:796}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AcceptRejectButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:27,&quot;column&quot;:11,&quot;offset&quot;:813},&quot;end&quot;:{&quot;line&quot;:27,&quot;column&quot;:20,&quot;offset&quot;:823}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AcceptRejectButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:28,&quot;column&quot;:9,&quot;offset&quot;:835},&quot;end&quot;:{&quot;line&quot;:28,&quot;column&quot;:12,&quot;offset&quot;:839}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AcceptRejectButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:28,&quot;column&quot;:9,&quot;offset&quot;:835},&quot;end&quot;:{&quot;line&quot;:30,&quot;column&quot;:10,&quot;offset&quot;:912}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AcceptRejectButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:33,&quot;column&quot;:9,&quot;offset&quot;:969},&quot;end&quot;:{&quot;line&quot;:33,&quot;column&quot;:12,&quot;offset&quot;:973}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AcceptRejectButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:33,&quot;column&quot;:9,&quot;offset&quot;:969},&quot;end&quot;:{&quot;line&quot;:33,&quot;column&quot;:49,&quot;offset&quot;:1010}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AcceptRejectButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:42,&quot;column&quot;:5,&quot;offset&quot;:1289},&quot;end&quot;:{&quot;line&quot;:42,&quot;column&quot;:8,&quot;offset&quot;:1293}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AcceptRejectButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:42,&quot;column&quot;:5,&quot;offset&quot;:1289},&quot;end&quot;:{&quot;line&quot;:48,&quot;column&quot;:6,&quot;offset&quot;:1474}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AcceptRejectButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:42,&quot;column&quot;:5,&quot;offset&quot;:1289},&quot;end&quot;:{&quot;line&quot;:57,&quot;column&quot;:6,&quot;offset&quot;:1721}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AcceptRejectButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:48,&quot;column&quot;:14,&quot;offset&quot;:1481},&quot;end&quot;:{&quot;line&quot;:48,&quot;column&quot;:23,&quot;offset&quot;:1491}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AcceptRejectButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:49,&quot;column&quot;:11,&quot;offset&quot;:1508},&quot;end&quot;:{&quot;line&quot;:49,&quot;column&quot;:20,&quot;offset&quot;:1518}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AcceptRejectButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:50,&quot;column&quot;:9,&quot;offset&quot;:1530},&quot;end&quot;:{&quot;line&quot;:50,&quot;column&quot;:12,&quot;offset&quot;:1534}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AcceptRejectButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:50,&quot;column&quot;:9,&quot;offset&quot;:1530},&quot;end&quot;:{&quot;line&quot;:52,&quot;column&quot;:10,&quot;offset&quot;:1607}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AcceptRejectButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:55,&quot;column&quot;:9,&quot;offset&quot;:1664},&quot;end&quot;:{&quot;line&quot;:55,&quot;column&quot;:12,&quot;offset&quot;:1668}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/AcceptRejectButton/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:55,&quot;column&quot;:9,&quot;offset&quot;:1664},&quot;end&quot;:{&quot;line&quot;:55,&quot;column&quot;:49,&quot;offset&quot;:1705}}]},&quot;filename&quot;:&quot;src/components/AcceptRejectButton/index.jsx&quot;,&quot;annotation&quot;:&quot;flow&quot;,&quot;percent&quot;:82}</pre></body></html>

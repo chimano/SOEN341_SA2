@@ -1,9 +1,10 @@
+// @flow
 import React from 'react';
 import { Input, Button, Icon } from 'antd';
 import './index.css';
 
 type Props = {
-  onInputChange: () => {},
+  onInputChange: (string, Object) => {},
   onEditButtonClick: () => {},
   isEditing: boolean,
   isSavingMyInfo: boolean,
