@@ -1,121 +1,114 @@
-import axios from "axios";
+import axios from 'axios';
 
-//get single question by id
+// get single question by id
 export function getApiQuestionById(id) {
-  return axios.get("/api/question/", {
+  return axios.get('/api/question/', {
     params: {
-      id: id
-    }
+      id,
+    },
   });
 }
 
-//get the list of questions
+// get the list of questions
 export function getApiQuestion(order, limit, sort, tags = []) {
-  return axios.get("/api/question/", {
+  return axios.get('/api/question/', {
     params: {
-      order: order,
-      limit: limit,
-      sort: sort,
-      tags: tags
-    }
+      order,
+      limit,
+      sort,
+      tags,
+    },
   });
 }
 
-//get the list of asked/answered questions
+// get the list of asked/answered questions
 export function getApiUserQuestionsAndAnsweredQuestions(username) {
-  return axios.get("/api/user/name/" + username + "/questions");
+  return axios.get(`/api/user/name/${username}/questions`);
 }
 
-//get the list of jobs given the category and subcategory
+// get the list of jobs given the category and subcategory
 export function getApiJob(category) {
-  return axios.get("/api/job/", {
+  return axios.get('/api/job/', {
     params: {
-      category: category
-    }
+      category,
+    },
   });
 }
 
-//apply to job
-export function postApiJobApplication(job_id) {
-  return axios.post("/api/job/application/", {
-    job_id: job_id
+// apply to job
+export function postApiJobApplication(jobId) {
+  return axios.post('/api/job/application/', {
+    jobId,
   });
 }
 
-//get list of applicants based on job_id
-export function getApiJobApplication(job_id) {
-  return axios.get("/api/job/application/", {
+// get list of applicants based on job_id
+export function getApiJobApplication(jobId) {
+  return axios.get('/api/job/application/', {
     params: {
-      job_id: job_id
-    }
+      jobId,
+    },
   });
 }
 
-//get a list of jobs posted by a certain employer
+// get a list of jobs posted by a certain employer
 export function getApiUserNameJobs(username) {
-  return axios.get("/api/user/name/" + username + "/jobs");
+  return axios.get(`/api/user/name/${username}/jobs`);
 }
 
-//post a job
-export function postApiJob(
-  position,
-  job_type,
-  category,
-  company,
-  location,
-  description
-) {
-  return axios.post("/api/job/", {
-    position: position,
-    job_type: job_type,
-    category: category,
-    company: company,
-    location: location,
-    description: description
+// post a job
+export function postApiJob(position, jobType, category, company, location, description) {
+  return axios.post('/api/job/', {
+    position,
+    jobType,
+    category,
+    company,
+    location,
+    description,
   });
 }
 
 export function monthToText(monthRaw) {
   switch (monthRaw) {
-    case "01":
-      return "January";
-    case "02":
-      return "February";
-    case "03":
-      return "March";
-    case "04":
-      return "April";
-    case "05":
-      return "May";
-    case "06":
-      return "June";
-    case "07":
-      return "July";
-    case "08":
-      return "August";
-    case "09":
-      return "September";
-    case "10":
-      return "October";
-    case "11":
-      return "November";
-    case "12":
-      return "December";
+    case '01':
+      return 'January';
+    case '02':
+      return 'February';
+    case '03':
+      return 'March';
+    case '04':
+      return 'April';
+    case '05':
+      return 'May';
+    case '06':
+      return 'June';
+    case '07':
+      return 'July';
+    case '08':
+      return 'August';
+    case '09':
+      return 'September';
+    case '10':
+      return 'October';
+    case '11':
+      return 'November';
+    case '12':
+      return 'December';
     default:
-      return "error";
+      return 'error';
   }
 }
 
 export function dayFormat(dayRaw) {
   switch (dayRaw) {
-    case "01":
-      return "st";
-    case "02":
-      return "nd";
-    case "03":
-      return "rd";
+    case '01':
+      return 'st';
+    case '02':
+      return 'nd';
+    case '03':
+      return 'rd';
     default:
-      return "th";
+      return 'th';
   }
 }
 
@@ -130,214 +123,205 @@ export function formatDate(dateRaw) {
    *  For month, it will convert the month number to a text
    *  For day, it will get the appropriate suffix
    */
-  let month = monthToText(monthRaw);
-  let daySuffix = dayFormat(dayRaw);
+  const month = monthToText(monthRaw);
+  const daySuffix = dayFormat(dayRaw);
 
   /** If month does not return "error", then date will have the
    *  date format in a specific order with suffix and converted month.
    *
    *  If month returns "error", then show the raw date
    */
-  if (month !== "error") {
-    return month + " " + dayRaw + daySuffix + " " + year + " " + time;
-  } else {
-    return dateRaw;
+  if (month !== 'error') {
+    return `${month} ${dayRaw}${daySuffix} ${year} ${time}`;
   }
+  return dateRaw;
 }
 
-//get answer by id of the question
+// get answer by id of the question
 export function getApiAnswerById(id, order, limit) {
-  return axios.get("/api/answer/", {
+  return axios.get('/api/answer/', {
     params: {
       q_id: id,
-      order: order,
-      limit: limit
-    }
+      order,
+      limit,
+    },
   });
 }
 
-//get user info and check whether user is logged in or not
+// get user info and check whether user is logged in or not
 export function getApiUserMe() {
-  return axios.get("/api/user/me");
+  return axios.get('/api/user/me');
 }
 
-//get user information
+// get user information
 export function getApiUserNameInfo(username) {
-  return axios.get("/api/user/name/" + username);
+  return axios.get(`/api/user/name/${username}`);
 }
 
-//edit info of the currently logged in user
-//sending null doesn't modify the field
+// edit info of the currently logged in user
+// sending null doesn't modify the field
 export function postApiUserMe(
   email = null,
   first_name = null,
   last_name = null,
   about_me = null,
   github = null,
-  linkedin = null
+  linkedin = null,
 ) {
-  return axios.post("/api/user/me/", {
-    email: email,
-    first_name: first_name,
-    last_name: last_name,
-    about_me: about_me,
-    github: github,
-    linkedin: linkedin
+  return axios.post('/api/user/me/', {
+    email,
+    first_name,
+    last_name,
+    about_me,
+    github,
+    linkedin,
   });
 }
 
-//post question
+// post question
 export function postApiQuestion(question) {
-  return axios.post("/api/question/", {
+  return axios.post('/api/question/', {
     question_head: question.question_head,
     question_text: question.question_text,
-    tags: question.tags ? question.tags : []
+    tags: question.tags ? question.tags : [],
   });
 }
 
-//post answer
-export function postApiAnswer(answer, q_id) {
-  return axios.post("/api/answer/", { answer: answer, q_id: q_id });
+// post answer
+export function postApiAnswer(answer, questionId) {
+  return axios.post('/api/answer/', { answer, questionId });
 }
 
-//vote on answer, return updated value of points
-//vote_type either "UP" or "DOWN"
-export function voteAnswer(vote_type, a_id) {
-  return axios.post("/api/answer/vote/", {
-    vote_type: vote_type,
-    a_id: a_id
+// vote on answer, return updated value of points
+// vote_type either "UP" or "DOWN"
+export function voteAnswer(voteType, answerID) {
+  return axios.post('/api/answer/vote/', {
+    voteType,
+    answerID,
   });
 }
 
-//vote on question, return updated value of points
-//vote_type either "UP" or "DOWN"
-export function voteQuestion(vote_type, q_id) {
-  return axios.post("/api/question/vote/", {
-    vote_type: vote_type,
-    q_id: q_id
+// vote on question, return updated value of points
+// vote_type either "UP" or "DOWN"
+export function voteQuestion(voteType, questionId) {
+  return axios.post('/api/question/vote/', {
+    voteType,
+    questionId,
   });
 }
 
-//login the user
+// login the user
 export function postApiUserLogin(username, password) {
-  return axios.post("/api/user/login/", {
-    username: username,
-    password: password
+  return axios.post('/api/user/login/', {
+    username,
+    password,
   });
 }
 
-//logout the user
+// logout the user
 export function postApiUserLogout() {
-  return axios.post("/api/user/logout/");
+  return axios.post('/api/user/logout/');
 }
 
-//register user
-export function postApiUserRegister(username, password, email, is_employer) {
-  return axios.post("/api/user/register/", {
-    username: username,
-    password: password,
-    email: email,
-    is_employer: is_employer
+// register user
+export function postApiUserRegister(username, password, email, isEmployer) {
+  return axios.post('/api/user/register/', {
+    username,
+    password,
+    email,
+    isEmployer,
   });
 }
 
-//edit an answer in the database
-export function putAnswer(answer_text, a_id) {
-  return axios.put("/api/answer/", {
-    answer_text: answer_text,
-    a_id: a_id
+// edit an answer in the database
+export function putAnswer(answerText, answerId) {
+  return axios.put('/api/answer/', {
+    answerText,
+    answerId,
   });
 }
 
-//edit a question in the database
-export function putQuestion(q_id, question_head, question_text) {
-  return axios.put("/api/question/", {
-    q_id: q_id,
-    question_head: question_head,
-    question_text: question_text
+// edit a question in the database
+export function putQuestion(questionId, questionHead, questionText) {
+  return axios.put('/api/question/', {
+    questionId,
+    questionHead,
+    questionText,
   });
 }
 
-//delete a question from the database
-export function deleteQuestion(q_id) {
-  return axios.delete("/api/question/", 
-  { 
-    data: 
-    { 
-      q_id: q_id 
-    } 
+// delete a question from the database
+export function deleteQuestion(questionId) {
+  return axios.delete('/api/question/', {
+    data: {
+      questionId,
+    },
   });
 }
 
-//delete an answer in the database
-export function deleteAnswer(a_id) {
-  return axios.delete("/api/answer/", 
-  {
-    data:
-    { 
-      a_id: a_id 
-    }
+// delete an answer in the database
+export function deleteAnswer(answerId) {
+  return axios.delete('/api/answer/', {
+    data: {
+      answerId,
+    },
   });
 }
 
-//Accept answer
+// Accept answer
 export function postApiAnswerIdAccept(id) {
-  return axios.post("/api/answer/" + id + "/accept/");
+  return axios.post(`/api/answer/${id}/accept/`);
 }
 
-//Reject answer
+// Reject answer
 export function postApiAnswerIdReject(id) {
-  return axios.post("/api/answer/" + id + "/reject/");
+  return axios.post(`/api/answer/${id}/reject/`);
 }
 
-//Undo accept answer
+// Undo accept answer
 export function postApiAnswerIdAcceptUndo(id) {
-  return axios.post("/api/answer/" + id + "/accept/undo/");
+  return axios.post(`/api/answer/${id}/accept/undo/`);
 }
 
-//Undo reject answer
+// Undo reject answer
 export function postApiAnswerIdRejectUndo(id) {
-  return axios.post("/api/answer/" + id + "/reject/undo/");
+  return axios.post(`/api/answer/${id}/reject/undo/`);
 }
 
-//get the list of questions matching the query ('q')
-//returns a question_list in response.data
+// get the list of questions matching the query ('q')
+// returns a question_list in response.data
 export function getApiSearch(
   q = null,
-  order = "desc",
+  order = 'desc',
   limit = 10,
-  sort = "date_created",
+  sort = 'date_created',
   filters = [],
-  page = 1
+  page = 1,
 ) {
-  return axios.get("/api/search/", {
+  return axios.get('/api/search/', {
     params: {
-      q: q, // the query string
-      order: order,
-      limit: limit,
-      sort: sort,
-      filters: filters,
-      page: page
-    }
+      q, // the query string
+      order,
+      limit,
+      sort,
+      filters,
+      page,
+    },
   });
 }
 
-//get the list of tags
-export function getApiTags(
-  order = "desc",
-  limit = "10",
-  sort = "question_count"
-) {
-  return axios.get("/api/tag/", {
+// get the list of tags
+export function getApiTags(order = 'desc', limit = '10', sort = 'question_count') {
+  return axios.get('/api/tag/', {
     params: {
-      order: order,
-      limit: limit,
-      sort: sort
-    }
+      order,
+      limit,
+      sort,
+    },
   });
 }
 
-//get the tags information by tagname
+// get the tags information by tagname
 export function getApiTagInfo(tagname) {
-  return axios.get("/api/tag/name/" + tagname + "/");
+  return axios.get(`/api/tag/name/${tagname}/`);
 }

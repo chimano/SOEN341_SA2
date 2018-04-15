@@ -22,16 +22,16 @@ const UserQuestionList = (props: Props) => {
   let title;
   let showQuestions;
   // title = (<h3> Questions </h3>);
-  if (currentTab == 'questionasked') {
+  if (currentTab === 'questionasked') {
     title = <h3>Questions Asked</h3>;
     showQuestions = <QuestionList questionList={questionsAsked} />;
-  } else if (currentTab == 'questionanswered') {
+  } else if (currentTab === 'questionanswered') {
     title = <h3>Questions Answered</h3>;
     showQuestions = <QuestionList questionList={questionsAnswered} />;
-  } else if (currentTab == 'upvotedquestion') {
+  } else if (currentTab === 'upvotedquestion') {
     title = <h3>Upvoted Questions</h3>;
     showQuestions = <QuestionList questionList={upvotedQuestions} />;
-  } else if (currentTab == 'downvotedquestion') {
+  } else if (currentTab === 'downvotedquestion') {
     title = <h3>Downvoted Question</h3>;
     showQuestions = <QuestionList questionList={downvotedQuestions} />;
   }
