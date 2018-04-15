@@ -30,7 +30,10 @@ const QuestionBox = (props: Props) => {
       <div style={{ display: "flex" }}>
         <TagList tags={tags} />
         <div className="QuestionBox__user">
-          Asked by <Link to={`/user/${username}`}>{username}</Link> on {date}{" "}
+          <p>
+            Asked by <Link to={`/user/${username}`}>{username}</Link>
+          </p>
+          <p> {date} </p>
         </div>
       </div>
     </div>

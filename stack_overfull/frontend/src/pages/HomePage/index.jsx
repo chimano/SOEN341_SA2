@@ -1,13 +1,18 @@
 // @flow
-import React from 'react';
-import { Pagination } from 'antd';
-import './index.css';
-import { QuestionList, QuestionEdit, AskQuestionButton, FilterTabs } from '../../components';
-import { getApiSearch, postApiQuestion, postApiAnswer } from '../../utils/api';
+import React from "react";
+import { Pagination } from "antd";
+import "./index.css";
+import {
+  QuestionList,
+  QuestionEdit,
+  AskQuestionButton,
+  FilterTabs
+} from "../../components";
+import { getApiSearch, postApiQuestion, postApiAnswer } from "../../utils/api";
 
 type Props = {
   username: string,
-  loggedIn: boolean,
+  loggedIn: boolean
 };
 
 type State = {
@@ -16,7 +21,7 @@ type State = {
   currentFilters: Array<string>,
   currentPage: number,
   totalQuestions: number,
-  questionPerPage: number,
+  questionPerPage: number
 };
 
 export default class HomePage extends React.Component<Props, State> {
@@ -26,7 +31,7 @@ export default class HomePage extends React.Component<Props, State> {
     currentFilters: [],
     currentPage: 1,
     totalQuestions: 0,
-    questionPerPage: 10,
+    questionPerPage: 10
   };
 
   componentDidMount = () => {
@@ -35,15 +40,22 @@ export default class HomePage extends React.Component<Props, State> {
 
   getQuestionList = () => {
     const { currentFilters, currentPage, questionPerPage } = this.state;
-    getApiSearch('', 'desc', questionPerPage, 'date_created', currentFilters, currentPage)
-      .then((response) => {
+    getApiSearch(
+      "",
+      "desc",
+      questionPerPage,
+      "date_created",
+      currentFilters,
+      currentPage
+    )
+      .then(response => {
         this.setState({
           questionList: response.data.question_list,
           currentPage: response.data.page,
-          totalQuestions: response.data.total_items,
+          totalQuestions: response.data.total_items
         });
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
   };
@@ -63,7 +75,7 @@ export default class HomePage extends React.Component<Props, State> {
     if (loggedIn) {
       this.openCreateQuestionBox();
     } else {
-      alert('You need to Sign In to ask a question');
+      alert("You need to Sign In to ask a question");
     }
   };
 
@@ -76,26 +88,26 @@ export default class HomePage extends React.Component<Props, State> {
   };
 
   handleTabsChange = (key: number) => {
-    new Promise((resolve) => {
+    new Promise(resolve => {
       switch (key) {
-        case '1':
+        case "1":
           this.setState({
-            currentFilters: [],
+            currentFilters: []
           });
           break;
-        case '2':
+        case "2":
           this.setState({
-            currentFilters: ['notanswered'],
+            currentFilters: ["notanswered"]
           });
           break;
-        case '3':
+        case "3":
           this.setState({
-            currentFilters: ['notaccepted'],
+            currentFilters: ["notaccepted"]
           });
           break;
         default:
           this.setState({
-            currentFilters: [],
+            currentFilters: []
           });
       }
       resolve();
@@ -105,10 +117,10 @@ export default class HomePage extends React.Component<Props, State> {
   };
 
   handlePaginationButton = (e: string) => {
-    new Promise((resolve) => {
+    new Promise(resolve => {
       const page = parseInt(e, 10);
       this.setState({
-        currentPage: page,
+        currentPage: page
       });
       resolve();
     }).then(() => {
@@ -122,7 +134,7 @@ export default class HomePage extends React.Component<Props, State> {
       questionList,
       currentPage,
       totalQuestions,
-      questionPerPage,
+      questionPerPage
     } = this.state;
     const { username } = this.props;
 
@@ -136,7 +148,7 @@ export default class HomePage extends React.Component<Props, State> {
         />
       );
     } else {
-      createQuestionBox = '';
+      createQuestionBox = "";
     }
 
     return (
@@ -144,12 +156,19 @@ export default class HomePage extends React.Component<Props, State> {
         <div className="HomePage page-width">
           <FilterTabs handleTabsChange={this.handleTabsChange} />
           <div className="HomePage__question-list-title">
-            <h3>QUESTIONS</h3>
-            <AskQuestionButton handleAskQuestionButton={this.handleAskQuestionButton} />
+            <div>QUESTIONS</div>
+            <div className="Ask_button">
+              <AskQuestionButton
+                handleAskQuestionButton={this.handleAskQuestionButton}
+              />
+            </div>
           </div>
-          <QuestionList questionList={questionList} getQuestionList={this.getQuestionList} />
+          <QuestionList
+            questionList={questionList}
+            getQuestionList={this.getQuestionList}
+          />
           <Pagination
-            style={{ textAlign: 'center', paddingBottom: '60px' }}
+            style={{ textAlign: "center", paddingBottom: "60px" }}
             defaultCurrent={1}
             defaultPageSize={questionPerPage}
             current={currentPage}

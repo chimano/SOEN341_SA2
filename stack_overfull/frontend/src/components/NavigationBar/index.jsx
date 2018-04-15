@@ -22,7 +22,7 @@ type State = {
 export default class NavigationBar extends React.Component<Props, State> {
   state = {
     openSignin: false,
-    openSignup: false,
+    openSignup: false
   };
 
   handleSignupButton = () => {
@@ -61,18 +61,27 @@ export default class NavigationBar extends React.Component<Props, State> {
         </div>
       );
     } else {
-      loginBox = '';
+      loginBox = "";
     }
 
     return (
       <div className="navbar-wrapper shadow">
         <div className="navbar page-width">
-          <img src={'/static/logo.png'} width="40" />
-          <div className="navbar__title">
-            <Link to="/">BlinQ</Link>
+          <div className="navbar__buttons">
+            <Link to="/careers" className="navbar__button navbar__button--link">
+              Careers
+            </Link>
+            <Link
+              to="/categories"
+              className="navbar__button navbar__button--link"
+            >
+              Questions
+            </Link>
           </div>
-          <div className="navbar__search">
-            <SearchBar />
+          <div className="navbar__logo">
+            <Link to="/">
+              <img src={"/static/logo.png"} />
+            </Link>
           </div>
           {loggedIn ? (
             <div className="navbar__logged-in">
@@ -83,7 +92,11 @@ export default class NavigationBar extends React.Component<Props, State> {
               >
                 <Icon
                   type="user"
-                  style={{ fontSize: 20, color: "blue", paddingBottom: "2px" }}
+                  style={{
+                    fontSize: 20,
+                    color: "#1582bf",
+                    paddingBottom: "2px"
+                  }}
                 />
               </Link>
               <button className="navbar__button" onClick={() => handleLogout()}>
@@ -107,22 +120,8 @@ export default class NavigationBar extends React.Component<Props, State> {
             </div>
           )}
         </div>
-        <div className="navbar page-width navbar__secondrow">
-          <div className="navbar__buttons">
-            <Link
-              to="/careers"
-              style={{ marginLeft: "-10%" }}
-              className="navbar__button navbar__button--link"
-            >
-              Careers
-            </Link>
-            <Link
-              to="/categories"
-              className="navbar__button navbar__button--link"
-            >
-              Questions
-            </Link>
-          </div>
+        <div className="navbar__search">
+          <SearchBar />
         </div>
         {loginBox}
       </div>
