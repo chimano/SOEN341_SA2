@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"/><link rel="stylesheet" href="../../../../assets/semantic.min.css"/><link rel="stylesheet" href="../../../../assets/codemirror.css"/><link rel="stylesheet" href="../../../../assets/flow-highlight-source.css"/><link rel="stylesheet" href="../../../../assets/flow-coverage-report.css"/><link rel="stylesheet" href="../../../../assets/codemirror-simplescrollbars-addon.css"/><script src="../../../../assets/jquery-3.1.0.min.js"></script><script src="../../../../assets/semantic.min.js"></script><script src="../../../../assets/semantic-tablesort.js"></script><script src="../../../../assets/codemirror.js"></script><script src="../../../../assets/codemirror-javascript-mode.js"></script><script src="../../../../assets/codemirror-annotatescrollbar-addon.js"></script><script src="../../../../assets/codemirror-simplescrollbars-addon.js"></script><script src="../../../../assets/flow-highlight-source.js"></script><script src="../../../../assets/index.js"></script><style>
+.ui .CodeMirror {
+  border: 1px solid rgba(34,36,38,.15);
+  height: auto;
+}
+</style></head><body><div class="ui grid container"><div class="row"><div class="twelve wide column"><h2 class="ui header"><a href="../../../../index.html" id="link-to-summary">Flow Coverage Report</a></h2></div></div><div class="row"><table class="ui small celled unstackable table"><thead><tr><th class="sorted ascending">Filename</th><th>Annotation</th><th>Percent</th><th>Total</th><th>Covered</th><th>Uncovered</th></tr></thead><tbody><tr class="positive"><td class="">src/pages/CareerPage/index.jsx</td><td> @flow </td><td class=""><span>91 %</span></td><td> 107 </td><td> 98 </td><td> 9 </td></tr></tbody></table></div><div class="row ui one column centered grid"><div class="column" style="text-align:left;"><div class="row"><div class="ui form"><div class="fields"><div class="sixteen wide inline field"><select class="ui search dropdown uncovered-locations"><option value="">Uncovered Locations</option><option value="39">Start: 39,5 - End: 39,13</option><option value="39">Start: 39,5 - End: 39,23</option><option value="39">Start: 39,5 - End: 45,6</option><option value="39">Start: 39,31 - End: 39,38</option><option value="42">Start: 42,18 - End: 42,25</option><option value="42">Start: 42,18 - End: 42,30</option><option value="42">Start: 42,18 - End: 42,39</option><option value="56">Start: 56,5 - End: 56,14</option><option value="56">Start: 56,5 - End: 56,72</option></select></div><div class="four wide inline field"><select class="ui search dropdown syntax-highlighting"><option value="es">ES6/ES7</option><option value="js">JavaScript</option><option value="no">None</option></select></div></div></div></div><textarea readonly="" id="file-content">// @flow
+import React from &#x27;react&#x27;;
+import &#x27;./index.css&#x27;;
+import { getApiJob, postApiJob } from &#x27;../../utils/api&#x27;;
+import { SideBar, PostJobButton, JobList } from &#x27;../../components&#x27;;
+
+function humanize(str: string) {
+  const frags = str.split(&#x27;_&#x27;);
+  for (let i = 0; i &lt; frags.length; i += 1) {
+    frags[i] = frags[i].charAt(0).toUpperCase() + frags[i].slice(1);
+  }
+  return frags.join(&#x27; &#x27;);
+}
+
+type Props = {
+  isEmployer: boolean,
+  loggedIn: boolean,
+};
+
+type State = {
+  jobList: Array&lt;Object&gt;,
+  category: string,
+  title: string,
+};
+
+export default class CareerPage extends React.Component&lt;Props, State&gt; {
+  state = {
+    jobList: [],
+    category: &#x27;computer_science&#x27;,
+    title: &#x27;Computer Science&#x27;,
+  };
+
+  componentDidMount = () =&gt; {
+    const { category } = this.state;
+    this.getJobList(category);
+  };
+
+  getJobList = (category: string) =&gt; {
+    getApiJob(category).then((response) =&gt; {
+      const categoryName = humanize(category);
+      this.setState({
+        jobList: response.data.job_list,
+        title: categoryName,
+      });
+    });
+  };
+
+  createJob = (
+    position: string,
+    type: string,
+    category: string,
+    company: string,
+    location: string,
+    description: string,
+  ) =&gt; {
+    postApiJob(position, type, category, company, location, description);
+  };
+
+  render() {
+    const { jobList, title } = this.state;
+    const { isEmployer, loggedIn } = this.props;
+
+    return (
+      &lt;div className=&quot;body-wrapper&quot;&gt;
+        &lt;div className=&quot;page-width CareerPage&quot;&gt;
+          &lt;SideBar getJobList={this.getJobList} /&gt;
+          &lt;div className=&quot;CareerPage__list&quot;&gt;
+            &lt;div className=&quot;CareerPage__title-button&quot;&gt;
+              &lt;h2 className=&quot;CareerPage__title&quot;&gt;{title}&lt;/h2&gt;
+              {isEmployer ? &lt;PostJobButton createJob={this.createJob} /&gt; : &#x27;&#x27;}
+            &lt;/div&gt;
+
+            {isEmployer || !loggedIn ? (
+              &lt;JobList jobList={jobList} hideApplyButton /&gt;
+            ) : (
+              &lt;JobList jobList={jobList} /&gt;
+            )}
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+</textarea></div></div><div class="row centered"><footer>Flow Coverage Report generated by<a href="https://flowtype.org"> flow </a>and<a href="https://github.com/rpl/flow-coverage-report"> flow-coverage-report </a>at Sun Apr 15 2018 17:40:48 GMT-0400 (EDT)</footer></div></div><pre id="file-coverage-data" style="display:none;">{&quot;expressions&quot;:{&quot;covered_count&quot;:98,&quot;uncovered_count&quot;:9,&quot;uncovered_locs&quot;:[{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CareerPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:39,&quot;column&quot;:5,&quot;offset&quot;:861},&quot;end&quot;:{&quot;line&quot;:39,&quot;column&quot;:13,&quot;offset&quot;:870}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CareerPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:39,&quot;column&quot;:5,&quot;offset&quot;:861},&quot;end&quot;:{&quot;line&quot;:39,&quot;column&quot;:23,&quot;offset&quot;:880}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CareerPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:39,&quot;column&quot;:5,&quot;offset&quot;:861},&quot;end&quot;:{&quot;line&quot;:45,&quot;column&quot;:6,&quot;offset&quot;:1057}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CareerPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:39,&quot;column&quot;:31,&quot;offset&quot;:887},&quot;end&quot;:{&quot;line&quot;:39,&quot;column&quot;:38,&quot;offset&quot;:895}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CareerPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:42,&quot;column&quot;:18,&quot;offset&quot;:988},&quot;end&quot;:{&quot;line&quot;:42,&quot;column&quot;:25,&quot;offset&quot;:996}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CareerPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:42,&quot;column&quot;:18,&quot;offset&quot;:988},&quot;end&quot;:{&quot;line&quot;:42,&quot;column&quot;:30,&quot;offset&quot;:1001}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CareerPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:42,&quot;column&quot;:18,&quot;offset&quot;:988},&quot;end&quot;:{&quot;line&quot;:42,&quot;column&quot;:39,&quot;offset&quot;:1010}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CareerPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:56,&quot;column&quot;:5,&quot;offset&quot;:1224},&quot;end&quot;:{&quot;line&quot;:56,&quot;column&quot;:14,&quot;offset&quot;:1234}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CareerPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:56,&quot;column&quot;:5,&quot;offset&quot;:1224},&quot;end&quot;:{&quot;line&quot;:56,&quot;column&quot;:72,&quot;offset&quot;:1292}}]},&quot;filename&quot;:&quot;src/pages/CareerPage/index.jsx&quot;,&quot;annotation&quot;:&quot;flow&quot;,&quot;percent&quot;:91}</pre></body></html>

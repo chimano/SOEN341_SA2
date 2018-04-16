@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"/><link rel="stylesheet" href="../../../../assets/semantic.min.css"/><link rel="stylesheet" href="../../../../assets/codemirror.css"/><link rel="stylesheet" href="../../../../assets/flow-highlight-source.css"/><link rel="stylesheet" href="../../../../assets/flow-coverage-report.css"/><link rel="stylesheet" href="../../../../assets/codemirror-simplescrollbars-addon.css"/><script src="../../../../assets/jquery-3.1.0.min.js"></script><script src="../../../../assets/semantic.min.js"></script><script src="../../../../assets/semantic-tablesort.js"></script><script src="../../../../assets/codemirror.js"></script><script src="../../../../assets/codemirror-javascript-mode.js"></script><script src="../../../../assets/codemirror-annotatescrollbar-addon.js"></script><script src="../../../../assets/codemirror-simplescrollbars-addon.js"></script><script src="../../../../assets/flow-highlight-source.js"></script><script src="../../../../assets/index.js"></script><style>
+.ui .CodeMirror {
+  border: 1px solid rgba(34,36,38,.15);
+  height: auto;
+}
+</style></head><body><div class="ui grid container"><div class="row"><div class="twelve wide column"><h2 class="ui header"><a href="../../../../index.html" id="link-to-summary">Flow Coverage Report</a></h2></div></div><div class="row"><table class="ui small celled unstackable table"><thead><tr><th class="sorted ascending">Filename</th><th>Annotation</th><th>Percent</th><th>Total</th><th>Covered</th><th>Uncovered</th></tr></thead><tbody><tr class="negative"><td class="">src/components/SearchBar/index.jsx</td><td> @flow </td><td class=""><span>70 %</span></td><td> 104 </td><td> 73 </td><td> 31 </td></tr></tbody></table></div><div class="row ui one column centered grid"><div class="column" style="text-align:left;"><div class="row"><div class="ui form"><div class="fields"><div class="sixteen wide inline field"><select class="ui search dropdown uncovered-locations"><option value="">Uncovered Locations</option><option value="8">Start: 8,9 - End: 8,14</option><option value="8">Start: 8,20 - End: 8,24</option><option value="40">Start: 40,9 - End: 40,33</option><option value="40">Start: 40,39 - End: 40,64</option><option value="52">Start: 52,11 - End: 52,21</option><option value="52">Start: 52,25 - End: 52,50</option><option value="53">Start: 53,11 - End: 53,21</option><option value="53">Start: 53,25 - End: 53,26</option><option value="53">Start: 53,25 - End: 53,74</option><option value="53">Start: 53,34 - End: 53,44</option><option value="54">Start: 54,24 - End: 54,34</option><option value="54">Start: 54,24 - End: 54,36</option><option value="54">Start: 54,40 - End: 54,50</option><option value="54">Start: 54,40 - End: 54,52</option><option value="59">Start: 59,19 - End: 59,23</option><option value="61">Start: 61,19 - End: 61,23</option><option value="61">Start: 61,19 - End: 61,30</option><option value="61">Start: 61,19 - End: 61,36</option><option value="67">Start: 67,19 - End: 67,28</option><option value="68">Start: 68,35 - End: 68,36</option><option value="68">Start: 68,35 - End: 68,65</option><option value="68">Start: 68,53 - End: 68,62</option><option value="69">Start: 69,5 - End: 69,38</option><option value="79">Start: 79,19 - End: 79,23</option><option value="79">Start: 79,46 - End: 79,50</option><option value="80">Start: 80,19 - End: 80,19</option><option value="80">Start: 80,42 - End: 80,42</option><option value="87">Start: 87,7 - End: 87,15</option><option value="87">Start: 87,19 - End: 87,28</option><option value="87">Start: 87,19 - End: 87,41</option><option value="88">Start: 88,16 - End: 88,24</option></select></div><div class="four wide inline field"><select class="ui search dropdown syntax-highlighting"><option value="es">ES6/ES7</option><option value="js">JavaScript</option><option value="no">None</option></select></div></div></div></div><textarea readonly="" id="file-content">// @flow
+import React from &#x27;react&#x27;;
+import { withRouter } from &#x27;react-router&#x27;;
+import { Input } from &#x27;antd&#x27;;
+import qs from &#x27;qs&#x27;;
+import &#x27;./index.css&#x27;;
+
+const { Search } = Input;
+
+type Props = {
+  preserveInput: boolean,
+  location: Object,
+  history: Object,
+};
+
+type State = {
+  searchText: string,
+};
+
+// Search bar
+// uses withRouter() decorator to access router&#x27;s props
+// Cutsom prop: preserveInput (defaults to false)
+class SearchBarNR extends React.Component&lt;Props, State&gt; {
+  state = {
+    searchText: &#x27;&#x27;,
+  };
+
+  componentDidMount = () =&gt; {
+    let newSearchText = &#x27;&#x27;;
+
+    if (this.props.preserveInput) newSearchText = this.getSearchTextFromQuery();
+
+    this.setState({
+      searchText: newSearchText,
+    });
+  };
+
+  componentDidUpdate = (prevProps) =&gt; {
+    // check if the current url has changed
+    if (prevProps.location.search !== this.props.location.search) {
+      let newSearchText = &#x27;&#x27;;
+
+      if (this.props.preserveInput) newSearchText = this.getSearchTextFromQuery();
+
+      this.setState({
+        searchText: newSearchText,
+      });
+    }
+  };
+
+  getSearchTextFromQuery = () =&gt; {
+    const queryString = this.props.location.search;
+    const queryParsed = qs.parse(queryString, { ignoreQueryPrefix: true });
+    const searchText = queryParsed.q ? queryParsed.q : &#x27;&#x27;;
+    return searchText;
+  };
+
+  // Modify the search key of the component state
+  handleChange = (event) =&gt; {
+    this.setState({
+      searchText: event.target.value,
+    });
+  };
+
+  // gets the user input
+  // and build the url based on it
+  handleSearch = (searchText) =&gt; {
+    const searchUrl = `/search/?${qs.stringify({ q: searchText })}`;
+    this.props.history.push(searchUrl);
+  };
+
+  render() {
+    const { searchText } = this.state;
+
+    return (
+      &lt;Search
+        placeholder=&quot;Search questions here&quot;
+        value={searchText}
+        onSearch={value =&gt; this.handleSearch(value)}
+        onChange={e =&gt; this.handleChange(e)}
+        enterButton=&quot;Search&quot;
+      /&gt;
+    );
+  }
+}
+
+const SearchBar = withRouter(SearchBarNR);
+export default SearchBar;
+</textarea></div></div><div class="row centered"><footer>Flow Coverage Report generated by<a href="https://flowtype.org"> flow </a>and<a href="https://github.com/rpl/flow-coverage-report"> flow-coverage-report </a>at Sun Apr 15 2018 17:40:48 GMT-0400 (EDT)</footer></div></div><pre id="file-coverage-data" style="display:none;">{&quot;expressions&quot;:{&quot;covered_count&quot;:73,&quot;uncovered_count&quot;:31,&quot;uncovered_locs&quot;:[{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SearchBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:8,&quot;column&quot;:9,&quot;offset&quot;:161},&quot;end&quot;:{&quot;line&quot;:8,&quot;column&quot;:14,&quot;offset&quot;:167}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SearchBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:8,&quot;column&quot;:20,&quot;offset&quot;:172},&quot;end&quot;:{&quot;line&quot;:8,&quot;column&quot;:24,&quot;offset&quot;:177}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SearchBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:40,&quot;column&quot;:9,&quot;offset&quot;:821},&quot;end&quot;:{&quot;line&quot;:40,&quot;column&quot;:33,&quot;offset&quot;:846}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SearchBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:40,&quot;column&quot;:39,&quot;offset&quot;:851},&quot;end&quot;:{&quot;line&quot;:40,&quot;column&quot;:64,&quot;offset&quot;:877}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SearchBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:52,&quot;column&quot;:11,&quot;offset&quot;:1120},&quot;end&quot;:{&quot;line&quot;:52,&quot;column&quot;:21,&quot;offset&quot;:1131}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SearchBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:52,&quot;column&quot;:25,&quot;offset&quot;:1134},&quot;end&quot;:{&quot;line&quot;:52,&quot;column&quot;:50,&quot;offset&quot;:1160}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SearchBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:53,&quot;column&quot;:11,&quot;offset&quot;:1172},&quot;end&quot;:{&quot;line&quot;:53,&quot;column&quot;:21,&quot;offset&quot;:1183}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SearchBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:53,&quot;column&quot;:25,&quot;offset&quot;:1186},&quot;end&quot;:{&quot;line&quot;:53,&quot;column&quot;:26,&quot;offset&quot;:1188}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SearchBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:53,&quot;column&quot;:25,&quot;offset&quot;:1186},&quot;end&quot;:{&quot;line&quot;:53,&quot;column&quot;:74,&quot;offset&quot;:1236}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SearchBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:53,&quot;column&quot;:34,&quot;offset&quot;:1195},&quot;end&quot;:{&quot;line&quot;:53,&quot;column&quot;:44,&quot;offset&quot;:1206}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SearchBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:54,&quot;column&quot;:24,&quot;offset&quot;:1261},&quot;end&quot;:{&quot;line&quot;:54,&quot;column&quot;:34,&quot;offset&quot;:1272}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SearchBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:54,&quot;column&quot;:24,&quot;offset&quot;:1261},&quot;end&quot;:{&quot;line&quot;:54,&quot;column&quot;:36,&quot;offset&quot;:1274}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SearchBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:54,&quot;column&quot;:40,&quot;offset&quot;:1277},&quot;end&quot;:{&quot;line&quot;:54,&quot;column&quot;:50,&quot;offset&quot;:1288}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SearchBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:54,&quot;column&quot;:40,&quot;offset&quot;:1277},&quot;end&quot;:{&quot;line&quot;:54,&quot;column&quot;:52,&quot;offset&quot;:1290}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SearchBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:59,&quot;column&quot;:19,&quot;offset&quot;:1394},&quot;end&quot;:{&quot;line&quot;:59,&quot;column&quot;:23,&quot;offset&quot;:1399}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SearchBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:61,&quot;column&quot;:19,&quot;offset&quot;:1444},&quot;end&quot;:{&quot;line&quot;:61,&quot;column&quot;:23,&quot;offset&quot;:1449}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SearchBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:61,&quot;column&quot;:19,&quot;offset&quot;:1444},&quot;end&quot;:{&quot;line&quot;:61,&quot;column&quot;:30,&quot;offset&quot;:1456}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SearchBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:61,&quot;column&quot;:19,&quot;offset&quot;:1444},&quot;end&quot;:{&quot;line&quot;:61,&quot;column&quot;:36,&quot;offset&quot;:1462}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SearchBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:67,&quot;column&quot;:19,&quot;offset&quot;:1556},&quot;end&quot;:{&quot;line&quot;:67,&quot;column&quot;:28,&quot;offset&quot;:1566}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SearchBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:68,&quot;column&quot;:35,&quot;offset&quot;:1607},&quot;end&quot;:{&quot;line&quot;:68,&quot;column&quot;:36,&quot;offset&quot;:1609}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SearchBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:68,&quot;column&quot;:35,&quot;offset&quot;:1607},&quot;end&quot;:{&quot;line&quot;:68,&quot;column&quot;:65,&quot;offset&quot;:1638}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SearchBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:68,&quot;column&quot;:53,&quot;offset&quot;:1625},&quot;end&quot;:{&quot;line&quot;:68,&quot;column&quot;:62,&quot;offset&quot;:1635}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SearchBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:69,&quot;column&quot;:5,&quot;offset&quot;:1646},&quot;end&quot;:{&quot;line&quot;:69,&quot;column&quot;:38,&quot;offset&quot;:1680}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SearchBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:79,&quot;column&quot;:19,&quot;offset&quot;:1857},&quot;end&quot;:{&quot;line&quot;:79,&quot;column&quot;:23,&quot;offset&quot;:1862}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SearchBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:79,&quot;column&quot;:46,&quot;offset&quot;:1884},&quot;end&quot;:{&quot;line&quot;:79,&quot;column&quot;:50,&quot;offset&quot;:1889}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SearchBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:80,&quot;column&quot;:19,&quot;offset&quot;:1910},&quot;end&quot;:{&quot;line&quot;:80,&quot;column&quot;:19,&quot;offset&quot;:1911}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SearchBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:80,&quot;column&quot;:42,&quot;offset&quot;:1933},&quot;end&quot;:{&quot;line&quot;:80,&quot;column&quot;:42,&quot;offset&quot;:1934}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SearchBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:87,&quot;column&quot;:7,&quot;offset&quot;:1995},&quot;end&quot;:{&quot;line&quot;:87,&quot;column&quot;:15,&quot;offset&quot;:2004}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SearchBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:87,&quot;column&quot;:19,&quot;offset&quot;:2007},&quot;end&quot;:{&quot;line&quot;:87,&quot;column&quot;:28,&quot;offset&quot;:2017}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SearchBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:87,&quot;column&quot;:19,&quot;offset&quot;:2007},&quot;end&quot;:{&quot;line&quot;:87,&quot;column&quot;:41,&quot;offset&quot;:2030}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SearchBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:88,&quot;column&quot;:16,&quot;offset&quot;:2047},&quot;end&quot;:{&quot;line&quot;:88,&quot;column&quot;:24,&quot;offset&quot;:2056}}]},&quot;filename&quot;:&quot;src/components/SearchBar/index.jsx&quot;,&quot;annotation&quot;:&quot;flow&quot;,&quot;percent&quot;:70}</pre></body></html>

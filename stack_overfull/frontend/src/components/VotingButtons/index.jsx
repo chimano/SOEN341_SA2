@@ -1,10 +1,11 @@
+// @flow
 import React from 'react';
 import { Icon } from 'antd';
 import './index.css';
 
 type Props = {
-  handleUpvoteButton: () => {},
-  handleDownvoteButton: () => {},
+  handleUpvoteButton: (number) => {},
+  handleDownvoteButton: (number) => {},
   id: number,
   points: number,
   upvotedArray: Array<Object>,

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"/><link rel="stylesheet" href="../../../../assets/semantic.min.css"/><link rel="stylesheet" href="../../../../assets/codemirror.css"/><link rel="stylesheet" href="../../../../assets/flow-highlight-source.css"/><link rel="stylesheet" href="../../../../assets/flow-coverage-report.css"/><link rel="stylesheet" href="../../../../assets/codemirror-simplescrollbars-addon.css"/><script src="../../../../assets/jquery-3.1.0.min.js"></script><script src="../../../../assets/semantic.min.js"></script><script src="../../../../assets/semantic-tablesort.js"></script><script src="../../../../assets/codemirror.js"></script><script src="../../../../assets/codemirror-javascript-mode.js"></script><script src="../../../../assets/codemirror-annotatescrollbar-addon.js"></script><script src="../../../../assets/codemirror-simplescrollbars-addon.js"></script><script src="../../../../assets/flow-highlight-source.js"></script><script src="../../../../assets/index.js"></script><style>
+.ui .CodeMirror {
+  border: 1px solid rgba(34,36,38,.15);
+  height: auto;
+}
+</style></head><body><div class="ui grid container"><div class="row"><div class="twelve wide column"><h2 class="ui header"><a href="../../../../index.html" id="link-to-summary">Flow Coverage Report</a></h2></div></div><div class="row"><table class="ui small celled unstackable table"><thead><tr><th class="sorted ascending">Filename</th><th>Annotation</th><th>Percent</th><th>Total</th><th>Covered</th><th>Uncovered</th></tr></thead><tbody><tr class="positive"><td class="">src/components/SideBar/index.jsx</td><td> @flow </td><td class=""><span>97 %</span></td><td> 208 </td><td> 203 </td><td> 5 </td></tr></tbody></table></div><div class="row ui one column centered grid"><div class="column" style="text-align:left;"><div class="row"><div class="ui form"><div class="fields"><div class="sixteen wide inline field"><select class="ui search dropdown uncovered-locations"><option value="">Uncovered Locations</option><option value="6">Start: 6,9 - End: 6,15</option><option value="6">Start: 6,21 - End: 6,24</option><option value="175">Start: 175,16 - End: 175,20</option><option value="191">Start: 191,12 - End: 191,15</option><option value="191">Start: 191,12 - End: 191,20</option></select></div><div class="four wide inline field"><select class="ui search dropdown syntax-highlighting"><option value="es">ES6/ES7</option><option value="js">JavaScript</option><option value="no">None</option></select></div></div></div></div><textarea readonly="" id="file-content">// @flow
+import React from &#x27;react&#x27;;
+import { Menu, Icon } from &#x27;antd&#x27;;
+import &#x27;./index.css&#x27;;
+
+const { SubMenu } = Menu;
+
+const categories = [
+  {
+    value: &#x27;arts&#x27;,
+    label: &#x27;Arts&#x27;,
+    children: [
+      {
+        value: &#x27;photography&#x27;,
+        label: &#x27;Photography&#x27;,
+      },
+      {
+        value: &#x27;architechture&#x27;,
+        label: &#x27;Architechture&#x27;,
+      },
+      {
+        value: &#x27;music&#x27;,
+        label: &#x27;Music&#x27;,
+      },
+      {
+        value: &#x27;theatre&#x27;,
+        label: &#x27;Theatre&#x27;,
+      },
+    ],
+  },
+  {
+    value: &#x27;administration&#x27;,
+    label: &#x27;Administration&#x27;,
+    children: [
+      {
+        value: &#x27;receptionist&#x27;,
+        label: &#x27;Receptionist&#x27;,
+      },
+      {
+        value: &#x27;coordinator&#x27;,
+        label: &#x27;Coordinator&#x27;,
+      },
+      {
+        value: &#x27;payroll administrator&#x27;,
+        label: &#x27;Payroll Administrator&#x27;,
+      },
+    ],
+  },
+  {
+    value: &#x27;commerce&#x27;,
+    label: &#x27;Commerce&#x27;,
+    children: [
+      {
+        value: &#x27;sales Representative&#x27;,
+        label: &#x27;Sales Representative&#x27;,
+      },
+      {
+        value: &#x27;accountant&#x27;,
+        label: &#x27;Accountant&#x27;,
+      },
+      {
+        value: &#x27;marketing&#x27;,
+        label: &#x27;Marketing&#x27;,
+      },
+    ],
+  },
+  {
+    value: &#x27;engineering&#x27;,
+    label: &#x27;Engineering&#x27;,
+    children: [
+      {
+        value: &#x27;computer_science&#x27;,
+        label: &#x27;Computer Science&#x27;,
+      },
+      {
+        value: &#x27;software_engineering&#x27;,
+        label: &#x27;Software Engineering&#x27;,
+      },
+      {
+        value: &#x27;mechanical_engineering&#x27;,
+        label: &#x27;Mechanical Engineering&#x27;,
+      },
+      {
+        value: &#x27;electrical_engineering&#x27;,
+        label: &#x27;Electrical Engineering&#x27;,
+      },
+      {
+        value: &#x27;industrial_engineering&#x27;,
+        label: &#x27;Industrial Engineering&#x27;,
+      },
+    ],
+  },
+  {
+    value: &#x27;education&#x27;,
+    label: &#x27;Education&#x27;,
+    children: [
+      {
+        value: &#x27;tutor&#x27;,
+        label: &#x27;Tutor&#x27;,
+      },
+      {
+        value: &#x27;elementary_school_teacher&#x27;,
+        label: &#x27;Elementary School Teacher&#x27;,
+      },
+      {
+        value: &#x27;highschool_teacher&#x27;,
+        label: &#x27;Highschool Teacher&#x27;,
+      },
+      {
+        value: &#x27;cegep_teacher&#x27;,
+        label: &#x27;Cegep Teacher&#x27;,
+      },
+      {
+        value: &#x27;university_teacher&#x27;,
+        label: &#x27;University Teacher&#x27;,
+      },
+    ],
+  },
+  {
+    value: &#x27;science&#x27;,
+    label: &#x27;Science&#x27;,
+    children: [
+      {
+        value: &#x27;biology&#x27;,
+        label: &#x27;Biology&#x27;,
+      },
+      {
+        value: &#x27;chemistry&#x27;,
+        label: &#x27;Chemistry&#x27;,
+      },
+      {
+        value: &#x27;physics&#x27;,
+        label: &#x27;Physics&#x27;,
+      },
+      {
+        value: &#x27;sociology&#x27;,
+        label: &#x27;Sociology&#x27;,
+      },
+      {
+        value: &#x27;geoscience&#x27;,
+        label: &#x27;Geoscience&#x27;,
+      },
+    ],
+  },
+];
+
+const rootSubmenuKeys = [&#x27;0&#x27;, &#x27;1&#x27;, &#x27;2&#x27;, &#x27;3&#x27;, &#x27;4&#x27;, &#x27;5&#x27;];
+
+type Props = {
+  getJobList: (number) =&gt; {},
+}
+
+type State = {
+  openKeys: Array&lt;string&gt;
+}
+
+export default class SideBar extends React.Component&lt;Props, State&gt; {
+  state = {
+    openKeys: [&#x27;3&#x27;],
+  };
+
+  onOpenChange = (openKeys:Array&lt;string&gt;) =&gt; {
+    const latestOpenKey = openKeys.find(key =&gt; this.state.openKeys.indexOf(key) === -1);
+    if (rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
+      this.setState({ openKeys });
+    } else {
+      this.setState({
+        openKeys: latestOpenKey ? [latestOpenKey] : [],
+      });
+    }
+  };
+
+  handleClick = (e:Object) =&gt; {
+    const { getJobList } = this.props;
+    getJobList(e.key);
+  };
+
+  render() {
+    const list = [];
+    categories.forEach((value, key) =&gt; {
+      list.push(&lt;SubMenu
+        key={key}
+        title={
+          &lt;span&gt;
+            &lt;Icon type=&quot;setting&quot; /&gt;
+            &lt;span&gt;{value.label}&lt;/span&gt;
+          &lt;/span&gt;
+          }
+      &gt;
+        {value.children.map((v, key) =&gt; (
+          &lt;Menu.Item style={{ cursor: &#x27;default&#x27; }} key={v.value}&gt;
+            &lt;span style={{ color: { value: &#x27;blue&#x27;, important: &#x27;true&#x27; } }}&gt;
+              {v.label}
+            &lt;/span&gt;
+          &lt;/Menu.Item&gt;
+          ))}
+      &lt;/SubMenu&gt;);
+    });
+
+    return (
+      &lt;div className=&quot;SideBar&quot;&gt;
+        &lt;Menu
+          mode=&quot;inline&quot;
+          openKeys={this.state.openKeys}
+          onOpenChange={this.onOpenChange}
+          onClick={this.handleClick}
+          style={{
+            width: 256,
+            marginLeft: &#x27;-15px&#x27;,
+            border: &#x27;solid 1px #ececec&#x27;,
+          }}
+          defaultSelectedKeys={[&#x27;computer_science&#x27;]}
+        &gt;
+          {list}
+        &lt;/Menu&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+</textarea></div></div><div class="row centered"><footer>Flow Coverage Report generated by<a href="https://flowtype.org"> flow </a>and<a href="https://github.com/rpl/flow-coverage-report"> flow-coverage-report </a>at Sun Apr 15 2018 17:40:48 GMT-0400 (EDT)</footer></div></div><pre id="file-coverage-data" style="display:none;">{&quot;expressions&quot;:{&quot;covered_count&quot;:203,&quot;uncovered_count&quot;:5,&quot;uncovered_locs&quot;:[{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SideBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:6,&quot;column&quot;:9,&quot;offset&quot;:102},&quot;end&quot;:{&quot;line&quot;:6,&quot;column&quot;:15,&quot;offset&quot;:109}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SideBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:6,&quot;column&quot;:21,&quot;offset&quot;:114},&quot;end&quot;:{&quot;line&quot;:6,&quot;column&quot;:24,&quot;offset&quot;:118}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SideBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:175,&quot;column&quot;:16,&quot;offset&quot;:3367},&quot;end&quot;:{&quot;line&quot;:175,&quot;column&quot;:20,&quot;offset&quot;:3372}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SideBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:191,&quot;column&quot;:12,&quot;offset&quot;:3698},&quot;end&quot;:{&quot;line&quot;:191,&quot;column&quot;:15,&quot;offset&quot;:3702}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/SideBar/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:191,&quot;column&quot;:12,&quot;offset&quot;:3698},&quot;end&quot;:{&quot;line&quot;:191,&quot;column&quot;:20,&quot;offset&quot;:3707}}]},&quot;filename&quot;:&quot;src/components/SideBar/index.jsx&quot;,&quot;annotation&quot;:&quot;flow&quot;,&quot;percent&quot;:97}</pre></body></html>

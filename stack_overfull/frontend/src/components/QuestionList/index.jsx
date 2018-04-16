@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import { QuestionBox } from '../../components';
 import './index.css';

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"/><link rel="stylesheet" href="../../../../assets/semantic.min.css"/><link rel="stylesheet" href="../../../../assets/codemirror.css"/><link rel="stylesheet" href="../../../../assets/flow-highlight-source.css"/><link rel="stylesheet" href="../../../../assets/flow-coverage-report.css"/><link rel="stylesheet" href="../../../../assets/codemirror-simplescrollbars-addon.css"/><script src="../../../../assets/jquery-3.1.0.min.js"></script><script src="../../../../assets/semantic.min.js"></script><script src="../../../../assets/semantic-tablesort.js"></script><script src="../../../../assets/codemirror.js"></script><script src="../../../../assets/codemirror-javascript-mode.js"></script><script src="../../../../assets/codemirror-annotatescrollbar-addon.js"></script><script src="../../../../assets/codemirror-simplescrollbars-addon.js"></script><script src="../../../../assets/flow-highlight-source.js"></script><script src="../../../../assets/index.js"></script><style>
+.ui .CodeMirror {
+  border: 1px solid rgba(34,36,38,.15);
+  height: auto;
+}
+</style></head><body><div class="ui grid container"><div class="row"><div class="twelve wide column"><h2 class="ui header"><a href="../../../../index.html" id="link-to-summary">Flow Coverage Report</a></h2></div></div><div class="row"><table class="ui small celled unstackable table"><thead><tr><th class="sorted ascending">Filename</th><th>Annotation</th><th>Percent</th><th>Total</th><th>Covered</th><th>Uncovered</th></tr></thead><tbody><tr class="negative"><td class="">src/pages/TagPage/index.jsx</td><td> @flow </td><td class=""><span>70 %</span></td><td> 78 </td><td> 55 </td><td> 23 </td></tr></tbody></table></div><div class="row ui one column centered grid"><div class="column" style="text-align:left;"><div class="row"><div class="ui form"><div class="fields"><div class="sixteen wide inline field"><select class="ui search dropdown uncovered-locations"><option value="">Uncovered Locations</option><option value="31">Start: 31,25 - End: 31,38</option><option value="31">Start: 31,41 - End: 31,54</option><option value="33">Start: 33,9 - End: 33,17</option><option value="33">Start: 33,9 - End: 33,26</option><option value="40">Start: 40,9 - End: 40,17</option><option value="40">Start: 40,9 - End: 40,25</option><option value="40">Start: 40,9 - End: 40,32</option><option value="49">Start: 49,11 - End: 49,17</option><option value="49">Start: 49,21 - End: 49,43</option><option value="49">Start: 49,21 - End: 49,48</option><option value="51">Start: 51,5 - End: 51,18</option><option value="51">Start: 51,5 - End: 51,57</option><option value="51">Start: 51,5 - End: 55,6</option><option value="51">Start: 51,49 - End: 51,55</option><option value="51">Start: 51,65 - End: 51,72</option><option value="53">Start: 53,23 - End: 53,30</option><option value="53">Start: 53,23 - End: 53,35</option><option value="53">Start: 53,23 - End: 53,49</option><option value="96">Start: 96,11 - End: 96,17</option><option value="96">Start: 96,21 - End: 96,32</option><option value="96">Start: 96,21 - End: 96,37</option><option value="108">Start: 108,36 - End: 108,42</option><option value="108">Start: 108,48 - End: 108,54</option></select></div><div class="four wide inline field"><select class="ui search dropdown syntax-highlighting"><option value="es">ES6/ES7</option><option value="js">JavaScript</option><option value="no">None</option></select></div></div></div></div><textarea readonly="" id="file-content">// @flow
+import React from &#x27;react&#x27;;
+import { Tag } from &#x27;antd&#x27;;
+import { Link } from &#x27;react-router-dom&#x27;;
+import &#x27;./index.css&#x27;;
+import { QuestionList } from &#x27;../../components&#x27;;
+import { getApiQuestion } from &#x27;../../utils/api&#x27;;
+
+type Props = {
+  location: Object,
+  match: Object,
+};
+
+type State = {
+  questionList: Array&lt;Object&gt;,
+  filters: Array&lt;string&gt;,
+};
+
+export default class TagPage extends React.Component&lt;Props, State&gt; {
+  state = {
+    questionList: [],
+    filters: [&#x27;&#x27;],
+  };
+
+  componentDidMount = () =&gt; {
+    this.getQuestionList();
+    // this.getTagInfo();
+    // this.getMostUsedTagsList();
+  };
+
+  componentDidUpdate = (prevProps: any, prevState: any) =&gt; {
+    // check if the current url has changed
+    if (prevProps.location !== this.props.location) {
+      this.getQuestionList();
+      // this.getTagInfo();
+      // this.getMostUsedTagsList();
+    }
+
+    // check if the current filters have changed
+    if (prevState.filters.length !== this.state.filters.length) {
+      this.getQuestionList();
+      // this.getTagInfo();
+      // this.getMostUsedTagsList();
+    }
+  };
+
+  getQuestionList = () =&gt; {
+    // get tagname from url match
+    const tagname = this.props.match.params.tags;
+
+    getApiQuestion(&#x27;desc&#x27;, 36, &#x27;date_created&#x27;, [tagname]).then((response) =&gt; {
+      this.setState({
+        questionList: response.data.question_list,
+      });
+    });
+    // .catch((error) =&gt; {
+    //   console.log(error);
+    // });
+  };
+
+  // getTagInfo = () =&gt; {
+  //   // get tagname from url match
+  //   const tagname = this.props.match.params.tags;
+
+  //   getApiTagInfo(tagname)
+  //     .then((response) =&gt; {
+  //       this.setState({
+  //         tagInfo: response.data,
+  //       });
+  //     })
+  //     .catch((error) =&gt; {
+  //       console.log(error);
+  //     });
+  // };
+
+  // getMostUsedTagsList = () =&gt; {
+  //   getApiTags(&#x27;desc&#x27;, &#x27;10&#x27;, &#x27;question_count&#x27;).then((response) =&gt; {
+  //     const mostUsedTagsList = [];
+  //     // collect tag names from the api response
+  //     response.data.tag_list.forEach((tagInfo) =&gt; {
+  //       mostUsedTagsList.push(tagInfo.tag_text);
+  //     });
+
+  //     this.setState({
+  //       mostUsedTagsList,
+  //     });
+  //   });
+  // .catch((error) =&gt; {
+  //   console.log(error);
+  // });
+  // };
+
+  render() {
+    const { questionList } = this.state;
+    const { match } = this.props;
+    const tagname = match.params.tags;
+
+    const resultsHeaderText = questionList.length
+      ? &#x27;Here are the questions found with the selected tag&#x27;
+      : &#x27;No questions found with the selected tag&#x27;;
+
+    return (
+      &lt;div className=&quot;TagPage__wrapper&quot;&gt;
+        &lt;div div className=&quot;TagPage page-width&quot;&gt;
+          &lt;h3 className=&quot;TagPage__question-list-title&quot;&gt;
+            &lt;div className=&quot;TagPage__question-list-title&quot;&gt;
+              &lt;Tag className=&quot;TagPage__tag&quot; color=&quot;#108ee9&quot;&gt;
+                &lt;Link to={`/tags/${tagname}`}&gt;{tagname}&lt;/Link&gt;
+              &lt;/Tag&gt;
+              TAG PAGE
+            &lt;/div&gt;
+          &lt;/h3&gt;
+          &lt;h3 className=&quot;TagPage__results&quot;&gt;{resultsHeaderText}&lt;/h3&gt;
+          &lt;QuestionList questionList={questionList} getQuestionList={this.getQuestionList} /&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+</textarea></div></div><div class="row centered"><footer>Flow Coverage Report generated by<a href="https://flowtype.org"> flow </a>and<a href="https://github.com/rpl/flow-coverage-report"> flow-coverage-report </a>at Sun Apr 15 2018 17:40:48 GMT-0400 (EDT)</footer></div></div><pre id="file-coverage-data" style="display:none;">{&quot;expressions&quot;:{&quot;covered_count&quot;:55,&quot;uncovered_count&quot;:23,&quot;uncovered_locs&quot;:[{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/TagPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:31,&quot;column&quot;:25,&quot;offset&quot;:636},&quot;end&quot;:{&quot;line&quot;:31,&quot;column&quot;:38,&quot;offset&quot;:650}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/TagPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:31,&quot;column&quot;:41,&quot;offset&quot;:652},&quot;end&quot;:{&quot;line&quot;:31,&quot;column&quot;:54,&quot;offset&quot;:666}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/TagPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:33,&quot;column&quot;:9,&quot;offset&quot;:725},&quot;end&quot;:{&quot;line&quot;:33,&quot;column&quot;:17,&quot;offset&quot;:734}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/TagPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:33,&quot;column&quot;:9,&quot;offset&quot;:725},&quot;end&quot;:{&quot;line&quot;:33,&quot;column&quot;:26,&quot;offset&quot;:743}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/TagPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:40,&quot;column&quot;:9,&quot;offset&quot;:930},&quot;end&quot;:{&quot;line&quot;:40,&quot;column&quot;:17,&quot;offset&quot;:939}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/TagPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:40,&quot;column&quot;:9,&quot;offset&quot;:930},&quot;end&quot;:{&quot;line&quot;:40,&quot;column&quot;:25,&quot;offset&quot;:947}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/TagPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:40,&quot;column&quot;:9,&quot;offset&quot;:930},&quot;end&quot;:{&quot;line&quot;:40,&quot;column&quot;:32,&quot;offset&quot;:954}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/TagPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:49,&quot;column&quot;:11,&quot;offset&quot;:1167},&quot;end&quot;:{&quot;line&quot;:49,&quot;column&quot;:17,&quot;offset&quot;:1174}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/TagPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:49,&quot;column&quot;:21,&quot;offset&quot;:1177},&quot;end&quot;:{&quot;line&quot;:49,&quot;column&quot;:43,&quot;offset&quot;:1200}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/TagPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:49,&quot;column&quot;:21,&quot;offset&quot;:1177},&quot;end&quot;:{&quot;line&quot;:49,&quot;column&quot;:48,&quot;offset&quot;:1205}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/TagPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:51,&quot;column&quot;:5,&quot;offset&quot;:1212},&quot;end&quot;:{&quot;line&quot;:51,&quot;column&quot;:18,&quot;offset&quot;:1226}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/TagPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:51,&quot;column&quot;:5,&quot;offset&quot;:1212},&quot;end&quot;:{&quot;line&quot;:51,&quot;column&quot;:57,&quot;offset&quot;:1265}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/TagPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:51,&quot;column&quot;:5,&quot;offset&quot;:1212},&quot;end&quot;:{&quot;line&quot;:55,&quot;column&quot;:6,&quot;offset&quot;:1376}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/TagPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:51,&quot;column&quot;:49,&quot;offset&quot;:1256},&quot;end&quot;:{&quot;line&quot;:51,&quot;column&quot;:55,&quot;offset&quot;:1263}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/TagPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:51,&quot;column&quot;:65,&quot;offset&quot;:1272},&quot;end&quot;:{&quot;line&quot;:51,&quot;column&quot;:72,&quot;offset&quot;:1280}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/TagPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:53,&quot;column&quot;:23,&quot;offset&quot;:1331},&quot;end&quot;:{&quot;line&quot;:53,&quot;column&quot;:30,&quot;offset&quot;:1339}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/TagPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:53,&quot;column&quot;:23,&quot;offset&quot;:1331},&quot;end&quot;:{&quot;line&quot;:53,&quot;column&quot;:35,&quot;offset&quot;:1344}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/TagPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:53,&quot;column&quot;:23,&quot;offset&quot;:1331},&quot;end&quot;:{&quot;line&quot;:53,&quot;column&quot;:49,&quot;offset&quot;:1358}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/TagPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:96,&quot;column&quot;:11,&quot;offset&quot;:2365},&quot;end&quot;:{&quot;line&quot;:96,&quot;column&quot;:17,&quot;offset&quot;:2372}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/TagPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:96,&quot;column&quot;:21,&quot;offset&quot;:2375},&quot;end&quot;:{&quot;line&quot;:96,&quot;column&quot;:32,&quot;offset&quot;:2387}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/TagPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:96,&quot;column&quot;:21,&quot;offset&quot;:2375},&quot;end&quot;:{&quot;line&quot;:96,&quot;column&quot;:37,&quot;offset&quot;:2392}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/TagPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:108,&quot;column&quot;:36,&quot;offset&quot;:2873},&quot;end&quot;:{&quot;line&quot;:108,&quot;column&quot;:42,&quot;offset&quot;:2880}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/TagPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:108,&quot;column&quot;:48,&quot;offset&quot;:2885},&quot;end&quot;:{&quot;line&quot;:108,&quot;column&quot;:54,&quot;offset&quot;:2892}}]},&quot;filename&quot;:&quot;src/pages/TagPage/index.jsx&quot;,&quot;annotation&quot;:&quot;flow&quot;,&quot;percent&quot;:70}</pre></body></html>

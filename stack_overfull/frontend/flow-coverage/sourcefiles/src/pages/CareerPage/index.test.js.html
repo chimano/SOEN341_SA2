@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"/><link rel="stylesheet" href="../../../../assets/semantic.min.css"/><link rel="stylesheet" href="../../../../assets/codemirror.css"/><link rel="stylesheet" href="../../../../assets/flow-highlight-source.css"/><link rel="stylesheet" href="../../../../assets/flow-coverage-report.css"/><link rel="stylesheet" href="../../../../assets/codemirror-simplescrollbars-addon.css"/><script src="../../../../assets/jquery-3.1.0.min.js"></script><script src="../../../../assets/semantic.min.js"></script><script src="../../../../assets/semantic-tablesort.js"></script><script src="../../../../assets/codemirror.js"></script><script src="../../../../assets/codemirror-javascript-mode.js"></script><script src="../../../../assets/codemirror-annotatescrollbar-addon.js"></script><script src="../../../../assets/codemirror-simplescrollbars-addon.js"></script><script src="../../../../assets/flow-highlight-source.js"></script><script src="../../../../assets/index.js"></script><style>
+.ui .CodeMirror {
+  border: 1px solid rgba(34,36,38,.15);
+  height: auto;
+}
+</style></head><body><div class="ui grid container"><div class="row"><div class="twelve wide column"><h2 class="ui header"><a href="../../../../index.html" id="link-to-summary">Flow Coverage Report</a></h2></div></div><div class="row"><table class="ui small celled unstackable table"><thead><tr><th class="sorted ascending">Filename</th><th>Annotation</th><th>Percent</th><th>Total</th><th>Covered</th><th>Uncovered</th></tr></thead><tbody><tr class="negative"><td class="">src/pages/CareerPage/index.test.js</td><td> @no flow </td><td class=""><span>69 %</span></td><td> 65 </td><td> 45 </td><td> 20 </td></tr></tbody></table></div><div class="row ui one column centered grid"><div class="column" style="text-align:left;"><div class="row"><div class="ui form"><div class="fields"><div class="sixteen wide inline field"><select class="ui search dropdown uncovered-locations"><option value="">Uncovered Locations</option><option value="6">Start: 6,1 - End: 6,9</option><option value="6">Start: 6,1 - End: 6,37</option><option value="6">Start: 6,22 - End: 6,34</option><option value="6">Start: 6,26 - End: 6,32</option><option value="8">Start: 8,1 - End: 8,8</option><option value="8">Start: 8,1 - End: 64,2</option><option value="9">Start: 9,7 - End: 9,15</option><option value="11">Start: 11,3 - End: 11,12</option><option value="11">Start: 11,3 - End: 59,4</option><option value="12">Start: 12,5 - End: 14,5</option><option value="12">Start: 12,17 - End: 12,23</option><option value="12">Start: 12,17 - End: 14,5</option><option value="15">Start: 15,5 - End: 15,13</option><option value="15">Start: 15,5 - End: 58,6</option><option value="61">Start: 61,3 - End: 61,4</option><option value="61">Start: 61,3 - End: 63,4</option><option value="62">Start: 62,5 - End: 62,10</option><option value="62">Start: 62,5 - End: 62,21</option><option value="62">Start: 62,5 - End: 62,37</option><option value="62">Start: 62,12 - End: 62,20</option></select></div><div class="four wide inline field"><select class="ui search dropdown syntax-highlighting"><option value="es">ES6/ES7</option><option value="js">JavaScript</option><option value="no">None</option></select></div></div></div></div><textarea readonly="" id="file-content">import React from &quot;react&quot;;
+import { CareerPage } from &quot;../../pages&quot;;
+import { configure, shallow, mount, render } from &quot;enzyme&quot;;
+import Adapter from &quot;enzyme-adapter-react-16&quot;;
+
+configure({ adapter: new Adapter() });
+
+describe(&quot;&lt;CareerPage /&gt;&quot;, () =&gt; {
+  let component;
+
+  beforeEach(() =&gt; {
+    component = shallow(
+      &lt;CareerPage /&gt;
+    );
+    component.setState({
+      list:[
+        {
+          title: &quot;Front-end Developper&quot;,
+          category: &quot;Sofware Engineering and Computer Science&quot;,
+          city: &quot;Montreal&quot;,
+          province: &quot;QC&quot;,
+          type: &quot;Part-time&quot;,
+          date_posted: &quot;25 days ago&quot;
+        },
+        {
+          title: &quot;Back-end Developper&quot;,
+          category: &quot;Software Engineering and Computer Science&quot;,
+          city: &quot;Toronto&quot;,
+          province: &quot;ON&quot;,
+          type: &quot;Full-time&quot;,
+          date_posted: &quot;2 days ago&quot;
+        },
+        {
+          title: &quot;Financial Assistant&quot;,
+          category: &quot;Finance&quot;,
+          city: &quot;Ottawa&quot;,
+          province: &quot;ON&quot;,
+          type: &quot;Internship&quot;,
+          date_posted: &quot;13 days ago&quot;
+        },
+        {
+          title: &quot;English Tutor&quot;,
+          category: &quot;English Literature&quot;,
+          city: &quot;Montreal&quot;,
+          province: &quot;QC&quot;,
+          type: &quot;Internship&quot;,
+          date_posted: &quot;17 days ago&quot;
+        },
+        {
+          title: &quot;Mechanical Designer&quot;,
+          category: &quot;Mechanical Engineering&quot;,
+          city: &quot;Laval&quot;,
+          province: &quot;QC&quot;,
+          type: &quot;Full-time&quot;,
+          date_posted: &quot;10 days ago&quot;
+        }
+      ]
+    })
+  });
+
+  it(&quot;renders 1 &lt;CareerPage /&gt; component&quot;, () =&gt; {
+    expect(component).toHaveLength(1);
+  });
+});
+</textarea></div></div><div class="row centered"><footer>Flow Coverage Report generated by<a href="https://flowtype.org"> flow </a>and<a href="https://github.com/rpl/flow-coverage-report"> flow-coverage-report </a>at Sun Apr 15 2018 13:52:59 GMT-0400 (EDT)</footer></div></div><pre id="file-coverage-data" style="display:none;">{&quot;expressions&quot;:{&quot;covered_count&quot;:45,&quot;uncovered_count&quot;:20,&quot;uncovered_locs&quot;:[{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CareerPage/index.test.js&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:6,&quot;column&quot;:1,&quot;offset&quot;:177},&quot;end&quot;:{&quot;line&quot;:6,&quot;column&quot;:9,&quot;offset&quot;:186}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CareerPage/index.test.js&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:6,&quot;column&quot;:1,&quot;offset&quot;:177},&quot;end&quot;:{&quot;line&quot;:6,&quot;column&quot;:37,&quot;offset&quot;:214}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CareerPage/index.test.js&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:6,&quot;column&quot;:22,&quot;offset&quot;:198},&quot;end&quot;:{&quot;line&quot;:6,&quot;column&quot;:34,&quot;offset&quot;:211}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CareerPage/index.test.js&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:6,&quot;column&quot;:26,&quot;offset&quot;:202},&quot;end&quot;:{&quot;line&quot;:6,&quot;column&quot;:32,&quot;offset&quot;:209}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CareerPage/index.test.js&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:8,&quot;column&quot;:1,&quot;offset&quot;:217},&quot;end&quot;:{&quot;line&quot;:8,&quot;column&quot;:8,&quot;offset&quot;:225}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CareerPage/index.test.js&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:8,&quot;column&quot;:1,&quot;offset&quot;:217},&quot;end&quot;:{&quot;line&quot;:64,&quot;column&quot;:2,&quot;offset&quot;:1644}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CareerPage/index.test.js&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:9,&quot;column&quot;:7,&quot;offset&quot;:258},&quot;end&quot;:{&quot;line&quot;:9,&quot;column&quot;:15,&quot;offset&quot;:267}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CareerPage/index.test.js&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:11,&quot;column&quot;:3,&quot;offset&quot;:272},&quot;end&quot;:{&quot;line&quot;:11,&quot;column&quot;:12,&quot;offset&quot;:282}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CareerPage/index.test.js&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:11,&quot;column&quot;:3,&quot;offset&quot;:272},&quot;end&quot;:{&quot;line&quot;:59,&quot;column&quot;:4,&quot;offset&quot;:1543}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CareerPage/index.test.js&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:12,&quot;column&quot;:5,&quot;offset&quot;:295},&quot;end&quot;:{&quot;line&quot;:14,&quot;column&quot;:5,&quot;offset&quot;:342}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CareerPage/index.test.js&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:12,&quot;column&quot;:17,&quot;offset&quot;:307},&quot;end&quot;:{&quot;line&quot;:12,&quot;column&quot;:23,&quot;offset&quot;:314}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CareerPage/index.test.js&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:12,&quot;column&quot;:17,&quot;offset&quot;:307},&quot;end&quot;:{&quot;line&quot;:14,&quot;column&quot;:5,&quot;offset&quot;:342}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CareerPage/index.test.js&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:15,&quot;column&quot;:5,&quot;offset&quot;:348},&quot;end&quot;:{&quot;line&quot;:15,&quot;column&quot;:13,&quot;offset&quot;:357}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CareerPage/index.test.js&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:15,&quot;column&quot;:5,&quot;offset&quot;:348},&quot;end&quot;:{&quot;line&quot;:58,&quot;column&quot;:6,&quot;offset&quot;:1538}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CareerPage/index.test.js&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:61,&quot;column&quot;:3,&quot;offset&quot;:1548},&quot;end&quot;:{&quot;line&quot;:61,&quot;column&quot;:4,&quot;offset&quot;:1550}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CareerPage/index.test.js&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:61,&quot;column&quot;:3,&quot;offset&quot;:1548},&quot;end&quot;:{&quot;line&quot;:63,&quot;column&quot;:4,&quot;offset&quot;:1640}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CareerPage/index.test.js&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:62,&quot;column&quot;:5,&quot;offset&quot;:1601},&quot;end&quot;:{&quot;line&quot;:62,&quot;column&quot;:10,&quot;offset&quot;:1607}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CareerPage/index.test.js&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:62,&quot;column&quot;:5,&quot;offset&quot;:1601},&quot;end&quot;:{&quot;line&quot;:62,&quot;column&quot;:21,&quot;offset&quot;:1618}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CareerPage/index.test.js&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:62,&quot;column&quot;:5,&quot;offset&quot;:1601},&quot;end&quot;:{&quot;line&quot;:62,&quot;column&quot;:37,&quot;offset&quot;:1634}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CareerPage/index.test.js&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:62,&quot;column&quot;:12,&quot;offset&quot;:1608},&quot;end&quot;:{&quot;line&quot;:62,&quot;column&quot;:20,&quot;offset&quot;:1617}}]},&quot;filename&quot;:&quot;src/pages/CareerPage/index.test.js&quot;,&quot;annotation&quot;:&quot;no flow&quot;,&quot;percent&quot;:69}</pre></body></html>

@@ -1,3 +1,4 @@
+// @flow
 import React from "react";
 import { AcceptRejectButton } from "../../components";
 import { configure, shallow, mount, render } from "enzyme";

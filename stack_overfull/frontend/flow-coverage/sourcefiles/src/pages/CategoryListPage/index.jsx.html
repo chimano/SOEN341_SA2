@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"/><link rel="stylesheet" href="../../../../assets/semantic.min.css"/><link rel="stylesheet" href="../../../../assets/codemirror.css"/><link rel="stylesheet" href="../../../../assets/flow-highlight-source.css"/><link rel="stylesheet" href="../../../../assets/flow-coverage-report.css"/><link rel="stylesheet" href="../../../../assets/codemirror-simplescrollbars-addon.css"/><script src="../../../../assets/jquery-3.1.0.min.js"></script><script src="../../../../assets/semantic.min.js"></script><script src="../../../../assets/semantic-tablesort.js"></script><script src="../../../../assets/codemirror.js"></script><script src="../../../../assets/codemirror-javascript-mode.js"></script><script src="../../../../assets/codemirror-annotatescrollbar-addon.js"></script><script src="../../../../assets/codemirror-simplescrollbars-addon.js"></script><script src="../../../../assets/flow-highlight-source.js"></script><script src="../../../../assets/index.js"></script><style>
+.ui .CodeMirror {
+  border: 1px solid rgba(34,36,38,.15);
+  height: auto;
+}
+</style></head><body><div class="ui grid container"><div class="row"><div class="twelve wide column"><h2 class="ui header"><a href="../../../../index.html" id="link-to-summary">Flow Coverage Report</a></h2></div></div><div class="row"><table class="ui small celled unstackable table"><thead><tr><th class="sorted ascending">Filename</th><th>Annotation</th><th>Percent</th><th>Total</th><th>Covered</th><th>Uncovered</th></tr></thead><tbody><tr class="negative"><td class="">src/pages/CategoryListPage/index.jsx</td><td> @flow </td><td class=""><span>82 %</span></td><td> 64 </td><td> 53 </td><td> 11 </td></tr></tbody></table></div><div class="row ui one column centered grid"><div class="column" style="text-align:left;"><div class="row"><div class="ui form"><div class="fields"><div class="sixteen wide inline field"><select class="ui search dropdown uncovered-locations"><option value="">Uncovered Locations</option><option value="34">Start: 34,5 - End: 34,14</option><option value="34">Start: 34,5 - End: 34,46</option><option value="34">Start: 34,5 - End: 43,6</option><option value="34">Start: 34,54 - End: 34,61</option><option value="37">Start: 37,7 - End: 37,14</option><option value="37">Start: 37,7 - End: 37,19</option><option value="37">Start: 37,7 - End: 37,28</option><option value="37">Start: 37,7 - End: 39,8</option><option value="37">Start: 37,39 - End: 37,45</option><option value="38">Start: 38,31 - End: 38,37</option><option value="38">Start: 38,31 - End: 38,46</option></select></div><div class="four wide inline field"><select class="ui search dropdown syntax-highlighting"><option value="es">ES6/ES7</option><option value="js">JavaScript</option><option value="no">None</option></select></div></div></div></div><textarea readonly="" id="file-content">// @flow
+import React from &#x27;react&#x27;;
+import { Link } from &#x27;react-router-dom&#x27;;
+import { Tag } from &#x27;antd&#x27;;
+import &#x27;./index.css&#x27;;
+import { HottestTagList } from &#x27;../../components&#x27;;
+import { getApiTags } from &#x27;../../utils/api&#x27;;
+
+type State = {
+  mostUsedTagsList: Array&lt;string&gt;,
+  categoryList: Array&lt;string&gt;,
+};
+
+export default class CategoryListPage extends React.Component&lt;{}, State&gt; {
+  state = {
+    mostUsedTagsList: [],
+
+    categoryList: [
+      &#x27;business&#x27;,
+      &#x27;cooking&#x27;,
+      &#x27;entertainment&#x27;,
+      &#x27;fashion&#x27;,
+      &#x27;programming&#x27;,
+      &#x27;social&#x27;,
+      &#x27;technology&#x27;,
+    ],
+  };
+
+  componentWillMount = () =&gt; {
+    this.getMostUsedTagsList();
+  };
+
+  getMostUsedTagsList = () =&gt; {
+    getApiTags(&#x27;desc&#x27;, &#x27;10&#x27;, &#x27;question_count&#x27;).then((response) =&gt; {
+      const mostUsedTagsList = [];
+      // collect tag names from the api response
+      response.data.tag_list.forEach((tagInfo) =&gt; {
+        mostUsedTagsList.push(tagInfo.tag_text);
+      });
+      this.setState({
+        mostUsedTagsList,
+      });
+    });
+    // .catch((error) =&gt; {
+    //   console.log(error);
+    // });
+  };
+
+  render() {
+    const { categoryList, mostUsedTagsList } = this.state;
+
+    let hottestTags = &#x27;&#x27;;
+    if (mostUsedTagsList) {
+      hottestTags = &lt;HottestTagList hotTags={mostUsedTagsList} /&gt;;
+    }
+
+    return (
+      &lt;header className=&quot;body-wrapper&quot;&gt;
+        &lt;nav&gt;
+          &lt;div&gt;
+            &lt;h1 className=&quot;CategoryListPage__welcomeTitle1&quot;&gt;QUESTION CATEGORIES AND TAGS&lt;/h1&gt;
+
+            &lt;h3 className=&quot;CategoryListPage__welcomeTitle2&quot;&gt;
+              &lt;br /&gt;
+              MAIN CATEGORIES
+            &lt;/h3&gt;
+          &lt;/div&gt;
+
+          &lt;div className=&quot;CategoryListPage__categoryBox&quot;&gt;
+            &lt;ul className=&quot;CategoryListPage__bubbles&quot;&gt;
+              {categoryList.map((category, key) =&gt; (
+                &lt;li key={key}&gt;
+                  &lt;Tag color=&quot;#108ee9&quot;&gt;
+                    &lt;Link to={`/tags/${category}`}&gt;{category}&lt;/Link&gt;
+                  &lt;/Tag&gt;
+                &lt;/li&gt;
+              ))}
+            &lt;/ul&gt;
+          &lt;/div&gt;
+
+          &lt;h3 className=&quot;CategoryListPage__welcomeTitle2&quot;&gt;
+            &lt;br /&gt;
+            HOTTEST TAGS
+          &lt;/h3&gt;
+
+          &lt;div className=&quot;CategoryListPage__categoryBox&quot;&gt;
+            &lt;ul className=&quot;CategoryListPage__bubbles&quot;&gt;{hottestTags}&lt;/ul&gt;
+          &lt;/div&gt;
+
+          &lt;br /&gt;
+        &lt;/nav&gt;
+      &lt;/header&gt;
+    );
+  }
+}
+</textarea></div></div><div class="row centered"><footer>Flow Coverage Report generated by<a href="https://flowtype.org"> flow </a>and<a href="https://github.com/rpl/flow-coverage-report"> flow-coverage-report </a>at Sun Apr 15 2018 17:40:48 GMT-0400 (EDT)</footer></div></div><pre id="file-coverage-data" style="display:none;">{&quot;expressions&quot;:{&quot;covered_count&quot;:53,&quot;uncovered_count&quot;:11,&quot;uncovered_locs&quot;:[{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CategoryListPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:34,&quot;column&quot;:5,&quot;offset&quot;:694},&quot;end&quot;:{&quot;line&quot;:34,&quot;column&quot;:14,&quot;offset&quot;:704}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CategoryListPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:34,&quot;column&quot;:5,&quot;offset&quot;:694},&quot;end&quot;:{&quot;line&quot;:34,&quot;column&quot;:46,&quot;offset&quot;:736}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CategoryListPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:34,&quot;column&quot;:5,&quot;offset&quot;:694},&quot;end&quot;:{&quot;line&quot;:43,&quot;column&quot;:6,&quot;offset&quot;:1017}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CategoryListPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:34,&quot;column&quot;:54,&quot;offset&quot;:743},&quot;end&quot;:{&quot;line&quot;:34,&quot;column&quot;:61,&quot;offset&quot;:751}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CategoryListPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:37,&quot;column&quot;:7,&quot;offset&quot;:848},&quot;end&quot;:{&quot;line&quot;:37,&quot;column&quot;:14,&quot;offset&quot;:856}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CategoryListPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:37,&quot;column&quot;:7,&quot;offset&quot;:848},&quot;end&quot;:{&quot;line&quot;:37,&quot;column&quot;:19,&quot;offset&quot;:861}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CategoryListPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:37,&quot;column&quot;:7,&quot;offset&quot;:848},&quot;end&quot;:{&quot;line&quot;:37,&quot;column&quot;:28,&quot;offset&quot;:870}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CategoryListPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:37,&quot;column&quot;:7,&quot;offset&quot;:848},&quot;end&quot;:{&quot;line&quot;:39,&quot;column&quot;:8,&quot;offset&quot;:951}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CategoryListPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:37,&quot;column&quot;:39,&quot;offset&quot;:880},&quot;end&quot;:{&quot;line&quot;:37,&quot;column&quot;:45,&quot;offset&quot;:887}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CategoryListPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:38,&quot;column&quot;:31,&quot;offset&quot;:924},&quot;end&quot;:{&quot;line&quot;:38,&quot;column&quot;:37,&quot;offset&quot;:931}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/pages/CategoryListPage/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:38,&quot;column&quot;:31,&quot;offset&quot;:924},&quot;end&quot;:{&quot;line&quot;:38,&quot;column&quot;:46,&quot;offset&quot;:940}}]},&quot;filename&quot;:&quot;src/pages/CategoryListPage/index.jsx&quot;,&quot;annotation&quot;:&quot;flow&quot;,&quot;percent&quot;:82}</pre></body></html>

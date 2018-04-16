@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"/><link rel="stylesheet" href="../../../../assets/semantic.min.css"/><link rel="stylesheet" href="../../../../assets/codemirror.css"/><link rel="stylesheet" href="../../../../assets/flow-highlight-source.css"/><link rel="stylesheet" href="../../../../assets/flow-coverage-report.css"/><link rel="stylesheet" href="../../../../assets/codemirror-simplescrollbars-addon.css"/><script src="../../../../assets/jquery-3.1.0.min.js"></script><script src="../../../../assets/semantic.min.js"></script><script src="../../../../assets/semantic-tablesort.js"></script><script src="../../../../assets/codemirror.js"></script><script src="../../../../assets/codemirror-javascript-mode.js"></script><script src="../../../../assets/codemirror-annotatescrollbar-addon.js"></script><script src="../../../../assets/codemirror-simplescrollbars-addon.js"></script><script src="../../../../assets/flow-highlight-source.js"></script><script src="../../../../assets/index.js"></script><style>
+.ui .CodeMirror {
+  border: 1px solid rgba(34,36,38,.15);
+  height: auto;
+}
+</style></head><body><div class="ui grid container"><div class="row"><div class="twelve wide column"><h2 class="ui header"><a href="../../../../index.html" id="link-to-summary">Flow Coverage Report</a></h2></div></div><div class="row"><table class="ui small celled unstackable table"><thead><tr><th class="sorted ascending">Filename</th><th>Annotation</th><th>Percent</th><th>Total</th><th>Covered</th><th>Uncovered</th></tr></thead><tbody><tr class="positive"><td class="">src/components/UserInfo/index.jsx</td><td> @flow </td><td class=""><span>92 %</span></td><td> 198 </td><td> 184 </td><td> 14 </td></tr></tbody></table></div><div class="row ui one column centered grid"><div class="column" style="text-align:left;"><div class="row"><div class="ui form"><div class="fields"><div class="sixteen wide inline field"><select class="ui search dropdown uncovered-locations"><option value="">Uncovered Locations</option><option value="62">Start: 62,40 - End: 62,40</option><option value="62">Start: 62,68 - End: 62,68</option><option value="74">Start: 74,44 - End: 74,44</option><option value="74">Start: 74,76 - End: 74,76</option><option value="86">Start: 86,43 - End: 86,43</option><option value="86">Start: 86,74 - End: 86,74</option><option value="96">Start: 96,8 - End: 96,12</option><option value="96">Start: 96,8 - End: 96,21</option><option value="96">Start: 96,49 - End: 96,49</option><option value="96">Start: 96,79 - End: 96,79</option><option value="107">Start: 107,21 - End: 107,21</option><option value="107">Start: 107,50 - End: 107,50</option><option value="126">Start: 126,21 - End: 126,21</option><option value="126">Start: 126,52 - End: 126,52</option></select></div><div class="four wide inline field"><select class="ui search dropdown syntax-highlighting"><option value="es">ES6/ES7</option><option value="js">JavaScript</option><option value="no">None</option></select></div></div></div></div><textarea readonly="" id="file-content">// @flow
+import React from &#x27;react&#x27;;
+import { Input, Button, Icon } from &#x27;antd&#x27;;
+import &#x27;./index.css&#x27;;
+
+type Props = {
+  onInputChange: (string, Object) =&gt; {},
+  onEditButtonClick: () =&gt; {},
+  isEditing: boolean,
+  isSavingMyInfo: boolean,
+  email: string,
+  firstName: string,
+  lastName: string,
+  aboutMe: string,
+  reputation: string,
+  username: string,
+  github: string,
+  linkedin: string,
+  lastLogin: string,
+  isEditable: boolean,
+  currentUsername: string,
+};
+
+const UserInfo = (props: Props) =&gt; {
+  const {
+    onInputChange,
+    onEditButtonClick,
+    isEditing,
+    isSavingMyInfo,
+    email,
+    firstName,
+    lastName,
+    aboutMe,
+    reputation,
+    username,
+    github,
+    linkedin,
+    lastLogin,
+    isEditable,
+    currentUsername,
+  } = props;
+
+  let divContent;
+
+  if (username !== &#x27;&#x27;) {
+    let editButtonElement;
+    if (isEditable) {
+      editButtonElement = (
+        &lt;div style={{ textAlign: &#x27;right&#x27; }}&gt;
+          &lt;Button type=&quot;primary&quot; size=&quot;small&quot; onClick={onEditButtonClick} loading={isSavingMyInfo}&gt;
+            {isEditing ? &#x27;Save&#x27; : &#x27;Edit&#x27;}
+          &lt;/Button&gt;
+        &lt;/div&gt;
+      );
+    } else {
+      editButtonElement = &#x27;&#x27;;
+    }
+
+    const emailElement = isEditing ? (
+      &lt;div&gt;
+        &lt;h3&gt;Email&lt;/h3&gt;
+        &lt;Input value={email} onChange={e =&gt; onInputChange(&#x27;email&#x27;, e)} /&gt;
+      &lt;/div&gt;
+    ) : (
+      &lt;div&gt;
+        &lt;h3&gt;Email&lt;/h3&gt;
+        &lt;div&gt;{email}&lt;/div&gt;
+      &lt;/div&gt;
+    );
+
+    const firstNameElement = isEditing ? (
+      &lt;div&gt;
+        &lt;h3&gt;First Name&lt;/h3&gt;
+        &lt;Input value={firstName} onChange={e =&gt; onInputChange(&#x27;firstName&#x27;, e)} /&gt;
+      &lt;/div&gt;
+    ) : (
+      &lt;div&gt;
+        &lt;h3&gt;First Name&lt;/h3&gt;
+        &lt;div&gt;{firstName}&lt;/div&gt;
+      &lt;/div&gt;
+    );
+
+    const lastNameElement = isEditing ? (
+      &lt;div&gt;
+        &lt;h3&gt;Last Name&lt;/h3&gt;
+        &lt;Input value={lastName} onChange={e =&gt; onInputChange(&#x27;lastName&#x27;, e)} /&gt;
+      &lt;/div&gt;
+    ) : (
+      &lt;div&gt;
+        &lt;h3&gt;Last Name&lt;/h3&gt;
+        &lt;div&gt;{lastName}&lt;/div&gt;
+      &lt;/div&gt;
+    );
+
+    const aboutMeElement = isEditing ? (
+      &lt;Input.TextArea value={aboutMe} onChange={e =&gt; onInputChange(&#x27;aboutMe&#x27;, e)} /&gt;
+    ) : (
+      &lt;div&gt;{aboutMe}&lt;/div&gt;
+    );
+
+    const githubElement = isEditing ? (
+      &lt;div&gt;
+        &lt;h3&gt;Github&lt;/h3&gt;
+        &lt;Input
+          value={github}
+          placeholder=&quot;github.com/username&quot;
+          onChange={e =&gt; onInputChange(&#x27;github&#x27;, e)}
+        /&gt;
+      &lt;/div&gt;
+    ) : (
+      &lt;div&gt;
+        &lt;h3&gt;Github&lt;/h3&gt;
+        &lt;a href={`https://github.com/${github}`}&gt;
+          &lt;Icon type=&quot;github&quot; style={{ fontSize: 14 }} /&gt;
+          {` ${github}`}
+        &lt;/a&gt;
+      &lt;/div&gt;
+    );
+
+    const linkedinElement = isEditing ? (
+      &lt;div&gt;
+        &lt;h3&gt;Linkedin&lt;/h3&gt;
+        &lt;Input
+          value={linkedin}
+          placeholder=&quot;linkedin.com/in/username&quot;
+          onChange={e =&gt; onInputChange(&#x27;linkedin&#x27;, e)}
+        /&gt;
+      &lt;/div&gt;
+    ) : (
+      &lt;div&gt;
+        &lt;h3&gt;Linkedin&lt;/h3&gt;
+        &lt;a href={`https://www.linkedin.com/in/${linkedin}`}&gt;
+          &lt;Icon type=&quot;linkedin&quot; style={{ fontSize: 14 }} /&gt;
+          {` ${linkedin}`}
+        &lt;/a&gt;
+      &lt;/div&gt;
+    );
+    const hoursSinceLastLogin = (Date.now() - Date.parse(lastLogin)) / 3600000;
+    divContent = (
+      &lt;div&gt;
+        &lt;h2&gt;{`${username}&#x27;s profile `}&lt;/h2&gt;
+        &lt;div className=&quot;UserInfo&quot; style={{ display: &#x27;flex&#x27; }}&gt;
+          &lt;div className=&quot;LeftDiv&quot; style={{ width: &#x27;50%&#x27;, marginRight: &#x27;10px&#x27; }}&gt;
+            &lt;h3&gt;Username&lt;/h3&gt;
+            &lt;div&gt;
+              {hoursSinceLastLogin &lt; 1 ? (
+                &lt;Icon type=&quot;user&quot; style={{ fontSize: 14, color: &#x27;lime&#x27; }} /&gt;
+              ) : (
+                &lt;Icon type=&quot;user&quot; style={{ fontSize: 14, color: &#x27;red&#x27; }} /&gt;
+              )}
+              {` ${username}`}
+            &lt;/div&gt;
+
+            {email || isEditing ? emailElement : &#x27;&#x27;}
+            {firstName || isEditing ? firstNameElement : &#x27;&#x27;}
+            {lastName || isEditing ? lastNameElement : &#x27;&#x27;}
+          &lt;/div&gt;
+          &lt;div className=&quot;RightDiv&quot; style={{ width: &#x27;50%&#x27;, marginLeft: &#x27;10px&#x27; }}&gt;
+            &lt;h3&gt;About Me&lt;/h3&gt;
+            {aboutMeElement}
+            {github || isEditing ? githubElement : &#x27;&#x27;}
+            {linkedin || isEditing ? linkedinElement : &#x27;&#x27;}
+            &lt;h3&gt;Reputation&lt;/h3&gt;
+            &lt;div&gt;{reputation} points&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        {currentUsername === username &amp;&amp; editButtonElement}
+      &lt;/div&gt;
+    );
+  } else {
+    divContent = &lt;h2&gt; Please login to view your profile details &lt;/h2&gt;;
+  }
+
+  return &lt;div className=&quot;UserInfo_div&quot;&gt;{divContent}&lt;/div&gt;;
+};
+export default UserInfo;
+</textarea></div></div><div class="row centered"><footer>Flow Coverage Report generated by<a href="https://flowtype.org"> flow </a>and<a href="https://github.com/rpl/flow-coverage-report"> flow-coverage-report </a>at Sun Apr 15 2018 17:40:48 GMT-0400 (EDT)</footer></div></div><pre id="file-coverage-data" style="display:none;">{&quot;expressions&quot;:{&quot;covered_count&quot;:184,&quot;uncovered_count&quot;:14,&quot;uncovered_locs&quot;:[{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/UserInfo/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:62,&quot;column&quot;:40,&quot;offset&quot;:1285},&quot;end&quot;:{&quot;line&quot;:62,&quot;column&quot;:40,&quot;offset&quot;:1286}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/UserInfo/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:62,&quot;column&quot;:68,&quot;offset&quot;:1313},&quot;end&quot;:{&quot;line&quot;:62,&quot;column&quot;:68,&quot;offset&quot;:1314}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/UserInfo/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:74,&quot;column&quot;:44,&quot;offset&quot;:1552},&quot;end&quot;:{&quot;line&quot;:74,&quot;column&quot;:44,&quot;offset&quot;:1553}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/UserInfo/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:74,&quot;column&quot;:76,&quot;offset&quot;:1584},&quot;end&quot;:{&quot;line&quot;:74,&quot;column&quot;:76,&quot;offset&quot;:1585}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/UserInfo/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:86,&quot;column&quot;:43,&quot;offset&quot;:1829},&quot;end&quot;:{&quot;line&quot;:86,&quot;column&quot;:43,&quot;offset&quot;:1830}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/UserInfo/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:86,&quot;column&quot;:74,&quot;offset&quot;:1860},&quot;end&quot;:{&quot;line&quot;:86,&quot;column&quot;:74,&quot;offset&quot;:1861}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/UserInfo/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:96,&quot;column&quot;:8,&quot;offset&quot;:2028},&quot;end&quot;:{&quot;line&quot;:96,&quot;column&quot;:12,&quot;offset&quot;:2033}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/UserInfo/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:96,&quot;column&quot;:8,&quot;offset&quot;:2028},&quot;end&quot;:{&quot;line&quot;:96,&quot;column&quot;:21,&quot;offset&quot;:2042}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/UserInfo/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:96,&quot;column&quot;:49,&quot;offset&quot;:2069},&quot;end&quot;:{&quot;line&quot;:96,&quot;column&quot;:49,&quot;offset&quot;:2070}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/UserInfo/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:96,&quot;column&quot;:79,&quot;offset&quot;:2099},&quot;end&quot;:{&quot;line&quot;:96,&quot;column&quot;:79,&quot;offset&quot;:2100}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/UserInfo/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:107,&quot;column&quot;:21,&quot;offset&quot;:2331},&quot;end&quot;:{&quot;line&quot;:107,&quot;column&quot;:21,&quot;offset&quot;:2332}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/UserInfo/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:107,&quot;column&quot;:50,&quot;offset&quot;:2360},&quot;end&quot;:{&quot;line&quot;:107,&quot;column&quot;:50,&quot;offset&quot;:2361}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/UserInfo/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:126,&quot;column&quot;:21,&quot;offset&quot;:2792},&quot;end&quot;:{&quot;line&quot;:126,&quot;column&quot;:21,&quot;offset&quot;:2793}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/components/UserInfo/index.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:126,&quot;column&quot;:52,&quot;offset&quot;:2823},&quot;end&quot;:{&quot;line&quot;:126,&quot;column&quot;:52,&quot;offset&quot;:2824}}]},&quot;filename&quot;:&quot;src/components/UserInfo/index.jsx&quot;,&quot;annotation&quot;:&quot;flow&quot;,&quot;percent&quot;:92}</pre></body></html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"/><link rel="stylesheet" href="../../assets/semantic.min.css"/><link rel="stylesheet" href="../../assets/codemirror.css"/><link rel="stylesheet" href="../../assets/flow-highlight-source.css"/><link rel="stylesheet" href="../../assets/flow-coverage-report.css"/><link rel="stylesheet" href="../../assets/codemirror-simplescrollbars-addon.css"/><script src="../../assets/jquery-3.1.0.min.js"></script><script src="../../assets/semantic.min.js"></script><script src="../../assets/semantic-tablesort.js"></script><script src="../../assets/codemirror.js"></script><script src="../../assets/codemirror-javascript-mode.js"></script><script src="../../assets/codemirror-annotatescrollbar-addon.js"></script><script src="../../assets/codemirror-simplescrollbars-addon.js"></script><script src="../../assets/flow-highlight-source.js"></script><script src="../../assets/index.js"></script><style>
+.ui .CodeMirror {
+  border: 1px solid rgba(34,36,38,.15);
+  height: auto;
+}
+</style></head><body><div class="ui grid container"><div class="row"><div class="twelve wide column"><h2 class="ui header"><a href="../../index.html" id="link-to-summary">Flow Coverage Report</a></h2></div></div><div class="row"><table class="ui small celled unstackable table"><thead><tr><th class="sorted ascending">Filename</th><th>Annotation</th><th>Percent</th><th>Total</th><th>Covered</th><th>Uncovered</th></tr></thead><tbody><tr class="negative"><td class="">src/App.jsx</td><td> @flow </td><td class=""><span>63 %</span></td><td> 127 </td><td> 81 </td><td> 46 </td></tr></tbody></table></div><div class="row ui one column centered grid"><div class="column" style="text-align:left;"><div class="row"><div class="ui form"><div class="fields"><div class="sixteen wide inline field"><select class="ui search dropdown uncovered-locations"><option value="">Uncovered Locations</option><option value="37">Start: 37,5 - End: 37,16</option><option value="37">Start: 37,5 - End: 37,18</option><option value="37">Start: 37,5 - End: 46,8</option><option value="37">Start: 37,5 - End: 53,8</option><option value="38">Start: 38,14 - End: 38,21</option><option value="39">Start: 39,14 - End: 39,21</option><option value="39">Start: 39,14 - End: 39,26</option><option value="39">Start: 39,14 - End: 39,32</option><option value="42">Start: 42,23 - End: 42,30</option><option value="42">Start: 42,23 - End: 42,35</option><option value="42">Start: 42,23 - End: 42,44</option><option value="43">Start: 43,25 - End: 43,32</option><option value="43">Start: 43,25 - End: 43,37</option><option value="43">Start: 43,25 - End: 43,45</option><option value="43">Start: 43,25 - End: 43,57</option><option value="57">Start: 57,5 - End: 57,16</option><option value="57">Start: 57,5 - End: 57,18</option><option value="57">Start: 57,5 - End: 66,8</option><option value="58">Start: 58,14 - End: 58,21</option><option value="59">Start: 59,14 - End: 59,21</option><option value="59">Start: 59,14 - End: 59,26</option><option value="59">Start: 59,14 - End: 59,32</option><option value="62">Start: 62,23 - End: 62,30</option><option value="62">Start: 62,23 - End: 62,35</option><option value="62">Start: 62,23 - End: 62,44</option><option value="63">Start: 63,25 - End: 63,32</option><option value="63">Start: 63,25 - End: 63,37</option><option value="63">Start: 63,25 - End: 63,45</option><option value="63">Start: 63,25 - End: 63,57</option><option value="70">Start: 70,5 - End: 70,21</option><option value="70">Start: 70,5 - End: 70,23</option><option value="70">Start: 70,5 - End: 70,70</option><option value="70">Start: 70,38 - End: 70,44</option><option value="70">Start: 70,38 - End: 70,66</option><option value="91">Start: 91,21 - End: 91,25</option><option value="92">Start: 92,91 - End: 92,95</option><option value="97">Start: 97,21 - End: 97,25</option><option value="101">Start: 101,21 - End: 101,25</option><option value="107">Start: 107,21 - End: 107,25</option><option value="107">Start: 107,85 - End: 107,89</option><option value="109">Start: 109,45 - End: 109,54</option><option value="110">Start: 110,48 - End: 110,63</option><option value="111">Start: 111,48 - End: 111,54</option><option value="114">Start: 114,21 - End: 114,25</option><option value="118">Start: 118,21 - End: 118,25</option><option value="122">Start: 122,52 - End: 122,59</option></select></div><div class="four wide inline field"><select class="ui search dropdown syntax-highlighting"><option value="es">ES6/ES7</option><option value="js">JavaScript</option><option value="no">None</option></select></div></div></div></div><textarea readonly="" id="file-content">// @flow
+import React from &#x27;react&#x27;;
+import { message } from &#x27;antd&#x27;;
+import { Route, Switch } from &#x27;react-router-dom&#x27;;
+import &#x27;./App.css&#x27;;
+import {
+  HomePage,
+  AnswerPage,
+  SearchPage,
+  CareerPage,
+  ProfilePage,
+  CategoryListPage,
+  TagPage,
+  UserPage,
+} from &#x27;./pages&#x27;;
+import { NavigationBar, Footer } from &#x27;./components&#x27;;
+import { getApiUserMe, postApiUserLogout } from &#x27;./utils/api&#x27;;
+
+type State = {
+  loggedIn: boolean,
+  username: string,
+  isEmployer: boolean,
+};
+
+export default class App extends React.Component&lt;{}, State&gt; {
+  state = {
+    loggedIn: false,
+    username: &#x27;&#x27;,
+    isEmployer: false,
+  };
+
+  componentDidMount() {
+    this.handleLogin();
+  }
+
+  checkIfUserIsLoggedIn = () =&gt; {
+    getApiUserMe()
+      .then((response) =&gt; {
+        if (!response.data.error) {
+          this.setState({
+            loggedIn: true,
+            username: response.data.username,
+            isEmployer: response.data.profile.is_employer,
+          });
+        }
+      })
+      .catch(() =&gt; {
+        this.setState({
+          loggedIn: false,
+          username: &#x27;&#x27;,
+          isEmployer: false,
+        });
+      });
+  };
+
+  handleLogin = () =&gt; {
+    getApiUserMe()
+      .then((response) =&gt; {
+        if (!response.data.error) {
+          this.setState({
+            loggedIn: true,
+            username: response.data.username,
+            isEmployer: response.data.profile.is_employer,
+          });
+        }
+      });
+  };
+
+  handleLogout = () =&gt; {
+    postApiUserLogout().then(() =&gt; { message.success(&#x27;Signed out&#x27;); });
+    this.setState({
+      loggedIn: false,
+      username: &#x27;&#x27;,
+      isEmployer: false,
+    });
+  };
+
+  render() {
+    return (
+      &lt;main className=&quot;App&quot;&gt;
+        &lt;NavigationBar
+          handleLogout={this.handleLogout}
+          handleLogin={this.handleLogin}
+          loggedIn={this.state.loggedIn}
+          username={this.state.username}
+        /&gt;
+        &lt;Switch&gt;
+          &lt;Route
+            exact
+            path=&quot;/&quot;
+            render={props =&gt; (
+              &lt;HomePage username={this.state.username} loggedIn={this.state.loggedIn} {...props} /&gt;
+            )}
+          /&gt;
+          &lt;Route
+            path=&quot;/question/:id&quot;
+            render={props =&gt; (
+              &lt;AnswerPage
+                username={this.state.username}
+                loggedIn={this.state.loggedIn}
+                {...props}
+              /&gt;
+            )}
+          /&gt;
+          &lt;Route
+            path=&quot;/profile&quot;
+            render={props =&gt; &lt;ProfilePage currentUsername={this.state.username} {...props} /&gt;}
+          /&gt;
+          &lt;Route path=&quot;/search/&quot; component={SearchPage} /&gt;
+          &lt;Route path=&quot;/categories&quot; component={CategoryListPage} /&gt;
+          &lt;Route path=&quot;/tags/:tags&quot; component={TagPage} /&gt;
+          &lt;Route
+            path=&quot;/careers&quot;
+            render={props =&gt; (
+              &lt;CareerPage
+                isEmployer={this.state.isEmployer}
+                loggedIn={this.state.loggedIn}
+                {...props}
+              /&gt;
+            )}
+          /&gt;
+          &lt;Route path=&quot;/user/:username&quot; component={UserPage} currentUser={this.state.username} /&gt;
+        &lt;/Switch&gt;
+        &lt;Footer /&gt;
+      &lt;/main&gt;
+    );
+  }
+}
+</textarea></div></div><div class="row centered"><footer>Flow Coverage Report generated by<a href="https://flowtype.org"> flow </a>and<a href="https://github.com/rpl/flow-coverage-report"> flow-coverage-report </a>at Sun Apr 15 2018 17:40:48 GMT-0400 (EDT)</footer></div></div><pre id="file-coverage-data" style="display:none;">{&quot;expressions&quot;:{&quot;covered_count&quot;:81,&quot;uncovered_count&quot;:46,&quot;uncovered_locs&quot;:[{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:37,&quot;column&quot;:5,&quot;offset&quot;:711},&quot;end&quot;:{&quot;line&quot;:37,&quot;column&quot;:16,&quot;offset&quot;:723}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:37,&quot;column&quot;:5,&quot;offset&quot;:711},&quot;end&quot;:{&quot;line&quot;:37,&quot;column&quot;:18,&quot;offset&quot;:725}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:37,&quot;column&quot;:5,&quot;offset&quot;:711},&quot;end&quot;:{&quot;line&quot;:46,&quot;column&quot;:8,&quot;offset&quot;:981}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:37,&quot;column&quot;:5,&quot;offset&quot;:711},&quot;end&quot;:{&quot;line&quot;:53,&quot;column&quot;:8,&quot;offset&quot;:1127}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:38,&quot;column&quot;:14,&quot;offset&quot;:739},&quot;end&quot;:{&quot;line&quot;:38,&quot;column&quot;:21,&quot;offset&quot;:747}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:39,&quot;column&quot;:14,&quot;offset&quot;:767},&quot;end&quot;:{&quot;line&quot;:39,&quot;column&quot;:21,&quot;offset&quot;:775}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:39,&quot;column&quot;:14,&quot;offset&quot;:767},&quot;end&quot;:{&quot;line&quot;:39,&quot;column&quot;:26,&quot;offset&quot;:780}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:39,&quot;column&quot;:14,&quot;offset&quot;:767},&quot;end&quot;:{&quot;line&quot;:39,&quot;column&quot;:32,&quot;offset&quot;:786}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:42,&quot;column&quot;:23,&quot;offset&quot;:866},&quot;end&quot;:{&quot;line&quot;:42,&quot;column&quot;:30,&quot;offset&quot;:874}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:42,&quot;column&quot;:23,&quot;offset&quot;:866},&quot;end&quot;:{&quot;line&quot;:42,&quot;column&quot;:35,&quot;offset&quot;:879}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:42,&quot;column&quot;:23,&quot;offset&quot;:866},&quot;end&quot;:{&quot;line&quot;:42,&quot;column&quot;:44,&quot;offset&quot;:888}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:43,&quot;column&quot;:25,&quot;offset&quot;:914},&quot;end&quot;:{&quot;line&quot;:43,&quot;column&quot;:32,&quot;offset&quot;:922}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:43,&quot;column&quot;:25,&quot;offset&quot;:914},&quot;end&quot;:{&quot;line&quot;:43,&quot;column&quot;:37,&quot;offset&quot;:927}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:43,&quot;column&quot;:25,&quot;offset&quot;:914},&quot;end&quot;:{&quot;line&quot;:43,&quot;column&quot;:45,&quot;offset&quot;:935}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:43,&quot;column&quot;:25,&quot;offset&quot;:914},&quot;end&quot;:{&quot;line&quot;:43,&quot;column&quot;:57,&quot;offset&quot;:947}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:57,&quot;column&quot;:5,&quot;offset&quot;:1163},&quot;end&quot;:{&quot;line&quot;:57,&quot;column&quot;:16,&quot;offset&quot;:1175}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:57,&quot;column&quot;:5,&quot;offset&quot;:1163},&quot;end&quot;:{&quot;line&quot;:57,&quot;column&quot;:18,&quot;offset&quot;:1177}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:57,&quot;column&quot;:5,&quot;offset&quot;:1163},&quot;end&quot;:{&quot;line&quot;:66,&quot;column&quot;:8,&quot;offset&quot;:1433}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:58,&quot;column&quot;:14,&quot;offset&quot;:1191},&quot;end&quot;:{&quot;line&quot;:58,&quot;column&quot;:21,&quot;offset&quot;:1199}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:59,&quot;column&quot;:14,&quot;offset&quot;:1219},&quot;end&quot;:{&quot;line&quot;:59,&quot;column&quot;:21,&quot;offset&quot;:1227}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:59,&quot;column&quot;:14,&quot;offset&quot;:1219},&quot;end&quot;:{&quot;line&quot;:59,&quot;column&quot;:26,&quot;offset&quot;:1232}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:59,&quot;column&quot;:14,&quot;offset&quot;:1219},&quot;end&quot;:{&quot;line&quot;:59,&quot;column&quot;:32,&quot;offset&quot;:1238}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:62,&quot;column&quot;:23,&quot;offset&quot;:1318},&quot;end&quot;:{&quot;line&quot;:62,&quot;column&quot;:30,&quot;offset&quot;:1326}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:62,&quot;column&quot;:23,&quot;offset&quot;:1318},&quot;end&quot;:{&quot;line&quot;:62,&quot;column&quot;:35,&quot;offset&quot;:1331}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:62,&quot;column&quot;:23,&quot;offset&quot;:1318},&quot;end&quot;:{&quot;line&quot;:62,&quot;column&quot;:44,&quot;offset&quot;:1340}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:63,&quot;column&quot;:25,&quot;offset&quot;:1366},&quot;end&quot;:{&quot;line&quot;:63,&quot;column&quot;:32,&quot;offset&quot;:1374}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:63,&quot;column&quot;:25,&quot;offset&quot;:1366},&quot;end&quot;:{&quot;line&quot;:63,&quot;column&quot;:37,&quot;offset&quot;:1379}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:63,&quot;column&quot;:25,&quot;offset&quot;:1366},&quot;end&quot;:{&quot;line&quot;:63,&quot;column&quot;:45,&quot;offset&quot;:1387}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:63,&quot;column&quot;:25,&quot;offset&quot;:1366},&quot;end&quot;:{&quot;line&quot;:63,&quot;column&quot;:57,&quot;offset&quot;:1399}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:70,&quot;column&quot;:5,&quot;offset&quot;:1470},&quot;end&quot;:{&quot;line&quot;:70,&quot;column&quot;:21,&quot;offset&quot;:1487}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:70,&quot;column&quot;:5,&quot;offset&quot;:1470},&quot;end&quot;:{&quot;line&quot;:70,&quot;column&quot;:23,&quot;offset&quot;:1489}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:70,&quot;column&quot;:5,&quot;offset&quot;:1470},&quot;end&quot;:{&quot;line&quot;:70,&quot;column&quot;:70,&quot;offset&quot;:1536}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:70,&quot;column&quot;:38,&quot;offset&quot;:1503},&quot;end&quot;:{&quot;line&quot;:70,&quot;column&quot;:44,&quot;offset&quot;:1510}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:70,&quot;column&quot;:38,&quot;offset&quot;:1503},&quot;end&quot;:{&quot;line&quot;:70,&quot;column&quot;:66,&quot;offset&quot;:1532}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:91,&quot;column&quot;:21,&quot;offset&quot;:1988},&quot;end&quot;:{&quot;line&quot;:91,&quot;column&quot;:25,&quot;offset&quot;:1993}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:92,&quot;column&quot;:91,&quot;offset&quot;:2089},&quot;end&quot;:{&quot;line&quot;:92,&quot;column&quot;:95,&quot;offset&quot;:2094}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:97,&quot;column&quot;:21,&quot;offset&quot;:2197},&quot;end&quot;:{&quot;line&quot;:97,&quot;column&quot;:25,&quot;offset&quot;:2202}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:101,&quot;column&quot;:21,&quot;offset&quot;:2348},&quot;end&quot;:{&quot;line&quot;:101,&quot;column&quot;:25,&quot;offset&quot;:2353}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:107,&quot;column&quot;:21,&quot;offset&quot;:2465},&quot;end&quot;:{&quot;line&quot;:107,&quot;column&quot;:25,&quot;offset&quot;:2470}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:107,&quot;column&quot;:85,&quot;offset&quot;:2529},&quot;end&quot;:{&quot;line&quot;:107,&quot;column&quot;:89,&quot;offset&quot;:2534}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:109,&quot;column&quot;:45,&quot;offset&quot;:2597},&quot;end&quot;:{&quot;line&quot;:109,&quot;column&quot;:54,&quot;offset&quot;:2607}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:110,&quot;column&quot;:48,&quot;offset&quot;:2659},&quot;end&quot;:{&quot;line&quot;:110,&quot;column&quot;:63,&quot;offset&quot;:2675}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:111,&quot;column&quot;:48,&quot;offset&quot;:2727},&quot;end&quot;:{&quot;line&quot;:111,&quot;column&quot;:54,&quot;offset&quot;:2734}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:114,&quot;column&quot;:21,&quot;offset&quot;:2804},&quot;end&quot;:{&quot;line&quot;:114,&quot;column&quot;:25,&quot;offset&quot;:2809}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:118,&quot;column&quot;:21,&quot;offset&quot;:2959},&quot;end&quot;:{&quot;line&quot;:118,&quot;column&quot;:25,&quot;offset&quot;:2964}},{&quot;source&quot;:&quot;/Users/Wkgui/Documents/School/SOEN341/SOEN341_SA2/stack_overfull/frontend/src/App.jsx&quot;,&quot;type&quot;:&quot;SourceFile&quot;,&quot;start&quot;:{&quot;line&quot;:122,&quot;column&quot;:52,&quot;offset&quot;:3062},&quot;end&quot;:{&quot;line&quot;:122,&quot;column&quot;:59,&quot;offset&quot;:3070}}]},&quot;filename&quot;:&quot;src/App.jsx&quot;,&quot;annotation&quot;:&quot;flow&quot;,&quot;percent&quot;:63}</pre></body></html>

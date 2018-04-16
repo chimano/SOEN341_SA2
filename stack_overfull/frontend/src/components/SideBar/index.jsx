@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import { Menu, Icon } from 'antd';
 import './index.css';
@@ -146,7 +147,7 @@ const categories = [
 const rootSubmenuKeys = ['0', '1', '2', '3', '4', '5'];
 
 type Props = {
-  getJobList: () => {},
+  getJobList: (number) => {},
 }
 
 type State = {
@@ -158,7 +159,7 @@ export default class SideBar extends React.Component<Props, State> {
     openKeys: ['3'],
   };
 
-  onOpenChange = (openKeys) => {
+  onOpenChange = (openKeys:Array<string>) => {
     const latestOpenKey = openKeys.find(key => this.state.openKeys.indexOf(key) === -1);
     if (rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
       this.setState({ openKeys });
@@ -169,7 +170,7 @@ export default class SideBar extends React.Component<Props, State> {
     }
   };
 
-  handleClick = (e) => {
+  handleClick = (e:Object) => {
     const { getJobList } = this.props;
     getJobList(e.key);
   };
