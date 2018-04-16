@@ -71,6 +71,7 @@
 .navbar__buttons {
   display: flex;
   width: 35%;
+  border-bottom: 5px solid lightgrey;
 }
 
 .navbar__secondrow {

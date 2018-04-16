@@ -1,24 +1,28 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Icon } from 'antd';
-import { SearchBar, SignInFormWindow, SignUpFormWindow } from '../../components';
-import './index.css';
+import React from "react";
+import { Link } from "react-router-dom";
+import { Icon } from "antd";
+import {
+  SearchBar,
+  SignInFormWindow,
+  SignUpFormWindow
+} from "../../components";
+import "./index.css";
 
 type Props = {
   handleLogout: () => {},
   loggedIn: boolean,
-  handleLogin: () => {},
+  handleLogin: () => {}
 };
 
 type State = {
   openSignin: boolean,
-  openSignup: boolean,
+  openSignup: boolean
 };
 
 export default class NavigationBar extends React.Component<Props, State> {
   state = {
     openSignin: false,
-    openSignup: false,
+    openSignup: false
   };
 
   handleSignupButton = () => {
@@ -41,17 +45,23 @@ export default class NavigationBar extends React.Component<Props, State> {
     if (openSignin === true) {
       loginBox = (
         <div className="login-wrap">
-          <SignInFormWindow handleCloseButton={this.handleCloseButton} handleLogin={handleLogin} />
+          <SignInFormWindow
+            handleCloseButton={this.handleCloseButton}
+            handleLogin={handleLogin}
+          />
         </div>
       );
     } else if (openSignup === true) {
       loginBox = (
         <div className="login-wrap">
-          <SignUpFormWindow handleCloseButton={this.handleCloseButton} handleLogin={handleLogin} />
+          <SignUpFormWindow
+            handleCloseButton={this.handleCloseButton}
+            handleLogin={handleLogin}
+          />
         </div>
       );
     } else {
-      loginBox = '';
+      loginBox = "";
     }
 
     return (
@@ -81,10 +91,16 @@ export default class NavigationBar extends React.Component<Props, State> {
             </div>
           ) : (
             <div className="navbar__buttons">
-              <button className="navbar__button" onClick={() => this.handleSigninButton()}>
+              <button
+                className="navbar__button"
+                onClick={() => this.handleSigninButton()}
+              >
                 Sign In
               </button>
-              <button className="navbar__button" onClick={() => this.handleSignupButton()}>
+              <button
+                className="navbar__button"
+                onClick={() => this.handleSignupButton()}
+              >
                 Sign Up
               </button>
             </div>
