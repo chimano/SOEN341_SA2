@@ -1,36 +1,32 @@
-.SearchPage-wrapper {
-    background-color: rgb(241, 241, 241);
-}
-
 .SearchPage {
-    min-height: calc(100vh - 87px - 233.19px);
+  min-height: calc(100vh - 87px - 233.19px);
 }
 
 .SearchPage__question-list-title {
-    padding-top: 20px;
-    font-size: 20px;
-    display: block;
+  padding-top: 20px;
+  font-size: 20px;
+  display: block;
 }
 
 .SearchPage__search-filters-bar {
-    display: flex;
-    justify-content: flex-end;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .query {
-    font-weight: bold;
-    width: 100%;
-    display: flex;
+  font-weight: bold;
+  width: 100%;
+  display: flex;
 }
 
 .SearchPage__results {
-    width: 100%;
-    display: flex;
+  width: 100%;
+  display: flex;
 }
 
 .num-results {
-    font-weight: bold;
-    width: 100%;
-    padding-left: 10px;
-    display: flex;
+  font-weight: bold;
+  width: 100%;
+  padding-left: 10px;
+  display: flex;
 }

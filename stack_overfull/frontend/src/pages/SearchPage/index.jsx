@@ -65,7 +65,7 @@ export default class SearchPage extends React.Component<Props, State> {
       : "No results found";
 
     return (
-      <div className="SearchPage-wrapper">
+      <div className="body-wrapper">
         <div className="SearchPage page-width">
           <h2 className="SearchPage__question-list-title">Search</h2>
           <div style={{ paddingBottom: "15px" }}>

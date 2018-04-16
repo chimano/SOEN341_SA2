@@ -1,48 +1,49 @@
 .JobBox {
-    display: flex;
-    flex-wrap: wrap;
-    padding: 15px;
-    background-color: rgb(255, 255, 255);
-    margin: 10px 0 20px 0;
-    color: black;
-    border-radius: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 15px;
+  background-color: #fafafa;
+  margin: 10px 0 20px 0;
+  color: black;
+  border-radius: 10px;
+  box-shadow: 0px 2px 5px #dadada;
 }
 
 .JobBox__position {
-    width: 50%;
-    display: flex;
-    font-weight: bold;
-    font-family: 'Oswald', sans-serif;
-    font-size: 22px;
-    color: #0074D9;
-    justify-content: flex-start;
+  width: 50%;
+  display: flex;
+  font-weight: bold;
+  font-family: "Oswald", sans-serif;
+  font-size: 22px;
+  color: #0074d9;
+  justify-content: flex-start;
 }
 
 .JobBox__company {
-    width: 50%;
-    display: flex;
-    font-weight: bold;
-    font-family: 'Oswald', sans-serif;
-    font-size: 15px;
-    text-align: center;
-    color: #0074D9;
-    justify-content: flex-end;
+  width: 50%;
+  display: flex;
+  font-weight: bold;
+  font-family: "Oswald", sans-serif;
+  font-size: 15px;
+  text-align: center;
+  color: #0074d9;
+  justify-content: flex-end;
 }
 
 .JobBox__description {
-    width: 80%;
-    display: flex;
-    justify-content: flex-start;
+  width: 80%;
+  display: flex;
+  justify-content: flex-start;
 }
 
-.JobBox__description p { 
-    max-width: 450px;
-    word-wrap: break-word;
+.JobBox__description p {
+  max-width: 450px;
+  word-wrap: break-word;
 }
 
 .JobBox__generalinfo {
-    width: 20%;
-    display: flex;
-    justify-content: flex-end;
-    text-align: right;
+  width: 20%;
+  display: flex;
+  justify-content: flex-end;
+  text-align: right;
 }

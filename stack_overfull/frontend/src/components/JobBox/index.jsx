@@ -76,7 +76,7 @@ export default class JobBox extends React.Component<Props, State> {
 
     return (
       <div>
-        <div className="JobBox grey-border">
+        <div className="JobBox">
           <div className="JobBox__position">{jobPosition}</div>
           <div className="JobBox__company">Position posted by {jobCompany}</div>
           <Divider />

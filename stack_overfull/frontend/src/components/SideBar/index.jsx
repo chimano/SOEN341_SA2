@@ -210,7 +210,8 @@ export default class SideBar extends React.Component<Props, State> {
           style={{
             width: 256,
             marginLeft: "-15px",
-            border: "solid 1px #ececec"
+            border: "solid 1px #ececec",
+            backgroundColor: "#fafafa"
           }}
           defaultSelectedKeys={["computer_science"]}
         >
