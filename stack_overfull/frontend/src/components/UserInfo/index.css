@@ -1,25 +1,24 @@
 .UserInfo {
-    padding-top: 10px;
-    padding: 15px;
-    background-color: rgb(255, 255, 255);
-    /* margin: 10px 0 20px 0; */
-    color: black;
-    border-radius: 10px;
+  padding: 30px;
+  background-color: #f7f7f7;
+  color: black;
+  border-radius: 10px;
+  box-shadow: 0px 2px 5px #dadada;
 }
 
 .UserInfo h3 {
-    padding-top: 20px;
-    text-align: left;
-    font-size: 1.5em;
-    text-decoration: underline;
+  padding-top: 20px;
+  text-align: left;
+  font-size: 1.5em;
+  text-decoration: underline;
 }
 
 .UserInfo_div button {
-    margin-top: 5%;
-    margin-bottom: 5%;
+  margin-top: 5%;
+  margin-bottom: 5%;
 }
 
 .UserInfo_div h2 {
-    text-align: center;
-    margin-top: 6%;
+  text-align: center;
+  margin-top: 6%;
 }

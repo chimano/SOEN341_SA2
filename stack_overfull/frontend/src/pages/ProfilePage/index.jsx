@@ -228,7 +228,7 @@ export default class ProfilePage extends React.Component<Props, State> {
       );
     } else {
       showTabPage = (
-        <div className="showTabPage_div" style={{ width: '90%' }}>
+        <div className="showTabPage_div" >
           <UserQuestionList
             upvotedQuestions={upvotedQuestions}
             downvotedQuestions={downvotedQuestions}

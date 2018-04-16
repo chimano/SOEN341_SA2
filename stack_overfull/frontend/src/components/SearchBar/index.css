@@ -1,0 +1,3 @@
+.ant-input-search.ant-input-search-enter-button > .ant-input-suffix {
+  z-index: 1;
+}

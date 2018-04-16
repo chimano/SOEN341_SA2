@@ -16,6 +16,7 @@
   outline: none;
   border-radius: 10px;
 }
+
 /*
 .button:hover {
     background: rgb(31, 145, 221);
@@ -37,7 +38,7 @@
 }
 
 .App {
-  background: #fafafa;
+  background: white;
 }
 
 .ant-divider-horizontal {

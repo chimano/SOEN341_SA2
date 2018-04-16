@@ -1,7 +1,3 @@
-.TagPage__wrapper {
-    background-color: rgb(241, 241, 241);
-}
-
 .TagPage {
     min-height: calc(100vh - 87px - 233.19px);
 }

@@ -55,7 +55,7 @@ export default class NavigationBar extends React.Component<Props, State> {
     }
 
     return (
-      <div className="navbar-wrapper shadow">
+      <div className="navbar-wrapper">
         <div className="navbar page-width">
           <div className="navbar__buttons">
             <Link to="/careers" className="navbar__button">

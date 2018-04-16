@@ -369,7 +369,7 @@ export default class AnswerPage extends React.Component<Props, State> {
                 downvotedArray={this.state.downvotedQuestionsId}
               />
             </div>
-            <div className="AnswerPage__question-box grey-border">
+            <div className="AnswerPage__question-box">
               <h1 className="AnswerPage__question-title">
                 {question.question_head}
               </h1>

@@ -1,71 +1,71 @@
 .AnswerBox {
-  margin-bottom: 2%;
-  border-radius: 20px;
-  border: 2px solid rgb(31, 145, 221);
-  padding: 2%;
-  background: white;
+    margin-bottom: 2%;
+    border-radius: 20px;
+    border: 2px solid rgb(31, 145, 221);
+    padding: 2%;
+    background: #fafafa;
 }
 
 .AnswerBox__wrapper {
-  display: flex;
+    display: flex;
 }
 
 .AnswerBox__row {
-  display: flex;
-  width: 100%;
+    display: flex;
+    width: 100%;
 }
 
 .AnswerBox__button-area {
-  display: flex;
+    display: flex;
 }
 
 .AnswerBox--blue {
-  border: 2px solid rgb(31, 145, 221);
-  width: 95%;
+    border: 2px solid rgb(31, 145, 221);
+    width: 95%;
 }
 
 .AnswerBox--red {
-  border: 2px solid rgb(221, 69, 31);
-  width: 95%;
+    border: 2px solid rgb(221, 69, 31);
+    width: 95%;
 }
 
 .AnswerBox--green {
-  border: 2px solid rgb(75, 221, 31);
-  width: 95%;
+    border: 2px solid rgb(75, 221, 31);
+    width: 95%;
 }
 
 .AnswerBox__answer {
-  text-align: left;
-  font-size: 1.2em;
-  width: 100%;
-  word-wrap: break-word;
+    text-align: left;
+    font-size: 1.2em;
+    width: 100%;
+    word-wrap: break-word;
 }
 
 .AnswerBox__date {
-  /* text-align: right;
+    /* text-align: right;
     margin-top: 2%; */
-  background: white;
-  padding-left: 0.8%;
-  padding-right: 0.8%;
+    background: white;
+    padding-left: 0.8%;
+    padding-right: 0.8%;
 }
 
 .AnswerBox__username {
-  display: flex;
-  width: 100%;
-  margin-top: auto;
-  justify-content: flex-end;
+    display: flex;
+    width: 100%;
+    margin-top: auto;
+    justify-content: flex-end;
 }
 
 fieldset {
-  position: relative;
+    position: relative;
 }
 
 legend {
-  font-size: 1.2em;
+    font-size: 1.2em;
 }
 
 .AnswerBox__delete {
-  border: none;
-  outline: none;
-  display: flex;
+    border: none;
+    outline: none;
+    display: flex;
 }
