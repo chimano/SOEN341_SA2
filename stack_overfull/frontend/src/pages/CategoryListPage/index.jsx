@@ -55,7 +55,7 @@ export default class CategoryListPage extends React.Component<{}, State> {
     }
 
     return (
-      <header>
+      <header className="body-wrapper">
         <nav>
           <div>
             <h1 className="CategoryListPage__welcomeTitle1">QUESTION CATEGORIES AND TAGS</h1>

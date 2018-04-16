@@ -1,10 +1,10 @@
 // @flow
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Divider, Icon } from 'antd';
+import { Divider, Icon, message } from 'antd';
+import swal from 'sweetalert';
 import './index.css';
 import { AnswerBox, TagList, VotingButtons } from '../../components';
-import swal from 'sweetalert';
 import {
   getApiQuestionById,
   getApiAnswerById,
@@ -71,8 +71,7 @@ export default class AnswerPage extends React.Component<Props, State> {
           downvotedQuestionsId: downvotedQuestions,
           upvotedQuestionsId: upvotedQuestions,
         });
-      })
-      .catch(error => console.log(error));
+      });
   };
 
   getQuestion = () => {
@@ -80,13 +79,9 @@ export default class AnswerPage extends React.Component<Props, State> {
     const questionId = match.params.id;
     getApiQuestionById(questionId)
       .then((response) => {
-        console.log(response);
         this.setState({
           question: response.data,
         });
-      })
-      .catch((error) => {
-        console.log(error);
       });
   };
 
@@ -99,9 +94,6 @@ export default class AnswerPage extends React.Component<Props, State> {
           answerList: response.data.answer_list,
         });
       });
-    // .catch((error) => {
-    //   console.log(error);
-    // });
   };
 
   handleReplyButton = (questionId: number) => {
@@ -112,22 +104,19 @@ export default class AnswerPage extends React.Component<Props, State> {
           setTimeout(() => this.getAnswerList(), 500);
           this.refs.answer_text.value = '';
         } else {
-          alert('You need to be logged in to reply!');
+          message.error('You need to be logged in to reply!');
         }
       });
-    // .catch((error) => {
-    //   console.log(error);
-    // });
   };
 
   handleUpvoteButton = (answerId:number) => {
-    this.upvoteAnswer(answerId).catch(e => alert(e.response.data.error));
+    this.upvoteAnswer(answerId);
     setTimeout(() => this.getAnswerList(), 500);
     setTimeout(() => this.getUserVotes(), 500);
   };
 
   handleDownvoteButton = (answerId:number) => {
-    this.downvoteAnswer(answerId).catch(e => alert(e.response.data.error));
+    this.downvoteAnswer(answerId);
     setTimeout(() => this.getAnswerList(), 500);
     setTimeout(() => this.getUserVotes(), 500);
   };
@@ -135,17 +124,17 @@ export default class AnswerPage extends React.Component<Props, State> {
   upvoteAnswer = (answerId:number) => {
     voteAnswer('UP', answerId)
       .then((response) => {
-        console.log(response);
+        message.success(response.data.success);
       })
-      .catch(e => alert(e.response.data.error));
+      .catch(e => message.error(e.response.data.error));
   };
 
   downvoteAnswer = (answerId:number) => {
     voteAnswer('DOWN', answerId)
       .then((response) => {
-        console.log(response);
+        message.success(response.data.success);
       })
-      .catch(e => alert(e.response.data.error));
+      .catch(e => message.error(e.response.data.error));
   };
 
   handleUpvoteQuestion = (questionId: number) => {
@@ -163,24 +152,28 @@ export default class AnswerPage extends React.Component<Props, State> {
   upvoteQuestion = (questionId: number) => {
     voteQuestion('UP', questionId)
       .then((response) => {
-        console.log(response);
+        message.success(response.data.success);
       })
-      .catch(e => alert(e.response.data.error));
+      .catch(e => message.error(e.response.data.error));
   };
 
   downvoteQuestion = (questionId: number) => {
     voteQuestion('DOWN', questionId)
       .then((response) => {
-        console.log(response);
+        message.success(response.data.success);
       })
-      .catch(e => alert(e.response.data.error));
+      .catch(e => message.error(e.response.data.error));
   };
 
   answerQuestion = (answer:string, questionId:number) => {
-    postApiAnswer(answer, questionId);
+    postApiAnswer(answer, questionId)
+      .then(() => {
+        message.success('Successfully answered question');
+      })
+      .catch(e => message.error(e.response.data.error));
   };
 
-  handleDeleteQuestion = (questionId) => {
+  handleDeleteQuestion = (questionId:number) => {
     swal({
       title: 'Delete this question',
       text: 'Are you sure that you wish to delete this question?',
@@ -192,18 +185,14 @@ export default class AnswerPage extends React.Component<Props, State> {
         swal('This question has been deleted!', {
           icon: 'success',
         });
-        deleteQuestion(questionId)
-          .then((response) => {
-            console.log(response);
-          })
-          .catch(e => alert(e.response.data.error));
+        deleteQuestion(questionId);
       } else {
         swal('Your changes have been discarded.');
       }
     });
   }
 
-  handleDeleteAnswer = (answerId) => {
+  handleDeleteAnswer = (answerId:number) => {
     swal({
       title: 'Delete this answer',
       text: 'Are you sure that you wish to delete this answer?',
@@ -215,11 +204,7 @@ export default class AnswerPage extends React.Component<Props, State> {
         swal('This answer has been deleted!', {
           icon: 'success',
         });
-        deleteAnswer(answerId)
-          .then((response) => {
-            console.log(response);
-          })
-          .catch(e => alert(e.response.data.error));
+        deleteAnswer(answerId);
         setTimeout(() => this.getAnswerList(), 500);
       } else {
         swal('Your changes have been discarded.');
@@ -249,7 +234,7 @@ export default class AnswerPage extends React.Component<Props, State> {
     const { match, loggedIn, username } = this.props;
     const questionId = match.params.id;
 
-    let questionCreator;
+    let questionCreator = '';
     if (question.user_id) {
       questionCreator = question.user_id.username;
     }
@@ -300,18 +285,18 @@ export default class AnswerPage extends React.Component<Props, State> {
       if (x.is_accepted) {
         acceptedAnswerKey = key;
         answerListBox.push(<AnswerBox
-            key={key}
-            handleAccept={this.handleAccept}
-            handleReject={this.handleReject}
-            handleDownvoteButton={this.handleDownvoteButton}
-            handleUpvoteButton={this.handleUpvoteButton}
-            verified={verified}
-            x={x}
-            upvotedArray={this.state.upvotedAnswersId}
-            downvotedArray={this.state.downvotedAnswersId}
-            handleDeleteAnswer={this.handleDeleteAnswer}
-            username={this.props.username}
-          />,);
+          key={key}
+          handleAccept={this.handleAccept}
+          handleReject={this.handleReject}
+          handleDownvoteButton={this.handleDownvoteButton}
+          handleUpvoteButton={this.handleUpvoteButton}
+          verified={verified}
+          x={x}
+          upvotedArray={this.state.upvotedAnswersId}
+          downvotedArray={this.state.downvotedAnswersId}
+          handleDeleteAnswer={this.handleDeleteAnswer}
+          username={this.props.username}
+        />);
       }
     });
 
@@ -319,18 +304,18 @@ export default class AnswerPage extends React.Component<Props, State> {
     answerList.forEach((x, key) => {
       if (key !== acceptedAnswerKey) {
         answerListBox.push(<AnswerBox
-            key={key}
-            handleAccept={this.handleAccept}
-            handleReject={this.handleReject}
-            handleDownvoteButton={this.handleDownvoteButton}
-            handleUpvoteButton={this.handleUpvoteButton}
-            verified={verified}
-            x={x}
-            upvotedArray={this.state.upvotedAnswersId}
-            downvotedArray={this.state.downvotedAnswersId}
-            handleDeleteAnswer={this.handleDeleteAnswer}
-            username={this.props.username}
-          />,);
+          key={key}
+          handleAccept={this.handleAccept}
+          handleReject={this.handleReject}
+          handleDownvoteButton={this.handleDownvoteButton}
+          handleUpvoteButton={this.handleUpvoteButton}
+          verified={verified}
+          x={x}
+          upvotedArray={this.state.upvotedAnswersId}
+          downvotedArray={this.state.downvotedAnswersId}
+          handleDeleteAnswer={this.handleDeleteAnswer}
+          username={this.props.username}
+        />);
       }
     });
 

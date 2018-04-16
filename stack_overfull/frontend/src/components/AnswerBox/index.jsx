@@ -1,19 +1,17 @@
 // @flow
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Divider } from 'antd';
+import { Divider, Icon } from 'antd';
 import './index.css';
 import { AcceptRejectButton, VotingButtons } from '../../components';
 import { formatDate } from '../../utils/api';
-import { QuestionBox } from '../QuestionBox';
-import { Icon } from 'antd';
 
 type Props = {
-  handleAccept: () => {},
-  handleReject: () => {},
+  handleAccept: number => {},
+  handleReject: number => {},
   handleDownvoteButton: () => {},
   handleUpvoteButton: () => {},
-  handleDeleteAnswer: () => {},
+  handleDeleteAnswer: number => {},
   verified: boolean,
   x: Object,
   upvotedArray: Array<Object>,

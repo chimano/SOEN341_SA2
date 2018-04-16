@@ -50,9 +50,6 @@ export default class SearchPage extends React.Component<Props, State> {
         this.setState({
           questionList: response.data.question_list
         });
-      })
-      .catch(error => {
-        console.log(error);
       });
   };
 

@@ -1,14 +1,9 @@
 // @flow
-import React from "react";
-import { Pagination } from "antd";
-import "./index.css";
-import {
-  QuestionList,
-  QuestionEdit,
-  AskQuestionButton,
-  FilterTabs
-} from "../../components";
-import { getApiSearch, postApiQuestion, postApiAnswer } from "../../utils/api";
+import React from 'react';
+import { Pagination, message } from 'antd';
+import './index.css';
+import { QuestionList, QuestionEdit, AskQuestionButton, FilterTabs } from '../../components';
+import { getApiSearch, postApiQuestion } from '../../utils/api';
 
 type Props = {
   username: string,
@@ -62,12 +57,11 @@ export default class HomePage extends React.Component<Props, State> {
 
   createQuestion = (question: string) => {
     postApiQuestion(question)
-      .then(() => this.getQuestionList())
-      .catch(e => alert(e.response.data.error));
-  };
-
-  answerQuestion = (answer: string, questionId: number) => {
-    postApiAnswer(answer, questionId).catch(error => console.log(error));
+      .then(() => {
+        message.success('Question successfully created');
+        this.getQuestionList();
+      })
+      .catch(e => message.error(e.response.data.error));
   };
 
   handleAskQuestionButton = () => {
@@ -75,7 +69,7 @@ export default class HomePage extends React.Component<Props, State> {
     if (loggedIn) {
       this.openCreateQuestionBox();
     } else {
-      alert("You need to Sign In to ask a question");
+      message.error('You need to Sign In to ask a question');
     }
   };
 

@@ -92,7 +92,6 @@ export default class UserPage extends React.Component<Props, State> {
   getUserInfo = (username: string): Promise<void> =>
     new Promise((resolve) => {
       getApiUserNameInfo(username).then((response) => {
-        console.log(response);
         this.setState({
           username: response.data.username,
           email: response.data.email,
@@ -167,7 +166,6 @@ export default class UserPage extends React.Component<Props, State> {
       isEmployer,
       currentTab,
     } = this.state;
-    console.log(isEmployer);
     let showTabPage;
     if (currentTab === '' || currentTab === 'profile') {
       showTabPage = (

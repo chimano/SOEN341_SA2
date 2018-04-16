@@ -40,8 +40,6 @@ const UserInfo = (props: Props) => {
   } = props;
 
   let divContent;
-  console.log(isEditable);
-  console.log(username);
 
   if (username !== '') {
     let editButtonElement;
@@ -139,7 +137,7 @@ const UserInfo = (props: Props) => {
     const hoursSinceLastLogin = (Date.now() - Date.parse(lastLogin)) / 3600000;
     divContent = (
       <div>
-        <h2> {username}'s profile </h2>
+        <h2>{`${username}'s profile `}</h2>
         <div className="UserInfo" style={{ display: 'flex' }}>
           <div className="LeftDiv" style={{ width: '50%', marginRight: '10px' }}>
             <h3>Username</h3>

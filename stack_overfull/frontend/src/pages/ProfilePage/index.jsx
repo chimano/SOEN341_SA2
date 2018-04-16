@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import { message } from 'antd';
 import {
   getApiUserMe,
   postApiUserMe,
@@ -93,9 +94,6 @@ export default class ProfilePage extends React.Component<Props, State> {
           upvotedQuestions: response.data.upvoted_questions,
           downvotedQuestions: response.data.downvoted_questions,
         });
-      })
-      .catch((error) => {
-        console.log(error);
       });
   };
 
@@ -123,8 +121,7 @@ export default class ProfilePage extends React.Component<Props, State> {
           isEmployer: response.data.profile.is_employer,
         });
         resolve(response.data.username);
-      })
-      .catch(error => console.log(error));
+      });
   });
 
   saveMyInfo = () => {
@@ -136,9 +133,9 @@ export default class ProfilePage extends React.Component<Props, State> {
 
     postApiUserMe(email, firstName, lastName, aboutMe, github, linkedin)
       .then(() => {
+        message.success('User info saved');
         this.setState({ isSavingMyInfo: false });
-      })
-      .catch(error => console.log(error));
+      });
   };
 
   handleTabsChange = (key:number) => {

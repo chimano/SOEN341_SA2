@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Tooltip, Icon, Button, Select } from 'antd';
+import { Form, Input, Tooltip, Icon, Button, Select, message } from 'antd';
 import './index.css';
 import { postApiUserRegister } from '../../utils/api';
 
@@ -9,12 +9,12 @@ const { Option } = Select;
 type Props = {
   handleCloseButton: () => {},
   handleLogin: () => {},
-  form : Object,
-}
+  form: Object,
+};
 
 type State = {
   confirmDirty: boolean,
-}
+};
 
 class SignUpForm extends React.Component<Props, State> {
   state = {
@@ -24,10 +24,11 @@ class SignUpForm extends React.Component<Props, State> {
   onUserRegisterResponse(response) {
     const { handleCloseButton, handleLogin } = this.props;
     if (!response.data.error) {
+      message.success('Successfully created an account');
       handleCloseButton();
       handleLogin(response.data.username);
     } else {
-      alert(response.data.error);
+      message.error(response.data.error);
     }
   }
 
@@ -37,7 +38,7 @@ class SignUpForm extends React.Component<Props, State> {
         this.onUserRegisterResponse(response);
       })
       .catch((e) => {
-        alert(e.response.data.error);
+        message.error(e.response.data.error);
       });
   }
 
@@ -61,7 +62,6 @@ class SignUpForm extends React.Component<Props, State> {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
         this.doUserRegisterRequest(
           values.username,
           values.password,
@@ -188,21 +188,14 @@ class SignUpForm extends React.Component<Props, State> {
         {/* Account Type */}
         <FormItem {...formItemLayout} label="Are you an employer?">
           {getFieldDecorator('isEmployer', {
-            rules: [
-              { required: true, message: 'Please select your answer.' },
-            ],
+            rules: [{ required: true, message: 'Please select your answer.' }],
           })(<Select>
-            <Option value={0} >No</Option>
-            <Option value={1} >Yes</Option>
-          </Select>)}
+            <Option value={0}>No</Option>
+            <Option value={1}>Yes</Option>
+             </Select>)}
         </FormItem>
-
         <FormItem {...tailFormItemLayout}>
-          <Button
-            type="primary"
-            htmlType="submit"
-            className="SignUpForm__submit-button"
-          >
+          <Button type="primary" htmlType="submit" className="SignUpForm__submit-button">
             Register
           </Button>
         </FormItem>
