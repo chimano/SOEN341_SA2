@@ -97,16 +97,14 @@ export default class AnswerPage extends React.Component<Props, State> {
   };
 
   handleReplyButton = (questionId: number) => {
-    getApiUserMe()
-      .then((response) => {
-        if (!response.data.error) {
-          this.answerQuestion(this.state.answer, questionId);
-          setTimeout(() => this.getAnswerList(), 500);
-          this.refs.answer_text.value = '';
-        } else {
-          message.error('You need to be logged in to reply!');
-        }
-      });
+    const { loggedIn } = this.props;
+    if (loggedIn) {
+      this.answerQuestion(this.state.answer, questionId);
+      setTimeout(() => this.getAnswerList(), 500);
+      this.refs.answer_text.value = '';
+    } else {
+      message.error('You need to be logged in to reply!');
+    }
   };
 
   handleUpvoteButton = (answerId:number) => {
