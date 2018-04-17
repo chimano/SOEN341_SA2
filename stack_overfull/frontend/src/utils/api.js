@@ -1,8 +1,10 @@
 import axios from 'axios';
 
+const BASE_URL = 'https://3605f9b0.ngrok.io';
+
 // get single question by id
 export function getApiQuestionById(id) {
-  return axios.get('/api/question/', {
+  return axios.get(`${BASE_URL}/api/question/`, {
     params: {
       id,
     },
@@ -11,7 +13,7 @@ export function getApiQuestionById(id) {
 
 // get the list of questions
 export function getApiQuestion(order, limit, sort, tags = []) {
-  return axios.get('/api/question/', {
+  return axios.get(`${BASE_URL}/api/question/`, {
     params: {
       order,
       limit,
@@ -23,12 +25,12 @@ export function getApiQuestion(order, limit, sort, tags = []) {
 
 // get the list of asked/answered questions
 export function getApiUserQuestionsAndAnsweredQuestions(username) {
-  return axios.get(`/api/user/name/${username}/questions`);
+  return axios.get(`${BASE_URL}/api/user/name/${username}/questions`);
 }
 
 // get the list of jobs given the category and subcategory
 export function getApiJob(category) {
-  return axios.get('/api/job/', {
+  return axios.get(`${BASE_URL}/api/job/`, {
     params: {
       category,
     },
@@ -37,14 +39,14 @@ export function getApiJob(category) {
 
 // apply to job
 export function postApiJobApplication(job_id) {
-  return axios.post('/api/job/application/', {
+  return axios.post(`${BASE_URL}/api/job/application/`, {
     job_id,
   });
 }
 
 // get list of applicants based on job_id
 export function getApiJobApplication(job_id) {
-  return axios.get('/api/job/application/', {
+  return axios.get(`${BASE_URL}/api/job/application/`, {
     params: {
       job_id,
     },
@@ -53,12 +55,12 @@ export function getApiJobApplication(job_id) {
 
 // get a list of jobs posted by a certain employer
 export function getApiUserNameJobs(username) {
-  return axios.get(`/api/user/name/${username}/jobs`);
+  return axios.get(`${BASE_URL}/api/user/name/${username}/jobs`);
 }
 
 // post a job
 export function postApiJob(position, job_type, category, company, location, description) {
-  return axios.post('/api/job/', {
+  return axios.post(`${BASE_URL}/api/job/`, {
     position,
     job_type,
     category,
@@ -139,7 +141,7 @@ export function formatDate(dateRaw) {
 
 // get answer by id of the question
 export function getApiAnswerById(id, order, limit) {
-  return axios.get('/api/answer/', {
+  return axios.get(`${BASE_URL}/api/answer/`, {
     params: {
       q_id: id,
       order,
@@ -150,12 +152,12 @@ export function getApiAnswerById(id, order, limit) {
 
 // get user info and check whether user is logged in or not
 export function getApiUserMe() {
-  return axios.get('/api/user/me');
+  return axios.get(`${BASE_URL}/api/user/me/`);
 }
 
 // get user information
 export function getApiUserNameInfo(username) {
-  return axios.get(`/api/user/name/${username}`);
+  return axios.get(`${BASE_URL}/api/user/name/${username}`);
 }
 
 // edit info of the currently logged in user
@@ -168,7 +170,7 @@ export function postApiUserMe(
   github = null,
   linkedin = null,
 ) {
-  return axios.post('/api/user/me/', {
+  return axios.post(`${BASE_URL}/api/user/me/`, {
     email,
     first_name,
     last_name,
@@ -180,7 +182,7 @@ export function postApiUserMe(
 
 // post question
 export function postApiQuestion(question) {
-  return axios.post('/api/question/', {
+  return axios.post(`${BASE_URL}/api/question/`, {
     question_head: question.question_head,
     question_text: question.question_text,
     tags: question.tags ? question.tags : [],
@@ -189,13 +191,13 @@ export function postApiQuestion(question) {
 
 // post answer
 export function postApiAnswer(answer, q_id) {
-  return axios.post('/api/answer/', { answer, q_id });
+  return axios.post(`${BASE_URL}/api/answer/`, { answer, q_id });
 }
 
 // vote on answer, return updated value of points
 // vote_type either "UP" or "DOWN"
 export function voteAnswer(vote_type, a_id) {
-  return axios.post('/api/answer/vote/', {
+  return axios.post(`${BASE_URL}/api/answer/vote/`, {
     vote_type,
     a_id,
   });
@@ -204,7 +206,7 @@ export function voteAnswer(vote_type, a_id) {
 // vote on question, return updated value of points
 // vote_type either "UP" or "DOWN"
 export function voteQuestion(vote_type, q_id) {
-  return axios.post('/api/question/vote/', {
+  return axios.post(`${BASE_URL}/api/question/vote/`, {
     vote_type,
     q_id,
   });
@@ -212,7 +214,7 @@ export function voteQuestion(vote_type, q_id) {
 
 // login the user
 export function postApiUserLogin(username, password) {
-  return axios.post('/api/user/login/', {
+  return axios.post(`${BASE_URL}/api/user/login/`, {
     username,
     password,
   });
@@ -220,12 +222,12 @@ export function postApiUserLogin(username, password) {
 
 // logout the user
 export function postApiUserLogout() {
-  return axios.post('/api/user/logout/');
+  return axios.post(`${BASE_URL}/api/user/logout/`);
 }
 
 // register user
 export function postApiUserRegister(username, password, email, is_employer) {
-  return axios.post('/api/user/register/', {
+  return axios.post(`${BASE_URL}/api/user/register/`, {
     username,
     password,
     email,
@@ -235,7 +237,7 @@ export function postApiUserRegister(username, password, email, is_employer) {
 
 // edit an answer in the database
 export function putAnswer(answer_text, q_id) {
-  return axios.put('/api/answer/', {
+  return axios.put(`${BASE_URL}/api/answer/`, {
     answer_text,
     q_id,
   });
@@ -243,7 +245,7 @@ export function putAnswer(answer_text, q_id) {
 
 // edit a question in the database
 export function putQuestion(q_id, question_head, question_text) {
-  return axios.put('/api/question/', {
+  return axios.put(`${BASE_URL}/api/question/`, {
     q_id,
     question_head,
     question_text,
@@ -252,7 +254,7 @@ export function putQuestion(q_id, question_head, question_text) {
 
 // delete a question from the database
 export function deleteQuestion(q_id) {
-  return axios.delete('/api/question/', {
+  return axios.delete(`${BASE_URL}/api/question/`, {
     data: {
       q_id,
     },
@@ -261,7 +263,7 @@ export function deleteQuestion(q_id) {
 
 // delete an answer in the database
 export function deleteAnswer(a_id) {
-  return axios.delete('/api/answer/', {
+  return axios.delete(`${BASE_URL}/api/answer/`, {
     data: {
       a_id,
     },
@@ -270,22 +272,22 @@ export function deleteAnswer(a_id) {
 
 // Accept answer
 export function postApiAnswerIdAccept(id) {
-  return axios.post(`/api/answer/${id}/accept/`);
+  return axios.post(`${BASE_URL}/api/answer/${id}/accept/`);
 }
 
 // Reject answer
 export function postApiAnswerIdReject(id) {
-  return axios.post(`/api/answer/${id}/reject/`);
+  return axios.post(`${BASE_URL}/api/answer/${id}/reject/`);
 }
 
 // Undo accept answer
 export function postApiAnswerIdAcceptUndo(id) {
-  return axios.post(`/api/answer/${id}/accept/undo/`);
+  return axios.post(`${BASE_URL}/api/answer/${id}/accept/undo/`);
 }
 
 // Undo reject answer
 export function postApiAnswerIdRejectUndo(id) {
-  return axios.post(`/api/answer/${id}/reject/undo/`);
+  return axios.post(`${BASE_URL}/api/answer/${id}/reject/undo/`);
 }
 
 // get the list of questions matching the query ('q')
@@ -298,7 +300,7 @@ export function getApiSearch(
   filters = [],
   page = 1,
 ) {
-  return axios.get('/api/search/', {
+  return axios.get(`${BASE_URL}/api/search/`, {
     params: {
       q, // the query string
       order,
@@ -312,7 +314,7 @@ export function getApiSearch(
 
 // get the list of tags
 export function getApiTags(order = 'desc', limit = '10', sort = 'question_count') {
-  return axios.get('/api/tag/', {
+  return axios.get(`${BASE_URL}/api/tag/`, {
     params: {
       order,
       limit,
@@ -323,5 +325,5 @@ export function getApiTags(order = 'desc', limit = '10', sort = 'question_count'
 
 // get the tags information by tagname
 export function getApiTagInfo(tagname) {
-  return axios.get(`/api/tag/name/${tagname}/`);
+  return axios.get(`${BASE_URL}/api/tag/name/${tagname}/`);
 }

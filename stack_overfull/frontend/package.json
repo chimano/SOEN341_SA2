@@ -27,7 +27,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "webpack -p",
+    "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "flow start": "flow start",
@@ -69,5 +69,6 @@
     "excludeGlob": ["src/bundles/**", "src/registerServiceWorker.js"],
     "type": ["text", "html", "json"],
     "threshold": 80
-  }
+  },
+  "proxy": "https://3605f9b0.ngrok.io"
 }
